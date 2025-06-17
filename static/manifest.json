@@ -1,0 +1,11 @@
+{
+  "assets/js/index.js": {
+    "file": "home-CGTWCbKr.js",
+    "name": "home",
+    "src": "assets/js/index.js",
+    "isEntry": true,
+    "css": [
+      "home-Bctv8l1k.css"
+    ]
+  }
+}

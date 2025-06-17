@@ -1,3 +1,7 @@
+import "tailwindcss"
+import 'vite/modulepreload-polyfill'
+import '@fortawesome/fontawesome-free/js/all'
+import '../css/index.css.js'
 // Hero section
 // Tab switching functionality
 function switchTab(tabType) {

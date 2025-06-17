@@ -1,3 +1,15 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+  root: ":root";
+  dark: false;
+  include: ;
+  exclude: ;
+  prefix: ;
+  logs: true;
+}
+@import './base.css';
+
 .tab {
   transition: all 0.3s ease;
 }

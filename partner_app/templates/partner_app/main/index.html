@@ -3,7 +3,7 @@
 
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'partner_app/css/index.css'%}">
+{% comment %} <link rel="stylesheet" href="{% static 'partner_app/css/index.css'%}"> {% endcomment %}
 {% endblock styles%}
 {% block title %}AffiliateHub - Партнёрская программа{% endblock title %}
 
@@ -576,6 +576,5 @@
 
 {% block js_scripts %}
 
-<script src="{% static 'partner_app/js/index.js' %}"></script>
 
 {% endblock js_scripts %}
