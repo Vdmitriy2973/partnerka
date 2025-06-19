@@ -19,6 +19,7 @@ db.sqlite3-journal
 
 # Minimal Virtualenv
 .venv
+venv
 
 # Jetbrains
 .idea
@@ -26,3 +27,6 @@ db.sqlite3-journal
 # Minimal NodeJS
 dist
 node_modules
+static
+staticfiles
+assets

@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,8 +34,14 @@ INSTALLED_APPS = [
 CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+STATIC_URL = '/static/'
+
 # Name of our static files' folder (after called python manage.py collectstatic)
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
 # when run command python manage.py collectstatic
@@ -84,12 +91,12 @@ WSGI_APPLICATION = 'website_partner_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'partner',
-        'USER': 'max',
-        'PASSWORD': '1', # 1234 |
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'partner_program_db',
+        'USER': 'postgres',
+        'PASSWORD': '1234', # 1234 |
         'HOST':'localhost',
-        'PORT': '3306'
+        'PORT': '5432'
     }
 }
 
@@ -123,12 +130,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
 
 
 # Default primary key field type

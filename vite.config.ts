@@ -18,6 +18,7 @@ export default defineConfig((mode) => {
       rollupOptions: {
         input: {
           home: join(INPUT_DIR, "/js/index.js"),
+          css: join(INPUT_DIR, "/js/index.css.js"),
         },
       },
     },
