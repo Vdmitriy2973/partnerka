@@ -1,5 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 from .forms import PartnerRegistrationForm, AdvertiserRegistrationForm, LoginForm
 
@@ -40,3 +43,19 @@ def index(request):
             else:
                 print(form.errors)
     return render(request,"partner_app/main/index.html",{"form":None})
+
+@require_POST
+def logout_view(request):
+    logout(request)
+    return redirect('index')
+
+
+
+def dashboard(request):
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('index')
+    if user.user_type == "partner":
+        return render(request,"partner_app/dashboard/partner.html")
+    elif user.user_type == "advertiser":
+        return render(request,"partner_app/dashboard/advertiser.html")

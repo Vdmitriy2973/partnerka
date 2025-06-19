@@ -7,106 +7,71 @@
     {% load django_vite %}
     {% vite_hmr_client %}
     {% vite_asset 'partner_app/assets/js/index.js' %}
-    {% block styles %}{% endblock styles %}
     <title>{% block title %}{% endblock title %}</title>
 
   <body>
     <div class="navbar bg-white shadow-lg sticky top-0 z-50" id="navbar">
       <!-- Mobile Menu -->
-      <div class="navbar-start">
-        <div class="dropdown lg:hidden">
-          <label tabindex="0" class="btn btn-ghost btn-circle">
-            <i class="fas fa-bars text-xl"></i>
-          </label>
-          <ul
-            tabindex="0"
-            class="menu dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-60 border animate-fade-in"
-          >
-            <li>
-              <a href="#stats" class="hover:bg-blue-50 rounded-lg p-3"
-                ><i class="fas fa-chart-bar text-green-500"></i> Статистика</a
-              >
-            </li>
-            <li>
-              <a href="#features" class="hover:bg-blue-50 rounded-lg p-3"
-                ><i class="fas fa-star text-blue-500"></i> Возможности</a
-              >
-            </li>
-            <li>
-              <a href="#programs" class="hover:bg-blue-50 rounded-lg p-3"
-                ><i class="fas fa-handshake text-purple-500"></i> Программы</a
-              >
-            </li>
-            <li>
-              <a href="#testimonials" class="hover:bg-blue-50 rounded-lg p-3"
-                ><i class="fas fa-comments text-orange-500"></i> Отзывы</a
-              >
-            </li>
-            <li>
-              <a href="#contact" class="hover:bg-blue-50 rounded-lg p-3"
-                ><i class="fas fa-envelope text-red-500"></i> Контакты</a
-              >
-            </li>
-          </ul>
+        <div class="navbar-start">
+            <div class="dropdown dropdown-mobile">
+                <label tabindex="0" class="btn btn-ghost btn-circle">
+                    <i class="fas fa-bars text-xl"></i>
+                </label>
+                <ul tabindex="0"
+                    class="menu dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-60 border-none animate-fade-in">
+                    <li><a href="#stats" class="hover:bg-blue-50 rounded-lg p-3"><i
+                                class="fas fa-chart-bar text-green-500"></i> Статистика</a></li>
+                    <li><a href="#features" class="hover:bg-blue-50 rounded-lg p-3"><i
+                                class="fas fa-star text-blue-500"></i> Возможности</a></li>
+                    <li><a href="#programs" class="hover:bg-blue-50 rounded-lg p-3"><i
+                                class="fas fa-handshake text-purple-500"></i> Программы</a></li>
+                    <li><a href="#testimonials" class="hover:bg-blue-50 rounded-lg p-3"><i
+                                class="fas fa-comments text-orange-500"></i> Отзывы</a></li>
+                    <li><a href="#contact" class="hover:bg-blue-50 rounded-lg p-3"><i
+                                class="fas fa-envelope text-red-500"></i> Контакты</a></li>
+                </ul>
+            </div>
+            <a href="{% url 'index' %}" class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+                <i class="fas fa-handshake text-blue-600 mr-2"></i>
+                <span class="hidden sm:inline">AffiliateHub</span>
+                <span class="sm:hidden">AH</span>
+            </a>
         </div>
-        <a
-          class="btn btn-ghost text-xl font-bold text-blue-600 hover:scale-105 transition-transform"
-        >
-          <i class="fas fa-chart-network text-blue-600 mr-2"></i>
-          <span class="hidden sm:inline">AffiliateHub</span>
-          <span class="sm:hidden">AH</span>
-        </a>
-      </div>
 
-      <!-- Desktop Menu -->
-      <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1 space-x-1">
-          <li>
-            <a
-              href="#stats"
-              class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"
-              ><i class="fas fa-chart-bar mr-2"></i>Статистика</a
-            >
-          </li>
-          <li>
-            <a
-              href="#features"
-              class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"
-              ><i class="fas fa-star mr-2"></i>Возможности</a
-            >
-          </li>
-          <li>
-            <a
-              href="#programs"
-              class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"
-              ><i class="fas fa-handshake mr-2"></i>Программы</a
-            >
-          </li>
-          <li>
-            <a
-              href="#testimonials"
-              class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"
-              ><i class="fas fa-comments mr-2"></i>Отзывы</a
-            >
-          </li>
-          <li>
-            <a
-              href="#contact"
-              class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"
-              ><i class="fas fa-envelope mr-2"></i>Контакты</a
-            >
-          </li>
-        </ul>
-      </div>
+        <!-- Desktop Menu -->
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 space-x-1">
+                <li><a href="#stats" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                            class="fas fa-chart-bar mr-2"></i>Статистика</a></li>
+                <li><a href="#features" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                            class="fas fa-star mr-2"></i>Возможности</a></li>
+                <li><a href="#programs" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                            class="fas fa-handshake mr-2"></i>Программы</a></li>
+                <li><a href="#testimonials" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                            class="fas fa-comments mr-2"></i>Отзывы</a></li>
+                <li><a href="#contact" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                            class="fas fa-envelope mr-2"></i>Контакты</a></li>
+            </ul>
+        </div>
 
       <!-- Auth Buttons -->
       <div class="navbar-end gap-2">
         {% if request.user.is_authenticated %}
-        <p>Hello, <b>{{ request.user.username }}</b></p>
+        <div class="dropdown">
+          <label tabindex="0" class="btn m-1">{{ request.user.username }}</label>
+          <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-white rounded-box w-52">
+              <li><a href="{%url 'dashboard' %}" class="hover:bg-gray-200">Профиль</a></li>
+              <li><a href="#" class="hover:bg-gray-200">Настройки</a></li>
+              <form action="/logout" method="post">
+                {% csrf_token %}
+                <li><button type="submit" class="hover:bg-gray-200">Выход</button></li>
+              </form>
+                
+          </ul>
+        </div>
         {% else %}
         <button
-          class="btn btn-ghost hover:bg-blue-50 hover-lift"
-          onclick="openModal('auth')"
+          class="btn border-none btn-ghost hover:bg-blue-50 hover-lift"
           id="authModal"
         >
           <i class="fas fa-sign-in-alt mr-2"></i>Вход
@@ -117,16 +82,15 @@
             class="btn gradient-bg text-white hover:scale-105 border-0 hover-lift"
           >
             <i class="hidden sm:inline fas fa-user-plus mr-2"></i>
-            <span class="hidden sm:inline">Регистрация</span>
+            <span class="reg_label_text">Регистрация</span>
             <i class="fas fa-chevron-down ml-1 text-xs"></i>
           </label>
           <ul
             tabindex="0"
-            class="dropdown-content z-50 menu p-2 shadow-lg bg-white rounded-2xl w-60 border animate-fade-in"
+            class="dropdown-content z-50 menu p-2 shadow-lg bg-white rounded-2xl w-60 border-none animate-fade-in"
           >
-            <li>
+            <li id="reg_partner-btn">
               <a
-                onclick="openModal('register', 'partner')"
                 class="hover:bg-blue-50 rounded-lg p-3"
               >
                 <i class="fas fa-user-tie text-blue-500"></i>
@@ -136,9 +100,8 @@
                 </div>
               </a>
             </li>
-            <li>
+            <li id="reg_advertiser-btn">
               <a
-                onclick="openModal('register', 'advertiser')"
                 class="hover:bg-green-50 rounded-lg p-3"
               >
                 <i class="fas fa-bullhorn text-green-500"></i>
@@ -174,7 +137,7 @@
             {% csrf_token %}
             <div class="form-control">
               <label class="label"
-                ><span class="label-text font-medium">Email</span></label
+                ><span class="label-text py-2 font-small">Email</span></label
               >
               <div class="relative">
                 <input
@@ -191,7 +154,7 @@
             </div>
             <div class="form-control">
               <label class="label"
-                ><span class="label-text font-medium">Пароль</span></label
+                ><span class="label-text py-2 font-small font-black">Пароль</span></label
               >
               <div class="relative">
                 <input
@@ -214,7 +177,7 @@
                   name="remember_me"
                   class="checkbox checkbox-sm checkbox-primary"
                 />
-                <span class="label-text ml-2">Запомнить</span>
+                <span class="label-text py-2 ml-2">Запомнить</span>
               </label>
               <a href="#" class="text-sm text-blue-600">Забыли пароль?</a>
             </div>
@@ -224,11 +187,10 @@
             >
               <i class="fas fa-sign-in-alt mr-2"></i>Войти
             </button>
-            <div class="text-center text-sm">
+            <div class="text-center py-2 text-sm">
               Нет аккаунта?
-              <a
-                href="#"
-                onclick="closeModal('auth'); openModal('register', 'partner')"
+              <a 
+                id = "registration-link"
                 class="text-blue-600 font-medium"
                 >Регистрация</a
               >
@@ -248,7 +210,7 @@
             <i class="fas fa-times"></i>
           </button>
         </form>
-        <div class="text-center mb-6">
+        <div id="reg-header" class="text-center mb-6 flex justify-center flex-col">
           <i
             id="reg-icon"
             class="fas fa-user-plus text-4xl text-blue-600 mb-4"
@@ -257,19 +219,17 @@
           <p id="reg-subtitle" class="text-gray-600 mt-2">Создайте аккаунт</p>
         </div>
 
-        <div class="tabs tabs-boxed mb-6 bg-gray-100 p-1 rounded-xl">
+        <div class="tabs tabs-boxed rounded-lg mb-6 bg-gray-100 p-1 rounded-xl">
           <a
             id="tab-partner"
-            class="tab tab-active flex-1"
-            onclick="switchModalTab('partner')"
+            class="tab tab-active rounded-lg flex-1"
           >
             <i class="fas fa-user-tie mr-2"></i
             ><span class="hidden sm:inline">Партнёр</span>
           </a>
           <a
             id="tab-advertiser"
-            class="tab flex-1"
-            onclick="switchModalTab('advertiser')"
+            class="tab rounded-lg flex-1"
           >
             <i class="fas fa-bullhorn mr-2"></i>
             <span class="hidden sm:inline">Рекламодатель</span>
@@ -431,14 +391,13 @@
           </button>
           <div class="text-center text-sm">
             Есть аккаунт?<a
-              href="#"
-              onclick="closeModal('register'); openModal('auth')"
+              id="authorization-Link"
               class="text-blue-600 font-medium"
             >
               Войти</a
             >
           </div>
-          {% if form %} {{form.errors}} {% endif %} }
+          {% if form %} {{form.errors}} {% endif %} 
         </div>
       </div>
     </dialog>
@@ -757,70 +716,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Newsletter Section -->
-        <div class="mt-12 pt-8 border-t border-base-content/10">
-          <div class="text-center mb-6">
-            <h3 class="text-xl font-semibold mb-2">Подпишитесь на новости</h3>
-            <p class="text-base-content/70 text-sm">
-              Получайте последние обновления и эксклюзивные предложения
-            </p>
-          </div>
-
-          <!-- Newsletter Form -->
-          <div class="max-w-md mx-auto">
-            <div class="join w-full hidden sm:flex">
-              <input
-                class="input input-bordered join-item flex-1"
-                placeholder="Введите email"
-                type="email"
-              />
-              <button class="btn btn-primary join-item">
-                <i class="fas fa-paper-plane mr-2"></i>Подписаться
-              </button>
-            </div>
-
-            <div class="sm:hidden space-y-3">
-              <input
-                class="input input-bordered w-full"
-                placeholder="Введите email"
-                type="email"
-              />
-              <button class="btn btn-primary w-full">
-                <i class="fas fa-paper-plane mr-2"></i>Подписаться
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom Bar -->
-        <div class="mt-12 pt-8 border-t border-base-content/10">
-          <div
-            class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
-          >
-            <div class="text-base-content/60 text-sm text-center md:text-left">
-              © 2025 AffiliateHub. Все права защищены.
-            </div>
-            <div class="flex flex-wrap justify-center gap-6 text-sm">
-              <a
-                href="#"
-                class="text-base-content/70 hover:text-primary transition-colors"
-                >Пользовательское соглашение</a
-              >
-              <a
-                href="#"
-                class="text-base-content/70 hover:text-primary transition-colors"
-                >Политика конфиденциальности</a
-              >
-              <a
-                href="#"
-                class="text-base-content/70 hover:text-primary transition-colors"
-                >Публичная оферта</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
     </footer>
     {%block js_scripts %} {% endblock js_scripts %}
   </body>

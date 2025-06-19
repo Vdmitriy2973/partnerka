@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет партнера</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .earnings-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .traffic-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .conversion-card {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+        .nav-item {
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: #570df8;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-base-200 min-h-screen">
+    <!-- Navigation -->
+    <div class="navbar bg-base-100 shadow-sm border-b">
+        <div class="navbar-start">
+            <div class="dropdown lg:hidden">
+                <div tabindex="0" role="button" class="btn btn-ghost">
+                    <i class="fas fa-bars text-lg"></i>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a class="nav-item" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Статистика</a></li>
+                    <li><a class="nav-item" data-page="links"><i class="fas fa-link mr-2"></i> Ссылки</a></li>
+                    <li><a class="nav-item" data-page="payments"><i class="fas fa-wallet mr-2"></i> Выплаты</a></li>
+                    <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
+                </ul>
+            </div>
+            <a href="{% url 'index' %}" class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+                <i class="fas fa-handshake text-blue-600 mr-2"></i>
+                <span class="hidden sm:inline">AffiliateHub</span>
+                <span class="sm:hidden">AH</span>
+            </a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Статистика</a></li>
+                <li><a class="nav-item" data-page="links"><i class="fas fa-link mr-2"></i> Ссылки</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-wallet mr-2"></i> Выплаты</a></li>
+                <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a><i class="fas fa-user mr-2"></i> Профиль</a></li>
+                    <li><a><i class="fas fa-sign-out-alt mr-2"></i> Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page-section active">
+            <!-- Welcome Section -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-base-content mb-2">Добро пожаловать, Алексей!</h1>
+                <p class="text-base-content/60">Партнер с: 15 января 2024</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card bg-white shadow-lg stats-card text-white">
+                    <div class="card-body">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white/80 text-sm">Общий доход</p>
+                                <p class="text-2xl font-bold">₽89,450</p>
+                            </div>
+                            <i class="fas fa-ruble-sign text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white shadow-lg earnings-card text-white">
+                    <div class="card-body">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white/80 text-sm">Этот месяц</p>
+                                <p class="text-2xl font-bold">₽12,350</p>
+                            </div>
+                            <i class="fas fa-calendar-month text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white shadow-lg traffic-card text-white">
+                    <div class="card-body">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white/80 text-sm">Переходы</p>
+                                <p class="text-2xl font-bold">2,847</p>
+                            </div>
+                            <i class="fas fa-mouse-pointer text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white shadow-lg conversion-card text-white">
+                    <div class="card-body">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-white/80 text-sm">Конверсия</p>
+                                <p class="text-2xl font-bold">8.4%</p>
+                            </div>
+                            <i class="fas fa-chart-line text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Recent Activity -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-clock text-primary mr-2"></i>
+                                Последняя активность
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center p-3 bg-success/10 rounded-lg">
+                                    <div class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-shopping-cart text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-medium">Новая продажа</p>
+                                        <p class="text-sm text-base-content/60">Комиссия: ₽850</p>
+                                    </div>
+                                    <span class="text-sm text-base-content/60">2 часа назад</span>
+                                </div>
+
+                                <div class="flex items-center p-3 bg-info/10 rounded-lg">
+                                    <div class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-medium">150 новых переходов</p>
+                                        <p class="text-sm text-base-content/60">По ссылке "promo-2024"</p>
+                                    </div>
+                                    <span class="text-sm text-base-content/60">5 часов назад</span>
+                                </div>
+
+                                <div class="flex items-center p-3 bg-warning/10 rounded-lg">
+                                    <div class="w-10 h-10 bg-warning text-warning-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-credit-card text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-medium">Выплата обработана</p>
+                                        <p class="text-sm text-base-content/60">₽15,420 переведено</p>
+                                    </div>
+                                    <span class="text-sm text-base-content/60">1 день назад</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Partner Links Preview -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title">
+                                    <i class="fas fa-link text-primary mr-2"></i>
+                                    Топ ссылки
+                                </h2>
+                                <button class="btn btn-primary btn-sm nav-item" data-page="links">
+                                    Все ссылки
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Название</th>
+                                            <th>Переходы</th>
+                                            <th>Конверсия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="font-bold">promo-2024</div>
+                                                <div class="text-sm opacity-50">Основная промо</div>
+                                            </td>
+                                            <td>1,247</td>
+                                            <td><span class="badge badge-success">9.2%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="font-bold">email-campaign</div>
+                                                <div class="text-sm opacity-50">Email рассылка</div>
+                                            </td>
+                                            <td>708</td>
+                                            <td><span class="badge badge-success">11.4%</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Quick Actions -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-bolt text-primary mr-2"></i>
+                                Быстрые действия
+                            </h2>
+                            <div class="space-y-2">
+                                <button class="btn btn-outline btn-block justify-start nav-item" data-page="links">
+                                    <i class="fas fa-link mr-2"></i>
+                                    Создать ссылку
+                                </button>
+                                <button class="btn btn-outline btn-block justify-start">
+                                    <i class="fas fa-download mr-2"></i>
+                                    Скачать материалы
+                                </button>
+                                <button class="btn btn-outline btn-block justify-start">
+                                    <i class="fas fa-file-alt mr-2"></i>
+                                    Отчет за месяц
+                                </button>
+                                <button class="btn btn-outline btn-block justify-start nav-item" data-page="payments">
+                                    <i class="fas fa-credit-card mr-2"></i>
+                                    Запросить выплату
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings Progress -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-target text-primary mr-2"></i>
+                                Прогресс выплат
+                            </h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>До следующей выплаты</span>
+                                        <span>₽2,350 / ₽5,000</span>
+                                    </div>
+                                    <progress class="progress progress-primary w-full" value="47" max="100"></progress>
+                                </div>
+                                <div class="text-sm text-base-content/60">
+                                    <p><i class="fas fa-info-circle mr-1"></i> Минимальная сумма: ₽5,000</p>
+                                    <p><i class="fas fa-calendar mr-1"></i> Выплаты: каждые 15 дней</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Support -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-headset text-primary mr-2"></i>
+                                Поддержка
+                            </h2>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-book text-info mr-3"></i>
+                                    <a href="#" class="link link-hover">База знаний</a>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-comments text-success mr-3"></i>
+                                    <a href="#" class="link link-hover">Чат поддержки</a>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-warning mr-3"></i>
+                                    <a href="#" class="link link-hover">Email: support@site.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links Page -->
+        <div id="links" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-base-content mb-2">Партнерские ссылки</h1>
+                <p class="text-base-content/60">Управляйте своими партнерскими ссылками и отслеживайте их эффективность</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-link text-3xl text-primary mb-2"></i>
+                        <div class="text-2xl font-bold">12</div>
+                        <p class="text-sm text-base-content/60">Активных ссылок</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-mouse-pointer text-3xl text-info mb-2"></i>
+                        <div class="text-2xl font-bold">2,847</div>
+                        <p class="text-sm text-base-content/60">Всего кликов</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line text-3xl text-success mb-2"></i>
+                        <div class="text-2xl font-bold">8.4%</div>
+                        <p class="text-sm text-base-content/60">Средняя конверсия</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-fire text-3xl text-warning mb-2"></i>
+                        <div class="text-2xl font-bold">promo-2024</div>
+                        <p class="text-sm text-base-content/60">Лучшая ссылка</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h2 class="card-title">
+                            <i class="fas fa-list text-primary mr-2"></i>
+                            Все ссылки
+                        </h2>
+                        <div class="flex gap-2">
+                            <button class="btn btn-primary" onclick="showCreateLinkModal()">
+                                <i class="fas fa-plus mr-2"></i>
+                                Создать ссылку
+                            </button>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-download mr-2"></i>
+                                Экспорт
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ссылка</th>
+                                    <th>Статус</th>
+                                    <th>Клики</th>
+                                    <th>Продажи</th>
+                                    <th>Конверсия</th>
+                                    <th>Доход</th>
+                                    <th>Создана</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex flex-col">
+                                            <div class="font-bold">promo-2024</div>
+                                            <div class="text-sm opacity-50">Основная промо-кампания</div>
+                                            <div class="text-xs text-primary">partner.site.com/promo-2024</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-success">Активна</span></td>
+                                    <td>1,247</td>
+                                    <td>115</td>
+                                    <td><span class="badge badge-success">9.2%</span></td>
+                                    <td class="font-bold text-success">₽23,850</td>
+                                    <td>15.01.2024</td>
+                                    <td>
+                                        <div class="dropdown dropdown-end">
+                                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </div>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li><a><i class="fas fa-copy mr-2"></i>Копировать</a></li>
+                                                <li><a><i class="fas fa-chart-bar mr-2"></i>Статистика</a></li>
+                                                <li><a><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
+                                                <li><a><i class="fas fa-pause mr-2"></i>Приостановить</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex flex-col">
+                                            <div class="font-bold">social-media</div>
+                                            <div class="text-sm opacity-50">Для социальных сетей</div>
+                                            <div class="text-xs text-primary">partner.site.com/social-media</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-success">Активна</span></td>
+                                    <td>892</td>
+                                    <td>61</td>
+                                    <td><span class="badge badge-warning">6.8%</span></td>
+                                    <td class="font-bold text-success">₽12,670</td>
+                                    <td>22.01.2024</td>
+                                    <td>
+                                        <div class="dropdown dropdown-end">
+                                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </div>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li><a><i class="fas fa-copy mr-2"></i>Копировать</a></li>
+                                                <li><a><i class="fas fa-chart-bar mr-2"></i>Статистика</a></li>
+                                                <li><a><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
+                                                <li><a><i class="fas fa-pause mr-2"></i>Приостановить</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex flex-col">
+                                            <div class="font-bold">email-campaign</div>
+                                            <div class="text-sm opacity-50">Email рассылка подписчикам</div>
+                                            <div class="text-xs text-primary">partner.site.com/email-campaign</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-success">Активна</span></td>
+                                    <td>708</td>
+                                    <td>81</td>
+                                    <td><span class="badge badge-success">11.4%</span></td>
+                                    <td class="font-bold text-success">₽16,820</td>
+                                    <td>05.02.2024</td>
+                                    <td>
+                                        <div class="dropdown dropdown-end">
+                                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </div>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li><a><i class="fas fa-copy mr-2"></i>Копировать</a></li>
+                                                <li><a><i class="fas fa-chart-bar mr-2"></i>Статистика</a></li>
+                                                <li><a><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
+                                                <li><a><i class="fas fa-pause mr-2"></i>Приостановить</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex flex-col">
+                                            <div class="font-bold">blog-review</div>
+                                            <div class="text-sm opacity-50">Обзор в блоге</div>
+                                            <div class="text-xs text-primary">partner.site.com/blog-review</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge badge-warning">Пауза</span></td>
+                                    <td>234</td>
+                                    <td>12</td>
+                                    <td><span class="badge badge-error">5.1%</span></td>
+                                    <td class="font-bold text-success">₽2,490</td>
+                                    <td>18.02.2024</td>
+                                    <td>
+                                        <div class="dropdown dropdown-end">
+                                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </div>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li><a><i class="fas fa-copy mr-2"></i>Копировать</a></li>
+                                                <li><a><i class="fas fa-chart-bar mr-2"></i>Статистика</a></li>
+                                                <li><a><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
+                                                <li><a><i class="fas fa-play mr-2"></i>Активировать</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payments Page -->
+        <div id="payments" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-base-content mb-2">Выплаты</h1>
+                <p class="text-base-content/60">История выплат и управление выводом средств</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-wallet text-3xl text-primary mb-2"></i>
+                        <div class="text-2xl font-bold">₽2,350</div>
+                        <p class="text-sm text-base-content/60">Доступно к выводу</p>
+                        <button class="btn btn-primary btn-sm mt-2" onclick="showWithdrawModal()">Вывести</button>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock text-3xl text-warning mb-2"></i>
+                        <div class="text-2xl font-bold">₽1,200</div>
+                        <p class="text-sm text-base-content/60">В обработке</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle text-3xl text-success mb-2"></i>
+                        <div class="text-2xl font-bold">₽89,450</div>
+                        <p class="text-sm text-base-content/60">Всего выплачено</p>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-lg">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calendar text-3xl text-info mb-2"></i>
+                        <div class="text-2xl font-bold">15</div>
+                        <p class="text-sm text-base-content/60">Дней до выплаты</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-history text-primary mr-2"></i>
+                                История выплат
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Сумма</th>
+                                            <th>Способ</th>
+                                            <th>Статус</th>
+                                            <th>ID транзакции</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>04.06.2024</td>
+                                            <td class="font-bold">₽15,420</td>
+                                            <td>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                                    Банковская карта
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-success">Выплачено</span></td>
+                                            <td class="font-mono text-sm">TXN-2024-001234</td>
+                                        </tr>
+                                        <tr>
+                                            <td>18.05.2024</td>
+                                            <td class="font-bold">₽12,850</td>
+                                            <td>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                                    Банковская карта
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-success">Выплачено</span></td>
+                                            <td class="font-mono text-sm">TXN-2024-001198</td>
+                                        </tr>
+                                        <tr>
+                                            <td>01.05.2024</td>
+                                            <td class="font-bold">₽8,900</td>
+                                            <td>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-wallet mr-2 text-warning"></i>
+                                                    Электронный кошелек
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-success">Выплачено</span></td>
+                                            <td class="font-mono text-sm">TXN-2024-001156</td>
+                                        </tr>
+                                        <tr>
+                                            <td>15.04.2024</td>
+                                            <td class="font-bold">₽11,340</td>
+                                            <td>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                                    Банковская карта
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-success">Выплачено</span></td>
+                                            <td class="font-mono text-sm">TXN-2024-001089</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12.06.2024</td>
+                                            <td class="font-bold">₽1,200</td>
+                                            <td>
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                                    Банковская карта
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-warning">В обработке</span></td>
+                                            <td class="font-mono text-sm">TXN-2024-001267</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-cog text-primary mr-2"></i>
+                                Настройки выплат
+                            </h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">Способ выплат</span>
+                                    </label>
+                                    <select class="select select-bordered w-full">
+                                        <option selected>Банковская карта</option>
+                                        <option>Электронный кошелек</option>
+                                        <option>Банковский перевод</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">Минимальная сумма</span>
+                                    </label>
+                                    <select class="select select-bordered w-full">
+                                        <option selected>₽5,000</option>
+                                        <option>₽10,000</option>
+                                        <option>₽25,000</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">Автоматические выплаты</span>
+                                    </label>
+                                    <input type="checkbox" class="toggle toggle-primary" checked />
+                                </div>
+                                <button class="btn btn-outline btn-block">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Сохранить настройки
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-info-circle text-primary mr-2"></i>
+                                Информация
+                            </h2>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-start">
+                                    <i class="fas fa-clock text-warning mr-2 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-medium">Время обработки</p>
+                                        <p class="text-base-content/60">1-3 рабочих дня</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-percentage text-info mr-2 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-medium">Комиссия</p>
+                                        <p class="text-base-content/60">Без комиссии</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-calendar mr-2 mt-0.5 text-success"></i>
+                                    <div>
+                                        <p class="font-medium">График выплат</p>
+                                        <p class="text-base-content/60">1 и 15 числа каждого месяца</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-base-content mb-2">Настройки</h1>
+                <p class="text-base-content/60">Управление аккаунтом и настройки профиля</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Profile Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-user text-primary mr-2"></i>
+                                Профиль
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Имя</span>
+                                    </label>
+                                    <input type="text" value="Алексей" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Фамилия</span>
+                                    </label>
+                                    <input type="text" value="Иванов" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Email</span>
+                                    </label>
+                                    <input type="email" value="alexey@example.com" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Телефон</span>
+                                    </label>
+                                    <input type="tel" value="+7 (999) 123-45-67" class="input input-bordered" />
+                                </div>
+                                <div class="form-control md:col-span-2">
+                                    <label class="label">
+                                        <span class="label-text">О себе</span>
+                                    </label>
+                                    <textarea class="textarea textarea-bordered" placeholder="Расскажите о себе...">Опытный маркетолог с 5-летним стажем в сфере партнерского маркетинга</textarea>
+                                </div>
+                            </div>
+                            <div class="card-actions justify-end mt-4">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Сохранить изменения
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Information -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-building text-primary mr-2"></i>
+                                Информация о компании
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Название компании</span>
+                                    </label>
+                                    <input type="text" value="Digital Marketing Pro" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">ИНН</span>
+                                    </label>
+                                    <input type="text" value="123456789012" class="input input-bordered" />
+                                </div>
+                                <div class="form-control md:col-span-2">
+                                    <label class="label">
+                                        <span class="label-text">Адрес</span>
+                                    </label>
+                                    <input type="text" value="г. Москва, ул. Примерная, д. 123" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Сайт</span>
+                                    </label>
+                                    <input type="url" value="https://digitalmarketingpro.ru" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Тип партнера</span>
+                                    </label>
+                                    <select class="select select-bordered">
+                                        <option>Индивидуальный</option>
+                                        <option selected>Корпоративный</option>
+                                        <option>Агентство</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-actions justify-end mt-4">
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Обновить информацию
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-shield-alt text-primary mr-2"></i>
+                                Безопасность
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Текущий пароль</span>
+                                    </label>
+                                    <input type="password" class="input input-bordered" placeholder="Введите текущий пароль" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Новый пароль</span>
+                                    </label>
+                                    <input type="password" class="input input-bordered" placeholder="Введите новый пароль" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Подтвердите пароль</span>
+                                    </label>
+                                    <input type="password" class="input input-bordered" placeholder="Повторите новый пароль" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Двухфакторная аутентификация</span>
+                                        <input type="checkbox" class="toggle toggle-primary" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="card-actions justify-end mt-4">
+                                <button class="btn btn-warning">
+                                    <i class="fas fa-key mr-2"></i>
+                                    Изменить пароль
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Notification Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-bell text-primary mr-2"></i>
+                                Уведомления
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Email уведомления</span>
+                                        <input type="checkbox" class="toggle toggle-primary" checked />
+                                    </label>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">SMS уведомления</span>
+                                        <input type="checkbox" class="toggle toggle-primary" />
+                                    </label>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Уведомления о продажах</span>
+                                        <input type="checkbox" class="toggle toggle-primary" checked />
+                                    </label>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Еженедельные отчеты</span>
+                                        <input type="checkbox" class="toggle toggle-primary" checked />
+                                    </label>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Новости программы</span>
+                                        <input type="checkbox" class="toggle toggle-primary" />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-code text-primary mr-2"></i>
+                                API настройки
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">API ключ</span>
+                                    </label>
+                                    <div class="join w-full">
+                                        <input type="password" value="sk-1234567890abcdef" class="input input-bordered join-item flex-1" readonly />
+                                        <button class="btn join-item">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn join-item">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline btn-block">
+                                    <i class="fas fa-sync mr-2"></i>
+                                    Сгенерировать новый ключ
+                                </button>
+                                <div class="text-sm text-base-content/60">
+                                    <p><i class="fas fa-info-circle mr-1"></i> API документация доступна в разделе помощи</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="card bg-base-100 shadow-lg border-error">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4 text-error">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                Опасная зона
+                            </h2>
+                            <div class="space-y-4">
+                                <button class="btn btn-outline btn-warning btn-block">
+                                    <i class="fas fa-pause mr-2"></i>
+                                    Приостановить аккаунт
+                                </button>
+                                <button class="btn btn-outline btn-error btn-block">
+                                    <i class="fas fa-trash mr-2"></i>
+                                    Удалить аккаунт
+                                </button>
+                                <div class="text-sm text-base-content/60">
+                                    <p><i class="fas fa-warning mr-1"></i> Эти действия необратимы. Будьте осторожны!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Link Modal -->
+    <dialog id="createLinkModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">Создать новую ссылку</h3>
+            <div class="space-y-4">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Название ссылки</span>
+                    </label>
+                    <input type="text" placeholder="Например: summer-promo" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Описание</span>
+                    </label>
+                    <input type="text" placeholder="Краткое описание" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Целевая страница</span>
+                    </label>
+                    <select class="select select-bordered">
+                        <option>Главная страница</option>
+                        <option>Страница товара</option>
+                        <option>Специальное предложение</option>
+                        <option>Лендинг</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-action">
+                <button class="btn btn-primary">Создать ссылку</button>
+                <form method="dialog">
+                    <button class="btn">Отмена</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Withdraw Modal -->
+    <dialog id="withdrawModal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-4">Запросить выплату</h3>
+            <div class="space-y-4">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Доступно к выводу: ₽2,350</span>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Сумма к выводу</span>
+                    </label>
+                    <input type="number" placeholder="0" max="2350" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Способ выплаты</span>
+                    </label>
+                    <select class="select select-bordered">
+                        <option>Банковская карта *1234</option>
+                        <option>Электронный кошелек</option>
+                        <option>Банковский перевод</option>
+                    </select>
+                </div>
+                <div class="text-sm text-base-content/60">
+                    <p><i class="fas fa-clock mr-1"></i> Время обработки: 1-3 рабочих дня</p>
+                    <p><i class="fas fa-percentage mr-1"></i> Комиссия: 0%</p>
+                </div>
+            </div>
+            <div class="modal-action">
+                <button class="btn btn-primary">Запросить выплату</button>
+                <form method="dialog">
+                    <button class="btn">Отмена</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const pageSection = document.querySelectorAll('.page-section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // Remove active class from all nav items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all page sections
+                    pageSection.forEach(section => section.classList.remove('active'));
+                    
+                    // Show target page section
+                    const targetSection = document.getElementById(targetPage);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                });
+            });
+
+            // Copy functionality
+            document.querySelectorAll('.fa-copy').forEach(button => {
+                button.parentElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showToast('Ссылка скопирована!', 'success');
+                });
+            });
+        });
+
+        // Modal functions
+        function showCreateLinkModal() {
+            document.getElementById('createLinkModal').showModal();
+        }
+
+        function showWithdrawModal() {
+            document.getElementById('withdrawModal').showModal();
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-top toast-center';
+            toast.innerHTML = `
+                <div class="alert alert-${type}">
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

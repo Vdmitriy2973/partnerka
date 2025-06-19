@@ -3,7 +3,10 @@
 
 
 {% block styles %}
-{% comment %} <link rel="stylesheet" href="{% static 'partner_app/css/index.css'%}"> {% endcomment %}
+
+{% load django_vite %}
+{% vite_hmr_client %}
+{% vite_asset 'partner_app/assets/js/index.js' %}
 {% endblock styles%}
 {% block title %}AffiliateHub - Партнёрская программа{% endblock title %}
 
@@ -24,13 +27,13 @@
 
             <!-- Registration Tabs -->
             <div class="max-w-2xl mx-auto mb-8">
-                <div class="tabs tabs-boxed bg-white shadow-lg p-2 mb-6">
-                    <a class="tab tab-active" onclick="switchTab('partner')" id="partner-tab">
+                <div class="tabs tabs-boxed rounded-lg bg-white shadow-lg p-2 mb-6">
+                    <a id="partner-tab" class="tab rounded-lg w-1/2 tab-active">
                         <i class="fas fa-users mr-2"></i>
                         <p class="hidden sm:block">Для партнёров</p>
                         <p class="block sm:hidden">Партнёры</p>
                     </a>
-                    <a class="tab" onclick="switchTab('advertiser')" id="advertiser-tab">
+                    <a id="advertiser-tab" class="tab rounded-lg w-1/2">
                         <i class="fas fa-building mr-2"></i>
                         <p class="hidden sm:block">Для рекламодателей</p>
                         <p class="block sm:hidden">Реклама</p>
@@ -572,9 +575,3 @@
 </section>
 
 {% endblock content %}
-
-
-{% block js_scripts %}
-
-
-{% endblock js_scripts %}
