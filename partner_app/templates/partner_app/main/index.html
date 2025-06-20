@@ -2,12 +2,10 @@
 {% load static %}
 
 
-{% block styles %}
 
 {% load django_vite %}
 {% vite_hmr_client %}
 {% vite_asset 'partner_app/assets/js/index.js' %}
-{% endblock styles%}
 {% block title %}AffiliateHub - Партнёрская программа{% endblock title %}
 
 
