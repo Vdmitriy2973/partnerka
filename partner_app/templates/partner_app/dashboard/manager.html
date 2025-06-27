@@ -1,0 +1,671 @@
+{% extends "partner_app/base.html" %}
+{% load static %}
+{% load tz %}
+
+{% load django_vite %}
+{% vite_hmr_client %}
+{% block title %}Кабинет менеджера{% endblock %}
+{% block head_js_scripts %}
+{% vite_asset 'partner_app/assets/js/dashboard/manager.js' %}
+{% endblock %}
+
+
+{% block header %}
+<!-- Navigation -->
+<div class="navbar bg-white shadow-lg sticky top-0 z-50" id="navbar">
+    <div class="navbar-start">
+        <div class="dropdown lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+                <i class="fas fa-bars text-lg"></i>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i>
+                        Статистика</a></li>
+                <li><a class="nav-item" data-page="moderation"><i class="fas fa-check-circle mr-2"></i> Модерация</a>
+                </li>
+                <li><a class="nav-item" data-page="users"><i class="fas fa-users mr-2"></i> Пользователи</a></li>
+                <li><a class="nav-item" data-page="disputes"><i class="fas fa-exclamation-triangle mr-2"></i> Споры</a>
+                </li>
+            </ul>
+        </div>
+        <a href="{% url 'index' %}" class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-headset mr-2"></i>
+            <span class="hidden sm:inline">AffiliateHub Manager</span>
+            <span class="sm:hidden">AH</span>
+        </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+            <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Статистика</a>
+            </li>
+            <li><a class="nav-item" data-page="moderation"><i class="fas fa-check-circle mr-2"></i> Модерация</a></li>
+            <li><a class="nav-item" data-page="users"><i class="fas fa-users mr-2"></i> Пользователи</a></li>
+            <li><a class="nav-item" data-page="disputes"><i class="fas fa-exclamation-triangle mr-2"></i> Споры</a></li>
+        </ul>
+    </div>
+    <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-2"></i> Профиль</a>
+                </li>
+                <li class="w-full p-0 cursor-pointer">
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
+                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+{% block content %}
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-6 max-w-7xl">
+    <!-- Dashboard Page -->
+    <div id="dashboard" class="page-section active">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">Добро пожаловать, {{ request.user.first_name }}!</h1>
+            <p class="text-base-content/60">Менеджер поддержки</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="card bg-gradient-to-r from-primary to-secondary text-white">
+                <div class="card-body">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm opacity-80">На модерации</p>
+                            <p class="text-2xl font-bold">12</p>
+                        </div>
+                        <i class="fas fa-clock text-3xl opacity-80"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-gradient-to-r from-accent to-info text-white">
+                <div class="card-body">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm opacity-80">Активных споров</p>
+                            <p class="text-2xl font-bold">5</p>
+                        </div>
+                        <i class="fas fa-exclamation-triangle text-3xl opacity-80"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-gradient-to-r from-success to-warning text-white">
+                <div class="card-body">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm opacity-80">Новых пользователей</p>
+                            <p class="text-2xl font-bold">8</p>
+                        </div>
+                        <i class="fas fa-user-plus text-3xl opacity-80"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-gradient-to-r from-warning to-error text-white">
+                <div class="card-body">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm opacity-80">Заблокировано</p>
+                            <p class="text-2xl font-bold">3</p>
+                        </div>
+                        <i class="fas fa-ban text-3xl opacity-80"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Recent Actions -->
+                <div class="card bg-base-100 shadow">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <i class="fas fa-history text-primary mr-2"></i>
+                            Последние действия
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 bg-info/10 rounded-lg">
+                                <div
+                                    class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Одобрен проект "Летняя распродажа"</p>
+                                    <p class="text-sm opacity-60">Рекламодатель: Алексей Смирнов</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-success">Одобрено</p>
+                                    <p class="text-sm opacity-60">2 часа назад</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-3 bg-warning/10 rounded-lg">
+                                <div
+                                    class="w-10 h-10 bg-warning text-warning-content rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Отклонена площадка блогера</p>
+                                    <p class="text-sm opacity-60">Партнер: Мария Петрова</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-error">Отклонено</p>
+                                    <p class="text-sm opacity-60">5 часов назад</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-3 bg-success/10 rounded-lg">
+                                <div
+                                    class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-gavel"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Решен спор #2456</p>
+                                    <p class="text-sm opacity-60">В пользу рекламодателя</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-success">Решено</p>
+                                    <p class="text-sm opacity-60">Вчера</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Quick Actions -->
+                <div class="card bg-base-100 shadow">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <i class="fas fa-bolt text-primary mr-2"></i>
+                            Быстрые действия
+                        </h2>
+                        <div class="space-y-2">
+                            <button class="btn btn-primary btn-block justify-start">
+                                <i class="fas fa-search mr-2"></i>
+                                Проверить пользователя
+                            </button>
+                            <button class="btn btn-outline btn-block justify-start">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                Шаблоны ответов
+                            </button>
+                            <button class="btn btn-outline btn-block justify-start">
+                                <i class="fas fa-headset mr-2"></i>
+                                Чат поддержки
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moderation Page -->
+    <div id="moderation" class="page-section">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">Модерация</h1>
+            <p class="text-base-content/60">Одобрение проектов и площадок</p>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <div class="join">
+                <div>
+                    <div>
+                        <input class="input input-bordered join-item" placeholder="Поиск...">
+                    </div>
+                </div>
+                <select class="select select-bordered join-item">
+                    <option disabled selected>Фильтры</option>
+                    <option>Все заявки</option>
+                    <option>Проекты</option>
+                    <option>Площадки</option>
+                    <option>На проверке</option>
+                </select>
+                <div class="indicator">
+                    <button class="btn join-item btn-primary">
+                        <i class="fas fa-search mr-2"></i> Найти
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6">
+            <!-- Project Moderation Card -->
+            <div class="card bg-base-100 shadow-md card-hover">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title">Летняя распродажа</h2>
+                            <p class="text-sm opacity-60">Рекламодатель: Алексей Смирнов</p>
+                        </div>
+                        <div class="badge badge-warning gap-2">
+                            <i class="fas fa-clock"></i> На проверке
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="mb-3">Специальное предложение на летнюю коллекцию одежды. Скидки до 50% на все товары.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <div class="badge badge-outline">Мода</div>
+                            <div class="badge badge-outline">Одежда</div>
+                            <div class="badge badge-outline">Скидки</div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <p class="text-sm opacity-60">Комиссия:</p>
+                                <p class="font-bold">до 15%</p>
+                            </div>
+                            <div>
+                                <p class="text-sm opacity-60">Куки:</p>
+                                <p>30 дней</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-success" onclick="approveItem('project', 1)">
+                            <i class="fas fa-check mr-2"></i> Одобрить
+                        </button>
+                        <button class="btn btn-error" onclick="rejectItem('project', 1)">
+                            <i class="fas fa-times mr-2"></i> Отклонить
+                        </button>
+                        <button class="btn btn-outline" onclick="showDetailsModal('project', 1)">
+                            <i class="fas fa-eye mr-2"></i> Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partner Platform Card -->
+            <div class="card bg-base-100 shadow-md card-hover">
+                <div class="card-body">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="card-title">Блог о моде</h2>
+                            <p class="text-sm opacity-60">Партнер: Мария Петрова</p>
+                        </div>
+                        <div class="badge badge-warning gap-2">
+                            <i class="fas fa-clock"></i> На проверке
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="mb-3">Блог о современной моде и стиле жизни. Аудитория: 25-35 лет, преимущественно
+                            женщины.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <div class="badge badge-outline">Мода</div>
+                            <div class="badge badge-outline">Стиль</div>
+                            <div class="badge badge-outline">Бьюти</div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <p class="text-sm opacity-60">Трафик:</p>
+                                <p class="font-bold">10K/мес</p>
+                            </div>
+                            <div>
+                                <p class="text-sm opacity-60">Соцсети:</p>
+                                <div class="flex gap-2">
+                                    <i class="fab fa-instagram"></i>
+                                    <i class="fab fa-youtube"></i>
+                                    <i class="fab fa-telegram"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-success" onclick="approveItem('platform', 2)">
+                            <i class="fas fa-check mr-2"></i> Одобрить
+                        </button>
+                        <button class="btn btn-error" onclick="rejectItem('platform', 2)">
+                            <i class="fas fa-times mr-2"></i> Отклонить
+                        </button>
+                        <button class="btn btn-outline" onclick="showDetailsModal('platform', 2)">
+                            <i class="fas fa-eye mr-2"></i> Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Management Page -->
+    <div id="users" class="page-section">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">Управление пользователями</h1>
+            <p class="text-base-content/60">Рекламодатели и партнеры системы</p>
+        </div>
+
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="card-title">
+                        <i class="fas fa-users text-primary mr-2"></i>
+                        Все пользователи
+                    </h2>
+                    <div class="flex gap-2">
+                        <div class="form-control">
+                            <input type="text" placeholder="Поиск пользователей..." class="input input-bordered">
+                        </div>
+                        <select class="select select-bordered">
+                            <option>Все роли</option>
+                            <option>Рекламодатели</option>
+                            <option>Партнеры</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Пользователь</th>
+                                <th>Роль</th>
+                                <th>Статус</th>
+                                <th>Дата регистрации</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div>
+                                            <div class="font-bold">Алексей Смирнов</div>
+                                            <div class="text-sm opacity-50">alex@example.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Рекламодатель</td>
+                                <td><span class="badge badge-success">Активен</span></td>
+                                <td>15.01.2024</td>
+                                <td>
+                                    <div class="dropdown dropdown-end">
+                                        <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                        <ul tabindex="0"
+                                            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                            <li><a><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
+                                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
+                                            <li><a class="text-error"><i class="fas fa-ban mr-2"></i> Заблокировать</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div>
+                                            <div class="font-bold">Мария Петрова</div>
+                                            <div class="text-sm opacity-50">maria@example.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Партнер</td>
+                                <td><span class="badge badge-warning">На проверке</span></td>
+                                <td>22.05.2024</td>
+                                <td>
+                                    <div class="dropdown dropdown-end">
+                                        <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                        <ul tabindex="0"
+                                            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                            <li><a><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
+                                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
+                                            <li><a class="text-error"><i class="fas fa-ban mr-2"></i> Заблокировать</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div>
+                                            <div class="font-bold">Иван Иванов</div>
+                                            <div class="text-sm opacity-50">ivan@example.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Партнер</td>
+                                <td><span class="badge badge-error">Заблокирован</span></td>
+                                <td>10.03.2024</td>
+                                <td>
+                                    <div class="dropdown dropdown-end">
+                                        <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                        <ul tabindex="0"
+                                            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                            <li><a><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
+                                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
+                                            <li><a class="text-success"><i class="fas fa-check mr-2"></i>
+                                                    Разблокировать</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disputes Page -->
+    <div id="disputes" class="page-section">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">Споры</h1>
+            <p class="text-base-content/60">Решение спорных ситуаций</p>
+        </div>
+
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h2 class="card-title">
+                        <i class="fas fa-exclamation-triangle text-primary mr-2"></i>
+                        Активные споры
+                    </h2>
+                    <div class="flex gap-2">
+                        <select class="select select-bordered">
+                            <option>Все статусы</option>
+                            <option>Новые</option>
+                            <option>В процессе</option>
+                            <option>Решённые</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Dispute 1 -->
+                    <div class="card bg-warning/10 border-warning">
+                        <div class="card-body">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg">Спор #2456</h3>
+                                    <p class="text-sm opacity-60">Продажа #2456 от 15.06.2024</p>
+                                </div>
+                                <div class="badge badge-warning gap-2">
+                                    <i class="fas fa-clock"></i> В процессе
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="font-medium mb-1">Рекламодатель:</p>
+                                    <div class="flex items-center gap-2">
+                                        <div class="avatar">
+                                            <div class="w-8 rounded-full">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg">
+                                            </div>
+                                        </div>
+                                        <span>Алексей Смирнов</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-medium mb-1">Партнер:</p>
+                                    <div class="flex items-center gap-2">
+                                        <div class="avatar">
+                                            <div class="w-8 rounded-full">
+                                                <img src="https://randomuser.me/api/portraits/women/12.jpg">
+                                            </div>
+                                        </div>
+                                        <span>Мария Петрова</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="font-medium mb-1">Суть спора:</p>
+                                <p>Партнер утверждает, что продажа была совершена по его ссылке, но система не засчитала
+                                    конверсию.</p>
+                            </div>
+
+                            <div class="card-actions justify-end mt-4">
+                                <button class="btn btn-success" onclick="resolveDispute(2456, 'partner')">
+                                    <i class="fas fa-check mr-2"></i> В пользу партнера
+                                </button>
+                                <button class="btn btn-error" onclick="resolveDispute(2456, 'advertiser')">
+                                    <i class="fas fa-check mr-2"></i> В пользу рекламодателя
+                                </button>
+                                <button class="btn btn-outline" onclick="showDisputeDetails(2456)">
+                                    <i class="fas fa-eye mr-2"></i> Подробнее
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dispute 2 -->
+                    <div class="card bg-error/10 border-error">
+                        <div class="card-body">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg">Спор #2451</h3>
+                                    <p class="text-sm opacity-60">Продажа #2451 от 12.06.2024</p>
+                                </div>
+                                <div class="badge badge-error gap-2">
+                                    <i class="fas fa-exclamation-circle"></i> Высокий приоритет
+                                </div>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="font-medium mb-1">Рекламодатель:</p>
+                                    <div class="flex items-center gap-2">
+                                        <div class="avatar">
+                                            <div class="w-8 rounded-full">
+                                                <img src="https://randomuser.me/api/portraits/men/45.jpg">
+                                            </div>
+                                        </div>
+                                        <span>Иван Иванов</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-medium mb-1">Партнер:</p>
+                                    <div class="flex items-center gap-2">
+                                        <div class="avatar">
+                                            <div class="w-8 rounded-full">
+                                                <img src="https://randomuser.me/api/portraits/men/22.jpg">
+                                            </div>
+                                        </div>
+                                        <span>Петр Сидоров</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <p class="font-medium mb-1">Суть спора:</p>
+                                <p>Рекламодатель утверждает, что партнер использовал запрещенные методы продвижения.</p>
+                            </div>
+
+                            <div class="card-actions justify-end mt-4">
+                                <button class="btn btn-success" onclick="resolveDispute(2451, 'partner')">
+                                    <i class="fas fa-check mr-2"></i> В пользу партнера
+                                </button>
+                                <button class="btn btn-error" onclick="resolveDispute(2451, 'advertiser')">
+                                    <i class="fas fa-check mr-2"></i> В пользу рекламодателя
+                                </button>
+                                <button class="btn btn-outline" onclick="showDisputeDetails(2451)">
+                                    <i class="fas fa-eye mr-2"></i> Подробнее
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно деталей -->
+<dialog id="detailsModal" class="modal">
+    <div class="modal-box max-w-4xl">
+        <h3 class="font-bold text-lg" id="modalTitle">Детали</h3>
+        <div class="py-4" id="modalContent">
+            <!-- Контент будет загружаться динамически -->
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn btn-ghost">Закрыть</button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<!-- Модальное окно решения спора -->
+<dialog id="resolveDisputeModal" class="modal">
+    <div class="modal-box max-w-2xl">
+        <h3 class="font-bold text-lg">Решение спора #<span id="disputeId"></span></h3>
+        <div class="py-4">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Решение</span>
+                </label>
+                <select class="select select-bordered w-full" id="disputeResolution">
+                    <option value="partner">В пользу партнера</option>
+                    <option value="advertiser">В пользу рекламодателя</option>
+                    <option value="partial">Частичное решение</option>
+                    <option value="cancel">Отменить сделку</option>
+                </select>
+            </div>
+
+            <div class="form-control mt-4">
+                <label class="label">
+                    <span class="label-text">Комментарий</span>
+                </label>
+                <textarea class="textarea textarea-bordered h-24" placeholder="Опишите ваше решение..."></textarea>
+            </div>
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn btn-ghost">Отмена</button>
+            </form>
+            <button class="btn btn-primary" onclick="confirmResolution()">
+                <i class="fas fa-check mr-2"></i> Подтвердить
+            </button>
+        </div>
+    </div>
+</dialog>
+{% endblock %}

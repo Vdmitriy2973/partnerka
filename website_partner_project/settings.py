@@ -41,7 +41,7 @@ CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 STATIC_URL = '/static/'
 
 # Name of our static files' folder (after called python manage.py collectstatic)
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = 'D:/freelance/website_partner/project'
 
 # Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
 # when run command python manage.py collectstatic
@@ -123,11 +123,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
-USE_I18N = True
 
 USE_TZ = True
 
@@ -139,6 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DJANGO_VITE = {
   "default": {
+    "manifest_path": "static/manifest.json",
     "dev_mode": True,
   },
 }

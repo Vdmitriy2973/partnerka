@@ -1,273 +1,903 @@
-<!DOCTYPE html>
-<html lang="ru" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет рекламодателя</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.4.24/full.css" rel="stylesheet">
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .card-hover {
-            transition: transform 0.2s ease-in-out;
-        }
-        .card-hover:hover {
-            transform: translateY(-2px);
-        }
-    </style>
-</head>
-<body class="bg-base-200 min-h-screen">
-    <!-- Header -->
-    <div class="navbar bg-base-100 shadow-lg">
-        <div class="navbar-start">
-            <div class="dropdown lg:hidden">
-                <label tabindex="0" class="btn btn-ghost">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
-                    </svg>
-                </label>
-                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a>Кампании</a></li>
-                    <li><a>Статистика</a></li>
-                    <li><a>Финансы</a></li>
-                    <li><a>Настройки</a></li>
-                </ul>
+{% extends "partner_app/base.html" %}
+{% load static %}
+{% load tz %}
+
+
+{% load django_vite %}
+{% vite_hmr_client %}
+{% block title %}Личный кабинет{% endblock title %}
+{% block head_js_scripts %}
+{% vite_asset 'partner_app/assets/js/dashboard/advertiser.js' %}
+{% endblock %}
+
+
+{% block header %}
+<div class="navbar bg-white shadow-lg sticky top-0 z-50" id="navbar">
+    <div class="navbar-start">
+        <div class="dropdown lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+                <i class="fas fa-bars text-lg"></i>
             </div>
-            <a class="btn btn-ghost text-xl font-bold">AdPartner</a>
-        </div>
-        <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal px-1">
-                <li><a class="btn btn-ghost">Кампании</a></li>
-                <li><a class="btn btn-ghost">Статистика</a></li>
-                <li><a class="btn btn-ghost">Финансы</a></li>
-                <li><a class="btn btn-ghost">Настройки</a></li>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i>
+                        Статистика</a></li>
+                <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+                <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+                <li><a class="nav-item" data-page="program"><i class="fas fa-link mr-2"></i> Программа</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
+                <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
             </ul>
         </div>
-        <div class="navbar-end">
-            <div class="dropdown dropdown-end">
-                <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                    <div class="w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-bold">
-                        И
-                    </div>
-                </label>
-                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a>Профиль</a></li>
-                    <li><a>Выйти</a></li>
-                </ul>
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-handshake text-blue-600 mr-2"></i>
+            <span class="hidden sm:inline">AffiliateHub</span>
+            <span class="sm:hidden">AH</span>
+        </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+            <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Статистика</a>
+            </li>
+            <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+            <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+            <li><a class="nav-item" data-page="program"><i class="fas fa-link mr-2"></i> Программа</a></li>
+            <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
+            <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
+        </ul>
+    </div>
+    <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                    <i class="fas fa-user"></i>
+                </div>
             </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-2"></i> Профиль</a>
+                </li>
+                <li class="w-full p-0 cursor-pointer">
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
+                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8 max-w-7xl">
-        <!-- Welcome Section -->
-        <div class="gradient-bg rounded-2xl p-6 mb-8 text-white">
-            <div class="flex flex-col lg:flex-row items-center justify-between">
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+
+{% block content %}
+<div class="bg-base-200 min-h-screen">
+    <!-- Весь HTML контент из оригинального <body> -->
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <div id="dashboard" class="page-section active">
+            <div class="mb-8">
+                {% if request.user.first_name %}
+                <h1 class="text-3xl font-bold">Добро пожаловать, {{ request.user.first_name }}!</h1>
+                {% else %}
+                <h1 class="text-3xl font-bold">Добро пожаловать!</h1>
+                {% endif %}
+                <p class="text-base-content/60">Рекламодатель с {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card bg-gradient-to-r from-primary to-secondary text-white">
+                    <div class="card-body">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm opacity-80">Баланс</p>
+                                <p class="text-2xl font-bold">₽45,250</p>
+                            </div>
+                            <i class="fas fa-wallet text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-r from-accent to-info text-white">
+                    <div class="card-body">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm opacity-80">Активные партнеры</p>
+                                <p class="text-2xl font-bold">24</p>
+                            </div>
+                            <i class="fas fa-users text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-r from-success to-warning text-white">
+                    <div class="card-body">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm opacity-80">Конверсия</p>
+                                <p class="text-2xl font-bold">8.5%</p>
+                            </div>
+                            <i class="fas fa-percentage text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-gradient-to-r from-warning to-error text-white">
+                    <div class="card-body">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm opacity-80">Продажи</p>
+                                <p class="text-2xl font-bold">142</p>
+                            </div>
+                            <i class="fas fa-shopping-cart text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <i class="fas fa-trophy text-primary mr-2"></i>
+                                Топ партнеры
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Партнер</th>
+                                            <th>Продажи</th>
+                                            <th>Доход</th>
+                                            <th>Комиссия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="flex items-center gap-3">
+                                                    <div class="avatar">
+                                                        <div class="w-8 rounded-full bg-neutral text-neutral-content">
+                                                            <span>MP</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-bold">Мария Петрова</div>
+                                                        <div class="text-sm opacity-50">Блогер</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>42</td>
+                                            <td>₽125,400</td>
+                                            <td><span class="badge badge-primary">₽12,540</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="flex items-center gap-3">
+                                                    <div class="avatar">
+                                                        <div class="w-8 rounded-full bg-neutral text-neutral-content">
+                                                            <span>ИП</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-bold">Иван Иванов</div>
+                                                        <div class="text-sm opacity-50">Сайт</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>38</td>
+                                            <td>₽98,700</td>
+                                            <td><span class="badge badge-primary">₽9,870</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Sales -->
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <i class="fas fa-history text-primary mr-2"></i>
+                                Последние продажи
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center p-3 bg-success/10 rounded-lg">
+                                    <div
+                                        class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-medium">Продажа #2456</p>
+                                        <p class="text-sm opacity-60">Партнер: Мария Петрова</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-bold">₽12,540</p>
+                                        <p class="text-sm opacity-60">2 часа назад</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 bg-info/10 rounded-lg">
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-medium">Продажа #2455</p>
+                                        <p class="text-sm opacity-60">Партнер: Иван Иванов</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-bold">₽9,870</p>
+                                        <p class="text-sm opacity-60">5 часов назад</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Quick Actions -->
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <i class="fas fa-bolt text-primary mr-2"></i>
+                                Быстрые действия
+                            </h2>
+                            <div class="space-y-2">
+                                <button class="btn btn-primary btn-block justify-start">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    Добавить партнера
+                                </button>
+                                <button class="btn btn-outline btn-block justify-start">
+                                    <i class="fas fa-link mr-2"></i>
+                                    Создать ссылку
+                                </button>
+                                <button class="btn btn-outline btn-block justify-start">
+                                    <i class="fas fa-file-alt mr-2"></i>
+                                    Отчет за месяц
+                                </button>
+                                <button class="btn btn-outline btn-block justify-start">
+                                    <i class="fas fa-headset mr-2"></i>
+                                    Поддержка
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Program Stats -->
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <i class="fas fa-chart-pie text-primary mr-2"></i>
+                                Статистика программы
+                            </h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>Конверсия</span>
+                                        <span>8.5%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>Средний чек</span>
+                                        <span>₽3,240</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projects" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold">Управление проектами</h1>
+                <p class="text-base-content/60">Создавайте и настраивайте проекты для партнеров</p>
+            </div>
+
+            <div class="flex justify-between items-center mb-6">
+                <div class="join">
+                    <div>
+                        <div>
+                            <input class="input input-bordered join-item" placeholder="Поиск проектов...">
+                        </div>
+                    </div>
+                    <select class="select select-bordered join-item">
+                        <option disabled selected>Фильтры</option>
+                        <option>Все проекты</option>
+                        <option>Активные</option>
+                        <option>Архивные</option>
+                    </select>
+                    <div class="indicator">
+                        <button class="btn join-item btn-primary">
+                            <i class="fas fa-search mr-2"></i> Найти
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="showCreateProjectModal()">
+                    <i class="fas fa-plus mr-2"></i> Новый проект
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Проект 1 -->
+                <div class="card bg-base-100 shadow-md offer-card">
+                    <figure class="px-6 pt-6">
+                        <img src="https://via.placeholder.com/300x150?text=Летняя+распродажа" alt="Летняя распродажа" class="rounded-xl h-32 object-cover w-full">
+                    </figure>
+                    <div class="card-body pt-4">
+                        <div class="flex justify-between items-start">
+                            <h2 class="card-title">Летняя распродажа</h2>
+                            <div class="badge badge-success gap-2">
+                                <i class="fas fa-check"></i> Активен
+                            </div>
+                        </div>
+                        <div class="flex items-center text-yellow-500 mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="text-gray-500 ml-2 text-sm">4.7 (24)</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Комиссия:</span>
+                                <span class="font-bold">до 15%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Куки:</span>
+                                <span>30 дней</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Партнеров:</span>
+                                <span>18</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex flex-wrap gap-2">
+                                <div class="badge badge-outline">Мода</div>
+                                <div class="badge badge-outline">Одежда</div>
+                                <div class="badge badge-outline">Скидки</div>
+                            </div>
+                        </div>
+                        <div class="card-actions mt-6">
+                            <button class="btn btn-primary btn-block" onclick="showProjectDetails(1)">
+                                <i class="fas fa-eye mr-2"></i> Просмотр
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Проект 2 -->
+                <div class="card bg-base-100 shadow-md offer-card">
+                    <figure class="px-6 pt-6">
+                        <img src="https://via.placeholder.com/300x150?text=Новая+коллекция" alt="Новая коллекция" class="rounded-xl h-32 object-cover w-full">
+                    </figure>
+                    <div class="card-body pt-4">
+                        <div class="flex justify-between items-start">
+                            <h2 class="card-title">Новая коллекция</h2>
+                            <div class="badge badge-warning gap-2">
+                                <i class="fas fa-pause"></i> На паузе
+                            </div>
+                        </div>
+                        <div class="flex items-center text-yellow-500 mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="text-gray-500 ml-2 text-sm">4.2 (15)</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Комиссия:</span>
+                                <span class="font-bold">12%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Куки:</span>
+                                <span>45 дней</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Партнеров:</span>
+                                <span>9</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex flex-wrap gap-2">
+                                <div class="badge badge-outline">Новинки</div>
+                                <div class="badge badge-outline">Премиум</div>
+                            </div>
+                        </div>
+                        <div class="card-actions mt-6">
+                            <button class="btn btn-primary btn-block" onclick="showProjectDetails(2)">
+                                <i class="fas fa-eye mr-2"></i> Просмотр
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Проект 3 -->
+                <div class="card bg-base-100 shadow-md offer-card">
+                    <figure class="px-6 pt-6">
+                        <img src="https://via.placeholder.com/300x150?text=Акция+50%25" alt="Акция 50%" class="rounded-xl h-32 object-cover w-full">
+                    </figure>
+                    <div class="card-body pt-4">
+                        <div class="flex justify-between items-start">
+                            <h2 class="card-title">Акция "Скидка 50%"</h2>
+                            <div class="badge badge-success gap-2">
+                                <i class="fas fa-check"></i> Активен
+                            </div>
+                        </div>
+                        <div class="flex items-center text-yellow-500 mb-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="text-gray-500 ml-2 text-sm">5.0 (32)</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Комиссия:</span>
+                                <span class="font-bold">20%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Куки:</span>
+                                <span>60 дней</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Партнеров:</span>
+                                <span>27</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex flex-wrap gap-2">
+                                <div class="badge badge-outline">Акция</div>
+                                <div class="badge badge-outline">Хит</div>
+                            </div>
+                        </div>
+                        <div class="card-actions mt-6">
+                            <button class="btn btn-primary btn-block" onclick="showProjectDetails(3)">
+                                <i class="fas fa-eye mr-2"></i> Просмотр
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пагинация -->
+            <div class="flex justify-center mt-8">
+                <div class="join">
+                    <button class="join-item btn">«</button>
+                    <button class="join-item btn btn-active">1</button>
+                    <button class="join-item btn">2</button>
+                    <button class="join-item btn">»</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="partners" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold">Партнеры</h1>
+                <p class="text-base-content/60">Управление партнерами вашей программы</p>
+            </div>
+
+            <div class="card bg-base-100 shadow">
+                <div class="card-body">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h2 class="card-title">
+                            <i class="fas fa-users text-primary mr-2"></i>
+                            Все партнеры
+                        </h2>
+                        <div class="flex gap-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Поиск партнеров..." class="input input-bordered">
+                            </div>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus mr-2"></i>
+                                Добавить
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Партнер</th>
+                                    <th>Тип</th>
+                                    <th>Продажи</th>
+                                    <th>Доход</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar">
+                                                <div class="w-10 rounded-full">
+                                                    <img src="https://randomuser.me/api/portraits/women/12.jpg">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">Мария Петрова</div>
+                                                <div class="text-sm opacity-50">maria@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Блогер</td>
+                                    <td>42</td>
+                                    <td>₽125,400</td>
+                                    <td><span class="badge badge-success">Активен</span></td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar">
+                                                <div class="w-10 rounded-full">
+                                                    <img src="https://randomuser.me/api/portraits/men/32.jpg">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">Иван Иванов</div>
+                                                <div class="text-sm opacity-50">ivan@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Сайт</td>
+                                    <td>38</td>
+                                    <td>₽98,700</td>
+                                    <td><span class="badge badge-success">Активен</span></td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="flex justify-center mt-6">
+                        <div class="join">
+                            <button class="join-item btn">«</button>
+                            <button class="join-item btn btn-active">1</button>
+                            <button class="join-item btn">2</button>
+                            <button class="join-item btn">»</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="program" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold">Программа</h1>
+                <p class="text-base-content/60">Настройки партнерской программы</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <i class="fas fa-percent text-primary mr-2"></i>
+                                Уровни комиссий
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Уровень</th>
+                                            <th>Комиссия</th>
+                                            <th>Условия</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Стандарт</td>
+                                            <td>10%</td>
+                                            <td>Без условий</td>
+                                            <td>
+                                                <button class="btn btn-ghost btn-xs">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Продвинутый</td>
+                                            <td>12%</td>
+                                            <td>5+ продаж/мес</td>
+                                            <td>
+                                                <button class="btn btn-ghost btn-xs">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>VIP</td>
+                                            <td>15%</td>
+                                            <td>20+ продаж/мес</td>
+                                            <td>
+                                                <button class="btn btn-ghost btn-xs">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">Добро пожаловать, Иван!</h1>
-                    <p class="text-lg opacity-90">Управляйте своими рекламными кампаниями эффективно</p>
-                </div>
-                <div class="mt-4 lg:mt-0">
-                    <button class="btn btn-primary btn-lg">Создать кампанию</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="card bg-base-100 shadow-xl card-hover">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-base-content/70">Общий бюджет</p>
-                            <p class="text-2xl font-bold text-primary">₽125,450</p>
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <i class="fas fa-link text-primary mr-2"></i>
+                                Ссылки и материалы
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Реферальная ссылка</span>
+                                    </label>
+                                    <div class="join">
+                                        <input type="text" class="input input-bordered join-item w-full" value="https://partnerhub.com/ref/12345" readonly>
+                                        <button class="btn btn-primary join-item">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text">Материалы для партнеров</span>
+                                    </label>
+                                    <div class="space-y-2">
+                                        <button class="btn btn-outline btn-block justify-start">
+                                            <i class="fas fa-image mr-2"></i>
+                                            Баннеры
+                                        </button>
+                                        <button class="btn btn-outline btn-block justify-start">
+                                            <i class="fas fa-file-alt mr-2"></i>
+                                            Условия программы
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="badge badge-success">+12%</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card bg-base-100 shadow-xl card-hover">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-base-content/70">Активные кампании</p>
-                            <p class="text-2xl font-bold text-secondary">8</p>
-                        </div>
-                        <div class="badge badge-info">Активно</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-base-100 shadow-xl card-hover">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-base-content/70">Клики</p>
-                            <p class="text-2xl font-bold text-accent">24,578</p>
-                        </div>
-                        <div class="badge badge-warning">+5%</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-base-100 shadow-xl card-hover">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-base-content/70">Конверсии</p>
-                            <p class="text-2xl font-bold text-error">1,234</p>
-                        </div>
-                        <div class="badge badge-success">+8%</div>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="payments" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold">Выплаты</h1>
+                <p class="text-base-content/60">История выплат партнерам</p>
+            </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Active Campaigns -->
-            <div class="lg:col-span-2">
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 class="card-title text-xl">Активные кампании</h2>
-                            <button class="btn btn-sm btn-primary">Все кампании</button>
+            <div class="card bg-base-100 shadow">
+                <div class="card-body">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h2 class="card-title">
+                            <i class="fas fa-money-bill-wave text-primary mr-2"></i>
+                            История выплат
+                        </h2>
+                        <div class="flex gap-2">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-plus mr-2"></i>
+                                Новая выплата
+                            </button>
                         </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between p-4 border border-base-300 rounded-lg hover:bg-base-200 transition-colors">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
-                                        К1
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold">Летняя распродажа</h3>
-                                        <p class="text-sm text-base-content/70">Запущена 5 дней назад</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-bold text-primary">₽15,240</p>
-                                    <p class="text-sm text-base-content/70">Потрачено</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center justify-between p-4 border border-base-300 rounded-lg hover:bg-base-200 transition-colors">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center text-white font-bold">
-                                        К2
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold">Новая коллекция</h3>
-                                        <p class="text-sm text-base-content/70">Запущена 12 дней назад</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-bold text-secondary">₽28,940</p>
-                                    <p class="text-sm text-base-content/70">Потрачено</p>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center justify-between p-4 border border-base-300 rounded-lg hover:bg-base-200 transition-colors">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 bg-accent rounded-lg flex items-center justify-center text-white font-bold">
-                                        К3
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold">Брендинг кампания</h3>
-                                        <p class="text-sm text-base-content/70">Запущена 3 дня назад</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-bold text-accent">₽8,750</p>
-                                    <p class="text-sm text-base-content/70">Потрачено</p>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Партнер</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                    <th>Детали</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15.06.2024</td>
+                                    <td>Мария Петрова</td>
+                                    <td class="font-bold">₽12,540</td>
+                                    <td><span class="badge badge-success">Выплачено</span></td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10.06.2024</td>
+                                    <td>Иван Иванов</td>
+                                    <td class="font-bold">₽9,870</td>
+                                    <td><span class="badge badge-success">Выплачено</span></td>
+                                    <td>
+                                        <button class="btn btn-ghost btn-xs">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Quick Actions & Finance -->
-            <div class="space-y-6">
-                <!-- Quick Actions -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h2 class="card-title mb-4">Быстрые действия</h2>
-                        <div class="space-y-3">
-                            <button class="btn btn-primary w-full justify-start">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                Создать кампанию
-                            </button>
-                            <button class="btn btn-secondary w-full justify-start">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
-                                Посмотреть отчёты
-                            </button>
-                            <button class="btn btn-accent w-full justify-start">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                                </svg>
-                                Пополнить баланс
-                            </button>
+        <!-- Settings Page -->
+        <div id="settings" class="page-section">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-base-content mb-2">Настройки</h1>
+                <p class="text-base-content/60">Управление аккаунтом и настройки профиля</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Profile Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-user text-primary mr-2"></i>
+                                Профиль
+                            </h2>
+                            <form method="POST" action="{% url 'dashboard' %}" id="profile_settings_form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {% csrf_token %}
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Имя</span>
+                                    </label>
+                                    <input name="first_name" type="text" value="{{ request.user.first_name }}" class="input input-bordered" />
+                                </div>
+                                <input name="profile_submit" type="text" value="1" class="hidden" />
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Фамилия</span>
+                                    </label>
+                                    <input name="last_name" type="text" value="{{ request.user.last_name }}" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Email</span>
+                                    </label>
+                                    <input name="email" type="email" value="{{ request.user.email }}" class="input input-bordered" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Телефон</span>
+                                    </label>
+                                    <input name="phone" type="tel" value="{{ request.user.phone }}" class="input input-bordered" />
+                                </div>
+                                <div class="form-control md:col-span-2">
+                                    <label class="label">
+                                        <span class="label-text">О себе</span>
+                                    </label>
+                                    <textarea name="description" class="textarea textarea-bordered" placeholder="Расскажите о себе...">{{ request.user.description }}</textarea>
+                                </div>
+                            </form>
+                            <div class="card-actions flex justify-end mt-4">
+                                <button form="profile_settings_form" class="btn btn-primary">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Сохранить изменения
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-shield-alt text-primary mr-2"></i>
+                                Безопасность
+                            </h2>
+                            <form id="change_password_form" action="{% url 'dashboard' %}" class="space-y-4" method="POST">
+                                {% csrf_token %}
+                                <input name="password_submit" value="1" class="hidden">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Текущий пароль</span>
+                                    </label>
+                                    <input name="old_password" type="password" class="input input-bordered" placeholder="Введите текущий пароль" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Новый пароль</span>
+                                    </label>
+                                    <input name="password1" type="password" class="input input-bordered" placeholder="Введите новый пароль" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">Подтвердите пароль</span>
+                                    </label>
+                                    <input name="password2" type="password" class="input input-bordered" placeholder="Повторите новый пароль" />
+                                </div>
+                            </form>
+                            <div class="card-actions justify-end mt-4">
+                                <button form="change_password_form" class="btn btn-warning">
+                                    <i class="fas fa-key mr-2"></i>
+                                    Изменить пароль
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Finance Card -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h2 class="card-title mb-4">Финансы</h2>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center">
-                                <span class="text-base-content/70">Баланс</span>
-                                <span class="font-bold text-lg text-success">₽45,220</span>
+                <div class="space-y-6">
+                    <!-- Notification Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-bell text-primary mr-2"></i>
+                                Уведомления
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="form-control">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Email уведомления</span>
+                                        <input type="checkbox" class="toggle toggle-primary" />
+                                    </label>
+                                </div>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-base-content/70">Потрачено сегодня</span>
-                                <span class="font-bold text-error">₽2,840</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-base-content/70">Лимит расходов</span>
-                                <span class="font-bold">₽50,000</span>
-                            </div>
-                            <div class="w-full bg-base-300 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full" style="width: 90%"></div>
-                            </div>
-                            <p class="text-xs text-base-content/70">90% от лимита использовано</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Recent Activity -->
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h2 class="card-title mb-4">Последняя активность</h2>
-                        <div class="space-y-3">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                                <div>
-                                    <p class="text-sm font-medium">Кампания "Летняя распродажа" достигла 1000 кликов</p>
-                                    <p class="text-xs text-base-content/70">2 часа назад</p>
+                    <!-- API Settings -->
+                    <div class="card bg-base-100 shadow-lg">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">
+                                <i class="fas fa-code text-primary mr-2"></i>
+                                API настройки
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text">API ключ</span>
+                                    </label>
+                                    <div class="join w-full">
+                                        <input type="password" value="sk-1234567890abcdef" class="input input-bordered join-item flex-1" readonly />
+                                        <button class="btn join-item">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn join-item">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-secondary rounded-full mt-2"></div>
-                                <div>
-                                    <p class="text-sm font-medium">Пополнение баланса на ₽20,000</p>
-                                    <p class="text-xs text-base-content/70">Вчера</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-accent rounded-full mt-2"></div>
-                                <div>
-                                    <p class="text-sm font-medium">Создана новая кампания "Брендинг"</p>
-                                    <p class="text-xs text-base-content/70">3 дня назад</p>
+                                <button class="btn btn-outline btn-block">
+                                    <i class="fas fa-sync mr-2"></i>
+                                    Сгенерировать новый ключ
+                                </button>
+                                <div class="text-sm text-base-content/60">
+                                    <p><i class="fas fa-info-circle mr-1"></i> API документация доступна в разделе помощи</p>
                                 </div>
                             </div>
                         </div>
@@ -276,31 +906,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Simple interactivity
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add hover effects to cards
-            const cards = document.querySelectorAll('.card-hover');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-4px)';
-                });
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-
-            // Animate progress bar
-            const progressBar = document.querySelector('.bg-primary.h-2');
-            if (progressBar) {
-                progressBar.style.width = '0%';
-                setTimeout(() => {
-                    progressBar.style.transition = 'width 1s ease-in-out';
-                    progressBar.style.width = '90%';
-                }, 500);
-            }
-        });
-    </script>
-</body>
-</html>
+</div>
+{% endblock content %}

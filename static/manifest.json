@@ -1,11 +1,30 @@
 {
-  "assets/js/index.js": {
-    "file": "home-CGTWCbKr.js",
-    "name": "home",
-    "src": "assets/js/index.js",
+  "_all-BbSXse21.js": {
+    "file": "all-BbSXse21.js",
+    "name": "all"
+  },
+  "partner_app/assets/js/dashboard/partner.js": {
+    "file": "partner-BAkc7DXi.js",
+    "name": "partner",
+    "src": "partner_app/assets/js/dashboard/partner.js",
     "isEntry": true,
+    "imports": [
+      "_all-BbSXse21.js"
+    ],
     "css": [
-      "home-Bctv8l1k.css"
+      "partner-Dm4ssN2K.css"
+    ]
+  },
+  "partner_app/assets/js/index.js": {
+    "file": "home-DIUwRUpx.js",
+    "name": "home",
+    "src": "partner_app/assets/js/index.js",
+    "isEntry": true,
+    "imports": [
+      "_all-BbSXse21.js"
+    ],
+    "css": [
+      "home-DV0B4CB5.css"
     ]
   }
 }
