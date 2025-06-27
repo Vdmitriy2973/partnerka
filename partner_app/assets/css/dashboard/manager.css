@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default;
+  root: ":root";
+  dark: false;
+  include: ;
+  exclude: ;
+  prefix: ;
+  logs: true;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.page-section {
+  display: none;
+}
+
+.page-section.active {
+  display: block;
+}
+
+.nav-item.active {
+  color: #570df8;
+  font-weight: 600;
+}
+
+.card-hover:hover {
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}

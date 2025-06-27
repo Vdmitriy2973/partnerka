@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default;
+  root: ":root";
+  dark: false;
+  include: ;
+  exclude: ;
+  prefix: ;
+  logs: true;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.earnings-card {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.traffic-card {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.conversion-card {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.page-section {
+  display: none;
+}
+
+.page-section.active {
+  display: block;
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: #570df8;
+  font-weight: 600;
+}
