@@ -86,6 +86,13 @@
 
 {% block content %}
 
+<div role="alert" class="alert">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+  </svg>
+  <span>12 unread messages. Tap to see.</span>
+</div>
+
 <div class="container mx-auto px-4 py-6 max-w-7xl">
 
     <!-- Dashboard Page -->
@@ -278,11 +285,11 @@
                             Быстрые действия
                         </h2>
                         <div class="space-y-2">
-                            <button class="btn btn-outline btn-block justify-start nav-item" data-page="my_platforms">
+                            <button id="add_platform_quick" class="btn btn-outline btn-block justify-start nav-item" data-page="my_platforms">
                                 <i class="fas fa-globe mr-2"></i>
                                 Добавить площадку
                             </button>
-                            <button class="btn btn-outline btn-block justify-start nav-item" data-page="payments">
+                            <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item" data-page="payments">
                                 <i class="fas fa-credit-card mr-2"></i>
                                 Запросить выплату
                             </button>
@@ -626,6 +633,55 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if platforms.has_previous %}
+                <a 
+                    href="?page=1" 
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Первая страница"
+                >
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a 
+                    href="?page={{ platforms.previous_page_number }}" 
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                >
+                    <span class="hidden sm:inline">Предыдущая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                </a>
+            {% endif %}
+            
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input 
+                    type="number" 
+                    min="1" 
+                    max="{{ platforms.paginator.num_pages }}" 
+                    value="{{ platforms.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?page=' + this.value"
+                    aria-label="Номер страницы"
+                >
+                <span>из {{ platforms.paginator.num_pages }}</span>
+            </div>
+            
+            {% if platforms.has_next %}
+                <a 
+                    href="?page={{ platforms.next_page_number }}" 
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                >
+                    <span class="hidden sm:inline">Следующая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                </a>
+                <a 
+                    href="?page={{ platforms.paginator.num_pages }}" 
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Последняя страница"
+                >
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Уведомления -->
@@ -761,7 +817,7 @@
                     <i class="fas fa-wallet text-3xl text-primary mb-2"></i>
                     <div class="text-2xl font-bold">₽2,350</div>
                     <p class="text-sm text-base-content/60">Доступно к выводу</p>
-                    <button class="btn btn-primary btn-sm mt-2" onclick="showWithdrawModal()">Вывести</button>
+                    <button id="make_payout" class="btn btn-primary btn-sm mt-2">Вывести</button>
                 </div>
             </div>
             <div class="card bg-base-100 shadow-lg">
