@@ -325,7 +325,7 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-primary" onclick="showCreateProjectModal()">
+                <button class="btn btn-primary" id="create_project">
                     <i class="fas fa-plus mr-2"></i> Новый проект
                 </button>
             </div>
@@ -333,9 +333,6 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Проект 1 -->
                 <div class="card bg-base-100 shadow-md offer-card">
-                    <figure class="px-6 pt-6">
-                        <img src="https://via.placeholder.com/300x150?text=Летняя+распродажа" alt="Летняя распродажа" class="rounded-xl h-32 object-cover w-full">
-                    </figure>
                     <div class="card-body pt-4">
                         <div class="flex justify-between items-start">
                             <h2 class="card-title">Летняя распродажа</h2>
@@ -382,9 +379,6 @@
 
                 <!-- Проект 2 -->
                 <div class="card bg-base-100 shadow-md offer-card">
-                    <figure class="px-6 pt-6">
-                        <img src="https://via.placeholder.com/300x150?text=Новая+коллекция" alt="Новая коллекция" class="rounded-xl h-32 object-cover w-full">
-                    </figure>
                     <div class="card-body pt-4">
                         <div class="flex justify-between items-start">
                             <h2 class="card-title">Новая коллекция</h2>
@@ -430,9 +424,6 @@
 
                 <!-- Проект 3 -->
                 <div class="card bg-base-100 shadow-md offer-card">
-                    <figure class="px-6 pt-6">
-                        <img src="https://via.placeholder.com/300x150?text=Акция+50%25" alt="Акция 50%" class="rounded-xl h-32 object-cover w-full">
-                    </figure>
                     <div class="card-body pt-4">
                         <div class="flex justify-between items-start">
                             <h2 class="card-title">Акция "Скидка 50%"</h2>
@@ -512,8 +503,8 @@
                         </div>
                     </div>
                     
-                    <div class="overflow-x-auto">
-                        <table class="table">
+                    <div class="overflow-visible">
+                        <table class="table overflow-visible">
                             <thead>
                                 <tr>
                                     <th>Партнер</th>
@@ -526,28 +517,42 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar">
-                                                <div class="w-10 rounded-full">
-                                                    <img src="https://randomuser.me/api/portraits/women/12.jpg">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Мария Петрова</div>
-                                                <div class="text-sm opacity-50">maria@example.com</div>
-                                            </div>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                    <div class="avatar">
+                                        <div class="w-10 rounded-full">
+                                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Аватар Марии Петровой">
                                         </div>
-                                    </td>
-                                    <td>Блогер</td>
-                                    <td>42</td>
-                                    <td>₽125,400</td>
-                                    <td><span class="badge badge-success">Активен</span></td>
-                                    <td>
-                                        <button class="btn btn-ghost btn-xs">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </td>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">Мария Петрова</div>
+                                        <div class="text-sm opacity-50">maria@example.com</div>
+                                    </div>
+                                    </div>
+                                </td>
+                                <td>Блогер</td>
+                                <td>42</td>
+                                <td>₽125,400</td>
+                                <td><span class="badge badge-success">Активен</span></td>
+                                <td>
+                                    <!-- Кнопка с выпадающим меню -->
+                                    <div class="dropdown dropdown-end">
+                                    <button tabindex="0" class="btn btn-ghost btn-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <!-- Список действий -->
+                                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                        <li><a onclick="openPartnerModal('maria@example.com')"><i class="fas fa-user-circle mr-2"></i>Профиль</a></li>
+                                        <li><a onclick="openChat('maria@example.com')"><i class="fas fa-comment mr-2"></i>Написать</a></li>
+                                        <li><a onclick="editCommission(42)"><i class="fas fa-percent mr-2"></i>Изменить комиссию</a></li>
+                                        <li class="menu-title mt-2">
+                                        <span>Администрирование</span>
+                                        </li>
+                                        <li><a onclick="togglePartnerStatus('maria@example.com')" class="text-yellow-600"><i class="fas fa-power-off mr-2"></i>Приостановить</a></li>
+                                        <li><a onclick="confirmDelete('maria@example.com')" class="text-error"><i class="fas fa-trash-alt mr-2"></i>Удалить</a></li>
+                                    </ul>
+                                    </div>
+                                </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -775,32 +780,32 @@
                                     <label class="label">
                                         <span class="label-text">Имя</span>
                                     </label>
-                                    <input name="first_name" type="text" value="{{ request.user.first_name }}" class="input input-bordered" />
+                                    <input name="first_name" type="text" value="{{ request.user.first_name }}" class="input input-bordered" required/>
                                 </div>
                                 <input name="profile_submit" type="text" value="1" class="hidden" />
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Фамилия</span>
                                     </label>
-                                    <input name="last_name" type="text" value="{{ request.user.last_name }}" class="input input-bordered" />
+                                    <input name="last_name" type="text" value="{{ request.user.last_name }}" class="input input-bordered" required/>
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Email</span>
                                     </label>
-                                    <input name="email" type="email" value="{{ request.user.email }}" class="input input-bordered" />
+                                    <input name="email" type="email" value="{{ request.user.email }}" class="input input-bordered" required/>
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Телефон</span>
                                     </label>
-                                    <input name="phone" type="tel" value="{{ request.user.phone }}" class="input input-bordered" />
+                                    <input name="phone" type="tel" value="{{ request.user.phone }}" class="input input-bordered" required/>
                                 </div>
                                 <div class="form-control md:col-span-2">
                                     <label class="label">
                                         <span class="label-text">О себе</span>
                                     </label>
-                                    <textarea name="description" class="textarea textarea-bordered" placeholder="Расскажите о себе...">{{ request.user.description }}</textarea>
+                                    <textarea name="description" class="textarea textarea-bordered" placeholder="Расскажите о себе..." required>{{ request.user.description }}</textarea>
                                 </div>
                             </form>
                             <div class="card-actions flex justify-end mt-4">
@@ -826,19 +831,19 @@
                                     <label class="label">
                                         <span class="label-text">Текущий пароль</span>
                                     </label>
-                                    <input name="old_password" type="password" class="input input-bordered" placeholder="Введите текущий пароль" />
+                                    <input name="old_password" type="password" class="input input-bordered" placeholder="Введите текущий пароль" required/>
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Новый пароль</span>
                                     </label>
-                                    <input name="password1" type="password" class="input input-bordered" placeholder="Введите новый пароль" />
+                                    <input name="password1" type="password" class="input input-bordered" placeholder="Введите новый пароль" required/>
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Подтвердите пароль</span>
                                     </label>
-                                    <input name="password2" type="password" class="input input-bordered" placeholder="Повторите новый пароль" />
+                                    <input name="password2" type="password" class="input input-bordered" placeholder="Повторите новый пароль" required/>
                                 </div>
                             </form>
                             <div class="card-actions justify-end mt-4">
@@ -907,4 +912,71 @@
         </div>
     </div>
 </div>
+
+
+<!-- Модальное окно создания проекта -->
+<dialog id="createProjectModal" class="modal">
+    <div class="modal-box max-w-2xl bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Создание нового проекта</h2>
+  
+  <!-- Название проекта -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-1">Название проекта</label>
+    <input 
+      type="text" 
+      placeholder="Например: Летняя распродажа" 
+      class="input input-bordered w-full"
+    >
+  </div>
+  
+  <!-- Описание -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
+    <textarea 
+      class="textarea textarea-bordered w-full h-24" 
+      placeholder="Опишите ваш проект для партнеров"
+    ></textarea>
+  </div>
+  
+  <!-- Комиссия и Куки -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Комиссия (%)</label>
+      <input 
+        type="number" 
+        value="10" 
+        class="input input-bordered w-full"
+      >
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Срок действия куки (дней)</label>
+      <input 
+        type="number" 
+        value="30" 
+        class="input input-bordered w-full"
+      >
+    </div>
+  </div>
+  
+  <!-- Категории (статичный вариант) -->
+  <div class="mb-8">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Категории</label>
+    <div class="flex flex-wrap gap-2">
+      <span class="badge badge-primary">Мода</span>
+      <span class="badge badge-outline">Электроника</span>
+      <span class="badge badge-outline">Красота</span>
+      <button class="btn btn-xs btn-ghost text-primary">
+        + Добавить
+      </button>
+    </div>
+    <div class="text-xs text-gray-500 mt-1">Максимум 3 категории</div>
+  </div>
+  
+  <!-- Кнопки действий -->
+  <div class="flex justify-end gap-3">
+    <button id="close_create_project_modal" class="btn btn-ghost">Отмена</button>
+    <button class="btn btn-primary">Добавить проект</button>
+  </div>
+</div>
+</dialog>
 {% endblock content %}

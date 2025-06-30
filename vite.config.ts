@@ -20,6 +20,7 @@ export default defineConfig((mode) => {
           home: join(INPUT_DIR, "/js/index.js"),
           partner: join(INPUT_DIR, "/js/dashboard/partner.js"),
           advertiser: join(INPUT_DIR, "/js/dashboard/advertiser.js"),
+          manager: join(INPUT_DIR, "/js/dashboard/manager.js"),
         },
       },
     },
