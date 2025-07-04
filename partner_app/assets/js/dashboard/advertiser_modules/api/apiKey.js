@@ -43,6 +43,7 @@ export function setupApiKeyHandlers() {
 
       if (!apiKeyElement) {
         console.error('Элемент с API ключом не найден');
+        showAlert('Ошибка: поле с ключом не найдено', 'error');
         return;
       }
 
@@ -54,26 +55,67 @@ export function setupApiKeyHandlers() {
         return;
       }
 
+      // Проверка поддержки Clipboard API
+      if (!navigator.clipboard) {
+        console.warn('Clipboard API не поддерживается');
+        fallbackCopy(apiKey);
+        return;
+      }
+
       try {
         await navigator.clipboard.writeText(apiKey);
-
-        // Визуальный фидбек вместо alert()
         showAlert('API ключ скопирован!', 'success');
-
-        // Дополнительный визуальный фидбек на кнопке
-
-        setTimeout(() => {
-          btnCopy.innerHTML = '<i class="fas fa-copy"></i>';
-        }, 2000);
-
+        updateButtonState(btnCopy, true);
       } catch (err) {
         console.error('Ошибка копирования:', err);
-        showAlert('Не удалось скопировать ключ', 'error');
+        fallbackCopy(apiKey);
       }
     });
   }
 
-  // Функция для красивого отображения уведомлений
+  // Резервный метод копирования
+  function fallbackCopy(text) {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed'; // Невидимый элемент
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      if (successful) {
+        showAlert('API ключ скопирован (резервный метод)', 'success');
+      } else {
+        throw new Error('Резервное копирование не удалось');
+      }
+    } catch (err) {
+      console.error('Резервное копирование не удалось:', err);
+      showAlert('Не удалось скопировать ключ. Скопируйте вручную.', 'error');
+    }
+  }
+
+  // Обновление состояния кнопки
+  function updateButtonState(button, success) {
+    if (success) {
+      button.innerHTML = '<i class="fas fa-check"></i>';
+      button.classList.add('btn-success');
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-copy"></i>';
+        button.classList.remove('btn-success');
+      }, 2000);
+    } else {
+      button.innerHTML = '<i class="fas fa-times"></i> Ошибка';
+      button.classList.add('btn-error');
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-copy"></i> Копировать';
+        button.classList.remove('btn-error');
+      }, 2000);
+    }
+  }
+
+  // Функция для отображения уведомлений
   function showAlert(message, type = 'info') {
     const alert = document.createElement('div');
     alert.className = `alert alert-${type} fixed top-4 flex justify-center max-w-xs z-50 transition-all text-green-500`;
