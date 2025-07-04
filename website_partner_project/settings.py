@@ -1,14 +1,17 @@
+from dotenv import load_dotenv
 import os
 from pathlib import Path
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8%e4veh^)u8#s(zj6$obgis6*ts64oreoa1081k8c=n9+x#^4^'
+SECRET_KEY = os.getenv("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG",'False') == 'True'
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
@@ -38,10 +41,10 @@ CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.getenv("STATIC_URL")
 
 # Name of our static files' folder (after called python manage.py collectstatic)
-STATIC_ROOT = 'D:/freelance/website_partner/project'
+STATIC_ROOT = os.getenv("STATIC_ROOT")
 
 # Include DJANGO_VITE_ASSETS_PATH into STATICFILES_DIRS to be copied inside
 # when run command python manage.py collectstatic
@@ -92,11 +95,11 @@ WSGI_APPLICATION = 'website_partner_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'partner_program_db',
-        'USER': 'postgres',
-        'PASSWORD': '1234', # 1234 |
-        'HOST':'localhost',
-        'PORT': '5432'
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST':os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     }
 }
 
@@ -138,7 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DJANGO_VITE = {
   "default": {
-    "manifest_path": "static/manifest.json",
-    "dev_mode": True,
+    "manifest_path": os.getenv('MANIFEST_SETTINGS_PATH'),
+    "dev_mode": os.getenv('VITE_DEV_MODE','False') == 'True'
   },
 }

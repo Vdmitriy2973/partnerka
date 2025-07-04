@@ -14,7 +14,6 @@ def add_platform(request):
         platform = form.save(commit=False)
         platform.partner = request.user
         platform.save()
-        print("add platform")
         return redirect("dashboard")
     except Exception as e:
         print(e)
@@ -29,4 +28,24 @@ def add_platform(request):
 def delete_platform(request, platform_id):
     platform = Platform.objects.get(id=platform_id)
     platform.delete()
+    return redirect("dashboard")
+
+
+# Для модераторов
+@login_required
+@require_POST
+def approve_platform(request, platform_id):
+    platform = Platform.objects.get(id=platform_id)
+    platform.status = 'Подтверждено'
+    platform.save()
+    return redirect("dashboard")
+
+
+@login_required
+@require_POST
+def reject_platform(request, platform_id):
+    platform = Platform.objects.get(id=platform_id)
+    platform.status = 'Отклонено'
+    platform.is_active = False
+    platform.save()
     return redirect("dashboard")

@@ -1,3 +1,4 @@
 django
 django-vite
 psycopg2  
+python-dotenv

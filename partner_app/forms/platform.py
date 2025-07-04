@@ -5,7 +5,7 @@ from partner_app.models import Platform
 class PlatformForm(forms.ModelForm):
     class Meta:
         model = Platform
-        fields = ['name', 'platform_type', 'url_or_id']
+        fields = ['name', 'platform_type','description', 'url_or_id']
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': 'Название площадки',
@@ -14,6 +14,11 @@ class PlatformForm(forms.ModelForm):
             'platform_type': forms.Select(attrs={
                 'class': 'select select-bordered w-full hover:outline-none',
                 'required': True,
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'textarea textarea-bordered w-full h-32',
+                'rows': 5,
+                'placeholder': 'Опишите вашу площадку (минимум 15 символов)...'
             }),
             'url_or_id': forms.TextInput(attrs={
                 'placeholder': 'Введите полный URL или ID площадки',
@@ -38,3 +43,11 @@ class PlatformForm(forms.ModelForm):
             'id': 'platform-type',
             'name': 'platform-type',
         })
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Дополнительная валидация
+        if len(cleaned_data.get('description', '')) < 15:
+            raise forms.ValidationError({
+                'description': 'Описание должно содержать минимум 15 символов'
+            })

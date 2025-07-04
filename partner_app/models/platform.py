@@ -14,21 +14,29 @@ class Platform(models.Model):
         PENDING = 'На модерации'
         APPROVED = 'Подтверждено'
         REJECTED = 'Отклонено'
+        BLOCKED = 'Заблокировано'
 
     partner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='platforms',
+        related_name='partner_platforms',
         verbose_name='Партнёр',
-        limit_choices_to={'user_type': 'partner'}
+        limit_choices_to={'user_type': 'partner'},
     )
     name = models.CharField(
         max_length=100,
-        unique=True,
         verbose_name='Название площадки',
-        validators=[MinLengthValidator(2)],
+        validators=[MinLengthValidator(3)],
         help_text='Например: TikTok-канал о кулинарии'
     )
+
+    description = models.CharField(
+        max_length=300,
+        verbose_name="Описание площадки",
+        validators=[MinLengthValidator(15)],
+        help_text="Например: Блог о путешествиях"
+    )
+
     platform_type = models.CharField(
         max_length=20,
         choices=PlatformType.choices,
@@ -48,6 +56,8 @@ class Platform(models.Model):
         choices=StatusType,
         verbose_name='Статус'
     )
+
+    is_active = models.BooleanField(default=True)
     
     class Meta:
         verbose_name = 'Площадка'

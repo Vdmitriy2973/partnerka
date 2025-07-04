@@ -28,7 +28,8 @@
                 </li>
             </ul>
         </div>
-        <a href="{% url 'index' %}" class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
             <i class="fas fa-headset mr-2"></i>
             <span class="hidden sm:inline">AffiliateHub Manager</span>
             <span class="sm:hidden">AH</span>
@@ -47,7 +48,8 @@
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
-                    <i class="fas fa-user-shield"></i>
+                    <i class="fas fa-user-shield text-lg mt-2.5 ml-0.5"></i>
+                    <!-- Добавлен text-lg для увеличения размера иконки -->
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
@@ -56,8 +58,9 @@
                 <li class="w-full p-0 cursor-pointer">
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
-                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Выход
+                        </button>
                     </form>
                 </li>
             </ul>
@@ -75,7 +78,7 @@
     <div id="dashboard" class="page-section active">
         <div class="mb-8">
             <h1 class="text-3xl font-bold">Добро пожаловать, {{ request.user.first_name }}!</h1>
-            <p class="text-base-content/60">Менеджер поддержки</p>
+            <p class="text-base-content/60">Менеджер поддержки с {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
         </div>
 
         <!-- Stats Cards -->
@@ -85,7 +88,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm opacity-80">На модерации</p>
-                            <p class="text-2xl font-bold">12</p>
+                            <p class="text-2xl font-bold">{{ pending_items_len }}</p>
                         </div>
                         <i class="fas fa-clock text-3xl opacity-80"></i>
                     </div>
@@ -109,7 +112,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <p class="text-sm opacity-80">Новых пользователей</p>
-                            <p class="text-2xl font-bold">8</p>
+                            <p class="text-2xl font-bold">{{ new_users_count }}</p>
                         </div>
                         <i class="fas fa-user-plus text-3xl opacity-80"></i>
                     </div>
@@ -246,105 +249,215 @@
         </div>
 
         <div class="grid grid-cols-1 gap-6">
-            <!-- Project Moderation Card -->
-            <div class="card bg-base-100 shadow-md card-hover">
-                <div class="card-body">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h2 class="card-title">Летняя распродажа</h2>
-                            <p class="text-sm opacity-60">Рекламодатель: Алексей Смирнов</p>
-                        </div>
-                        <div class="badge badge-warning gap-2">
-                            <i class="fas fa-clock"></i> На проверке
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
-                        <p class="mb-3">Специальное предложение на летнюю коллекцию одежды. Скидки до 50% на все товары.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <div class="badge badge-outline">Мода</div>
-                            <div class="badge badge-outline">Одежда</div>
-                            <div class="badge badge-outline">Скидки</div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+            {% for item in pending_items %}
+                {% if item.partner %}
+                <!-- Площадка -->
+                <div
+                    class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border-l-4 border-secondary">
+                    <div class="card-body">
+                        <div class="flex justify-between items-center gap-2 mb-2">
                             <div>
-                                <p class="text-sm opacity-60">Комиссия:</p>
-                                <p class="font-bold">до 15%</p>
+                                <h2 class="card-title">{{ item.name }}</h2>
                             </div>
-                            <div>
-                                <p class="text-sm opacity-60">Куки:</p>
-                                <p>30 дней</p>
+                            <div class="badge badge-warning gap-2">
+                                <i class="fas fa-clock"></i> {{ item.status }}
                             </div>
                         </div>
-                    </div>
 
-                    <div class="card-actions justify-end">
-                        <button class="btn btn-success" onclick="approveItem('project', 1)">
-                            <i class="fas fa-check mr-2"></i> Одобрить
-                        </button>
-                        <button class="btn btn-error" onclick="rejectItem('project', 1)">
-                            <i class="fas fa-times mr-2"></i> Отклонить
-                        </button>
-                        <button class="btn btn-outline" onclick="showDetailsModal('project', 1)">
-                            <i class="fas fa-eye mr-2"></i> Подробнее
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Partner Platform Card -->
-            <div class="card bg-base-100 shadow-md card-hover">
-                <div class="card-body">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h2 class="card-title">Блог о моде</h2>
-                            <p class="text-sm opacity-60">Партнер: Мария Петрова</p>
-                        </div>
-                        <div class="badge badge-warning gap-2">
-                            <i class="fas fa-clock"></i> На проверке
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
-                        <p class="mb-3">Блог о современной моде и стиле жизни. Аудитория: 25-35 лет, преимущественно
-                            женщины.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <div class="badge badge-outline">Мода</div>
-                            <div class="badge badge-outline">Стиль</div>
-                            <div class="badge badge-outline">Бьюти</div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="space-y-3">
                             <div>
-                                <p class="text-sm opacity-60">Трафик:</p>
-                                <p class="font-bold">10K/мес</p>
+                                <p class="text-sm text-gray-500">Партнёр:</p>
+                                {% if item.partner.first_name and item.partner.last_name %}
+                                    <p>{{ item.partner.first_name }} {{ item.partner.last_name}}</p>
+                                {% else %}
+                                    <p>Не указано</p>
+                                {% endif%}
                             </div>
                             <div>
-                                <p class="text-sm opacity-60">Соцсети:</p>
-                                <div class="flex gap-2">
-                                    <i class="fab fa-instagram"></i>
-                                    <i class="fab fa-youtube"></i>
-                                    <i class="fab fa-telegram"></i>
+                                <p class="text-sm text-gray-500">Описание:</p>
+                                <p class="line-clamp-2">{{ item.description|default:'Отсутсвует'|truncatechars:50 }}</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <p class="text-sm text-gray-500">URL:</p>
+                                    <a href="{{ item.url }}" target="_blank" class="link link-secondary truncate block">
+                                        {{ item.url_or_id|truncatechars:20 }}
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <p class="text-sm text-gray-500">Тип:</p>
+                                    <p>{{ item.get_platform_type_display }}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="card-actions justify-end">
+                            <form method="post" action="{% url 'approve_platform' item.id %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check mr-2"></i> Одобрить
+                                </button>
+                            </form>
 
-                    <div class="card-actions justify-end">
-                        <button class="btn btn-success" onclick="approveItem('platform', 2)">
-                            <i class="fas fa-check mr-2"></i> Одобрить
-                        </button>
-                        <button class="btn btn-error" onclick="rejectItem('platform', 2)">
-                            <i class="fas fa-times mr-2"></i> Отклонить
-                        </button>
-                        <button class="btn btn-outline" onclick="showDetailsModal('platform', 2)">
-                            <i class="fas fa-eye mr-2"></i> Подробнее
-                        </button>
+                            <form method="post" action="{% url 'reject_platform' item.id %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-error">
+                                    <i class="fas fa-times mr-2"></i> Отклонить
+                                </button>
+                            </form>
+
+                            <!-- <button class="btn btn-outline show_platform_details" data-project-id="{{ item.id }}">
+                                <i class="fas fa-eye mr-2"></i> Подробнее
+                            </button> -->
+                            <button class="show_project_details btn btn-outline" 
+                                    data-details="platform"
+                                    data-id="{{ item.id }}"
+                                    data-name="{{ item.name }}"
+                                    data-status="{{ item.status }}"
+                                    data-owner="{{ item.partner.first_name }} {{ item.partner.last_name }}"
+                                    data-platform-type="{{ item.get_platform_type_display }}"
+                                    data-email="{{ item.partner.email }} "
+                                    data-phone="{{ item.partner.phone }}"
+                                    data-description="{{ item.description }}"
+                                    data-commission="{{ item.commission }}"
+                                    data-cookie-days="{{ item.cookie_lifetime }}">
+                                <i class="fas fa-eye mr-2"></i> Подробнее
+                            </button>
+                        </div>
                     </div>
                 </div>
+                {% else %}
+                <!-- Проект -->
+                <div
+                    class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border-l-4 border-secondary">
+                    <div class="card-body">
+                        <div class="flex justify-between items-center gap-2 mb-2">
+                            <h2 class="card-title">{{ item.name }}</h2>
+                            <div class="badge badge-warning gap-2">
+                                <i class="fas fa-clock"></i> {{ item.status }}
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <p class="text-sm text-gray-500">Рекламодатель:</p>
+                                {% if item.advertiser.first_name and item.advertiser.last_name %}
+                                    <p>{{ item.advertiser.first_name }} {{ item.advertiser.last_name}}</p>
+                                {% else %}
+                                    <p>Не указано</p>
+                                {% endif%}
+                            </div>
+
+
+                            <div>
+                                <p class="text-sm text-gray-500">Описание:</p>
+                                <p class="line-clamp-2">{{ item.description|default:'Отсутсвует'|truncatechars:50 }}</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <p class="text-sm text-gray-500">URL:</p>
+                                    <a href="{{ item.url }}" target="_blank" class="link link-primary truncate block">
+                                        {{ item.url|truncatechars:20 }}
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <p class="text-sm text-gray-500">Cookie:</p>
+                                    <p>{{ item.cookie_lifetime }} дней</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions justify-end">
+                            <form method="post" action="{% url 'approve_project' item.id %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check mr-2"></i> Одобрить
+                                </button>
+                            </form>
+
+                            <form method="post" action="{% url 'reject_project' item.id %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-error">
+                                    <i class="fas fa-times mr-2"></i> Отклонить
+                                </button>
+                            </form>
+                            
+                            <!-- <button class="btn btn-outline show_project_details" data-project-id="{{ item.id }}">
+                                <i class="fas fa-eye mr-2"></i> Подробнее
+                            </button> -->
+                            <button class="show_project_details btn btn-outline" 
+                                    data-details="project"
+                                    data-id="{{ item.id }}"
+                                    data-name="{{ item.name }}"
+                                    data-status="{{ item.status }}"
+                                    data-owner="{{ item.advertiser }}"
+                                    data-email="{{ item.advertiser.email }} "
+                                    data-description="{{ item.description }}"
+                                    data-commission="{{ item.commission }}"
+                                    data-cookie-days="{{ item.cookie_lifetime }}">
+                                <i class="fas fa-eye mr-2"></i> Подробнее
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+                <div class="col-span-full text-center py-10">
+                    <p class="text-gray-500">Проекты/площадки не найдены</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if pending_items.has_previous %}
+                <a 
+                    href="?page=1" 
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Первая страница"
+                >
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a 
+                    href="?page={{ pending_items.previous_page_number }}" 
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                >
+                    <span class="hidden sm:inline">Предыдущая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                </a>
+            {% endif %}
+            
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input 
+                    type="number" 
+                    min="1" 
+                    max="{{ pending_items.paginator.num_pages }}" 
+                    value="{{ pending_items.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?page=' + this.value"
+                    aria-label="Номер страницы"
+                >
+                <span>из {{ pending_items.paginator.num_pages }}</span>
             </div>
+            
+            {% if pending_items.has_next %}
+                <a 
+                    href="?page={{ pending_items.next_page_number }}" 
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                >
+                    <span class="hidden sm:inline">Следующая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                </a>
+                <a 
+                    href="?page={{ pending_items.paginator.num_pages }}" 
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Последняя страница"
+                >
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            {% endif %}
         </div>
     </div>
 
@@ -374,7 +487,7 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-visible">
                     <table class="table">
                         <thead>
                             <tr>
@@ -386,18 +499,28 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for user in users%}
                             <tr>
                                 <td>
                                     <div class="flex items-center gap-3">
                                         <div>
-                                            <div class="font-bold">Алексей Смирнов</div>
-                                            <div class="text-sm opacity-50">alex@example.com</div>
+                                            {% if user.first_name and user.last_name %}
+                                                <div class="font-bold">{{ user.first_name }} {{ user.last_name }}</div>
+                                            {% else %}
+                                                <div class="font-bold">Не указано</div>
+                                            {% endif %}
+                                            <div class="text-sm opacity-50">{{ user.email }}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>Рекламодатель</td>
-                                <td><span class="badge badge-success">Активен</span></td>
-                                <td>15.01.2024</td>
+                                <td>{% if user.user_type == 'partner' %}Партнёр{% else %}Рекламодатель{%endif%}</td>
+                                <td>{% if user.is_active %}
+                                        <span class="badge badge-success"> Активен </span> 
+                                    {% else %}
+                                        <span class="badge badge-error"> Неактивен </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</td>
                                 <td>
                                     <div class="dropdown dropdown-end">
                                         <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
@@ -413,64 +536,61 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                        <div>
-                                            <div class="font-bold">Мария Петрова</div>
-                                            <div class="text-sm opacity-50">maria@example.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Партнер</td>
-                                <td><span class="badge badge-warning">На проверке</span></td>
-                                <td>22.05.2024</td>
-                                <td>
-                                    <div class="dropdown dropdown-end">
-                                        <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </div>
-                                        <ul tabindex="0"
-                                            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li><a><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
-                                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
-                                            <li><a class="text-error"><i class="fas fa-ban mr-2"></i> Заблокировать</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                        <div>
-                                            <div class="font-bold">Иван Иванов</div>
-                                            <div class="text-sm opacity-50">ivan@example.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Партнер</td>
-                                <td><span class="badge badge-error">Заблокирован</span></td>
-                                <td>10.03.2024</td>
-                                <td>
-                                    <div class="dropdown dropdown-end">
-                                        <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </div>
-                                        <ul tabindex="0"
-                                            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li><a><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
-                                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
-                                            <li><a class="text-success"><i class="fas fa-check mr-2"></i>
-                                                    Разблокировать</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
+        <!-- Pagination -->
+         <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if users.has_previous %}
+                <a 
+                    href="?page=1" 
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Первая страница"
+                >
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a 
+                    href="?page={{ users.previous_page_number }}" 
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                >
+                    <span class="hidden sm:inline">Предыдущая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                </a>
+            {% endif %}
+            
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input 
+                    type="number" 
+                    min="1" 
+                    max="{{ users.paginator.num_pages }}" 
+                    value="{{ users.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?page=' + this.value"
+                    aria-label="Номер страницы"
+                >
+                <span>из {{ users.paginator.num_pages }}</span>
+            </div>
+            
+            {% if users.has_next %}
+                <a 
+                    href="?page={{ users.next_page_number }}" 
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                >
+                    <span class="hidden sm:inline">Следующая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                </a>
+                <a 
+                    href="?page={{ users.paginator.num_pages }}" 
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Последняя страница"
+                >
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            {% endif %}
         </div>
     </div>
 
@@ -621,17 +741,78 @@
 
 <!-- Модальное окно деталей -->
 <dialog id="detailsModal" class="modal">
-    <div class="modal-box max-w-4xl">
-        <h3 class="font-bold text-lg" id="modalTitle">Детали</h3>
-        <div class="py-4" id="modalContent">
-            <!-- Контент будет загружаться динамически -->
+  <div class="modal-box max-w-4xl">
+    <h3 id="modalTitle" class="font-bold text-2xl mb-4"></h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Основная информация -->
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-gray-500">Тип:</p>
+          <p id="modalType" class="font-medium"></p>
         </div>
-        <div class="modal-action">
-            <form method="dialog">
-                <button class="btn btn-ghost">Закрыть</button>
-            </form>
+        
+        <div>
+          <p class="text-sm text-gray-500">Статус:</p>
+          <p id="modalStatus" class="badge badge-lg"></p>
         </div>
+        
+        <div id="modalAdvertiserContainer">
+          <p class="text-sm text-gray-500">Рекламодатель:</p>
+          <p id="modalAdvertiser" class="font-medium"></p>
+        </div>
+        
+        <div id="modalPartnerContainer">
+          <p class="text-sm text-gray-500">Партнер:</p>
+          <p id="modalPartner" class="font-medium"></p>
+        </div>
+        
+        <div>
+          <p class="text-sm text-gray-500">Описание:</p>
+          <p id="modalDescription" class="mt-1 text-justify"></p>
+        </div>
+      </div>
+      
+      <!-- Детали -->
+      <div class="space-y-4">
+        <div id="modalProjectDetails">
+          <h4 class="font-bold text-lg mb-2">Детали проекта</h4>
+          <div class="space-y-2">
+            <p><strong>Комиссия:</strong> <span id="modalCommission"></span></p>
+            <p><strong>Срок куки:</strong> <span id="modalCookieDays"></span></p>
+            <p><strong>Категория:</strong> <span id="modalCategory"></span></p>
+          </div>
+        </div>
+        
+        <div id="modalPlatformDetails">
+          <h4 class="font-bold text-lg mb-2">Детали площадки</h4>
+          <div class="space-y-2">
+            <p><strong>Тип площадки:</strong> <span id="modalPlatformType"></span></p>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-lg mb-2">Контакты</h4>
+          <div class="space-y-1">
+            <p><strong>Email:</strong> <span id="modalContactEmail"></span></p>
+            <p><strong>Телефон:</strong> <span id="modalContactPhone"></span></p>
+          </div>
+        </div>
+      </div>
     </div>
+    
+    <!-- Материалы/ссылки -->
+    <div id="modalAssets" class="mt-6 hidden">
+      <h4 class="font-bold text-lg mb-2">Материалы</h4>
+      <div id="modalAssetsContent" class="grid grid-cols-2 md:grid-cols-3 gap-2"></div>
+    </div>
+    
+    <div class="modal-action mt-6">
+      <form method="dialog">
+        <button class="btn btn-primary">Закрыть</button>
+      </form>
+    </div>
+  </div>
 </dialog>
 
 <!-- Модальное окно решения спора -->

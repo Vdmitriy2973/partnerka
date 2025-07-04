@@ -19,7 +19,8 @@ def handle_registration(request, user_type):
                 return redirect('dashboard')
             else:
                 messages.error(request, "Ошибка автоматической авторизации. Пожалуйста, войдите вручную.", extra_tags=f"reg_error_{user_type}")
-        except IntegrityError:
+        except IntegrityError as e:
+            print(e)
             messages.error(request, "Пользователь с таким email или логином уже существует", extra_tags=f"reg_error_{user_type}")
         except Exception as e:
             messages.error(request, f"Произошла ошибка при регистрации: {str(e)}", extra_tags=f"reg_error_{user_type}")

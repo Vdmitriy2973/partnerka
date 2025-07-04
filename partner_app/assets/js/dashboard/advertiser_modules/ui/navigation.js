@@ -13,8 +13,14 @@ export function setupNavigation() {
   }
 
   // Восстановление состояния из localStorage
+  const allowed_pages = ['dashboard','projects','partners','payments','settings'];
+  
   const savedPage = localStorage.getItem('activePage') || 'dashboard';
-  activatePage(savedPage);
+  if(!allowed_pages.includes(savedPage)){
+    activatePage('dashboard');
+  } else {
+    activatePage(savedPage);
+  }
 
   // Обработчики кликов
   navItems.forEach(item => {

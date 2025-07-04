@@ -29,3 +29,7 @@ dist
 node_modules
 static
 staticfiles
+
+# Config files
+.env
+*.env

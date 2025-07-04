@@ -22,7 +22,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie mr-2"></i>Статистика</a>
                 </li>
-                <li><a class="nav-item" data-page="offers"><i class="fas fa-gift mr-2"></i>Предложения</a></li>
+                <li><a class="nav-item" data-page="offers"><i class="fas fa-boxes mr-2"></i>Предложения</a></li>
                 <li><a class="nav-item" data-page="my_platforms"><i class="fas fa-globe mr-2"></i>Площадки</a></li>
                 <li><a class="nav-item" data-page="links"><i class="fas fa-link mr-2"></i>Ссылки</a></li>
                 <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i>Выплаты</a></li>
@@ -45,7 +45,7 @@
             <li><a class="nav-item active btn-sm" data-page="dashboard"><i
                         class="fas fa-chart-pie mr-1 sm:mr-2"></i><span class="hidden sm:inline">Статистика</span></a>
             </li>
-            <li><a class="nav-item btn-sm" data-page="offers"><i class="fas fa-gift mr-1 sm:mr-2"></i><span
+            <li><a class="nav-item btn-sm" data-page="offers"><i class="fas fa-boxes mr-2"></i><span
                         class="hidden sm:inline">Предложения</span></a></li>
             <li><a class="nav-item btn-sm" data-page="my_platforms"><i class="fas fa-globe mr-1 sm:mr-2"></i><span
                         class="hidden sm:inline">Площадки</span></a></li>
@@ -63,7 +63,7 @@
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-8 sm:w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
-                    <i class="fas fa-user text-sm sm:text-base"></i>
+                    <i class="fas fa-user text-lg mt-2 ml-0.3"></i>
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
@@ -72,7 +72,8 @@
                 <li class="w-full p-0 cursor-pointer">
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
+                        <button type="submit"
+                            class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
                                 class="fas fa-sign-out-alt mr-2"></i> Выход</button>
                     </form>
                 </li>
@@ -85,14 +86,6 @@
 {% block main_class %}bg-base-200 min-h-screen{% endblock %}
 
 {% block content %}
-
-<div role="alert" class="alert">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info h-6 w-6 shrink-0">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-  </svg>
-  <span>12 unread messages. Tap to see.</span>
-</div>
-
 <div class="container mx-auto px-4 py-6 max-w-7xl">
 
     <!-- Dashboard Page -->
@@ -285,11 +278,13 @@
                             Быстрые действия
                         </h2>
                         <div class="space-y-2">
-                            <button id="add_platform_quick" class="btn btn-outline btn-block justify-start nav-item" data-page="my_platforms">
+                            <button id="add_platform_quick" class="btn btn-outline btn-block justify-start nav-item"
+                                data-page="my_platforms">
                                 <i class="fas fa-globe mr-2"></i>
                                 Добавить площадку
                             </button>
-                            <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item" data-page="payments">
+                            <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item"
+                                data-page="payments">
                                 <i class="fas fa-credit-card mr-2"></i>
                                 Запросить выплату
                             </button>
@@ -351,6 +346,7 @@
     <div id="offers" class="page-section">
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-base-content mb-2">Доступные предложения</h1>
+            <p class="text-gray-500 mt-1">Доступно программ для подключения: {{ total_projects }}</p>
             <p class="text-base-content/60">Выберите проект для продвижения и начните зарабатывать</p>
         </div>
 
@@ -377,129 +373,96 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Предложение 1 -->
-            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
+
+            {% for project in projects %}
+            <div class="card bg-base-100 shadow-md offer-card">
                 <div class="card-body pt-4">
                     <div class="flex justify-between items-start">
-                        <h2 class="card-title">Летняя распродажа</h2>
-                        <div class="badge badge-success gap-2">
-                            <i class="fas fa-check"></i> Активно
-                        </div>
-                    </div>
-                    <div class="flex items-center text-yellow-500 mb-2">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                        <span class="text-gray-500 ml-2 text-sm">4.7 (24)</span>
+                        <h2 class="card-title">{{ project.name }}</h2>
                     </div>
                     <div class="space-y-2">
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Комиссия:</span>
-                            <span class="font-bold text-primary">до 15%</span>
+                            <span class="text-gray-600">URL проекта:</span>
+                            <span><a href="{{ project.url }}" class="text-blue-600" target="_blank">перейти</a></span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Куки:</span>
-                            <span>30 дней</span>
+                            <span class="text-gray-600">Комиссия:</span>
+                            <span class="font-bold">{{ project.commission_rate }}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Рекламодатель:</span>
+                            <span class="font-bold">{{ project.advertiser }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Партнеров:</span>
+                            <span>{{ project.partners.count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Время добавления:</span>
+                            <span>{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <div class="flex flex-wrap gap-2">
-                            <div class="badge badge-outline">Мода</div>
-                            <div class="badge badge-outline">Одежда</div>
-                            <div class="badge badge-outline">Скидки</div>
-                        </div>
-                    </div>
+                    <!-- <div class="card-actions mt-6">
+                            <button class="addProjectModal btn btn-primary btn-block" data-project-id="{{ project.id }}"
+                            data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
+                            data-project-url="{{ project.url }}" data-project-status="{{ project.status }}"
+                            data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
+                            data-project-partners-count="{{ project.partners.count }}"
+                            data-project-commission-rate="{{ project.commission_rate }}"
+                            data-project-min-payout="{{ project.min_payout }}"
+                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}">
+                            <i class="fas fa-eye mr-2"></i> Просмотр
+                        </button>
+                    </div> -->
                     <div class="card-actions mt-6">
-                        <button class="btn btn-primary btn-block" onclick="showIntegrationOptions(1)">
-                            <i class="fas fa-link mr-2"></i> Подключить
+                        <button class="btn btn-primary btn-block" data-project-id="{{ project.id }}">
+                            <i class="fas fa-link mr-2"></i> Подключиться
                         </button>
                     </div>
                 </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-10">
+                <p class="text-gray-500">Проекты не найдены</p>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Пагинация -->
+
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if projects.has_previous %}
+            <a href="?page=1"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?page={{ projects.previous_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+            {% endif %}
+
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ projects.paginator.num_pages }}" value="{{ projects.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?page=' + this.value" aria-label="Номер страницы">
+                <span>из {{ projects.paginator.num_pages }}</span>
             </div>
 
-            <!-- Предложение 2 -->
-            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
-                <div class="card-body pt-4">
-                    <div class="flex justify-between items-start">
-                        <h2 class="card-title">Новая коллекция</h2>
-                        <div class="badge badge-success gap-2">
-                            <i class="fas fa-check"></i> Активно
-                        </div>
-                    </div>
-                    <div class="flex items-center text-yellow-500 mb-2">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                        <span class="text-gray-500 ml-2 text-sm">4.2 (15)</span>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Комиссия:</span>
-                            <span class="font-bold text-primary">12%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Куки:</span>
-                            <span>45 дней</span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <div class="flex flex-wrap gap-2">
-                            <div class="badge badge-outline">Новинки</div>
-                            <div class="badge badge-outline">Премиум</div>
-                        </div>
-                    </div>
-                    <div class="card-actions mt-6">
-                        <button class="btn btn-primary btn-block" onclick="showIntegrationOptions(2)">
-                            <i class="fas fa-link mr-2"></i> Подключить
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Предложение 3 -->
-            <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
-                <div class="card-body pt-4">
-                    <div class="flex justify-between items-start">
-                        <h2 class="card-title">Акция "Скидка 50%"</h2>
-                        <div class="badge badge-success gap-2">
-                            <i class="fas fa-check"></i> Активно
-                        </div>
-                    </div>
-                    <div class="flex items-center text-yellow-500 mb-2">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <span class="text-gray-500 ml-2 text-sm">5.0 (32)</span>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Комиссия:</span>
-                            <span class="font-bold text-primary">20%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Куки:</span>
-                            <span>60 дней</span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <div class="flex flex-wrap gap-2">
-                            <div class="badge badge-outline">Акция</div>
-                            <div class="badge badge-outline">Хит</div>
-                        </div>
-                    </div>
-                    <div class="card-actions mt-6">
-                        <button class="btn btn-primary btn-block" onclick="showIntegrationOptions(3)">
-                            <i class="fas fa-link mr-2"></i> Подключить
-                        </button>
-                    </div>
-                </div>
-            </div>
+            {% if projects.has_next %}
+            <a href="?page={{ projects.next_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?page={{ projects.paginator.num_pages }}"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
         </div>
     </div>
 
@@ -537,166 +500,174 @@
 
         <div class="card bg-base-100 shadow-lg">
             <div class="card-body p-2 lg:p-4">
-    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 gap-3">
-        <h2 class="card-title text-lg lg:text-xl flex items-center gap-2">
-            <i class="fas fa-globe text-primary"></i>
-            <span class="whitespace-nowrap">Все площадки</span>
-        </h2>
-        <button id="btn-add-platform" class="btn btn-primary btn-sm lg:btn-md flex items-center gap-2">
-            <i class="fas fa-plus"></i>
-            <span class="hidden lg:inline">Добавить площадку</span>
-            <span class="lg:hidden">Добавить</span>
-        </button>
-    </div>
-
-    <div class="overflow-visible">
-        <table class="table table-zebra table-pin-rows">
-            <!-- Заголовок таблицы (скрыт на мобильных) -->
-            <thead class="hidden lg:table-header-group">
-                <tr>
-                    <th class="whitespace-nowrap">Название</th>
-                    <th class="whitespace-nowrap">Тип</th>
-                    <th class="whitespace-nowrap">URL / ID</th>
-                    <th class="whitespace-nowrap">Статус</th>
-                    <th class="whitespace-nowrap">Дата добавления</th>
-                    <th class="whitespace-nowrap">Действия</th>
-                </tr>
-            </thead>
-            
-            <tbody id="platforms-tbody">
-                {% for platform in platforms %}
-                <tr class="flex flex-col sm:table-row border-b border-base-200 last:border-b-0 overflow-visible">
-                    <!-- Мобильная версия (вертикальная карточка) -->
-                    <td class="lg:hidden p-4">
-                        <div class="flex flex-col gap-2">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <strong class="text-lg">{{ platform.name }}</strong>
-                                    <div class="text-sm text-gray-500">{{ platform.get_platform_type_display }}</div>
-                                </div>
-                                <span class="badge {% if platform.status == 'Подтверждено' %}badge-success{% elif platform.status == 'На модерации' %}badge-warning{% else %}badge-error{% endif %}">
-                                    {{ platform.status }}
-                                </span>
-                            </div>
-                            
-                            <div class="text-sm text-primary truncate">{{ platform.url_or_id }}</div>
-                            
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500">{{ platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
-                                <div class="dropdown dropdown-end">
-                                    <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </div>
-                                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
-                                        <li><a href="#"><i class="fas fa-edit mr-2"></i>Ред.</a></li>
-                                        <li>
-                                            <a href="#" class="text-error delete-platform-btn" 
-                                               data-platform-id="{{ platform.id }}"
-                                               data-platform-name="{{ platform.name }}">
-                                               <i class="fas fa-trash-alt mr-2"></i>Удалить
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    
-                    <!-- Десктопная версия -->
-                    <td class="hidden lg:table-cell"><strong>{{ platform.name }}</strong></td>
-                    <td class="hidden lg:table-cell">{{ platform.get_platform_type_display }}</td>
-                    <td class="hidden lg:table-cell text-sm text-primary truncate max-w-[150px]">{{ platform.url_or_id }}</td>
-                    <td class="hidden lg:table-cell">
-                        <span class="badge {% if platform.status == 'Подтверждено' %}badge-success{% elif platform.status == 'На модерации' %}badge-warning{% else %}badge-error{% endif %}">
-                            {{ platform.status }}
-                        </span>
-                    </td>
-                    <td class="hidden lg:table-cell whitespace-nowrap">{{ platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</td>
-                    <td class="hidden lg:table-cell">
-                        <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </div>
-                            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                                <li><a href="#"><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
-                                <li>
-                                    <a href="#" class="text-error delete-platform-btn" 
-                                       data-platform-id="{{ platform.id }}"
-                                       data-platform-name="{{ platform.name }}">
-                                       <i class="fas fa-trash-alt mr-2"></i>Удалить
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
-            {% if platforms.has_previous %}
-                <a 
-                    href="?page=1" 
-                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                    aria-label="Первая страница"
-                >
-                    <i class="fas fa-angle-double-left"></i>
-                </a>
-                <a 
-                    href="?page={{ platforms.previous_page_number }}" 
-                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
-                >
-                    <span class="hidden sm:inline">Предыдущая</span>
-                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
-                </a>
-            {% endif %}
-            
-            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
-                <span class="hidden sm:inline">Страница</span>
-                <input 
-                    type="number" 
-                    min="1" 
-                    max="{{ platforms.paginator.num_pages }}" 
-                    value="{{ platforms.number }}"
-                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                    onchange="window.location.href = '?page=' + this.value"
-                    aria-label="Номер страницы"
-                >
-                <span>из {{ platforms.paginator.num_pages }}</span>
-            </div>
-            
-            {% if platforms.has_next %}
-                <a 
-                    href="?page={{ platforms.next_page_number }}" 
-                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
-                >
-                    <span class="hidden sm:inline">Следующая</span>
-                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
-                </a>
-                <a 
-                    href="?page={{ platforms.paginator.num_pages }}" 
-                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                    aria-label="Последняя страница"
-                >
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Уведомления -->
-    {% if messages %}
-    <div class="mt-4">
-        {% for message in messages %}
-            {% if "platform_add_error" in message.extra_tags %}
-                <div class="alert alert-{{ message.tags }} mb-4">
-                    {{ message }}
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 gap-3">
+                    <h2 class="card-title text-lg lg:text-xl flex items-center gap-2">
+                        <i class="fas fa-globe text-primary"></i>
+                        <span class="whitespace-nowrap">Все площадки</span>
+                    </h2>
+                    <button id="btn-add-platform" class="btn btn-primary btn-sm lg:btn-md flex items-center gap-2">
+                        <i class="fas fa-plus"></i>
+                        <span class="hidden lg:inline">Добавить площадку</span>
+                        <span class="lg:hidden">Добавить</span>
+                    </button>
                 </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
+                    <!-- Уведомления -->
+                {% if messages %}
+                    <div class="mt-4">
+                        {% for message in messages %}
+                            {% if "platform_add_error" in message.extra_tags %}
+                                <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                                    <b>{{ message }}</b>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="overflow-visible">
+                    <table class="table table-zebra table-pin-rows">
+                        <!-- Заголовок таблицы (скрыт на мобильных) -->
+                        <thead class="hidden lg:table-header-group">
+                            <tr>
+                                <th class="whitespace-nowrap">Название</th>
+                                <th class="whitespace-nowrap">Тип</th>
+                                <th class="whitespace-nowrap">URL / ID</th>
+                                <th class="whitespace-nowrap">Статус</th>
+                                <th class="whitespace-nowrap">Дата добавления</th>
+                                <th class="whitespace-nowrap">Действия</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="platforms-tbody">
+                            {% for platform in platforms %}
+                            <tr
+                                class="flex flex-col sm:table-row border-b border-base-200 last:border-b-0 overflow-visible">
+                                <!-- Мобильная версия (вертикальная карточка) -->
+                                <td class="lg:hidden p-4">
+                                    <div class="flex flex-col gap-2">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <strong class="text-lg">{{ platform.name }}</strong>
+                                                <div class="text-sm text-gray-500">{{ platform.get_platform_type_display }}</div>
+                                            </div>
+                                            <span
+                                                class="badge {% if platform.status == 'Подтверждено' %}badge-success{% elif platform.status == 'На модерации' %}badge-warning{% else %}badge-error{% endif %}">
+                                                {{ platform.status }}
+                                            </span>
+                                        </div>
+
+                                        <div class="text-sm text-primary truncate">
+                                            {% if "http" in platform.url_or_id %}
+                                                <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
+                                            {% else %}
+                                                {{ platform.url_or_id }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm text-gray-500">{{ platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
+                                            <div class="dropdown dropdown-end">
+                                                <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </div>
+                                                <ul tabindex="0"
+                                                    class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                                                    <li><a href="#"><i class="fas fa-edit mr-2"></i>Ред.</a></li>
+                                                    <li>
+                                                        <a href="#" class="text-error delete-platform-btn"
+                                                            data-platform-id="{{ platform.id }}"
+                                                            data-platform-name="{{ platform.name }}">
+                                                            <i class="fas fa-trash-alt mr-2"></i>Удалить
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Десктопная версия -->
+                                <td class="hidden lg:table-cell"><strong>{{ platform.name }}</strong></td>
+                                <td class="hidden lg:table-cell">{{ platform.get_platform_type_display }}</td>
+                                <td class="hidden lg:table-cell text-sm text-primary truncate max-w-[150px]">
+                                    <div class="text-sm text-primary truncate">
+                                            {% if "http" in platform.url_or_id %}
+                                                <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
+                                            {% else %}
+                                                {{ platform.url_or_id }}
+                                            {% endif %}
+                                        </div>
+                                </td>
+                                <td class="hidden lg:table-cell">
+                                    <span
+                                        class="badge {% if platform.status == 'Подтверждено' %}badge-success{% elif platform.status == 'На модерации' %}badge-warning{% else %}badge-error{% endif %}">
+                                        {{ platform.status }}
+                                    </span>
+                                </td>
+                                <td class="hidden lg:table-cell whitespace-nowrap">{{ platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</td>
+                                <td class="hidden lg:table-cell">
+                                    <div class="dropdown dropdown-end">
+                                        <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                        <ul tabindex="0"
+                                            class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                                            <li><a href="#"><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
+                                            <li>
+                                                <a href="#" class="text-error delete-platform-btn"
+                                                    data-platform-id="{{ platform.id }}"
+                                                    data-platform-name="{{ platform.name }}">
+                                                    <i class="fas fa-trash-alt mr-2"></i>Удалить
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <div class="col-span-full text-center py-10">
+                                <p class="text-gray-500">Площадки не найдены</p>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+                        {% if platforms.has_previous %}
+                        <a href="?page=1"
+                            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                            aria-label="Первая страница">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                        <a href="?page={{ platforms.previous_page_number }}"
+                            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                            <span class="hidden sm:inline">Предыдущая</span>
+                            <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                        </a>
+                        {% endif %}
+
+                        <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                            <span class="hidden sm:inline">Страница</span>
+                            <input type="number" min="1" max="{{ platforms.paginator.num_pages }}"
+                                value="{{ platforms.number }}"
+                                class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                onchange="window.location.href = '?page=' + this.value" aria-label="Номер страницы">
+                            <span>из {{ platforms.paginator.num_pages }}</span>
+                        </div>
+
+                        {% if platforms.has_next %}
+                        <a href="?page={{ platforms.next_page_number }}"
+                            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                            <span class="hidden sm:inline">Следующая</span>
+                            <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                        </a>
+                        <a href="?page={{ platforms.paginator.num_pages }}"
+                            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                            aria-label="Последняя страница">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1052,7 +1023,7 @@
                                 <label class="label">
                                     <span class="label-text">Телефон</span>
                                 </label>
-                                <input name="phone" type="tel" value="{{ request.user.phone }}"
+                                <input name="phone" type="tel" value="{{ request.user.phone|default:'' }}"
                                     class="input input-bordered" required />
                             </div>
                             <div class="form-control md:col-span-2">
@@ -1070,6 +1041,20 @@
                                 Сохранить изменения
                             </button>
                         </div>
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if "profile_update_error" in message.tags %}
+                        <div class="alert alert-{{ message.tags }} text-red-500">
+                            <b>{{ message }}</b>
+                        </div>
+                        {% endif %}
+                        {% if "profile_update_success" in message.tags %}
+                        <div class="alert alert-{{ message.tags }} text-green-500">
+                            <b>{{ message }}</b>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
 
@@ -1111,6 +1096,20 @@
                                 Изменить пароль
                             </button>
                         </div>
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if "password_update_error" in message.tags %}
+                        <div class="alert alert-{{ message.tags }} text-red-500">
+                            <b>{{ message }}</b>
+                        </div>
+                        {% endif %}
+                        {% if "password_update_success" in message.tags %}
+                        <div class="alert alert-{{ message.tags }} text-green-500">
+                            <b>{{ message }}</b>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -1123,49 +1122,21 @@
                             <i class="fas fa-bell text-primary mr-2"></i>
                             Уведомления
                         </h2>
-                        <div class="space-y-4">
+                        <form class="space-y-4" method="post" action="{% url 'update_notifications_settings' %}">
+                            {% csrf_token %}
                             <div class="form-control">
-                                <label class="label cursor-pointer">
+                                <label class="label cursor-pointer flex justify-between">
                                     <span class="label-text">Email уведомления</span>
-                                    <input type="checkbox" class="toggle toggle-primary" />
+                                    <input name="email_notifications"  type="checkbox" class="toggle toggle-primary" {% if user.email_notifications %}checked{% endif %}/>
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- API Settings -->
-                <div class="card bg-base-100 shadow-lg">
-                    <div class="card-body">
-                        <h2 class="card-title mb-4">
-                            <i class="fas fa-code text-primary mr-2"></i>
-                            API настройки
-                        </h2>
-                        <div class="space-y-4">
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text">API ключ</span>
-                                </label>
-                                <div class="join w-full">
-                                    <input id="api_key" type="password" value="sk-1234567890abcdef"
-                                        class="input input-bordered join-item flex-1" readonly />
-                                    <button id="show_api_key" class="btn join-item">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button id="copy_api_key" class="btn join-item">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
+                            <div class="card-actions flex justify-end mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Сохранить изменения
+                                </button>
                             </div>
-                            <button id="generate_api_key" class="btn btn-outline btn-block">
-                                <i class="fas fa-sync mr-2"></i>
-                                Сгенерировать новый ключ
-                            </button>
-                            <div class="text-sm text-base-content/60">
-                                <p><i class="fas fa-info-circle mr-1"></i> API документация доступна в разделе помощи
-                                </p>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1235,7 +1206,7 @@
                 {% endif %}
                 {% endfor %}
             </select>
-
+            {{ platformForm.description }}
             {{ platformForm.url_or_id }}
 
             <button type="submit" class="btn btn-primary mt-2">
@@ -1303,17 +1274,17 @@
 </dialog>
 
 <dialog id="delete-platform" class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg" id="modal-title">Удалить площадку?</h3>
-    <p class="py-4" id="modal-content">Вы уверены, что хотите удалить эту площадку?</p>
-    <div class="modal-action">
-      <form id="delete-platform-form" method="POST">
-        {% csrf_token %}
-        <button class="btn" id="cancel-btn">Отмена</button>
-        <button class="btn btn-error" id="confirm-delete-btn">Удалить</button>
-      </form>
+    <div class="modal-box">
+        <h3 class="font-bold text-lg" id="modal-title">Удалить площадку?</h3>
+        <p class="py-4" id="modal-content">Вы уверены, что хотите удалить эту площадку?</p>
+        <div class="modal-action">
+            <form id="delete-platform-form" method="POST">
+                {% csrf_token %}
+                <button class="btn" id="cancel-btn">Отмена</button>
+                <button class="btn btn-error" id="confirm-delete-btn">Удалить</button>
+            </form>
+        </div>
     </div>
-  </div>
 </dialog>
 
 {% endblock %}

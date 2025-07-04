@@ -6,7 +6,7 @@ export function setupIntegrationModal() {
     title.textContent = `Интеграция: ${offerTitle}`;
     modal.showModal();
   }
-  return { showIntegrationOptions,showWithdrawModal };
+  return { showIntegrationOptions };
 }
 
 export function setupWithdrawModal(){

@@ -1,39 +1,49 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
         ('partner', 'Партнёр'),
         ('advertiser', 'Рекламодатель'),
-        ('manager','Менеджер')
+        ('manager', 'Менеджер')
     )
 
-    email = models.EmailField(unique=True)
-    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES,default="Партнёр")
-    phone = models.CharField(max_length=20)
-    description = models.CharField(max_length=200,default="Описание")
+    email = models.EmailField('email address', unique=True)
+    user_type = models.CharField(
+        'Тип пользователя',
+        max_length=20,
+        choices=USER_TYPE_CHOICES,
+        default='partner' 
+    )
+    phone = models.CharField(
+        'Телефон',
+        max_length=20,
+        unique=True,
+        blank=True,
+        null=True,
+        default=None
+    )
+    description = models.CharField(
+        'Описание',
+        max_length=200,
+        default='',
+        blank=True
+    )
+    email_notifications = models.BooleanField(
+        'Email уведомления',
+        default=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-    email_notifications = models.BooleanField(default=False, verbose_name='Email уведомления')
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
-# class NotificationSettings(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='notification_settings')
-    
-#     # Настройки уведомлений
-    
-#     # sms_notifications = models.BooleanField(default=False, verbose_name='SMS уведомления')
-#     # sales_notifications = models.BooleanField(default=False, verbose_name='Уведомления о продажах')
-#     # weekly_reports = models.BooleanField(default=False, verbose_name='Еженедельные отчеты')
-#     # program_news = models.BooleanField(default=False, verbose_name='Новости программы')
-    
-#     class Meta:
-#         verbose_name = 'Настройка уведомлений'
-#         verbose_name_plural = 'Настройки уведомлений'
+    def __str__(self):
+        return self.username or self.email
 
-#     def __str__(self):
-#         return f'Настройки уведомлений для {self.user.username}'
 
 class PartnerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -46,6 +56,7 @@ class AdvertiserProfile(models.Model):
     position = models.CharField(max_length=255)
     company_name = models.CharField(max_length=255)
     industry = models.CharField(max_length=100)
+    api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None)
 
 
 class ManagerProfile(models.Model):

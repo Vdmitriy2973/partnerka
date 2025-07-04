@@ -104,6 +104,7 @@ class AdvertiserRegistrationForm(UserCreationForm):
             'id': 'advertiser_checkbox_agreement'
         }),
         label=mark_safe('Согласен с <a href="#" class="text-blue-600">условиями</a> и <a href="#" class="text-blue-600">политикой</a>'),
+        label_suffix='',
         error_messages={
             'required': 'Вы должны принять условия соглашения'
         }

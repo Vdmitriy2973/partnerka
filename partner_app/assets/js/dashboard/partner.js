@@ -3,7 +3,6 @@
  */
 
 import { setupNavigation } from './partner_modules/ui/navigation.js';
-import { setupApiKeyHandlers } from './partner_modules/api/apiKey.js';
 import { setupPlatformDeletion, setupPlatformAdd } from './partner_modules/api/platformActions.js';
 import { setupTabs } from './partner_modules/ui/tabs.js';
 import { setupClipboard } from './partner_modules/utils/clipboard.js';
@@ -17,7 +16,6 @@ import '@fortawesome/fontawesome-free/js/all'
 import '/partner_app/assets/css/dashboard/partner.css'
 
 document.addEventListener('DOMContentLoaded', () => {
-    setupApiKeyHandlers();
     setupPlatformAdd();
     setupPlatformDeletion();
     setupNavigation();

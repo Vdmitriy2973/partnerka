@@ -23,8 +23,8 @@
                         Статистика</a></li>
                 <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
                 <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
-                <li><a class="nav-item" data-page="program"><i class="fas fa-link mr-2"></i> Программа</a></li>
-                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a>
+                </li>
                 <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
             </ul>
         </div>
@@ -41,7 +41,6 @@
             </li>
             <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
             <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
-            <li><a class="nav-item" data-page="program"><i class="fas fa-link mr-2"></i> Программа</a></li>
             <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
             <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
         </ul>
@@ -50,7 +49,7 @@
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-user text-lg mt-2.5 ml-0.5"></i>
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
@@ -59,8 +58,8 @@
                 <li class="w-full p-0 cursor-pointer">
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
-                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                        <button type="submit"
+                            class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i class="fas fa-sign-out-alt mr-2"></i> Выход</button>
                     </form>
                 </li>
             </ul>
@@ -75,6 +74,8 @@
 <div class="bg-base-200 min-h-screen">
     <!-- Весь HTML контент из оригинального <body> -->
     <div class="container mx-auto px-4 py-6 max-w-7xl">
+
+        <!-- Dashboard Page -->
         <div id="dashboard" class="page-section active">
             <div class="mb-8">
                 {% if request.user.first_name %}
@@ -139,8 +140,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left Column -->
                 <div class="lg:col-span-2 space-y-6">
-                    
-                    
+
+
                     <div class="card bg-base-100 shadow">
                         <div class="card-body">
                             <h2 class="card-title">
@@ -251,19 +252,19 @@
                                 Быстрые действия
                             </h2>
                             <div class="space-y-2">
-                                <button class="btn btn-primary btn-block justify-start">
+                                <button id="add_project_quick" class="btn btn-outline btn-block justify-start nav-item" data-page="projects">
                                     <i class="fas fa-plus mr-2"></i>
-                                    Добавить партнера
+                                    Добавить проект
                                 </button>
-                                <button class="btn btn-outline btn-block justify-start">
-                                    <i class="fas fa-link mr-2"></i>
-                                    Создать ссылку
+                                <button class="btn btn-outline btn-block justify-start nav-item" data-page="payments">
+                                    <i class="fas fa-money-bill-wave mr-2"></i>
+                                    Создать выплату
                                 </button>
-                                <button class="btn btn-outline btn-block justify-start">
+                                <button class="btn btn-outline btn-block justify-start nav-item">
                                     <i class="fas fa-file-alt mr-2"></i>
                                     Отчет за месяц
                                 </button>
-                                <button class="btn btn-outline btn-block justify-start">
+                                <button class="btn btn-outline btn-block justify-start nav-item">
                                     <i class="fas fa-headset mr-2"></i>
                                     Поддержка
                                 </button>
@@ -316,7 +317,13 @@
                         <option disabled selected>Фильтры</option>
                         <option>Все проекты</option>
                         <option>Активные</option>
-                        <option>Архивные</option>
+                        <option>Неактивные</option>
+                        
+                        <option>На модерации</option>
+                        <option>Неактивные</option>
+                        <option>Подтверждено</option>
+                        <option>Отклонено</option>
+                        <option>Заблокировано</option>
                     </select>
                     <div class="indicator">
                         <button class="btn join-item btn-primary">
@@ -324,161 +331,121 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <button class="btn btn-primary" id="create_project">
                     <i class="fas fa-plus mr-2"></i> Новый проект
                 </button>
             </div>
 
+            {% if messages %}
+                {% for message in messages %}
+                    {% if "project_add_error" in message.tags %}
+                        <div class="alert alert-{{ message.tags }} text-red-500">
+                            <b>{{ message }}</b>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Проект 1 -->
+                {% for project in projects %}
                 <div class="card bg-base-100 shadow-md offer-card">
                     <div class="card-body pt-4">
                         <div class="flex justify-between items-start">
-                            <h2 class="card-title">Летняя распродажа</h2>
-                            <div class="badge badge-success gap-2">
-                                <i class="fas fa-check"></i> Активен
+                            <h2 class="card-title">{{ project.name }}</h2>
+                            <div
+                                class="badge {% if project.is_active %}badge-success{% else %}badge-error{% endif %} gap-2">
+                                <i class="fas {% if project.is_active %}fa-check{% else %}fa-times{% endif %}"></i>
+                                {% if project.is_active %}Активен{% else %}Неактивен{% endif %}
                             </div>
-                        </div>
-                        <div class="flex items-center text-yellow-500 mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span class="text-gray-500 ml-2 text-sm">4.7 (24)</span>
                         </div>
                         <div class="space-y-2">
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Комиссия:</span>
-                                <span class="font-bold">до 15%</span>
+                                <span class="text-gray-600">Статус:</span>
+                                <span class="badge {% if project.status == 'Подтверждено' %}badge-success
+                                    {% elif project.status == 'На модерации' %}badge-warning
+                                    {% else %}badge-error{% endif %}">
+                                    {{ project.status }}
+                                </span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Куки:</span>
-                                <span>30 дней</span>
+                                <span class="text-gray-600">URL проекта:</span>
+                                <span><a href="{{ project.url }}" class="text-blue-600"
+                                        target="_blank">перейти</a></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Комиссия:</span>
+                                <span class="font-bold">{{ project.commission_rate }}%</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Партнеров:</span>
-                                <span>18</span>
+                                <span>{{ project.partners.count }}</span>
                             </div>
-                        </div>
-                        <div class="mt-4">
-                            <div class="flex flex-wrap gap-2">
-                                <div class="badge badge-outline">Мода</div>
-                                <div class="badge badge-outline">Одежда</div>
-                                <div class="badge badge-outline">Скидки</div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Время добавления:</span>
+                                <span>{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
                             </div>
                         </div>
                         <div class="card-actions mt-6">
-                            <button class="btn btn-primary btn-block" onclick="showProjectDetails(1)">
+                            <button class="addProjectModal btn btn-primary btn-block" data-project-id="{{ project.id }}"
+                                data-project-name="{{ project.name }}"
+                                data-project-description="{{ project.description }}"
+                                data-project-url="{{ project.url }}" data-project-status="{{ project.status }}"
+                                data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
+                                data-project-partners-count="{{ project.partners.count }}"
+                                data-project-commission-rate="{{ project.commission_rate }}"
+                                data-project-min-payout="{{ project.min_payout }}"
+                                data-project-cookie-lifetime="{{ project.cookie_lifetime }}">
                                 <i class="fas fa-eye mr-2"></i> Просмотр
                             </button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Проект 2 -->
-                <div class="card bg-base-100 shadow-md offer-card">
-                    <div class="card-body pt-4">
-                        <div class="flex justify-between items-start">
-                            <h2 class="card-title">Новая коллекция</h2>
-                            <div class="badge badge-warning gap-2">
-                                <i class="fas fa-pause"></i> На паузе
-                            </div>
-                        </div>
-                        <div class="flex items-center text-yellow-500 mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span class="text-gray-500 ml-2 text-sm">4.2 (15)</span>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Комиссия:</span>
-                                <span class="font-bold">12%</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Куки:</span>
-                                <span>45 дней</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Партнеров:</span>
-                                <span>9</span>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <div class="flex flex-wrap gap-2">
-                                <div class="badge badge-outline">Новинки</div>
-                                <div class="badge badge-outline">Премиум</div>
-                            </div>
-                        </div>
-                        <div class="card-actions mt-6">
-                            <button class="btn btn-primary btn-block" onclick="showProjectDetails(2)">
-                                <i class="fas fa-eye mr-2"></i> Просмотр
-                            </button>
-                        </div>
-                    </div>
+                {% empty %}
+                <div class="col-span-full text-center py-10">
+                    <p class="text-gray-500">Проекты не найдены</p>
                 </div>
-
-                <!-- Проект 3 -->
-                <div class="card bg-base-100 shadow-md offer-card">
-                    <div class="card-body pt-4">
-                        <div class="flex justify-between items-start">
-                            <h2 class="card-title">Акция "Скидка 50%"</h2>
-                            <div class="badge badge-success gap-2">
-                                <i class="fas fa-check"></i> Активен
-                            </div>
-                        </div>
-                        <div class="flex items-center text-yellow-500 mb-2">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-500 ml-2 text-sm">5.0 (32)</span>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Комиссия:</span>
-                                <span class="font-bold">20%</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Куки:</span>
-                                <span>60 дней</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Партнеров:</span>
-                                <span>27</span>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <div class="flex flex-wrap gap-2">
-                                <div class="badge badge-outline">Акция</div>
-                                <div class="badge badge-outline">Хит</div>
-                            </div>
-                        </div>
-                        <div class="card-actions mt-6">
-                            <button class="btn btn-primary btn-block" onclick="showProjectDetails(3)">
-                                <i class="fas fa-eye mr-2"></i> Просмотр
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-
             <!-- Пагинация -->
-            <div class="flex justify-center mt-8">
-                <div class="join">
-                    <button class="join-item btn">«</button>
-                    <button class="join-item btn btn-active">1</button>
-                    <button class="join-item btn">2</button>
-                    <button class="join-item btn">»</button>
+
+            <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+                {% if projects.has_previous %}
+                <a href="?page=1"
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Первая страница">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a href="?page={{ projects.previous_page_number }}"
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    <span class="hidden sm:inline">Предыдущая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                </a>
+                {% endif %}
+
+                <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                    <span class="hidden sm:inline">Страница</span>
+                    <input type="number" min="1" max="{{ projects.paginator.num_pages }}" value="{{ projects.number }}"
+                        class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                        onchange="window.location.href = '?page=' + this.value" aria-label="Номер страницы">
+                    <span>из {{ projects.paginator.num_pages }}</span>
                 </div>
+
+                {% if projects.has_next %}
+                <a href="?page={{ projects.next_page_number }}"
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    <span class="hidden sm:inline">Следующая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                </a>
+                <a href="?page={{ projects.paginator.num_pages }}"
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Последняя страница">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+                {% endif %}
             </div>
         </div>
 
+        <!-- Partners Page -->
         <div id="partners" class="page-section">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold">Партнеры</h1>
@@ -502,7 +469,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="overflow-visible">
                         <table class="table overflow-visible">
                             <thead>
@@ -517,42 +484,51 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                    <div class="avatar">
-                                        <div class="w-10 rounded-full">
-                                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Аватар Марии Петровой">
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar">
+                                                <div class="w-10 rounded-full">
+                                                    <img src="https://randomuser.me/api/portraits/women/12.jpg"
+                                                        alt="Аватар Марии Петровой">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">Мария Петрова</div>
+                                                <div class="text-sm opacity-50">maria@example.com</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="font-bold">Мария Петрова</div>
-                                        <div class="text-sm opacity-50">maria@example.com</div>
-                                    </div>
-                                    </div>
-                                </td>
-                                <td>Блогер</td>
-                                <td>42</td>
-                                <td>₽125,400</td>
-                                <td><span class="badge badge-success">Активен</span></td>
-                                <td>
-                                    <!-- Кнопка с выпадающим меню -->
-                                    <div class="dropdown dropdown-end">
-                                    <button tabindex="0" class="btn btn-ghost btn-xs">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <!-- Список действий -->
-                                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                        <li><a onclick="openPartnerModal('maria@example.com')"><i class="fas fa-user-circle mr-2"></i>Профиль</a></li>
-                                        <li><a onclick="openChat('maria@example.com')"><i class="fas fa-comment mr-2"></i>Написать</a></li>
-                                        <li><a onclick="editCommission(42)"><i class="fas fa-percent mr-2"></i>Изменить комиссию</a></li>
-                                        <li class="menu-title mt-2">
-                                        <span>Администрирование</span>
-                                        </li>
-                                        <li><a onclick="togglePartnerStatus('maria@example.com')" class="text-yellow-600"><i class="fas fa-power-off mr-2"></i>Приостановить</a></li>
-                                        <li><a onclick="confirmDelete('maria@example.com')" class="text-error"><i class="fas fa-trash-alt mr-2"></i>Удалить</a></li>
-                                    </ul>
-                                    </div>
-                                </td>
+                                    </td>
+                                    <td>Блогер</td>
+                                    <td>42</td>
+                                    <td>₽125,400</td>
+                                    <td><span class="badge badge-success">Активен</span></td>
+                                    <td>
+                                        <!-- Кнопка с выпадающим меню -->
+                                        <div class="dropdown dropdown-end">
+                                            <button tabindex="0" class="btn btn-ghost btn-xs">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <!-- Список действий -->
+                                            <ul tabindex="0"
+                                                class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li><a onclick="openPartnerModal('maria@example.com')"><i
+                                                            class="fas fa-user-circle mr-2"></i>Профиль</a></li>
+                                                <li><a onclick="openChat('maria@example.com')"><i
+                                                            class="fas fa-comment mr-2"></i>Написать</a></li>
+                                                <li><a onclick="editCommission(42)"><i
+                                                            class="fas fa-percent mr-2"></i>Изменить комиссию</a></li>
+                                                <li class="menu-title mt-2">
+                                                    <span>Администрирование</span>
+                                                </li>
+                                                <li><a onclick="togglePartnerStatus('maria@example.com')"
+                                                        class="text-yellow-600"><i
+                                                            class="fas fa-power-off mr-2"></i>Приостановить</a></li>
+                                                <li><a onclick="confirmDelete('maria@example.com')"
+                                                        class="text-error"><i
+                                                            class="fas fa-trash-alt mr-2"></i>Удалить</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -581,121 +557,13 @@
                             </tbody>
                         </table>
                     </div>
-                    
-                    <div class="flex justify-center mt-6">
-                        <div class="join">
-                            <button class="join-item btn">«</button>
-                            <button class="join-item btn btn-active">1</button>
-                            <button class="join-item btn">2</button>
-                            <button class="join-item btn">»</button>
-                        </div>
-                    </div>
+
+                    <!-- Пагинация -->
                 </div>
             </div>
         </div>
 
-        <div id="program" class="page-section">
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold">Программа</h1>
-                <p class="text-base-content/60">Настройки партнерской программы</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2">
-                    <div class="card bg-base-100 shadow">
-                        <div class="card-body">
-                            <h2 class="card-title">
-                                <i class="fas fa-percent text-primary mr-2"></i>
-                                Уровни комиссий
-                            </h2>
-                            <div class="overflow-x-auto">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Уровень</th>
-                                            <th>Комиссия</th>
-                                            <th>Условия</th>
-                                            <th>Действия</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Стандарт</td>
-                                            <td>10%</td>
-                                            <td>Без условий</td>
-                                            <td>
-                                                <button class="btn btn-ghost btn-xs">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Продвинутый</td>
-                                            <td>12%</td>
-                                            <td>5+ продаж/мес</td>
-                                            <td>
-                                                <button class="btn btn-ghost btn-xs">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>VIP</td>
-                                            <td>15%</td>
-                                            <td>20+ продаж/мес</td>
-                                            <td>
-                                                <button class="btn btn-ghost btn-xs">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="card bg-base-100 shadow">
-                        <div class="card-body">
-                            <h2 class="card-title">
-                                <i class="fas fa-link text-primary mr-2"></i>
-                                Ссылки и материалы
-                            </h2>
-                            <div class="space-y-4">
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">Реферальная ссылка</span>
-                                    </label>
-                                    <div class="join">
-                                        <input type="text" class="input input-bordered join-item w-full" value="https://partnerhub.com/ref/12345" readonly>
-                                        <button class="btn btn-primary join-item">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="label">
-                                        <span class="label-text">Материалы для партнеров</span>
-                                    </label>
-                                    <div class="space-y-2">
-                                        <button class="btn btn-outline btn-block justify-start">
-                                            <i class="fas fa-image mr-2"></i>
-                                            Баннеры
-                                        </button>
-                                        <button class="btn btn-outline btn-block justify-start">
-                                            <i class="fas fa-file-alt mr-2"></i>
-                                            Условия программы
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Payments Page -->
         <div id="payments" class="page-section">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold">Выплаты</h1>
@@ -716,7 +584,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="overflow-x-auto">
                         <table class="table">
                             <thead>
@@ -774,38 +642,45 @@
                                 <i class="fas fa-user text-primary mr-2"></i>
                                 Профиль
                             </h2>
-                            <form method="POST" action="{% url 'dashboard' %}" id="profile_settings_form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <form method="POST" action="{% url 'dashboard' %}" id="profile_settings_form"
+                                class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {% csrf_token %}
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Имя</span>
                                     </label>
-                                    <input name="first_name" type="text" value="{{ request.user.first_name }}" class="input input-bordered" required/>
+                                    <input name="first_name" type="text" value="{{ request.user.first_name }}"
+                                        class="input input-bordered" required />
                                 </div>
                                 <input name="profile_submit" type="text" value="1" class="hidden" />
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Фамилия</span>
                                     </label>
-                                    <input name="last_name" type="text" value="{{ request.user.last_name }}" class="input input-bordered" required/>
+                                    <input name="last_name" type="text" value="{{ request.user.last_name }}"
+                                        class="input input-bordered" required />
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Email</span>
                                     </label>
-                                    <input name="email" type="email" value="{{ request.user.email }}" class="input input-bordered" required/>
+                                    <input name="email" type="email" value="{{ request.user.email }}"
+                                        class="input input-bordered" required />
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Телефон</span>
                                     </label>
-                                    <input name="phone" type="tel" value="{{ request.user.phone }}" class="input input-bordered" required/>
+                                    <input name="phone" type="tel" value="{{ request.user.phone|default:'' }}"
+                                        class="input input-bordered" required />
                                 </div>
                                 <div class="form-control md:col-span-2">
                                     <label class="label">
                                         <span class="label-text">О себе</span>
                                     </label>
-                                    <textarea name="description" class="textarea textarea-bordered" placeholder="Расскажите о себе..." required>{{ request.user.description }}</textarea>
+                                    <textarea name="description" class="textarea textarea-bordered"
+                                        placeholder="Расскажите о себе..."
+                                        required>{{ request.user.description }}</textarea>
                                 </div>
                             </form>
                             <div class="card-actions flex justify-end mt-4">
@@ -814,6 +689,20 @@
                                     Сохранить изменения
                                 </button>
                             </div>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if "profile_update_error" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-red-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                    {% if "profile_update_success" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-green-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
 
@@ -824,26 +713,30 @@
                                 <i class="fas fa-shield-alt text-primary mr-2"></i>
                                 Безопасность
                             </h2>
-                            <form id="change_password_form" action="{% url 'dashboard' %}" class="space-y-4" method="POST">
+                            <form id="change_password_form" action="{% url 'dashboard' %}" class="space-y-4"
+                                method="POST">
                                 {% csrf_token %}
                                 <input name="password_submit" value="1" class="hidden">
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Текущий пароль</span>
                                     </label>
-                                    <input name="old_password" type="password" class="input input-bordered" placeholder="Введите текущий пароль" required/>
+                                    <input name="old_password" type="password" class="input input-bordered"
+                                        placeholder="Введите текущий пароль" required />
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Новый пароль</span>
                                     </label>
-                                    <input name="password1" type="password" class="input input-bordered" placeholder="Введите новый пароль" required/>
+                                    <input name="password1" type="password" class="input input-bordered"
+                                        placeholder="Введите новый пароль" required />
                                 </div>
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text">Подтвердите пароль</span>
                                     </label>
-                                    <input name="password2" type="password" class="input input-bordered" placeholder="Повторите новый пароль" required/>
+                                    <input name="password2" type="password" class="input input-bordered"
+                                        placeholder="Повторите новый пароль" required />
                                 </div>
                             </form>
                             <div class="card-actions justify-end mt-4">
@@ -852,6 +745,20 @@
                                     Изменить пароль
                                 </button>
                             </div>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if "password_update_error" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-red-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                    {% if "password_update_success" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-green-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -864,14 +771,30 @@
                                 <i class="fas fa-bell text-primary mr-2"></i>
                                 Уведомления
                             </h2>
-                            <div class="space-y-4">
+                            <form class="space-y-4" method="post" action="{% url 'update_notifications_settings' %}">
+                                {% csrf_token %}
                                 <div class="form-control">
-                                    <label class="label cursor-pointer">
+                                    <label class="label cursor-pointer flex justify-between">
                                         <span class="label-text">Email уведомления</span>
-                                        <input type="checkbox" class="toggle toggle-primary" />
+                                        <input name="email_notifications"  type="checkbox" class="toggle toggle-primary" {% if user.email_notifications %}checked{% endif %}/>
                                     </label>
                                 </div>
-                            </div>
+                                <div class="card-actions flex justify-end mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save mr-2"></i>
+                                        Сохранить изменения
+                                    </button>
+                                </div>
+                            </form>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if "update_notifications_success" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-green-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
 
@@ -882,101 +805,222 @@
                                 <i class="fas fa-code text-primary mr-2"></i>
                                 API настройки
                             </h2>
-                            <div class="space-y-4">
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">API ключ</span>
-                                    </label>
-                                    <div class="join w-full">
-                                        <input type="password" value="sk-1234567890abcdef" class="input input-bordered join-item flex-1" readonly />
-                                        <button class="btn join-item">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn join-item">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
+                            <form id="apiSettingsForm" method="post" action="{% url 'update_api_settings' %}">
+                                {% csrf_token %}
+                                <div class="space-y-4">
+                                    <div class="form-control">
+                                        <label class="label">
+                                            <span class="label-text">{{ apiSettingsForm.api_key.label }}</span>
+                                        </label>
+                                        <div class="join w-full">
+                                            {{ apiSettingsForm.api_key|default:"" }}
+                                            <button type="button" id="show_api_key" class="btn join-item">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button type="button" id="copy_api_key" class="btn join-item">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" id="generate_api_key" class="btn btn-outline btn-block">
+                                        <i class="fas fa-sync mr-2"></i>
+                                        Сгенерировать новый ключ
+                                    </button>
+
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="fas fa-save mr-2"></i> Сохранить API-ключ
+                                    </button>
+
+                                    <div class="text-sm text-base-content/60">
+                                        <p>
+                                            <i class="fas fa-info-circle mr-1"></i> API документация доступна в разделе
+                                            помощи
+                                        </p>
                                     </div>
                                 </div>
-                                <button class="btn btn-outline btn-block">
-                                    <i class="fas fa-sync mr-2"></i>
-                                    Сгенерировать новый ключ
-                                </button>
-                                <div class="text-sm text-base-content/60">
-                                    <p><i class="fas fa-info-circle mr-1"></i> API документация доступна в разделе помощи</p>
-                                </div>
-                            </div>
+                            </form>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if "update_api_error" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-red-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                    {% if "update_api_success" in message.tags %}
+                                        <div class="alert alert-{{ message.tags }} text-green-500">
+                                            <b>{{ message }}</b>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
-</div>
 
 
-<!-- Модальное окно создания проекта -->
-<dialog id="createProjectModal" class="modal">
-    <div class="modal-box max-w-2xl bg-white rounded-lg shadow-md">
-  <h2 class="text-2xl font-bold text-gray-800 mb-6">Создание нового проекта</h2>
-  
-  <!-- Название проекта -->
-  <div class="mb-6">
-    <label class="block text-sm font-medium text-gray-700 mb-1">Название проекта</label>
-    <input 
-      type="text" 
-      placeholder="Например: Летняя распродажа" 
-      class="input input-bordered w-full"
-    >
-  </div>
-  
-  <!-- Описание -->
-  <div class="mb-6">
-    <label class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
-    <textarea 
-      class="textarea textarea-bordered w-full h-24" 
-      placeholder="Опишите ваш проект для партнеров"
-    ></textarea>
-  </div>
-  
-  <!-- Комиссия и Куки -->
-  <div class="grid grid-cols-2 gap-4 mb-6">
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Комиссия (%)</label>
-      <input 
-        type="number" 
-        value="10" 
-        class="input input-bordered w-full"
-      >
-    </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Срок действия куки (дней)</label>
-      <input 
-        type="number" 
-        value="30" 
-        class="input input-bordered w-full"
-      >
-    </div>
-  </div>
-  
-  <!-- Категории (статичный вариант) -->
-  <div class="mb-8">
-    <label class="block text-sm font-medium text-gray-700 mb-2">Категории</label>
-    <div class="flex flex-wrap gap-2">
-      <span class="badge badge-primary">Мода</span>
-      <span class="badge badge-outline">Электроника</span>
-      <span class="badge badge-outline">Красота</span>
-      <button class="btn btn-xs btn-ghost text-primary">
-        + Добавить
-      </button>
-    </div>
-    <div class="text-xs text-gray-500 mt-1">Максимум 3 категории</div>
-  </div>
-  
-  <!-- Кнопки действий -->
-  <div class="flex justify-end gap-3">
-    <button id="close_create_project_modal" class="btn btn-ghost">Отмена</button>
-    <button class="btn btn-primary">Добавить проект</button>
-  </div>
-</div>
-</dialog>
-{% endblock content %}
+    <!-- Модальное окно создания проекта -->
+    <dialog id="createProjectModal" class="modal">
+        <div class="modal-box max-w-2xl bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Создание нового проекта</h2>
+
+            <form method="post" action="{% url 'add_project' %}">
+                {% csrf_token %}
+
+                <!-- Название проекта -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ projectForm.name.label }}
+                    </label>
+                    {{ projectForm.name }}
+                    {% if projectForm.name.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ projectForm.name.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Описание -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ projectForm.description.label }}
+                    </label>
+                    {{ projectForm.description }}
+                </div>
+
+                <!-- URL проекта -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ projectForm.url.label }}
+                    </label>
+                    {{ projectForm.url }}
+                    {% if projectForm.url.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ projectForm.url.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Минимальная выплата -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ projectForm.min_payout.label }}
+                    </label>
+                    {{ projectForm.min_payout }}
+                    {% if projectForm.min_payout.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ projectForm.min_payout.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Комиссия и Куки -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ projectForm.commission_rate.label }}
+                        </label>
+                        {{ projectForm.commission_rate }}
+                        {% if projectForm.commission_rate.errors %}
+                        <div class="text-red-500 text-xs mt-1">{{ projectForm.commission_rate.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ projectForm.cookie_lifetime.label }}
+                        </label>
+                        {{ projectForm.cookie_lifetime }}
+                    </div>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="flex justify-end gap-3">
+                    <a id="close_create_project_modal" class="btn btn-ghost">Отмена</a>
+                    <button type="submit" class="btn btn-primary">Добавить проект</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+
+    <dialog id="projectDetailsModal" class="modal">
+        <div class="modal-box max-w-5xl p-0 overflow-y-auto max-h-screen">
+
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-primary to-primary-focus p-6 pt-12 text-white">
+                <h3 id="ProjectTitle" class="text-xl font-bold">Летняя распродажа 2023</h3>
+                <div class="flex flex-wrap items-center mt-2 gap-2">
+                    <div id="ProjectStatusBadge" class="badge badge-accent">
+                        <p id="ProjectStatusText">Активный</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body content -->
+            <div class="p-4 space-y-4">
+                <!-- Project Info -->
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-lg">
+                            Описание проекта
+                        </h4>
+                        <p id="ProjectDescription" class="mt-2 text-gray-600 text-sm">
+                            Описание
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Performance Stats -->
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-lg">
+                            Статистика
+                        </h4>
+                        <div class="grid grid-cols-2 gap-2 mt-3">
+                            <div class="stats shadow compact">
+                                <div class="stat p-2">
+                                    <div class="stat-title text-xs">Партнёров</div>
+                                    <div id="ProjectPartnersCount" class="stat-value text-primary text-lg">24</div>
+                                </div>
+                            </div>
+                            <div class="stats shadow compact">
+                                <div class="stat p-2">
+                                    <div class="stat-title text-xs">Конверсия</div>
+                                    <div id="ProjectConversion" class="stat-value text-secondary text-lg">0%</div>
+                                </div>
+                            </div>
+                            <div class="stats shadow compact w-full">
+                                <div class="stat p-2">
+                                    <div class="stat-title text-xs">Комиссия</div>
+                                    <div id="ProjectComissionRate" class="stat-value text-lg">15%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offer Details -->
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-lg">
+                            Условия
+                        </h4>
+                        <div class="space-y-2 mt-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Минимальная выплата:</span>
+                                <span id="MinPayout" class="font-medium">1 000 ₽</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Срок cookie-файлов:</span>
+                                <span id="CookiePeriod" class="font-medium">30 дней</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-action bg-base-200 p-3 sticky bottom-0">
+                <button id="closeProjectDetailsModal" class="btn btn-sm w-full">Закрыть</button>
+            </div>
+        </div>
+    </dialog>
+    {% endblock content %}
