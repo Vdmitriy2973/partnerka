@@ -12,11 +12,13 @@ urlpatterns = [
     # Партнёр
     path('add_platform',views.add_platform,name='add_platform'),
     path('del_platform/<int:platform_id>',views.delete_platform,name='del_platform'),
+    # Добавить редактирование платформы
+    path('connect_project/<int:project_id>',views.connect_project,name="connect_project"),
     
     # Рекламодатель
     path('add_project',views.add_project,name='add_project'),
     path('del_project/<int:project_id>',views.delete_project,name='del_project'),
-    # Добавить del_project в статику рекламодателя!!!!
+    path('edit_project/<int:project_id>',views.edit_project,name='edit_project'),
     
     # Модератор
     ## Действия с платформами партнёров
@@ -26,4 +28,8 @@ urlpatterns = [
     ## Действия с проектами рекламодателей
     path('approve_project/<int:project_id>',views.approve_project,name='approve_project'),
     path('reject_project/<int:project_id>',views.reject_project,name='reject_project'),
+
+    # Просмотр информации о пользователях
+    path('partner/<int:partner_id>', views.partner_detail, name='partner'),
+    path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser')
 ]

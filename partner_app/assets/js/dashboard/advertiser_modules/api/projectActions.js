@@ -1,6 +1,6 @@
 export function setupProjectActions() {
-    const addProjectBtns = document.querySelectorAll('.addProjectModal');
-    addProjectBtns.forEach(btn => {
+    const showProjectDetailsBtns = document.querySelectorAll('.showProjectDetailsModal');
+    showProjectDetailsBtns.forEach(btn => {
         btn.addEventListener('click', function () {
             const projectData = this.dataset;
 

@@ -5,21 +5,21 @@ from .user import User
 class Platform(models.Model):
     class PlatformType(models.TextChoices):
         WEBSITE = 'website', 'Веб-сайт'
-        SOC_NETWORKS = 'social_networks','Социальные сети'
+        SOC_NETWORKS = 'social_networks', 'Социальные сети'
         YOUTUBE = 'youtube', 'YouTube'
-        BLOG = 'blog','Блог'
+        BLOG = 'blog', 'Блог'
         OTHER = 'other', 'Другое'
 
     class StatusType(models.TextChoices):
-        PENDING = 'На модерации'
-        APPROVED = 'Подтверждено'
-        REJECTED = 'Отклонено'
-        BLOCKED = 'Заблокировано'
+        PENDING = 'pending', 'На модерации'
+        APPROVED = 'approved', 'Подтверждено'
+        REJECTED = 'rejected', 'Отклонено'
+        BLOCKED = 'blocked', 'Заблокировано'
 
     partner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='partner_platforms',
+        related_name='owned_platforms',  # Изменено для устранения конфликта
         verbose_name='Партнёр',
         limit_choices_to={'user_type': 'partner'},
     )

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -49,6 +50,15 @@ class PartnerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     traffic_source = models.CharField(max_length=100)
+    balance = models.DecimalField (
+        verbose_name="Мин. выплата",
+        decimal_places=2,
+        default=0.00, 
+        max_digits=10,
+        validators=[
+            MinValueValidator(0.00),
+        ],
+    )
 
 class AdvertiserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -57,6 +67,15 @@ class AdvertiserProfile(models.Model):
     company_name = models.CharField(max_length=255)
     industry = models.CharField(max_length=100)
     api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None)
+    balance = models.DecimalField (
+        verbose_name="Мин. выплата",
+        decimal_places=2,
+        default=0.00, 
+        max_digits=10,
+        validators=[
+            MinValueValidator(0.00),
+        ],
+    )
 
 
 class ManagerProfile(models.Model):

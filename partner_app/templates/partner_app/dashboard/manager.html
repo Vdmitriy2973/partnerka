@@ -384,10 +384,6 @@
                                     <i class="fas fa-times mr-2"></i> Отклонить
                                 </button>
                             </form>
-                            
-                            <!-- <button class="btn btn-outline show_project_details" data-project-id="{{ item.id }}">
-                                <i class="fas fa-eye mr-2"></i> Подробнее
-                            </button> -->
                             <button class="show_project_details btn btn-outline" 
                                     data-details="project"
                                     data-id="{{ item.id }}"
@@ -413,14 +409,14 @@
         <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
             {% if pending_items.has_previous %}
                 <a 
-                    href="?page=1" 
+                    href="?pending_items_page=1" 
                     class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
                     aria-label="Первая страница"
                 >
                     <i class="fas fa-angle-double-left"></i>
                 </a>
                 <a 
-                    href="?page={{ pending_items.previous_page_number }}" 
+                    href="?pending_items_page={{ pending_items.previous_page_number }}" 
                     class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
                 >
                     <span class="hidden sm:inline">Предыдущая</span>
@@ -436,7 +432,7 @@
                     max="{{ pending_items.paginator.num_pages }}" 
                     value="{{ pending_items.number }}"
                     class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                    onchange="window.location.href = '?page=' + this.value"
+                    onchange="window.location.href = '?pending_items_page=' + this.value"
                     aria-label="Номер страницы"
                 >
                 <span>из {{ pending_items.paginator.num_pages }}</span>
@@ -444,14 +440,14 @@
             
             {% if pending_items.has_next %}
                 <a 
-                    href="?page={{ pending_items.next_page_number }}" 
+                    href="?pending_items_page={{ pending_items.next_page_number }}" 
                     class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
                 >
                     <span class="hidden sm:inline">Следующая</span>
                     <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
                 </a>
                 <a 
-                    href="?page={{ pending_items.paginator.num_pages }}" 
+                    href="?pending_items_page={{ pending_items.paginator.num_pages }}" 
                     class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
                     aria-label="Последняя страница"
                 >
@@ -462,24 +458,24 @@
     </div>
 
     <!-- Users Management Page -->
-    <div id="users" class="page-section">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold">Управление пользователями</h1>
-            <p class="text-base-content/60">Рекламодатели и партнеры системы</p>
+    <div id="users" class="page-section px-4 sm:px-0">
+        <div class="mb-6 sm:mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold">Управление пользователями</h1>
+            <p class="text-sm sm:text-base text-base-content/60">Рекламодатели и партнеры системы</p>
         </div>
 
-        <div class="card bg-base-100 shadow">
-            <div class="card-body">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                    <h2 class="card-title">
+        <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+            <div class="card-body p-4 sm:p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-4">
+                    <h2 class="card-title text-lg sm:text-xl">
                         <i class="fas fa-users text-primary mr-2"></i>
                         Все пользователи
                     </h2>
-                    <div class="flex gap-2">
-                        <div class="form-control">
-                            <input type="text" placeholder="Поиск пользователей..." class="input input-bordered">
+                    <div class="w-full sm:w-auto grid grid-cols-1 sm:flex gap-2">
+                        <div class="form-control w-full">
+                            <input type="text" placeholder="Поиск пользователей..." class="input input-bordered w-full">
                         </div>
-                        <select class="select select-bordered">
+                        <select class="select select-bordered w-full sm:w-40">
                             <option>Все роли</option>
                             <option>Рекламодатели</option>
                             <option>Партнеры</option>
@@ -487,73 +483,75 @@
                     </div>
                 </div>
 
-                <div class="overflow-visible">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Пользователь</th>
-                                <th>Роль</th>
-                                <th>Статус</th>
-                                <th>Дата регистрации</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for user in users%}
-                            <tr>
-                                <td>
-                                    <div class="flex items-center gap-3">
-                                        <div>
-                                            {% if user.first_name and user.last_name %}
-                                                <div class="font-bold">{{ user.first_name }} {{ user.last_name }}</div>
-                                            {% else %}
-                                                <div class="font-bold">Не указано</div>
-                                            {% endif %}
-                                            <div class="text-sm opacity-50">{{ user.email }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{% if user.user_type == 'partner' %}Партнёр{% else %}Рекламодатель{%endif%}</td>
-                                <td>{% if user.is_active %}
-                                        <span class="badge badge-success"> Активен </span> 
-                                    {% else %}
-                                        <span class="badge badge-error"> Неактивен </span>
-                                    {% endif %}
-                                </td>
-                                <td>{{ user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</td>
-                                <td>
-                                    <div class="dropdown dropdown-end">
-                                        <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </div>
-                                        <ul tabindex="0"
-                                            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li><a><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
-                                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
-                                            <li><a class="text-error"><i class="fas fa-ban mr-2"></i> Заблокировать</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="space-y-4">
+                {% for user in users %}
+                <div class="card bg-base-100 shadow-sm">
+                    <div class="card-body p-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                        <!-- Колонка с именем и email (5 колонок) -->
+                        <div class="sm:col-span-5">
+                        <div class="font-bold truncate">
+                            {% if user.first_name and user.last_name %}
+                            {{ user.first_name }} {{ user.last_name }}
+                            {% else %}
+                            Не указано
+                            {% endif %}
+                        </div>
+                        <div class="text-sm opacity-50 truncate">{{ user.email }}</div>
+                        </div>
+
+                        <!-- Колонка с ролью (2 колонки) -->
+                        <div class="sm:col-span-2">
+                        <div class="text-xs text-base-content/60">Роль</div>
+                        <div>{% if user.user_type == 'partner' %}Партнёр{% else %}Рекламодатель{% endif %}</div>
+                        </div>
+
+                        <!-- Колонка с датой (2 колонки) -->
+                        <div class="sm:col-span-2">
+                        <div class="text-xs text-base-content/60">Дата</div>
+                        <div>{{ user.date_joined|date:"j E Y" }}</div>
+                        </div>
+
+                        <!-- Колонка со статусом (1 колонка) -->
+                        <div class="sm:col-span-1">
+                        <span class="badge {% if user.is_active %}badge-success{% else %}badge-error{% endif %}">
+                            {% if user.is_active %}Активен{% else %}Неактивен{% endif %}
+                        </span>
+                        </div>
+
+                        <!-- Колонка с кнопками (2 колонки) -->
+                        <div class="sm:col-span-2 text-right">
+                        <div class="dropdown dropdown-end">
+                            <button tabindex="0" class="btn btn-ghost btn-xs">
+                            <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                            <ul tabindex="0" class="dropdown-content menu shadow bg-base-100 rounded-box w-52">
+                            <li><a href="{% url user.user_type user.id %}"><i class="fas fa-eye mr-2"></i> Просмотр</a></li>
+                            <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
+                            <li><a class="text-error"><i class="fas fa-ban mr-2"></i> Заблокировать</a></li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {% endfor %}
                 </div>
             </div>
         </div>
-        <!-- Pagination -->
-         <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+
+        <!-- Пагинация -->
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
             {% if users.has_previous %}
                 <a 
-                    href="?page=1" 
+                    href="?users_page=1" 
                     class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
                     aria-label="Первая страница"
                 >
                     <i class="fas fa-angle-double-left"></i>
                 </a>
                 <a 
-                    href="?page={{ users.previous_page_number }}" 
+                    href="?users_page={{ users.previous_page_number }}" 
                     class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
                 >
                     <span class="hidden sm:inline">Предыдущая</span>
@@ -569,7 +567,7 @@
                     max="{{ users.paginator.num_pages }}" 
                     value="{{ users.number }}"
                     class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                    onchange="window.location.href = '?page=' + this.value"
+                    onchange="window.location.href = '?users_page=' + this.value"
                     aria-label="Номер страницы"
                 >
                 <span>из {{ users.paginator.num_pages }}</span>
@@ -577,14 +575,14 @@
             
             {% if users.has_next %}
                 <a 
-                    href="?page={{ users.next_page_number }}" 
+                    href="?users_page={{ users.next_page_number }}" 
                     class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
                 >
                     <span class="hidden sm:inline">Следующая</span>
                     <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
                 </a>
                 <a 
-                    href="?page={{ users.paginator.num_pages }}" 
+                    href="?users_page={{ users.paginator.num_pages }}" 
                     class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
                     aria-label="Последняя страница"
                 >

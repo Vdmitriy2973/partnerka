@@ -3,27 +3,45 @@ from .user import User
 from .project import Project
 
 class ProjectPartner(models.Model):
-    project = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE,
-        related_name='project_partners'
-    )
+    class StatusType(models.TextChoices):
+        ACTIVE = 'active', 'Активен'
+        SUSPENDED = 'suspended', 'Приостановлен'
+        BLOCKED = 'blocked', 'Заблокировано'
 
     partner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='partner_projects'
+        related_name='project_memberships'  # Изменено для устранения конфликта
+    )
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='partner_memberships'  # Изменено для устранения конфликта
     )
 
     joined_at = models.DateTimeField(auto_now_add=True)
     
-    is_approved = models.BooleanField(
-        default=False,
+    status = models.CharField(
+        max_length=20,
+        default=StatusType.ACTIVE,
+        choices=StatusType.choices,
+        verbose_name='Статус взаимодействия',
         help_text="Подтверждён ли доступ партнёра к проекту"
+    )
+
+    custom_commission = models.DecimalField(
+        null=True, 
+        blank=True,
+        decimal_places=2, 
+        max_digits=10,
+        verbose_name='Индивидуальная комиссия'
     )
 
     class Meta:
         unique_together = [('project', 'partner')]
+        verbose_name = 'Участник проекта'
+        verbose_name_plural = 'Участники проектов'
 
     def __str__(self):
         return f"{self.partner} → {self.project}"

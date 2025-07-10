@@ -1,0 +1,179 @@
+{% extends 'partner_app/base.html' %}
+{% load tz %}
+
+{% block title %} Рекламодатель {{ partner }} {% endblock %}
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 py-8 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div class="max-w-4xl mx-auto">
+
+        <!-- Заголовок с анимацией -->
+        <h1 class="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary animate-slide-up">
+            Профиль партнера
+        </h1>
+        
+        <!-- Основная карточка партнера -->
+        <div class="card bg-base-100 shadow-xl mb-8 transform transition-all hover:scale-[1.01] hover:shadow-2xl">
+            <div class="card-body">
+                <div class="flex flex-col md:flex-row gap-6 items-start">
+                    
+                    <div class="flex-1">
+                        <h2 class="card-title text-2xl mb-2">
+                            <div class="badge badge-primary badge-lg ml-2 animate-pulse">Партнер</div>
+                            {% if partner.first_name and partner.last_name %}
+                                {{ partner.first_name }} {{ partner.last_name }}
+                            {% else %}
+                                {{ partner }}
+                            {% endif %}
+                        </h2>
+                        <p class="text-base-content/60">Присоединился {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция платформ -->
+        <div class="mb-8 animate-slide-up delay-100">
+            <h3 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Подключенные платформы</span>
+                <span class="badge badge-secondary badge-lg">{{ platform_count }}</span>
+            </h3>
+
+            {% if platforms %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for platform in platforms %}
+                <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow transform hover:-translate-y-1">
+                    <div class="card-body">
+                        <div class="flex justify-between items-start">
+                            <h4 class="card-title text-lg">{{ platform.name }}</h4>
+                            <div class="badge badge-outline {% if platform.is_active %}badge-success{% else %}badge-error{% endif %}">
+                                {% if platform.is_active %}Активна{% else %}Приостановлена{% endif %}
+                            </div>
+                        </div>
+                        
+                        <p class="text-base-content/80 mb-3 w-full break-words overflow-wrap-break-word whitespace-normal">{{ platform.description|default:"Описание отсутствует" }}</p>
+                        
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                </svg>
+                                <span class="font-medium">Тип:</span>
+                                <span>{{ platform.get_platform_type_display }}</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                                <span class="font-medium">URL/ID:</span>
+                                {% if 'http' in platform.url_or_id %}
+                                    <a href="{{ platform.url_or_id }}" target="_blank" class="link link-info truncate max-w-[160px]">{{ platform.url_or_id }}</a>
+                                {% else %}
+                                    <p>{{ platform.url_or_id }}</p>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="font-medium">Создана:</span>
+                                <span>{{ platform.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info shadow-lg">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span>Нет подключенных платформ</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Пагинация -->
+
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if platforms.has_previous %}
+            <a href="?platformы_page=1"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?platforms_page={{ platforms.previous_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+            {% endif %}
+
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ platforms.paginator.num_pages }}" value="{{ platforms.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?platform_page=' + this.value" aria-label="Номер страницы">
+                <span>из {{ platforms.paginator.num_pages }}</span>
+            </div>
+
+            {% if platforms.has_next %}
+            <a href="?platform_page={{ platforms.next_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?platform_page={{ platforms.paginator.num_pages }}"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Кнопка назад -->
+        <div class="flex flex-wrap gap-4 justify-end">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left mr-2"></i> Назад
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Анимации -->
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+    .animate-slide-up {
+        animation: slideUp 0.5s ease-out;
+    }
+    .delay-100 {
+        animation-delay: 0.1s;
+    }
+    .delay-200 {
+        animation-delay: 0.2s;
+    }
+</style>
+{% endblock %}

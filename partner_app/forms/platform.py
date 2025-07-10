@@ -8,22 +8,23 @@ class PlatformForm(forms.ModelForm):
         fields = ['name', 'platform_type','description', 'url_or_id']
         widgets = {
             'name': forms.TextInput(attrs={
-                'placeholder': 'Название площадки',
+                'placeholder': 'Название площадки (мин. 3 символа)',
                 'class':'input input-bordered w-full hover:outline-none',
-                'required': True}),
+                'required': 'required'}),
             'platform_type': forms.Select(attrs={
                 'class': 'select select-bordered w-full hover:outline-none',
-                'required': True,
+                'required': 'required',
             }),
             'description': forms.Textarea(attrs={
                 'class': 'textarea textarea-bordered w-full h-32',
                 'rows': 5,
-                'placeholder': 'Опишите вашу площадку (минимум 15 символов)...'
+                'placeholder': 'Опишите вашу площадку (минимум 15 символов)...',
+                'required':'required'
             }),
             'url_or_id': forms.TextInput(attrs={
                 'placeholder': 'Введите полный URL или ID площадки',
                 'class':'input input-bordered w-full hover:outline-none',
-                'required': True}),
+                'required': 'required'}),
         }
     
     def __init__(self, *args, **kwargs):

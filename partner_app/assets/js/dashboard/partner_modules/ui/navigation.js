@@ -18,7 +18,7 @@ export function setupNavigation() {
 
   // Восстановление состояния из localStorage
 
-  const allowed_pages = ['dashboard','offers','my_platforms','links','payments','settings'];
+  const allowed_pages = ['dashboard','offers','my_platforms','my_connections','links','payments','settings'];
 
   const savedPage = localStorage.getItem('activePage') || 'dashboard';
   if(!allowed_pages.includes(savedPage)){

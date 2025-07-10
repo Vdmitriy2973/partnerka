@@ -86,7 +86,7 @@ export function setupApiKeyHandlers() {
       document.body.removeChild(textarea);
 
       if (successful) {
-        showAlert('API ключ скопирован (резервный метод)', 'success');
+        showAlert('API ключ скопирован', 'success');
       } else {
         throw new Error('Резервное копирование не удалось');
       }

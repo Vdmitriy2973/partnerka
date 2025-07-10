@@ -4,23 +4,16 @@ from .user import User
 
 
 class Project(models.Model):
-    class Project(models.TextChoices):
-        WEBSITE = 'website', 'Веб-сайт'
-        SOC_NETWORKS = 'social_networks','Социальные сети'
-        YOUTUBE = 'youtube', 'YouTube'
-        BLOG = 'blog','Блог'
-        OTHER = 'other', 'Другое'
-
     class StatusType(models.TextChoices):
-        PENDING = 'На модерации'
-        APPROVED = 'Подтверждено'
-        REJECTED = 'Отклонено'
-        BLOCKED = 'Заблокировано'
+        PENDING = 'pending', 'На модерации'
+        APPROVED = 'approved', 'Подтверждено'
+        REJECTED = 'rejected', 'Отклонено'
+        BLOCKED = 'blocked', 'Заблокировано'
         
     advertiser = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='platforms',
+        related_name='managed_projects',  # Изменено для ясности
         verbose_name='Рекламодатель',
         limit_choices_to={'user_type': 'advertiser'}
     )
@@ -28,9 +21,11 @@ class Project(models.Model):
     partners = models.ManyToManyField(
         User,
         through='ProjectPartner', 
-        related_name='projects',
+        through_fields=('project', 'partner'),
+        related_name='participating_projects',  # Изменено для устранения конфликта
         verbose_name="Партнёры проекта",
-        limit_choices_to={'user_type': 'partner'}
+        limit_choices_to={'user_type': 'partner'},
+        blank=True
     )
 
     name = models.CharField(
@@ -98,4 +93,4 @@ class Project(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name})"
+        return f"{self.name}"
