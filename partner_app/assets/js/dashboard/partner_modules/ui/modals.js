@@ -60,7 +60,7 @@ export function setupProjectStatsModal() {
     const link = document.getElementById('ProjectPartnerLink');
     if (!navigator.clipboard) {
       console.warn('Clipboard API не поддерживается');
-      fallbackCopy(apiKey);
+      fallbackCopy(link.value);
       return;
     }
 
