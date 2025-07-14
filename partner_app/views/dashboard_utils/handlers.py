@@ -92,16 +92,3 @@ def _handle_password_update(request, user):
     user.save()
     update_session_auth_hash(request, user)
     messages.success(request, "Пароль успешно изменен!",extra_tags="password_update_success")
-
-
-def _get_dashboard_template(user_type):
-    """Выбрать нужную верстку в зависимости от типа пользователя"""
-    match user_type:
-        case "partner":
-            return "partner_app/dashboard/partner.html"
-        case "advertiser":
-            return "partner_app/dashboard/advertiser.html"
-        case "manager":
-            return "partner_app/dashboard/manager.html" 
-        case _:
-            return None

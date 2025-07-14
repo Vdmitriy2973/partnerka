@@ -24,7 +24,6 @@ def handle_partner_dashboard(request):
         
         # Применение поиска
         if platforms_search_q:
-            print("sfdpfdsoksfdp")
             platforms = _apply_search(platforms, platforms_search_q, ['name'])
         
         projects = _get_available_projects(request)

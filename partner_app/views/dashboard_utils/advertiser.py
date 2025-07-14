@@ -31,9 +31,9 @@ def handle_advertiser_dashboard(request):
     ).select_related('advertiser').order_by('-created_at')
 
     if partners_search_q:
-        print('partners')
+
         partners = _apply_search(partners,partners_search_q,["email"])
-    print(partners)
+
     if projects_search_q:
         projects = _apply_search(projects, projects_search_q,['name'])
 

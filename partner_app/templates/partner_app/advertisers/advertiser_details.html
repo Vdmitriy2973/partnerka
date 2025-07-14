@@ -24,7 +24,7 @@
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-user text-primary"></i>
                                 <span class="font-semibold">Контактное лицо:</span>
-                                <span>{{ advertiser.get_full_name|default:"advertiser.username" }}</span>
+                                <span>{{ advertiser.get_full_name|default:"Не указано" }}</span>
                             </div>
                         </div>
                         <p class="text-base-content/60">Присоединился {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>

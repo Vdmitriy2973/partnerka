@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from .dashboard_utils import (
     handle_partner_dashboard,
     handle_advertiser_dashboard,
@@ -6,8 +6,7 @@ from .dashboard_utils import (
 )
 from .dashboard_utils.handlers import (
     _handle_password_update,
-    _handle_profile_update,
-    _get_dashboard_template
+    _handle_profile_update
 )
 
 def dashboard(request):

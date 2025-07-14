@@ -4,20 +4,20 @@ from .project import Project
 
 class ProjectPartner(models.Model):
     class StatusType(models.TextChoices):
-        ACTIVE = 'active', 'Активен'
-        SUSPENDED = 'suspended', 'Приостановлен'
-        BLOCKED = 'blocked', 'Заблокировано'
+        ACTIVE = 'Активен'
+        SUSPENDED = 'Приостановлен'
+        BLOCKED = 'Заблокировано'
 
     partner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='project_memberships'  # Изменено для устранения конфликта
+        related_name='project_memberships'  
     )
 
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
-        related_name='partner_memberships'  # Изменено для устранения конфликта
+        related_name='partner_memberships'
     )
 
     joined_at = models.DateTimeField(auto_now_add=True)

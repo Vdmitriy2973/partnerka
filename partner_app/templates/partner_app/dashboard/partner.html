@@ -7,7 +7,7 @@
 {% block head_js_scripts %}
 {% vite_asset 'partner_app/assets/js/dashboard/partner.js' %}
 {% endblock %}
-{% block title %}Личный кабинет{% endblock %}
+{% block title %}Панель управления{% endblock %}
 
 {% block header %}
 <!-- Navigation -->
@@ -20,15 +20,12 @@
                 <i class="fas fa-bars text-lg"></i>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie mr-2"></i>Статистика</a>
-                </li>
-                <li><a class="nav-item" data-page="offers"><i class="fas fa-boxes mr-2"></i>Предложения</a></li>
-                <li><a class="nav-item" data-page="my_connections"><i
-                            class="fas fa-laptop-code mr-1 sm:mr-2"></i>Программы</a></li>
-                <li><a class="nav-item" data-page="my_platforms"><i class="fas fa-globe mr-2"></i>Площадки</a></li>
-                <li><a class="nav-item" data-page="links"><i class="fas fa-link mr-2"></i>Ссылки</a></li>
-                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i>Выплаты</a></li>
-                <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i>Настройки</a></li>
+                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i>Дашборд</a></li>
+                <li><a class="nav-item" data-page="offers"><i class="fas fa-boxes"></i>Предложения</a></li>
+                <li><a class="nav-item" data-page="my_connections"><i class="fas fa-laptop-code"></i>Программы</a></li>
+                <li><a class="nav-item" data-page="my_platforms"><i class="fas fa-globe"></i>Площадки</a></li>
+                <li><a class="nav-item" data-page="links"><i class="fas fa-link"></i>Ссылки</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave"></i>Выплаты</a></li>
             </ul>
         </div>
 
@@ -36,30 +33,50 @@
         <a href="{% url 'index' %}"
             class="btn btn-ghost p-0 sm:p-2 text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
             <i class="fas fa-handshake text-blue-600 mr-1 sm:mr-2"></i>
-            <span class="hidden sm:inline">AffiliateHub</span>
-            <span class="sm:hidden">AH</span>
+            <span class="hidden xl:inline">AffiliateHub</span>
+            <span class="xl:hidden">AH</span>
         </a>
     </div>
 
     <!-- Десктопное меню (скрыто на мобильных) -->
     <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1 gap-1">
-            <li><a class="nav-item active btn-sm" data-page="dashboard"><i
-                        class="fas fa-chart-pie mr-1 sm:mr-2"></i><span class="hidden sm:inline">Статистика</span></a>
+        <ul class="menu menu-horizontal px-1 gap-0.5 xl:gap-0.1">
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="dashboard">
+                <i class="fas fa-chart-pie"></i>
+                <span class="hidden sm:inline">Дашборд</span>
+            </a>
             </li>
-            <li><a class="nav-item btn-sm" data-page="offers"><i class="fas fa-boxes mr-2"></i><span
-                        class="hidden sm:inline">Предложения</span></a></li>
-            <li><a class="nav-item btn-sm" data-page="my_connections"><i
-                        class="fas fa-laptop-code mr-1 sm:mr-2"></i><span class="hidden sm:inline">Программы</span></a>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="offers">
+                <i class="fas fa-boxes"></i>
+                <span class="hidden sm:inline">Предложения</span>
+            </a>    
             </li>
-            <li><a class="nav-item btn-sm" data-page="my_platforms"><i class="fas fa-globe mr-1 sm:mr-2"></i><span
-                        class="hidden sm:inline">Площадки</span></a></li>
-            <li><a class="nav-item btn-sm" data-page="links"><i class="fas fa-link mr-1 sm:mr-2"></i><span
-                        class="hidden sm:inline">Ссылки</span></a></li>
-            <li><a class="nav-item btn-sm" data-page="payments"><i class="fas fa-money-bill-wave mr-1 sm:mr-2"></i><span
-                        class="hidden sm:inline">Выплаты</span></a></li>
-            <li><a class="nav-item btn-sm" data-page="settings"><i class="fas fa-cog mr-1 sm:mr-2"></i><span
-                        class="hidden sm:inline">Настройки</span></a></li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="my_connections">
+                <i class="fas fa-laptop-code"></i>
+                <span class="hidden sm:inline">Программы</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs text-sm xl:text-sm flex items-center" data-page="my_platforms">
+                <i class="fas fa-globe"></i>
+                <span class="hidden sm:inline">Площадки</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="links">
+                <i class="fas fa-link"></i>
+                <span class="hidden sm:inline">Ссылки</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="payments">
+                <i class="fas fa-money-bill-wave"></i>
+                <span class="hidden sm:inline">Выплаты</span>
+            </a>
+            </li>
         </ul>
     </div>
 
@@ -72,14 +89,12 @@
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
-                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-2"></i> Профиль</a>
-                </li>
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a></li>
+                <li><a class="nav-item text-lg w-full" data-page="settings"><i class="fas fa-cog"></i> Настройки</a></li>
                 <li class="w-full p-0 cursor-pointer">
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
-                        <button type="submit"
-                            class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
-                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start"><i class="fas fa-sign-out-alt mr-2"></i> Выход</button>
                     </form>
                 </li>
             </ul>
@@ -553,8 +568,7 @@
                                         </div>
 
                                         <div class="flex justify-between items-center">
-                                            <span class="text-sm text-gray-500">{{
-                                                platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
+                                            <span class="text-sm text-gray-500">{{  platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
                                             <div class="dropdown dropdown-end">
                                                 <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
                                                     <i class="fas fa-ellipsis-v"></i>
@@ -601,12 +615,16 @@
                                         </div>
                                         <ul tabindex="0"
                                             class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                                            <li><a href="#"><i class="fa-solid fa-square-poll-vertical"></i>Статистика</a></li>
+                                            <li class="show_partner_platforms">
+                                                <a href="#">
+                                                    <i class="fa-solid fa-square-poll-vertical"></i>Статистика
+                                                </a>
+                                            </li>
                                             <li><a href="#"><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
-                                            <li>
-                                                <a href="#" class="text-error delete-platform-btn"
+                                            <li class="text-error delete-platform-btn"
                                                     data-platform-id="{{ platform.id }}"
                                                     data-platform-name="{{ platform.name }}">
+                                                <a href="#">
                                                     <i class="fas fa-trash-alt mr-2"></i>Удалить
                                                 </a>
                                             </li>
@@ -724,6 +742,10 @@
                             <div class="font-medium">{{ project.partner_memberships.first.custom_commission }} %</div>
                         </div>
                         <div>
+                            <span class="text-gray-600">Рекламодатель</span>
+                            <a href="{% url 'advertiser' project.advertiser.id %}" class="font-bold">{{ project.advertiser }}</a>
+                        </div>
+                        <div>
                             <div class="text-gray-500">Доход</div>
                             <div class="font-medium text-success">
                                 ₽{{ project.income|default:"0" }}
@@ -745,14 +767,27 @@
                         </div>
                     </div>
                     <div class="card-actions justify-between">
-                        <a href="#" class="btn btn-primary btn-xs sm:btn-sm">
+                        <a href="#" class="show_project_stats btn btn-primary btn-xs sm:btn-sm"
+                            data-project-name="{{ project.name }}"
+                            data-commission-rate="{{ project.partner_memberships.first.custom_commission }}">
                             <i class="fas fa-chart-line"></i>
                             <span class="hidden sm:inline ml-1">Статистика</span>
                         </a>
-                        <a href="#" class="btn btn-ghost btn-xs sm:btn-sm">
-                            <i class="fas fa-link"></i>
-                            <span class="hidden sm:inline ml-1">Ссылки</span>
-                        </a>
+                        <div class="dropdown dropdown-end">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li><a href="#"><i class="fas fa-edit mr-2"></i>Приостановить</a></li>
+                                <li class="text-error delete-platform-btn"
+                                    data-platform-id="{{ platform.id }}"
+                                    data-platform-name="{{ platform.name }}">
+                                    <a href="#">
+                                        <i class="fas fa-trash-alt mr-2"></i>Отключиться
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>            
@@ -1473,7 +1508,7 @@
 <!-- Модальные окна -->
 
 <!-- Withdraw Modal -->
-<dialog id="withdrawModal" class="modal">
+<dialog id="withdrawModal" class="modal backdrop-blur-sm">
     <div class="modal-box">
         <h3 class="font-bold text-lg mb-4">Запросить выплату</h3>
         <div class="space-y-4">
@@ -1512,7 +1547,7 @@
 </dialog>
 
 <!-- Modal добавить площадку -->
-<dialog id="modal-add-platform" class="modal">
+<dialog id="modal-add-platform" class="modal backdrop-blur-sm">
     <div class="modal-box relative max-w-lg">
         <label for="modal-add-platform" class="btn btn-sm btn-circle absolute right-2 top-2"
             id="btn-close-modal">✕</label>
@@ -1542,64 +1577,8 @@
     </div>
 </dialog>
 
-<!-- Integration Modal -->
-<dialog id="integrationModal" class="modal">
-    <div class="modal-box max-w-2xl">
-        <h3 class="font-bold text-lg" id="integrationModalTitle">Способы интеграции</h3>
-        <div class="py-4">
-            <div class="tabs tabs-boxed mb-4">
-                <a class="tab tab-active">Ссылки</a>
-                <a class="tab">Материалы</a>
-            </div>
-
-            <div id="integrationContent">
-                <!-- Контент будет динамически меняться в зависимости от выбранной вкладки -->
-                <div class="space-y-4">
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Ваша партнерская ссылка</span>
-                        </label>
-                        <div class="join w-full">
-                            <input type="text" id="partnerLink" class="input input-bordered join-item w-full"
-                                value="https://affiliatehub.com/ref/partner123/summer-sale" readonly>
-                            <button class="btn join-item" onclick="copyToClipboard('partnerLink')">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Добавить UTM-метки (необязательно)</span>
-                        </label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            <input type="text" placeholder="utm_source" class="input input-bordered" value="your_site">
-                            <input type="text" placeholder="utm_medium" class="input input-bordered" value="affiliate">
-                            <input type="text" placeholder="utm_campaign" class="input input-bordered"
-                                value="summer_sale">
-                            <input type="text" placeholder="utm_content" class="input input-bordered" value="banner_1">
-                        </div>
-                    </div>
-
-                    <div class="alert alert-info mt-4">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Используйте эту ссылку в соцсетях, блогах, email-рассылках и других каналах</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-action">
-            <form method="dialog">
-                <button class="btn btn-ghost">Закрыть</button>
-            </form>
-            <button class="btn btn-primary">
-                <i class="fas fa-check mr-2"></i> Подтвердить
-            </button>
-        </div>
-    </div>
-</dialog>
-
-<dialog id="delete-platform" class="modal">
+<!-- Modal удалить площадку -->
+<dialog id="delete-platform" class="modal backdrop-blur-sm">
     <div class="modal-box">
         <h3 class="font-bold text-lg" id="modal-title">Удалить площадку?</h3>
         <p class="py-4" id="modal-content">Вы уверены, что хотите удалить эту площадку?</p>
@@ -1614,7 +1593,7 @@
 </dialog>
 
 <!-- Подключиться к проекту -->
-<dialog id="partnerConnectModal" class="modal">
+<dialog id="partnerConnectModal" class="modal backdrop-blur-sm">
     <div class="modal-box w-11/12 max-w-5xl">
         <form method="post" id="partnerConnectForm">
             {% csrf_token %}
@@ -1664,251 +1643,227 @@
     </div>
 </dialog>
 
-<!-- Модальное окно статистики -->
-<dialog class="modal" id="projectStatsModal">
-  <div class="modal-box max-w-2xl">
-    <div class="flex justify-between items-start mb-4">
-      <h3 class="text-xl font-bold">Статистика проекта</h3>
-      <button onclick="document.getElementById('projectStatsModal').close()" class="btn btn-sm btn-circle">
-        ✕
+<!-- Модальное окно статистики подключенного проекта -->
+<dialog id="connectedProjectStatsModal" class="modal backdrop-blur-sm">
+  <!-- Анимация появления -->
+  <div class="modal-box max-w-md p-0 animate-fade-in-up animate-duration-300">
+    <!-- Хедер с кнопкой закрытия -->
+    <div class="sticky top-0 z-10 bg-base-100/90 p-4 border-b flex justify-between items-center">
+      <h3 class="text-xl font-bold">
+        <i class="fas fa-chart-pie mr-2 text-primary"></i>
+        <span id="projectTitle">Название проекта</span>
+      </h3>
+      <button id="close_project_stats_header" class="btn btn-circle btn-ghost btn-sm transition-transform hover:rotate-90">
+        <i class="fas fa-times text-lg"></i>
       </button>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Блок основной статистики -->
-      <div class="space-y-4">
-        <div class="stats bg-base-200 w-full">
-          <div class="stat">
-            <div class="stat-title">Комиссия</div>
-            <div class="stat-value text-primary">10,00%</div>
-            <div class="stat-desc">Дата подключения: 8 июля 2025</div>
-          </div>
+    <!-- Основной контент -->
+    <div class="p-6 overflow-y-auto max-h-[70vh]">
+      <!-- Основная статистика -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <!-- Блок комиссии -->
+        <div class="bg-base-200 p-4 rounded-lg">
+          <div class="text-sm opacity-75 mb-1">Комиссия</div>
+          <div class="text-2xl font-bold text-primary" id="commissionRate">10%</div>
+          <div class="text-sm opacity-75 mb-1">Дата подключения</div>
+          <div class="text-xs opacity-60 mt-1" id="joinDate">с 15.07.2025</div>
         </div>
         
-        <div class="stats shadow bg-base-100 w-full">
-          <div class="stat">
-            <div class="stat-title">Доход</div>
-            <div class="stat-value">₽0</div>
-            <div class="stat-desc">За все время</div>
-          </div>
+        <!-- Блок переходов -->
+        <div class="bg-base-200 p-4 rounded-lg">
+          <div class="text-sm opacity-75 mb-1">Переходы</div>
+          <div class="text-2xl font-bold" id="clickCount">1,248</div>
+          <div class="text-xs opacity-60 mt-1">за все время</div>
+        </div>
+        
+        <!-- Блок действий -->
+        <div class="bg-base-200 p-4 rounded-lg">
+          <div class="text-sm opacity-75 mb-1">Действия</div>
+          <div class="text-2xl font-bold text-secondary" id="actionCount">31</div>
+          <div class="text-xs opacity-60 mt-1">конверсий</div>
+        </div>
+        
+        <!-- Блок конверсии -->
+        <div class="bg-base-200 p-4 rounded-lg">
+          <div class="text-sm opacity-75 mb-1">Конверсия</div>
+          <div class="text-2xl font-bold text-accent" id="conversionRate">2.5%</div>
+          <div class="text-xs opacity-60 mt-1">от переходов</div>
         </div>
       </div>
       
-      <!-- График конверсий -->
-      <div class="bg-base-100 p-4 rounded-box">
-        <h4 class="font-medium mb-3">Конверсии по дням</h4>
-        <div class="h-40 flex items-end gap-1">
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-          <div class="flex-1 bg-primary/20 rounded-t flex items-center justify-center">0</div>
-        </div>
-        <div class="flex justify-between text-xs mt-1">
-          <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Блок ссылок -->
-    <div class="mt-6">
-      <h4 class="font-medium mb-3">Партнерские ссылки</h4>
-      <div class="space-y-2">
-        <div class="flex items-center gap-2">
-          <input type="text" value="https://example.com/ref/abc123/" 
-                 class="input input-bordered flex-1" readonly>
-          <button class="btn btn-square" onclick="copyToClipboard(this)">
+      <!-- Партнерская ссылка -->
+      <div class="mb-6">
+        <h4 class="font-medium mb-3 flex items-center">
+          <i class="fas fa-link mr-2 text-info"></i>
+          Партнерская ссылка
+        </h4>
+        
+        <div class="flex items-center gap-2 mb-2">
+          <input type="text" id="ProjectPartnerLink" value="https://example.com/ref/abc123/" 
+                 class="input input-bordered w-full" readonly>
+          <button id="copy_partner_link"
+                  class="btn btn-square btn-primary">
             <i class="fas fa-copy"></i>
           </button>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button class="btn btn-sm">
-            <i class="fas fa-link mr-1"></i> Основная
-          </button>
-          <button class="btn btn-sm">
-            <i class="fas fa-barcode mr-1"></i> QR-код
-          </button>
-          <button class="btn btn-sm">
-            <i class="fas fa-palette mr-1"></i> Баннеры
-          </button>
+        
+        <div class="text-xs opacity-60">
+          Скопируйте и делитесь этой ссылкой для привлечения клиентов
+        </div>
+      </div>
+      
+      <!-- Рекомендации -->
+      <div class="alert alert-info">
+        <div>
+          <i class="fas fa-lightbulb"></i>
+          <span>Размещайте ссылку в соцсетях и блогах для максимального охвата</span>
         </div>
       </div>
     </div>
     
-    <!-- Дополнительная информация -->
-    <div class="mt-6 pt-4 border-t">
-      <h4 class="font-medium mb-2">Рекомендации</h4>
-      <div class="alert alert-info">
-        <div>
-          <i class="fas fa-info-circle"></i>
-          <span>Поделитесь ссылкой в соцсетях, чтобы получить первые конверсии</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</dialog>
-
-<dialog id="partner_stats_modal" class="modal">
-  <div class="modal-box max-w-4xl w-full max-h-[90vh] overflow-hidden">
-    <!-- Заголовок и кнопка закрытия -->
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-2xl font-bold">
-        <i class="fas fa-project-diagram mr-2 text-primary"></i>
-        Статистика проекта "Название проекта"
-      </h3>
-      <button onclick="document.getElementById('partner_stats_modal').close()" class="btn btn-circle btn-ghost btn-sm">
-        ✕
-      </button>
-    </div>
-
-    <!-- Основной контент -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-      <!-- Карточка с общей статистикой -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h4 class="card-title text-lg">
-            <i class="fas fa-globe mr-2"></i> Общая статистика
-          </h4>
-          <div class="stats stats-vertical md:stats-horizontal shadow bg-base-200">
-            <div class="stat">
-              <div class="stat-title">Посетители</div>
-              <div class="stat-value text-primary">24.5K</div>
-              <div class="stat-desc">+12% за месяц</div>
-            </div>
-            <div class="stat">
-              <div class="stat-title">Конверсия</div>
-              <div class="stat-value text-secondary">8.2%</div>
-              <div class="stat-desc">+1.4% за месяц</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Карточка с доходами -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h4 class="card-title text-lg">
-            <i class="fas fa-coins mr-2"></i> Доходы
-          </h4>
-          <div class="stat">
-            <div class="stat-title">Текущий месяц</div>
-            <div class="stat-value text-success">$3,287</div>
-            <div class="stat-desc">+$421 vs прошлый месяц</div>
-          </div>
-          <div class="radial-progress text-primary mt-4" style="--value:75; --size:8rem;">75%</div>
-        </div>
-      </div>
-
-      <!-- Карточка с активностью -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h4 class="card-title text-lg">
-            <i class="fas fa-bolt mr-2"></i> Активность
-          </h4>
-          <div class="overflow-x-auto">
-            <table class="table table-zebra">
-              <tbody>
-                <tr>
-                  <td>Последняя активность</td>
-                  <td>2 часа назад</td>
-                </tr>
-                <tr>
-                  <td>Лидов за день</td>
-                  <td>24</td>
-                </tr>
-                <tr>
-                  <td>Конверсия</td>
-                  <td>6.8%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Графики -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <!-- График посещений -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h4 class="card-title text-lg">
-            <i class="fas fa-chart-bar mr-2"></i> Посещения (30 дней)
-          </h4>
-          <div class="mockup-code bg-base-200 h-64 flex items-center justify-center">
-            <div class="text-center">
-              <i class="fas fa-chart-line text-5xl opacity-30"></i>
-              <p class="mt-2">График посещений</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- График доходов -->
-      <div class="card bg-base-100 shadow">
-        <div class="card-body">
-          <h4 class="card-title text-lg">
-            <i class="fas fa-wallet mr-2"></i> Доходы (30 дней)
-          </h4>
-          <div class="mockup-code bg-base-200 h-64 flex items-center justify-center">
-            <div class="text-center">
-              <i class="fas fa-chart-pie text-5xl opacity-30"></i>
-              <p class="mt-2">График доходов</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Дополнительная информация -->
-    <div class="collapse collapse-plus bg-base-200 mb-4">
-      <input type="checkbox" />
-      <div class="collapse-title text-lg font-medium">
-        <i class="fas fa-info-circle mr-2"></i> Детальная информация
-      </div>
-      <div class="collapse-content">
-        <div class="overflow-x-auto">
-          <table class="table">
-            <tbody>
-              <tr>
-                <th>Дата подключения</th>
-                <td>15 марта 2024</td>
-              </tr>
-              <tr>
-                <th>Тарифный план</th>
-                <td>Premium Partner</td>
-              </tr>
-              <tr>
-                <th>Комиссия</th>
-                <td>25%</td>
-              </tr>
-              <tr>
-                <th>Следующая выплата</th>
-                <td>5 июня 2024</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Футер модального окна -->
-    <div class="modal-action">
-      <button class="btn btn-primary">
-        <i class="fas fa-download mr-2"></i> Экспорт данных
-      </button>
-      <button onclick="document.getElementById('partner_stats_modal').close()" class="btn">
+    <!-- Футер с кнопкой закрытия -->
+    <div class="sticky bottom-0 bg-base-100/90 p-4 border-t flex justify-end">
+      <button id="close_project_stats_footer" class="btn btn-primary">
         Закрыть
       </button>
     </div>
   </div>
+</dialog>
 
-  <!-- Фон модального окна (клик для закрытия) -->
-  <form method="dialog" class="modal-backdrop">
+<dialog id="PartnerPlatformStatsModal" class="modal">
+  <!-- Модальное окно с анимацией -->
+  <div class="modal-box max-w-md p-0 bg-base-100 rounded-xl shadow-2xl relative overflow-hidden
+              transform transition-all duration-300 ease-out
+              scale-95 opacity-0 translate-y-10
+              [&[open]]:scale-100 [&[open]]:opacity-100 [&[open]]:translate-y-0">
+    
+    <!-- Эффект блюра внутри модального окна (только когда открыто) -->
+    <div class="absolute inset-0 bg-base-100/80 backdrop-blur-sm z-[-1] 
+                transition-opacity duration-300
+                opacity-0 [&[open]]:opacity-100" 
+         aria-hidden="true"></div>
+    
+    <!-- Хедер -->
+    <div class="sticky top-0 z-10 bg-base-100/90 p-4 border-b border-base-300 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-primary/10 p-2 rounded-lg animate-pulse">
+          <i class="fas fa-chart-pie text-primary text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold truncate max-w-[200px]" id="partnerName">Название площадки</h3>
+      </div>
+      <button onclick="PartnerPlatformStatsModal.close()" 
+              class="btn btn-circle btn-ghost btn-sm hover:rotate-90 transition-transform duration-200">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+    
+    <!-- Основной контент -->
+    <div class="p-6 overflow-y-auto max-h-[70vh]">
+      <!-- Статистика в виде карточек -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <!-- Доход -->
+        <div class="card bg-base-100 border border-success/20 hover:shadow-md transition-all hover:-translate-y-1">
+          <div class="card-body p-4">
+            <div class="flex items-center gap-2 text-success">
+              <i class="fas fa-wallet"></i>
+              <h4 class="font-semibold">Доход</h4>
+            </div>
+            <div class="text-2xl font-bold mt-2" id="totalEarnings">₽24,850</div>
+            <div class="text-sm opacity-75 mt-1">
+              <span id="earningsChange" class="text-success">↑12%</span> за месяц
+            </div>
+          </div>
+        </div>
+        
+        <!-- Конверсия -->
+        <div class="card bg-base-100 border border-secondary/20 hover:shadow-md transition-all hover:-translate-y-1">
+          <div class="card-body p-4">
+            <div class="flex items-center gap-2 text-secondary">
+              <i class="fas fa-exchange-alt"></i>
+              <h4 class="font-semibold">Конверсия</h4>
+            </div>
+            <div class="text-2xl font-bold mt-2" id="conversionRate">3.2%</div>
+            <div class="grid grid-cols-2 gap-2 mt-1 text-xs">
+              <div>
+                <div class="opacity-75">Переходы</div>
+                <div id="totalClicks">1,842</div>
+              </div>
+              <div>
+                <div class="opacity-75">Действия</div>
+                <div id="totalActions">59</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Комиссия -->
+        <div class="card bg-base-100 border border-primary/20 hover:shadow-md transition-all hover:-translate-y-1">
+          <div class="card-body p-4">
+            <div class="flex items-center gap-2 text-primary">
+              <i class="fas fa-percentage"></i>
+              <h4 class="font-semibold">Комиссия</h4>
+            </div>
+            <div class="text-2xl font-bold mt-2" id="commissionRate">15%</div>
+            <div class="text-sm opacity-75 mt-1" id="commissionType">Фиксированная</div>
+          </div>
+        </div>
+        
+        <!-- Активность -->
+        <div class="card bg-base-100 border border-info/20 hover:shadow-md transition-all hover:-translate-y-1">
+          <div class="card-body p-4">
+            <div class="flex items-center gap-2 text-info">
+              <i class="fas fa-calendar-check"></i>
+              <h4 class="font-semibold">Активность</h4>
+            </div>
+            <div class="text-2xl font-bold mt-2" id="lastActivity">5</div>
+            <div class="text-sm opacity-75 mt-1">дней назад</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Дополнительная информация -->
+      <div class="collapse collapse-arrow bg-base-200">
+        <input type="checkbox" />
+        <div class="collapse-title font-medium">
+          <i class="fas fa-info-circle mr-2"></i> Детальная информация
+        </div>
+        <div class="collapse-content">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-sm opacity-75">Дата подключения</div>
+              <div class="font-semibold" id="joinDate">15.03.2025</div>
+            </div>
+            <div>
+              <div class="text-sm opacity-75">Тип площадки</div>
+              <div class="font-semibold" id="partnerType">Блог</div>
+            </div>
+            <div>
+              <div class="text-sm opacity-75">Последний платёж</div>
+              <div class="font-semibold" id="lastPayment">₽5,200</div>
+            </div>
+            <div>
+              <div class="text-sm opacity-75">Статус</div>
+              <div class="font-semibold text-success" id="statusBadge">Активен</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Футер -->
+    <div class="sticky bottom-0 bg-base-100/90 p-4 border-t border-base-300 flex justify-end">
+      <button onclick="PartnerPlatformStatsModal.close()" 
+              class="btn btn-primary hover:scale-105 active:scale-95 transition-transform">
+        Закрыть
+      </button>
+    </div>
+  </div>
+  
+  <!-- Фон с блюром (только когда модальное окно открыто) -->
+  <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
     <button>close</button>
   </form>
 </dialog>
-
 {% endblock %}

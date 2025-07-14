@@ -5,7 +5,7 @@
 
 {% load django_vite %}
 {% vite_hmr_client %}
-{% block title %}Личный кабинет{% endblock title %}
+{% block title %}Панель управления{% endblock title %}
 {% block head_js_scripts %}
 {% vite_asset 'partner_app/assets/js/dashboard/advertiser.js' %}
 {% endblock %}
@@ -19,13 +19,11 @@
                 <i class="fas fa-bars text-lg"></i>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i>
-                        Статистика</a></li>
+                <li><a class="nav-item" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i>Дашборд</a></li>
+                <li><a class="nav-item" data-page="sales"><i class="fas fa-shopping-cart"></i>Продажи</a></li>
                 <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
                 <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
-                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a>
-                </li>
-                <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
             </ul>
         </div>
         <a href="{% url 'index' %}"
@@ -37,12 +35,11 @@
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
-            <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Статистика</a>
-            </li>
-            <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
-            <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
-            <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
-            <li><a class="nav-item" data-page="settings"><i class="fas fa-cog mr-2"></i> Настройки</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Дашборд</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="sales"><i class="fas fa-shopping-cart"></i>Продажи</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
         </ul>
     </div>
     <div class="navbar-end">
@@ -53,8 +50,8 @@
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
-                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-2"></i> Профиль</a>
-                </li>
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a></li>
+                <li><a class="nav-item text-lg w-full" data-page="settings"><i class="fas fa-cog"></i> Настройки</a></li>
                 <li class="w-full p-0 cursor-pointer">
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
@@ -71,7 +68,7 @@
 {% block main_class %}bg-base-200 min-h-screen{% endblock %}
 
 {% block content %}
-<div class="bg-base-200 min-h-screen">
+<div class="container mx-auto px-4 py-6 max-w-7xl">
 
     <div class="container mx-auto px-4 py-6 max-w-7xl">
 
@@ -252,6 +249,277 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Sales Page -->
+        <div id="sales" class="page-section">
+            <!-- Заголовок и статистика -->
+            <div class="mb-6 sm:mb-8">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Продажи и конверсии</h1>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1">Анализ ваших партнерских продаж и лидов</p>
+                    </div>
+                    <div class="stats shadow bg-base-100 w-full sm:w-auto">
+                        <div class="stat p-3 sm:p-4">
+                            <div class="stat-figure text-primary hidden sm:block">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 sm:w-8 sm:h-8 stroke-current">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-title text-xs sm:text-sm">Всего конверсий</div>
+                            <div class="stat-value text-lg sm:text-2xl text-primary">1,248</div>
+                            <div class="stat-desc text-xs">+12% за месяц</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Фильтры и временной период -->
+            <div class="bg-base-100 rounded-xl shadow-sm p-3 sm:p-4 mb-6 transition-all duration-300 hover:shadow-md">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4">
+                    <div class="flex-1 w-full">
+                        <form class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                            <div class="flex-1">
+                                <label class="input input-sm sm:input-md input-bordered flex items-center gap-2">
+                                    <input type="text" class="grow text-xs sm:text-sm" placeholder="Поиск по проектам..." />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3 h-3 sm:w-4 sm:h-4 opacity-70">
+                                        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+                                    </svg>
+                                </label>
+                            </div>
+                            <div class="flex gap-2 sm:gap-3">
+                                <select class="select select-sm sm:select-md select-bordered w-full sm:w-auto text-xs sm:text-sm">
+                                    <option disabled selected>Статус</option>
+                                    <option>Все</option>
+                                    <option>Подтвержденные</option>
+                                    <option>Ожидающие</option>
+                                    <option>Отклоненные</option>
+                                </select>
+                                <button class="btn btn-sm sm:btn-md btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    <span class="hidden sm:inline">Применить</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <div class="dropdown dropdown-end w-full sm:w-auto">
+                            <div tabindex="0" role="button" class="btn btn-sm sm:btn-md btn-outline w-full sm:w-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs sm:text-sm">30 дней</span>
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li><a class="text-xs sm:text-sm">Сегодня</a></li>
+                                <li><a class="text-xs sm:text-sm">Неделя</a></li>
+                                <li><a class="text-xs sm:text-sm">Месяц</a></li>
+                                <li><a class="text-xs sm:text-sm">Квартал</a></li>
+                                <li><a class="text-xs sm:text-sm">Год</a></li>
+                                <li><a class="text-xs sm:text-sm">Произвольный</a></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-sm sm:btn-md btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                            </svg>
+                            <span class="hidden sm:inline">Экспорт</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Графики и сводка -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+                <!-- График конверсий -->
+                <div class="lg:col-span-2 bg-base-100 p-4 sm:p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
+                        <h2 class="text-lg sm:text-xl font-semibold">Динамика конверсий</h2>
+                        <div class="tabs tabs-boxed tabs-sm sm:tabs-md">
+                            <a class="tab tab-active">День</a> 
+                            <a class="tab">Неделя</a> 
+                            <a class="tab">Месяц</a>
+                        </div>
+                    </div>
+                    <div class="h-48 sm:h-64">
+                        <!-- Здесь будет график (заглушка) -->
+                        <div class="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center text-gray-400 text-sm sm:text-base">
+                            <p>График конверсий по дням</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-3 sm:gap-4 lg:gap-6">
+                    <div class="stats shadow bg-gradient-to-br from-primary to-primary-focus text-primary-content">
+                        <div class="stat p-3 sm:p-4">
+                            <div class="stat-title text-xs sm:text-sm">Подтвержденные</div>
+                            <div class="stat-value text-lg sm:text-2xl">874</div>
+                            <div class="stat-desc text-xs">+15% за месяц</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats shadow bg-gradient-to-br from-secondary to-secondary-focus text-secondary-content">
+                        <div class="stat p-3 sm:p-4">
+                            <div class="stat-title text-xs sm:text-sm">Средний чек</div>
+                            <div class="stat-value text-lg sm:text-2xl">₽2,450</div>
+                            <div class="stat-desc text-xs">+8% за месяц</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats shadow bg-gradient-to-br from-accent to-accent-focus text-accent-content">
+                        <div class="stat p-3 sm:p-4">
+                            <div class="stat-title text-xs sm:text-sm">Общий доход</div>
+                            <div class="stat-value text-lg sm:text-2xl">₽214,150</div>
+                            <div class="stat-desc text-xs">+22% за месяц</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Таблица продаж - Адаптивная версия -->
+            <div class="bg-base-100 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md mb-6 sm:mb-8">
+                <!-- Десктопная версия таблицы -->
+                <div class="hidden sm:block overflow-x-auto">
+                    <table class="table">
+                        <thead>
+                            <tr class="bg-base-200">
+                                <th class="text-xs sm:text-sm">ID</th>
+                                <th class="text-xs sm:text-sm">Проект</th>
+                                <th class="text-xs sm:text-sm">Дата</th>
+                                <th class="text-xs sm:text-sm">Статус</th>
+                                <th class="text-xs sm:text-sm">Сумма</th>
+                                <th class="text-xs sm:text-sm">Комиссия</th>
+                                <th class="text-xs sm:text-sm">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Пример строки -->
+                            <tr class="hover:bg-base-200 transition-colors duration-150">
+                                <td class="text-xs sm:text-sm">#24587</td>
+                                <td>
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <div class="avatar">
+                                            <div class="mask mask-squircle w-8 h-8 sm:w-10 sm:h-10">
+                                                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="Проект" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-xs sm:text-sm">Курс маркетинга</div>
+                                            <div class="text-xs opacity-50">AcademyPro</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-xs sm:text-sm">
+                                    12.07.2025<br>
+                                    <span class="opacity-70">14:32</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-success badge-xs sm:badge-sm gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="hidden xs:inline">Подтверждено</span>
+                                    </span>
+                                </td>
+                                <td class="text-xs sm:text-sm">₽12,990</td>
+                                <td>
+                                    <span class="font-bold text-success text-xs sm:text-sm">₽1,299</span><br>
+                                    <span class="text-xs opacity-70">(10%)</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-ghost btn-xs">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Другие строки таблицы... -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Мобильная версия таблицы (карточки) -->
+                <div class="sm:hidden space-y-3 p-3">
+                    <!-- Карточка продажи -->
+                    <div class="card bg-base-100 shadow-sm border border-base-200">
+                        <div class="card-body p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="card-title text-sm font-bold">#24587 - Курс маркетинга</h3>
+                                    <p class="text-xs text-gray-500">AcademyPro</p>
+                                </div>
+                                <span class="badge badge-success badge-xs gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Подтв.
+                                </span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <div>
+                                    <div class="text-gray-500">Дата</div>
+                                    <div>12.07.2025 14:32</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500">Сумма</div>
+                                    <div class="font-medium">₽12,990</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500">Комиссия</div>
+                                    <div class="font-medium text-success">₽1,299 (10%)</div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-actions justify-end mt-3">
+                                <button class="btn btn-xs btn-ghost">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Детали
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Другие карточки продаж... -->
+                </div>
+            </div>
+
+            <!-- Пагинация -->
+            <div class="join flex justify-center">
+                <button class="join-item btn btn-sm sm:btn-md btn-outline">Назад</button>
+                <button class="join-item btn btn-sm sm:btn-md btn-outline btn-active">1</button>
+                <button class="join-item btn btn-sm sm:btn-md btn-outline">2</button>
+                <button class="join-item btn btn-sm sm:btn-md btn-outline">3</button>
+                <button class="join-item btn btn-sm sm:btn-md btn-outline">4</button>
+                <button class="join-item btn btn-sm sm:btn-md btn-outline">Вперед</button>
+            </div>
+
+            <!-- Пустое состояние (скрыто) -->
+            <div class="hidden flex flex-col justify-center items-center text-center py-8 sm:py-16" id="sales-empty-state">
+                <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 sm:w-16 sm:h-16">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">Нет данных о продажах</h3>
+                <p class="text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 max-w-md">Когда у вас появятся подтвержденные продажи, они будут отображаться в этом разделе</p>
+                <button class="btn btn-sm sm:btn-md btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Как увеличить продажи?
+                </button>
             </div>
         </div>
 
@@ -996,10 +1264,10 @@
         </div>
 
     </div>
-
+</div>
 
     <!-- Модальное окно создания проекта -->
-    <dialog id="createProjectModal" class="modal">
+    <dialog id="createProjectModal" class="modal backdrop-blur-sm">
         <div class="modal-box max-w-2xl bg-white rounded-lg shadow-md">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Создание нового проекта</h2>
 
@@ -1076,7 +1344,7 @@
     </dialog>
 
 
-    <dialog id="projectDetailsModal" class="modal">
+    <dialog id="projectDetailsModal" class="modal backdrop-blur-sm">
         <div class="modal-box max-w-5xl p-0 overflow-y-auto max-h-screen">
 
             <!-- Header -->
@@ -1159,7 +1427,7 @@
         </div>
     </dialog>
 
-    <dialog id="deleteProjectModal" class="modal">
+    <dialog id="deleteProjectModal" class="modal backdrop-blur-sm">
         <div class="modal-box max-w-md">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -1202,7 +1470,7 @@
         </form>
     </dialog>
 
-    <dialog id="editProjectModal" class="modal">
+    <dialog id="editProjectModal" class="modal backdrop-blur-sm">
         <div class="modal-box max-w-2xl">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -1312,47 +1580,46 @@
         </form>
     </dialog>
 
-    <dialog id="partnerDetailsModal" class="modal">
-  <div class="modal-box max-w-3xl max-h-[90vh] overflow-y-auto">
-    <div class="flex justify-between items-start mb-4">
-      <h3 class="text-xl font-bold">Подробная информация о партнёре</h3>
-      <button onclick="document.getElementById('partnerDetailsModal').close()" 
-              class="btn btn-sm btn-circle">
-        ✕
-      </button>
-    </div>
-    
-    <!-- Основная информация -->
-    <div class="flex items-start gap-4 mb-6">
-      <div class="flex-1">
-        <h4 class="text-lg font-semibold">
-          <span id="partnerFirstName"></span> 
-          <span id="partnerLastName"></span>
-        </h4>
-        <div class="space-y-1 mt-2">
-          <p><strong>Email:</strong> <span id="partnerEmail"></span></p>
-          <p><strong>Телефон:</strong> <span id="partnerPhone"></span></p>
-          <p><strong>Описание:</strong> <span id="partnerDescription"></span></p>
+    <dialog id="partnerDetailsModal" class="modal backdrop-blur-sm">
+        <div class="modal-box max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold">Подробная информация о партнёре</h3>
+            <button onclick="document.getElementById('partnerDetailsModal').close()" 
+                    class="btn btn-sm btn-circle">
+                ✕
+            </button>
+            </div>
+            
+            <!-- Основная информация -->
+            <div class="flex items-start gap-4 mb-6">
+            <div class="flex-1">
+                <h4 class="text-lg font-semibold">
+                <span id="partnerFirstName"></span> 
+                <span id="partnerLastName"></span>
+                </h4>
+                <div class="space-y-1 mt-2">
+                <p><strong>Email:</strong> <span id="partnerEmail"></span></p>
+                <p><strong>Телефон:</strong> <span id="partnerPhone"></span></p>
+                <p><strong>Описание:</strong> <span id="partnerDescription"></span></p>
+                </div>
+            </div>
+            </div>
+            
+            <!-- Площадки партнёра -->
+            <div>
+            <h4 class="font-medium mb-3 border-b pb-2">Площадки партнёра</h4>
+            <div class="space-y-4" id="partnerPlatforms">
+                <!-- Площадки будут добавляться динамически -->
+                <p class="text-gray-400">Загрузка данных...</p>
+            </div>
+            </div>
+            
+            <div class="modal-action mt-4">
+            <button onclick="document.getElementById('partnerDetailsModal').close()" 
+                    class="btn">
+                Закрыть
+            </button>
+            </div>
         </div>
-      </div>
-    </div>
-    
-    <!-- Площадки партнёра -->
-    <div>
-      <h4 class="font-medium mb-3 border-b pb-2">Площадки партнёра</h4>
-      <div class="space-y-4" id="partnerPlatforms">
-        <!-- Площадки будут добавляться динамически -->
-        <p class="text-gray-400">Загрузка данных...</p>
-      </div>
-    </div>
-    
-    <div class="modal-action mt-4">
-      <button onclick="document.getElementById('partnerDetailsModal').close()" 
-              class="btn">
-        Закрыть
-      </button>
-    </div>
-  </div>
-</dialog>
-</div>
+    </dialog>
 {% endblock content %}

@@ -13,7 +13,7 @@ export function setupNavigation() {
   }
 
   // Восстановление состояния из localStorage
-  const allowed_pages = ['dashboard','projects','partners','payments','settings'];
+  const allowed_pages = ['dashboard','sales','projects','partners','payments','settings'];
   
   const savedPage = localStorage.getItem('activePage') || 'dashboard';
   if(!allowed_pages.includes(savedPage)){

@@ -4,7 +4,7 @@
 
 {% load django_vite %}
 {% vite_hmr_client %}
-{% block title %}Кабинет менеджера{% endblock %}
+{% block title %}Панель управления{% endblock %}
 {% block head_js_scripts %}
 {% vite_asset 'partner_app/assets/js/dashboard/manager.js' %}
 {% endblock %}
@@ -49,17 +49,15 @@
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
                     <i class="fas fa-user-shield text-lg mt-2.5 ml-0.5"></i>
-                    <!-- Добавлен text-lg для увеличения размера иконки -->
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
-                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-2"></i> Профиль</a>
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a>
                 </li>
                 <li class="w-full p-0 cursor-pointer">
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Выход
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i class="fas fa-sign-out-alt mr-2"></i> Выход
                         </button>
                     </form>
                 </li>
@@ -738,7 +736,7 @@
 </div>
 
 <!-- Модальное окно деталей -->
-<dialog id="detailsModal" class="modal">
+<dialog id="detailsModal" class="modal backdrop-blur-sm">
   <div class="modal-box max-w-4xl">
     <h3 id="modalTitle" class="font-bold text-2xl mb-4"></h3>
     
@@ -814,7 +812,7 @@
 </dialog>
 
 <!-- Модальное окно решения спора -->
-<dialog id="resolveDisputeModal" class="modal">
+<dialog id="resolveDisputeModal" class="modal backdrop-blur-sm">
     <div class="modal-box max-w-2xl">
         <h3 class="font-bold text-lg">Решение спора #<span id="disputeId"></span></h3>
         <div class="py-4">

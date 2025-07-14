@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ошибка 500 | Внутренняя ошибка сервера</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                        },
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(90deg, #6366f1, #a855f7);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-dark-900 text-gray-900 dark:text-gray-100 h-full flex flex-col">
+    <div class="flex-grow flex items-center">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-4xl mx-auto text-center">
+                <!-- Анимированный логотип ошибки -->
+                <div class="animate-float inline-block mb-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary-500">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text">500</h1>
+                <h2 class="text-2xl md:text-4xl font-semibold mb-6">Внутренняя ошибка сервера</h2>
+                
+                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Упс! Что-то пошло не так на нашей стороне. Мы уже работаем над решением проблемы.
+                </p>
+
+                <!-- Интерактивные кнопки -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <a href="/" class="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        На главную
+                    </a>
+                    <button onclick="window.location.reload()" class="px-6 py-3 bg-white dark:bg-dark-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-dark-700 font-medium rounded-lg transition-all shadow hover:shadow-md">
+                        Попробовать снова
+                    </button>
+                </div>
+
+                <!-- Дополнительная информация -->
+                <div class="bg-white dark:bg-dark-800 rounded-xl p-6 shadow-lg max-w-2xl mx-auto text-left">
+                    <h3 class="font-semibold text-lg mb-3">Что можно сделать:</h3>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-start">
+                            <span class="mr-2">🔄</span>
+                            <span>Обновите страницу через несколько минут</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2">📧</span>
+                            <span>Сообщите нам о проблеме: <a href="mailto:support@example.com" class="text-primary-500 hover:underline">support@example.com</a></span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2">🌐</span>
+                            <span>Проверьте наш статус сервиса: <a href="#" class="text-primary-500 hover:underline">status.example.com</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
+        <div class="container mx-auto px-4">
+            <p>© 2025 Ваша компания. Все права защищены.</p>
+            <div class="mt-2 flex justify-center space-x-4">
+                <a href="#" class="hover:text-primary-500 transition">Политика конфиденциальности</a>
+                <a href="#" class="hover:text-primary-500 transition">Условия использования</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка переключения темы -->
+    <button onclick="toggleDarkMode()" class="fixed bottom-6 right-6 bg-white dark:bg-dark-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dark:hidden">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden dark:block">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
+
+    <script>
+        // Переключение тёмной темы
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+
+        // Проверка сохранённой темы
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
+</html>
