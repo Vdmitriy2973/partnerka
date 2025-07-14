@@ -1,0 +1,213 @@
+{% load static %}
+
+<div id="moderation" class="page-section">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold">Модерация</h1>
+        <p class="text-base-content/60">Одобрение проектов и площадок</p>
+    </div>
+
+    <div class="flex justify-between items-center mb-6">
+        <div class="join">
+            <div>
+                <div>
+                    <input class="input input-bordered join-item" placeholder="Поиск...">
+                </div>
+            </div>
+            <select class="select select-bordered join-item">
+                <option disabled selected>Фильтры</option>
+                <option>Все заявки</option>
+                <option>Проекты</option>
+                <option>Площадки</option>
+                <option>На проверке</option>
+            </select>
+            <div class="indicator">
+                <button class="btn join-item btn-primary">
+                    <i class="fas fa-search mr-2"></i> Найти
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6">
+        {% for item in pending_items %}
+        {% if item.partner %}
+            <!-- Площадка -->
+            <div
+                class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border-l-4 border-secondary">
+                <div class="card-body">
+                    <div class="flex justify-between items-center gap-2 mb-2">
+                        <div>
+                            <h2 class="card-title">{{ item.name }}</h2>
+                        </div>
+                        <div class="badge badge-warning gap-2">
+                            <i class="fas fa-clock"></i> {{ item.status }}
+                        </div>
+                    </div>
+
+
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">Партнёр:</p>
+                            {% if item.partner.first_name and item.partner.last_name %}
+                            <p>{{ item.partner.first_name }} {{ item.partner.last_name}}</p>
+                            {% else %}
+                            <p>Не указано</p>
+                            {% endif%}
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Описание:</p>
+                            <p class="line-clamp-2">{{ item.description|default:'Отсутсвует'|truncatechars:50 }}</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <p class="text-sm text-gray-500">URL:</p>
+                                <a href="{{ item.url }}" target="_blank" class="link link-secondary truncate block">
+                                    {{ item.url_or_id|truncatechars:20 }}
+                                </a>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-500">Тип:</p>
+                                <p>{{ item.get_platform_type_display }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <form method="post" action="{% url 'approve_platform' item.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check mr-2"></i> Одобрить
+                            </button>
+                        </form>
+
+                        <form method="post" action="{% url 'reject_platform' item.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-error">
+                                <i class="fas fa-times mr-2"></i> Отклонить
+                            </button>
+                        </form>
+
+                        <!-- <button class="btn btn-outline show_platform_details" data-project-id="{{ item.id }}">
+                                    <i class="fas fa-eye mr-2"></i> Подробнее
+                                </button> -->
+                        <button class="show_project_details btn btn-outline" data-details="platform" data-id="{{ item.id }}"
+                            data-name="{{ item.name }}" data-status="{{ item.status }}"
+                            data-owner="{{ item.partner.first_name }} {{ item.partner.last_name }}"
+                            data-platform-type="{{ item.get_platform_type_display }}" data-email="{{ item.partner.email }} "
+                            data-phone="{{ item.partner.phone }}" data-description="{{ item.description }}"
+                            data-cookie-days="{{ item.cookie_lifetime }}">
+                            <i class="fas fa-eye mr-2"></i> Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- Проект -->
+            <div
+                class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border-l-4 border-secondary">
+                <div class="card-body">
+                    <div class="flex justify-between items-center gap-2 mb-2">
+                        <h2 class="card-title">{{ item.name }}</h2>
+                        <div class="badge badge-warning gap-2">
+                            <i class="fas fa-clock"></i> {{ item.status }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">Рекламодатель:</p>
+                            {% if item.advertiser.first_name and item.advertiser.last_name %}
+                            <p>{{ item.advertiser.first_name }} {{ item.advertiser.last_name}}</p>
+                            {% else %}
+                            <p>Не указано</p>
+                            {% endif%}
+                        </div>
+
+
+                        <div>
+                            <p class="text-sm text-gray-500">Описание:</p>
+                            <p class="line-clamp-2">{{ item.description|default:'Отсутсвует'|truncatechars:50 }}</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <p class="text-sm text-gray-500">URL:</p>
+                                <a href="{{ item.url }}" target="_blank" class="link link-primary truncate block">
+                                    {{ item.url|truncatechars:20 }}
+                                </a>
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-500">Cookie:</p>
+                                <p>{{ item.cookie_lifetime }} дней</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <form method="post" action="{% url 'approve_project' item.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check mr-2"></i> Одобрить
+                            </button>
+                        </form>
+
+                        <form method="post" action="{% url 'reject_project' item.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-error">
+                                <i class="fas fa-times mr-2"></i> Отклонить
+                            </button>
+                        </form>
+                        <button class="show_project_details btn btn-outline" data-details="project" data-id="{{ item.id }}"
+                            data-name="{{ item.name }}" data-status="{{ item.status }}" data-owner="{{ item.advertiser }}"
+                            data-email="{{ item.advertiser.email }} " data-description="{{ item.description }}"
+                            data-commission="{{ item.commission_rate }}" data-cookie-days="{{ item.cookie_lifetime }}">
+                            <i class="fas fa-eye mr-2"></i> Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% empty %}
+        <div class="col-span-full text-center py-10">
+            <p class="text-gray-500">Проекты/площадки не найдены</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+        {% if pending_items.has_previous %}
+        <a href="?pending_items_page=1"
+            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+            aria-label="Первая страница">
+            <i class="fas fa-angle-double-left"></i>
+        </a>
+        <a href="?pending_items_page={{ pending_items.previous_page_number }}"
+            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+            <span class="hidden sm:inline">Предыдущая</span>
+            <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+        </a>
+        {% endif %}
+
+        <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+            <span class="hidden sm:inline">Страница</span>
+            <input type="number" min="1" max="{{ pending_items.paginator.num_pages }}"
+                value="{{ pending_items.number }}"
+                class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                onchange="window.location.href = '?pending_items_page=' + this.value" aria-label="Номер страницы">
+            <span>из {{ pending_items.paginator.num_pages }}</span>
+        </div>
+
+        {% if pending_items.has_next %}
+        <a href="?pending_items_page={{ pending_items.next_page_number }}"
+            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+            <span class="hidden sm:inline">Следующая</span>
+            <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <a href="?pending_items_page={{ pending_items.paginator.num_pages }}"
+            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+            aria-label="Последняя страница">
+            <i class="fas fa-angle-double-right"></i>
+        </a>
+        {% endif %}
+    </div>
+</div>

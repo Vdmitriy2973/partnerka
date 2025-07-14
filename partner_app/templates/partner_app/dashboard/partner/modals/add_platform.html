@@ -1,0 +1,31 @@
+{% load static %}
+
+<dialog id="modal-add-platform" class="modal backdrop-blur-sm">
+    <div class="modal-box relative max-w-lg">
+        <label for="modal-add-platform" class="btn btn-sm btn-circle absolute right-2 top-2"
+            id="btn-close-modal">✕</label>
+        <h3 class="text-lg font-bold mb-4">Добавить новую площадку</h3>
+
+        <form action="{% url 'add_platform' %}" id="form-add-platform" method="POST" class="flex flex-col gap-4">
+            {% csrf_token %}
+
+            {{ platformForm.name }}
+
+            <select name="{{ platformForm.platform_type.name }}" id="{{ platformForm.platform_type.id_for_label }}"
+                class="select select-bordered w-full" required>
+                <option value="" selected disabled>Выберите тип площадки</option>
+                {% for value, label in platformForm.platform_type.field.choices %}
+                {% if value %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            {{ platformForm.description }}
+            {{ platformForm.url_or_id }}
+
+            <button type="submit" class="btn btn-primary mt-2">
+                Добавить площадку
+            </button>
+        </form>
+    </div>
+</dialog>

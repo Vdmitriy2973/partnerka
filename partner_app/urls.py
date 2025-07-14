@@ -14,6 +14,8 @@ urlpatterns = [
     path('del_platform/<int:platform_id>',views.delete_platform,name='del_platform'),
     # Добавить редактирование платформы
     path('connect_project/<int:project_id>',views.connect_project,name="connect_project"),
+    path('stop_partnership/<int:project_id>',views.stop_partnership,name="stop_partnership"),
+    path('suspend_partnership/<int:project_id>',views.suspend_partnership,name='suspend_partnership'),
     
     # Рекламодатель
     path('add_project',views.add_project,name='add_project'),

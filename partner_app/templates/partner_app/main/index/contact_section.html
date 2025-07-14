@@ -1,0 +1,81 @@
+{% load static %}
+
+<section id="contact" class="py-20 bg-base-200">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Свяжитесь с нами</h2>
+            <p class="text-xl text-base-content/70">
+                Есть вопросы? Наша команда готова помочь 24/7
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <div class="space-y-8">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-envelope text-primary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Email</h3>
+                        <p class="text-base-content/70">support@linkoffer.ru</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-phone text-secondary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Телефон</h3>
+                        <p class="text-base-content/70">+7 (495) 123-45-67</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-map-marker-alt text-accent"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Адрес</h3>
+                        <p class="text-base-content/70">Москва, ул. Примерная, д. 123</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fab fa-telegram text-success"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Telegram</h3>
+                        <p class="text-base-content/70">@linkoffer_support</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Отправить сообщение</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="Ваше имя" class="input input-bordered w-full" />
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email" class="input input-bordered w-full" />
+                        </div>
+                        <div>
+                            <input type="tel" placeholder="Телефон" class="input input-bordered w-full" />
+                        </div>
+                        <div>
+                            <textarea class="textarea textarea-bordered w-full h-32"
+                                placeholder="Ваше сообщение"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Отправить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

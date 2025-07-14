@@ -1,0 +1,76 @@
+{% load static %}
+
+<dialog id="detailsModal" class="modal backdrop-blur-sm">
+  <div class="modal-box max-w-4xl">
+    <h3 id="modalTitle" class="font-bold text-2xl mb-4"></h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Основная информация -->
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-gray-500">Тип:</p>
+          <p id="modalType" class="font-medium"></p>
+        </div>
+        
+        <div>
+          <p class="text-sm text-gray-500">Статус:</p>
+          <p id="modalStatus" class="badge badge-lg"></p>
+        </div>
+        
+        <div id="modalAdvertiserContainer">
+          <p class="text-sm text-gray-500">Рекламодатель:</p>
+          <p id="modalAdvertiser" class="font-medium"></p>
+        </div>
+        
+        <div id="modalPartnerContainer">
+          <p class="text-sm text-gray-500">Партнер:</p>
+          <p id="modalPartner" class="font-medium"></p>
+        </div>
+        
+        <div>
+          <p class="text-sm text-gray-500">Описание:</p>
+          <p id="modalDescription" class="mt-1 text-justify"></p>
+        </div>
+      </div>
+      
+      <!-- Детали -->
+      <div class="space-y-4">
+        <div id="modalProjectDetails">
+          <h4 class="font-bold text-lg mb-2">Детали проекта</h4>
+          <div class="space-y-2">
+            <p><strong>Комиссия:</strong> <span id="modalCommission"></span></p>
+            <p><strong>Срок куки:</strong> <span id="modalCookieDays"></span></p>
+            <p><strong>Категория:</strong> <span id="modalCategory"></span></p>
+          </div>
+        </div>
+        
+        <div id="modalPlatformDetails">
+          <h4 class="font-bold text-lg mb-2">Детали площадки</h4>
+          <div class="space-y-2">
+            <p><strong>Тип площадки:</strong> <span id="modalPlatformType"></span></p>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="font-bold text-lg mb-2">Контакты</h4>
+          <div class="space-y-1">
+            <p><strong>Email:</strong> <span id="modalContactEmail"></span></p>
+            <p><strong>Телефон:</strong> <span id="modalContactPhone"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Материалы/ссылки -->
+    <div id="modalAssets" class="mt-6 hidden">
+      <h4 class="font-bold text-lg mb-2">Материалы</h4>
+      <div id="modalAssetsContent" class="grid grid-cols-2 md:grid-cols-3 gap-2"></div>
+    </div>
+    
+    <div class="modal-action mt-6">
+      <form method="dialog">
+        <button class="btn btn-primary">Закрыть</button>
+      </form>
+    </div>
+  </div>
+</dialog>

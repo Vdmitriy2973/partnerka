@@ -1,0 +1,270 @@
+{% load static %}
+
+<div class="navbar bg-white shadow-lg sticky top-0 z-50" id="navbar">
+    <!-- Mobile Menu -->
+    <div class="navbar-start">
+        <div class="dropdown dropdown-mobile">
+            <label tabindex="0" class="btn btn-ghost btn-circle">
+                <i class="fas fa-bars text-xl"></i>
+            </label>
+            <ul tabindex="0"
+                class="menu dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-60 border-none animate-fade-in">
+                <li><a href="#stats" class="hover:bg-blue-50 rounded-lg p-3"><i
+                            class="fas fa-chart-bar text-green-500"></i>
+                        Статистика</a></li>
+                <li><a href="#features" class="hover:bg-blue-50 rounded-lg p-3"><i
+                            class="fas fa-star text-blue-500"></i>
+                        Возможности</a></li>
+                <li><a href="#programs" class="hover:bg-blue-50 rounded-lg p-3"><i
+                            class="fas fa-handshake text-purple-500"></i> Программы</a></li>
+                <li><a href="#testimonials" class="hover:bg-blue-50 rounded-lg p-3"><i
+                            class="fas fa-comments text-orange-500"></i> Отзывы</a></li>
+                <li><a href="#contact" class="hover:bg-blue-50 rounded-lg p-3"><i
+                            class="fas fa-envelope text-red-500"></i>
+                        Контакты</a></li>
+            </ul>
+        </div>
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-handshake text-blue-600 mr-2"></i>
+            <span>LinkOffer</span>
+        </a>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1 space-x-1">
+            <li><a href="#stats" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                        class="fas fa-chart-bar mr-2"></i>Статистика</a></li>
+            <li><a href="#features" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                        class="fas fa-star mr-2"></i>Возможности</a></li>
+            <li><a href="#programs" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                        class="fas fa-handshake mr-2"></i>Программы</a></li>
+            <li><a href="#testimonials" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                        class="fas fa-comments mr-2"></i>Отзывы</a></li>
+            <li><a href="#contact" class="hover:text-blue-600 hover:bg-blue-50 rounded-lg px-4 py-2"><i
+                        class="fas fa-envelope mr-2"></i>Контакты</a></li>
+        </ul>
+    </div>
+
+    <!-- Auth Buttons -->
+    <div class="navbar-end gap-2">
+        {% if request.user.is_authenticated %}
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                    <i class="fas fa-user text-lg mt-2.5 ml-0.5"></i>
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-2"></i> Профиль</a>
+                </li>
+                <li class="w-full p-0 cursor-pointer">
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
+                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        {% else %}
+        <button class="btn border-none btn-ghost hover:bg-blue-50 hover-lift" id="authModal">
+            <i class="fas fa-sign-in-alt mr-2"></i>Вход
+        </button>
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn gradient-bg text-white hover:scale-105 border-0 hover-lift">
+                <i class="hidden sm:inline fas fa-user-plus mr-2"></i>
+                <span class="reg_label_text">Регистрация</span>
+                <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </label>
+            <ul tabindex="0"
+                class="dropdown-content z-50 menu p-2 shadow-lg bg-white rounded-2xl w-60 border-none animate-fade-in">
+                <li id="reg_partner-btn">
+                    <a class="hover:bg-blue-50 rounded-lg p-3">
+                        <i class="fas fa-user-tie text-blue-500"></i>
+                        <div>
+                            <div class="font-semibold">Партнёр</div>
+                            <div class="text-xs text-gray-500">Зарабатывайте с нами</div>
+                        </div>
+                    </a>
+                </li>
+                <li id="reg_advertiser-btn">
+                    <a class="hover:bg-green-50 rounded-lg p-3">
+                        <i class="fas fa-bullhorn text-green-500"></i>
+                        <div>
+                            <div class="font-semibold">Рекламодатель</div>
+                            <div class="text-xs text-gray-500">Привлекайте клиентов</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Auth Modal -->
+<dialog id="auth_modal" class="modal">
+    <div class="modal-box max-w-md rounded-2xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                <i class="fas fa-times"></i>
+            </button>
+        </form>
+        <div class="text-center mb-6">
+            <i class="fas fa-sign-in-alt text-4xl text-blue-600 mb-4"></i>
+            <h3 class="font-bold text-2xl">Вход в систему</h3>
+            <p class="text-gray-600 mt-2">Войдите в свой аккаунт</p>
+        </div>
+        <div class="space-y-4">
+            <form id="auth_form" method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <input name="auth" class="hidden" />
+                <div class="form-control">
+                    {{ login_form.username.label_tag }}
+                    {{ login_form.username }}
+                </div>
+                <div class="form-control">
+                    {{ login_form.password.label_tag }}
+                    {{ login_form.password }}
+                </div>
+                <div class="form-control">
+                    <label class="cursor-pointer label mb-2">
+                        {{ login_form.remember_me }} <span class="label-text py-2 ml-2">{{ login_form.remember_me.label_tag }}</span>
+                    </label>
+                </div>
+        </div>
+        <button type="submit" class="btn gradient-bg text-white w-full hover-lift transition-all">
+            <i class="fas fa-sign-in-alt mr-2"></i>Войти
+        </button>
+        </form>
+        <div class="text-center py-2 text-sm">
+            <a href="#" class="text-sm text-blue-600 my-1">Забыли пароль?</a>
+        </div>
+        <div class="text-center py-2 text-sm">
+            Нет аккаунта?
+            <a href="#" id="registration-link" class="text-blue-600 font-medium">Регистрация</a>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        {% if "login_error" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-red-500">
+            {{ message }}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+    </div>
+</dialog>
+
+<!-- Register Modal -->
+<dialog id="register_modal" class="modal">
+    <div class="modal-box max-w-lg w-full mx-4 rounded-2xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                <i class="fas fa-times"></i>
+            </button>
+        </form>
+        <div id="reg-header" class="text-center mb-6 flex justify-center flex-col">
+            <i id="reg-icon" class="fas fa-user-plus text-4xl text-blue-600 mb-4"></i>
+            <h3 id="reg-title" class="font-bold text-2xl">Регистрация</h3>
+            <p id="reg-subtitle" class="text-gray-600 mt-2">Создайте аккаунт</p>
+        </div>
+
+        <div class="tabs tabs-boxed rounded-lg mb-6 bg-gray-100 p-1 rounded-xl">
+            <a id="tab-partner" class="tab tab-active rounded-lg flex-1">
+                <i class="fas fa-user-tie mr-2"></i><span class="hidden sm:inline">Партнёр</span>
+            </a>
+            <a id="tab-advertiser" class="tab rounded-lg flex-1">
+                <i class="fas fa-bullhorn mr-2"></i>
+                <span class="hidden sm:inline">Рекламодатель</span>
+            </a>
+        </div>
+
+        <div class="space-y-4" id="register-form">
+
+            <!-- Partner Form -->
+            <form method="post" id="form-partner" class="active_reg_form">
+                {% csrf_token %}
+
+                <input name="reg_type" value="partner" class="hidden" />
+
+                {{ partner_form.username.label_tag }}
+                {{ partner_form.username }}
+                {{ partner_form.email.label_tag }}
+                {{ partner_form.email }}
+                {{ partner_form.password1.label_tag }}
+                {{ partner_form.password1 }}
+                {{ partner_form.password2.label_tag }}
+                {{ partner_form.password2 }}
+
+                <div class="form-group">
+                    <label class="cursor-pointer label justify-start">
+                        {{ partner_form.agreement }}<span class="label-text ml-2">{{ partner_form.agreement.label_tag }}</span>
+                    </label>
+                    {{ partner_form.agreement.errors }}
+                </div>
+
+                <button class="btn bg-blue-600 text-white w-full hover:scale-105 transition-all hover-lift">
+                    <i class="fas fa-user-plus mr-2"></i>Зарегистрироваться
+                </button>
+
+                {% if messages %}
+                {% for message in messages %}
+                {% if "reg_error_partner" in message.extra_tags %}
+                <div class="alert alert-{{ message.tags }} mt-2 text-red-500">
+                    {{ message }}
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </form>
+
+            <!-- Advertiser Form -->
+            <form method="post" id="form-advertiser" class="hidden">
+                {% csrf_token %}
+
+                <input name="reg_type" value="advertiser" class="hidden" />
+
+                {{ advertiser_form.username.label_tag }}
+                {{ advertiser_form.username }}
+                {{ advertiser_form.email.label_tag }}
+                {{ advertiser_form.email }}
+                {{ advertiser_form.password1.label_tag }}
+                {{ advertiser_form.password1 }}
+                {{ advertiser_form.password2.label_tag }}
+                {{ advertiser_form.password2 }}
+
+                <div class="form-group">
+                    <label class="cursor-pointer label justify-start">
+                        {{ advertiser_form.agreement }}<span class="label-text ml-2">{{ advertiser_form.agreement.label_tag }}</span>
+                    </label>
+                    {{ advertiser_form.agreement.errors }}
+                </div>
+
+                <button class="btn bg-blue-600 text-white w-full hover:scale-105 transition-all hover-lift">
+                    <i class="fas fa-user-plus mr-2"></i>Зарегистрироваться
+                </button>
+
+                {% if messages %}
+                {% for message in messages %}
+                {% if "reg_error_advertiser" in message.extra_tags %}
+                <div class="alert alert-{{ message.tags }} mt-2 text-red-500">
+                    {{ message }}
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </form>
+
+            <div class="text-center text-sm">
+                Есть аккаунт?<a id="authorization-Link" class="text-blue-600 font-medium cursor-pointer">
+                    Войти</a>
+            </div>
+        </div>
+    </div>
+</dialog>

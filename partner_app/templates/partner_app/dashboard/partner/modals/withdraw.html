@@ -1,0 +1,39 @@
+{% load static %}
+<!-- Withdraw Modal -->
+<dialog id="withdrawModal" class="modal backdrop-blur-sm">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Запросить выплату</h3>
+        <div class="space-y-4">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <span>Доступно к выводу: ₽2,350</span>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Сумма к выводу</span>
+                </label>
+                <input type="number" placeholder="0" max="2350" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Способ выплаты</span>
+                </label>
+                <select class="select select-bordered">
+                    <option>Банковская карта *1234</option>
+                    <option>Электронный кошелек</option>
+                    <option>Банковский перевод</option>
+                </select>
+            </div>
+            <div class="text-sm text-base-content/60">
+                <p><i class="fas fa-clock mr-1"></i> Время обработки: 1-3 рабочих дня</p>
+                <p><i class="fas fa-percentage mr-1"></i> Комиссия: 0%</p>
+            </div>
+        </div>
+        <div class="modal-action">
+            <button class="btn btn-primary">Запросить выплату</button>
+            <form method="dialog">
+                <button class="btn">Отмена</button>
+            </form>
+        </div>
+    </div>
+</dialog>

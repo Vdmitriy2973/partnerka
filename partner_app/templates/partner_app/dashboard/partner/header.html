@@ -1,0 +1,92 @@
+{% load static %}
+
+<!-- Navigation -->
+<div class="navbar bg-white shadow-lg sticky top-0 z-50 px-2 sm:px-4" id="navbar">
+    <!-- Логотип и мобильное меню -->
+    <div class="navbar-start flex items-center">
+        <!-- Мобильное меню (бургер) -->
+        <div class="dropdown lg:hidden mr-2">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <i class="fas fa-bars text-lg"></i>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i>Дашборд</a></li>
+                <li><a class="nav-item" data-page="offers"><i class="fas fa-boxes"></i>Предложения</a></li>
+                <li><a class="nav-item" data-page="my_connections"><i class="fas fa-laptop-code"></i>Программы</a></li>
+                <li><a class="nav-item" data-page="my_platforms"><i class="fas fa-globe"></i>Площадки</a></li>
+                <li><a class="nav-item" data-page="links"><i class="fas fa-link"></i>Ссылки</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave"></i>Выплаты</a></li>
+            </ul>
+        </div>
+
+        <!-- Логотип -->
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost p-0 sm:p-2 text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-handshake text-blue-600 mr-1 sm:mr-2"></i>
+            <span>LinkOffer</span>
+        </a>
+    </div>
+
+    <!-- Десктопное меню (скрыто на мобильных) -->
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1 gap-0.5 xl:gap-0.1">
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="dashboard">
+                <i class="fas fa-chart-pie"></i>
+                <span class="hidden sm:inline">Дашборд</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="offers">
+                <i class="fas fa-boxes"></i>
+                <span class="hidden sm:inline">Предложения</span>
+            </a>    
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="my_connections">
+                <i class="fas fa-laptop-code"></i>
+                <span class="hidden sm:inline">Программы</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs text-sm xl:text-sm flex items-center" data-page="my_platforms">
+                <i class="fas fa-globe"></i>
+                <span class="hidden sm:inline">Площадки</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="links">
+                <i class="fas fa-link"></i>
+                <span class="hidden sm:inline">Ссылки</span>
+            </a>
+            </li>
+            <li>
+            <a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="payments">
+                <i class="fas fa-money-bill-wave"></i>
+                <span class="hidden sm:inline">Выплаты</span>
+            </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Профиль пользователя -->
+    <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-8 sm:w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                    <i class="fas fa-user text-lg mt-2 ml-0.3"></i>
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a></li>
+                <li><a class="nav-item text-lg w-full" data-page="settings"><i class="fas fa-cog"></i> Настройки</a></li>
+                <li class="w-full p-0 cursor-pointer">
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start"><i class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

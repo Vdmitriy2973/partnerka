@@ -1,0 +1,15 @@
+{% load static %}
+
+<dialog id="delete-platform" class="modal backdrop-blur-sm">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg" id="modal-title">Удалить площадку?</h3>
+        <p class="py-4" id="modal-content">Вы уверены, что хотите удалить эту площадку?</p>
+        <div class="modal-action">
+            <form id="delete-platform-form" method="POST">
+                {% csrf_token %}
+                <button class="btn" id="cancel-btn">Отмена</button>
+                <button class="btn btn-error" id="confirm-delete-btn">Удалить</button>
+            </form>
+        </div>
+    </div>
+</dialog>

@@ -1,0 +1,88 @@
+{% load static %}
+
+<dialog id="connectedProjectStatsModal" class="modal backdrop-blur-sm">
+    <!-- Анимация появления -->
+    <div class="modal-box max-w-md p-0 animate-fade-in-up animate-duration-300">
+        <!-- Хедер с кнопкой закрытия -->
+        <div class="sticky top-0 z-10 bg-base-100/90 p-4 border-b flex justify-between items-center">
+            <h3 class="text-xl font-bold">
+                <i class="fas fa-chart-pie mr-2 text-primary"></i>
+                <span id="projectTitle">Название проекта</span>
+            </h3>
+            <button id="close_project_stats_header"
+                class="btn btn-circle btn-ghost btn-sm transition-transform hover:rotate-90">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="p-6 overflow-y-auto max-h-[70vh]">
+            <!-- Основная статистика -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <!-- Блок комиссии -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-75 mb-1">Комиссия</div>
+                    <div class="text-2xl font-bold text-primary" id="commissionRate">10%</div>
+                    <div class="text-sm opacity-75 mb-1">Дата подключения</div>
+                    <div class="text-xs opacity-60 mt-1" id="joinDate">с 15.07.2025</div>
+                </div>
+
+                <!-- Блок переходов -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-75 mb-1">Переходы</div>
+                    <div class="text-2xl font-bold" id="clickCount">1,248</div>
+                    <div class="text-xs opacity-60 mt-1">за все время</div>
+                </div>
+
+                <!-- Блок действий -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-75 mb-1">Действия</div>
+                    <div class="text-2xl font-bold text-secondary" id="actionCount">31</div>
+                    <div class="text-xs opacity-60 mt-1">конверсий</div>
+                </div>
+
+                <!-- Блок конверсии -->
+                <div class="bg-base-200 p-4 rounded-lg">
+                    <div class="text-sm opacity-75 mb-1">Конверсия</div>
+                    <div class="text-2xl font-bold text-accent" id="conversionRate">2.5%</div>
+                    <div class="text-xs opacity-60 mt-1">от переходов</div>
+                </div>
+            </div>
+
+            <!-- Партнерская ссылка -->
+            <div class="mb-6">
+                <h4 class="font-medium mb-3 flex items-center">
+                    <i class="fas fa-link mr-2 text-info"></i>
+                    Партнерская ссылка
+                </h4>
+
+                <div class="flex items-center gap-2 mb-2">
+                    <input type="text" id="ProjectPartnerLink" value="https://example.com/ref/abc123/"
+                        class="input input-bordered w-full" readonly>
+                    <button id="copy_partner_link" class="btn btn-square btn-primary">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="text-xs opacity-60">
+                    Скопируйте и делитесь этой ссылкой для привлечения клиентов
+                </div>
+            </div>
+
+            <!-- Рекомендации -->
+            <div class="alert alert-info">
+                <div>
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Размещайте ссылку в соцсетях и блогах для максимального охвата</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Футер с кнопкой закрытия -->
+        <div class="sticky bottom-0 bg-base-100/90 p-4 border-t flex justify-end">
+            <button id="close_project_stats_footer" class="btn btn-primary">
+                Закрыть
+            </button>
+        </div>
+    </div>
+</dialog>

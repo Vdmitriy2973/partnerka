@@ -1,0 +1,144 @@
+{% load static %}
+
+<div id="disputes" class="page-section">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold">Споры</h1>
+        <p class="text-base-content/60">Решение спорных ситуаций</p>
+    </div>
+
+    <div class="card bg-base-100 shadow">
+        <div class="card-body">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h2 class="card-title">
+                    <i class="fas fa-exclamation-triangle text-primary mr-2"></i>
+                    Активные споры
+                </h2>
+                <div class="flex gap-2">
+                    <select class="select select-bordered">
+                        <option>Все статусы</option>
+                        <option>Новые</option>
+                        <option>В процессе</option>
+                        <option>Решённые</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Dispute 1 -->
+                <div class="card bg-warning/10 border-warning">
+                    <div class="card-body">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">Спор #2456</h3>
+                                <p class="text-sm opacity-60">Продажа #2456 от 15.06.2024</p>
+                            </div>
+                            <div class="badge badge-warning gap-2">
+                                <i class="fas fa-clock"></i> В процессе
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="font-medium mb-1">Рекламодатель:</p>
+                                <div class="flex items-center gap-2">
+                                    <div class="avatar">
+                                        <div class="w-8 rounded-full">
+                                            <img src="https://randomuser.me/api/portraits/men/32.jpg">
+                                        </div>
+                                    </div>
+                                    <span>Алексей Смирнов</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-medium mb-1">Партнер:</p>
+                                <div class="flex items-center gap-2">
+                                    <div class="avatar">
+                                        <div class="w-8 rounded-full">
+                                            <img src="https://randomuser.me/api/portraits/women/12.jpg">
+                                        </div>
+                                    </div>
+                                    <span>Мария Петрова</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <p class="font-medium mb-1">Суть спора:</p>
+                            <p>Партнер утверждает, что продажа была совершена по его ссылке, но система не засчитала
+                                конверсию.</p>
+                        </div>
+
+                        <div class="card-actions justify-end mt-4">
+                            <button class="btn btn-success" onclick="resolveDispute(2456, 'partner')">
+                                <i class="fas fa-check mr-2"></i> В пользу партнера
+                            </button>
+                            <button class="btn btn-error" onclick="resolveDispute(2456, 'advertiser')">
+                                <i class="fas fa-check mr-2"></i> В пользу рекламодателя
+                            </button>
+                            <button class="btn btn-outline" onclick="showDisputeDetails(2456)">
+                                <i class="fas fa-eye mr-2"></i> Подробнее
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dispute 2 -->
+                <div class="card bg-error/10 border-error">
+                    <div class="card-body">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg">Спор #2451</h3>
+                                <p class="text-sm opacity-60">Продажа #2451 от 12.06.2024</p>
+                            </div>
+                            <div class="badge badge-error gap-2">
+                                <i class="fas fa-exclamation-circle"></i> Высокий приоритет
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="font-medium mb-1">Рекламодатель:</p>
+                                <div class="flex items-center gap-2">
+                                    <div class="avatar">
+                                        <div class="w-8 rounded-full">
+                                            <img src="https://randomuser.me/api/portraits/men/45.jpg">
+                                        </div>
+                                    </div>
+                                    <span>Иван Иванов</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-medium mb-1">Партнер:</p>
+                                <div class="flex items-center gap-2">
+                                    <div class="avatar">
+                                        <div class="w-8 rounded-full">
+                                            <img src="https://randomuser.me/api/portraits/men/22.jpg">
+                                        </div>
+                                    </div>
+                                    <span>Петр Сидоров</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <p class="font-medium mb-1">Суть спора:</p>
+                            <p>Рекламодатель утверждает, что партнер использовал запрещенные методы продвижения.</p>
+                        </div>
+
+                        <div class="card-actions justify-end mt-4">
+                            <button class="btn btn-success" onclick="resolveDispute(2451, 'partner')">
+                                <i class="fas fa-check mr-2"></i> В пользу партнера
+                            </button>
+                            <button class="btn btn-error" onclick="resolveDispute(2451, 'advertiser')">
+                                <i class="fas fa-check mr-2"></i> В пользу рекламодателя
+                            </button>
+                            <button class="btn btn-outline" onclick="showDisputeDetails(2451)">
+                                <i class="fas fa-eye mr-2"></i> Подробнее
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

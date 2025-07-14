@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from .dashboard_utils import (
     handle_partner_dashboard,
     handle_advertiser_dashboard,

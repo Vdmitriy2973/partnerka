@@ -1,0 +1,57 @@
+{% load static %}
+
+<dialog id="stopPartnershipModal" class="modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg">Прекращение сотрудничества</h3>
+
+        <div class="py-4 space-y-4">
+            <p>Вы уверены, что хотите остановить сотрудничество с проектом <span id="StopPartnershipProjectName"
+                    class="font-semibold text-primary">"Название проекта"</span>?</p>
+
+            <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-3">
+                    <input type="checkbox" class="checkbox checkbox-primary" />
+                    <span class="label-text">Уведомить рекламодателя по email</span>
+                </label>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Причина (необязательно)</span>
+                </label>
+                <select class="select select-bordered w-full">
+                    <option disabled selected>Выберите причину</option>
+                    <option>Несоответствие контента</option>
+                    <option>Нарушение сроков оплаты</option>
+                    <option>Изменение стратегии</option>
+                    <option>Другая причина</option>
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Комментарий для рекламодателя</span>
+                </label>
+                <textarea class="textarea textarea-bordered h-24" placeholder="Дополнительные детали..."></textarea>
+            </div>
+        </div>
+
+        <div class="modal-action flex flex-col sm:flex-row gap-2">
+            <form method="dialog">
+                <button class="btn btn-ghost">Отмена</button>
+            </form>
+            <form id="StopPartnershipForm" method="post">
+                {% csrf_token %}
+                <button id="StopPartnershipSubmit" type="button" class="btn btn-error">
+                    <i class="fas fa-trash-alt mr-2"></i> Прекратить сотрудничество
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Фон с блюром (только когда модальное окно открыто) -->
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
+        <button>close</button>
+    </form>
+</dialog>

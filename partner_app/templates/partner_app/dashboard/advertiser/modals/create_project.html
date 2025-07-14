@@ -1,0 +1,77 @@
+{% load static %}
+
+<dialog id="createProjectModal" class="modal backdrop-blur-sm">
+    <div class="modal-box max-w-2xl bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Создание нового проекта</h2>
+
+        <form method="post" action="{% url 'add_project' %}">
+            {% csrf_token %}
+
+            <!-- Название проекта -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ projectForm.name.label }}
+                </label>
+                {{ projectForm.name }}
+                {% if projectForm.name.errors %}
+                <div class="text-red-500 text-xs mt-1">{{ projectForm.name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Описание -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ projectForm.description.label }}
+                </label>
+                {{ projectForm.description }}
+            </div>
+
+            <!-- URL проекта -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ projectForm.url.label }}
+                </label>
+                {{ projectForm.url }}
+                {% if projectForm.url.errors %}
+                <div class="text-red-500 text-xs mt-1">{{ projectForm.url.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Минимальная выплата -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ projectForm.min_payout.label }}
+                </label>
+                {{ projectForm.min_payout }}
+                {% if projectForm.min_payout.errors %}
+                <div class="text-red-500 text-xs mt-1">{{ projectForm.min_payout.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Комиссия и Куки -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ projectForm.commission_rate.label }}
+                    </label>
+                    {{ projectForm.commission_rate }}
+                    {% if projectForm.commission_rate.errors %}
+                    <div class="text-red-500 text-xs mt-1">{{ projectForm.commission_rate.errors }}</div>
+                    {% endif %}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ projectForm.cookie_lifetime.label }}
+                    </label>
+                    {{ projectForm.cookie_lifetime }}
+                </div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="flex justify-end gap-3">
+                <a id="close_create_project_modal" class="btn btn-ghost">Отмена</a>
+                <button type="submit" class="btn btn-primary">Добавить проект</button>
+            </div>
+        </form>
+    </div>
+</dialog>

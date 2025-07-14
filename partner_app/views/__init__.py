@@ -8,3 +8,4 @@ from .view_update_api_settings import update_api_settings
 from .view_update_notifications import update_notifications_settings
 from .view_partner_detail import partner_detail
 from .view_advertiser_detail import advertiser_detail
+from .view_partnership import stop_partnership, suspend_partnership

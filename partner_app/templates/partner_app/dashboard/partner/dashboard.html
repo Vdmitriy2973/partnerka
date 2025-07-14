@@ -1,0 +1,211 @@
+{% load static %}
+{% load tz %}
+
+<div id="dashboard" class="page-section active">
+    <!-- Welcome Section -->
+    <div class="mb-8">
+        {% if request.user.first_name %}
+        <h1 class="text-3xl font-bold">Добро пожаловать, {{ request.user.first_name }}!</h1>
+        {% else %}
+        <h1 class="text-3xl font-bold">Добро пожаловать!</h1>
+        {% endif %}
+        <p class="text-base-content/60">Партнёр с {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="card bg-white shadow-lg stats-card text-white">
+            <div class="card-body">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Всего заработано</p>
+                        <p class="text-2xl font-bold">₽89,450</p>
+                    </div>
+                    <i class="fa-solid text-3xl fa-money-bill"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-white shadow-lg earnings-card text-white">
+            <div class="card-body">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Этот месяц</p>
+                        <p class="text-2xl font-bold">₽12,350</p>
+                    </div>
+                    <i class="fa-solid text-3xl fa-square-poll-vertical"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-white shadow-lg traffic-card text-white">
+            <div class="card-body">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Переходы</p>
+                        <p class="text-2xl font-bold">2,847</p>
+                    </div>
+                    <i class="fas fa-mouse-pointer text-3xl opacity-80"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-white shadow-lg conversion-card text-white">
+            <div class="card-body">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Конверсия</p>
+                        <p class="text-2xl font-bold">8.4%</p>
+                    </div>
+                    <i class="fas fa-chart-line text-3xl opacity-80"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Recent Activity -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-clock text-primary mr-2"></i>
+                        Последняя активность
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-3 bg-success/10 rounded-lg">
+                            <div
+                                class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-shopping-cart text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium">Новая продажа</p>
+                                <p class="text-sm text-base-content/60">Комиссия: ₽850</p>
+                            </div>
+                            <span class="text-sm text-base-content/60">2 часа назад</span>
+                        </div>
+
+                        <div class="flex items-center p-3 bg-info/10 rounded-lg">
+                            <div
+                                class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-eye text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium">150 новых переходов</p>
+                                <p class="text-sm text-base-content/60">По ссылке "promo-2024"</p>
+                            </div>
+                            <span class="text-sm text-base-content/60">5 часов назад</span>
+                        </div>
+
+                        <div class="flex items-center p-3 bg-warning/10 rounded-lg">
+                            <div
+                                class="w-10 h-10 bg-warning text-warning-content rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-credit-card text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-medium">Выплата обработана</p>
+                                <p class="text-sm text-base-content/60">₽15,420 переведено</p>
+                            </div>
+                            <span class="text-sm text-base-content/60">1 день назад</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+            <!-- Balance Card -->
+            <div class="card bg-gradient-to-r from-primary to-secondary text-primary-content shadow-lg">
+                <div class="card-body p-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-medium opacity-80">Текущий баланс</h3>
+                            <p class="text-3xl font-bold">₽{{request.user.partnerprofile.balance}}</p>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="badge badge-accent mb-2 gap-1">
+                                <i class="fas fa-check-circle"></i>
+                                Доступно к выплате
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm opacity-80">След. выплата</p>
+                                <p class="font-medium">15 июля</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quick Actions -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-bolt text-primary mr-2"></i>
+                        Быстрые действия
+                    </h2>
+                    <div class="space-y-2">
+                        <button id="add_platform_quick" class="btn btn-outline btn-block justify-start nav-item"
+                            data-page="my_platforms">
+                            <i class="fas fa-globe mr-2"></i>
+                            Добавить площадку
+                        </button>
+                        <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item"
+                            data-page="payments">
+                            <i class="fas fa-credit-card mr-2"></i>
+                            Запросить выплату
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings Progress -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-target text-primary mr-2"></i>
+                        Прогресс выплат
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>До следующей выплаты</span>
+                                <span>₽222,350 / ₽5,000</span>
+                            </div>
+                            <progress class="progress progress-primary w-full" value="147" max="100"></progress>
+                        </div>
+                        <div class="text-sm text-base-content/60">
+                            <p><i class="fas fa-info-circle mr-1"></i> Минимальная сумма: ₽5,000</p>
+                            <p><i class="fas fa-calendar mr-1"></i> Выплаты: каждые 15 дней</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-headset text-primary mr-2"></i>
+                        Поддержка
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-book text-info mr-3"></i>
+                            <a href="#" class="link link-hover">База знаний</a>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-comments text-success mr-3"></i>
+                            <a href="#" class="link link-hover">Чат поддержки</a>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-warning mr-3"></i>
+                            <a href="#" class="link link-hover">Email: support@site.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -30,7 +30,7 @@ export function setupModals() {
             document.getElementById('modalPlatformDetails').classList.add('hidden');
             
             document.getElementById('modalAdvertiser').textContent = data.owner || 'Не указан';
-            document.getElementById('modalCommission').textContent = data.commission || 'Не указана';
+            document.getElementById('modalCommission').textContent = `${data.commission} %` || 'Не указана';
             document.getElementById('modalCookieDays').textContent = data.cookieDays ? `${data.cookieDays} дней` : 'Не указан';
             document.getElementById('modalCategory').textContent = data.category || 'Не указана';
         } else {

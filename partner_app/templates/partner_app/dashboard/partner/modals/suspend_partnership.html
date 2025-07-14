@@ -1,0 +1,88 @@
+{% load static %}
+
+<dialog id="suspendPartnershipModal" class="modal">
+    <div class="modal-box max-w-md bg-white dark:bg-gray-800 shadow-xl">
+        <!-- Заголовок с иконкой -->
+        <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Приостановка сотрудничества</h3>
+        </div>
+
+        <div class="divider my-2"></div>
+
+        <div class="py-4 space-y-5">
+            <p class="text-gray-700 dark:text-gray-300">
+                Вы собираетесь приостановить сотрудничество с партнёром
+                <span class="font-semibold text-primary">"Название проекта"</span>.
+                Это временно скроет их рекламные материалы.
+            </p>
+
+            <!-- Причина -->
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text text-gray-700 dark:text-gray-300">Причина (необязательно)</span>
+                </label>
+                <select class="select select-bordered w-full">
+                    <option disabled selected>Выберите причину</option>
+                    <option>Технические работы</option>
+                    <option>Каникулы/Праздники</option>
+                    <option>Проверка контента</option>
+                    <option>Нарушение условий</option>
+                    <option>Другая причина</option>
+                </select>
+            </div>
+
+            <!-- Дополнительные настройки -->
+            <div class="collapse collapse-arrow border border-gray-200 dark:border-gray-700 rounded-box">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium text-gray-700 dark:text-gray-300">
+                    Дополнительные настройки
+                </div>
+                <div class="collapse-content">
+                    <div class="form-control mt-3">
+                        <label class="label cursor-pointer justify-start gap-3">
+                            <input type="checkbox" checked="checked" class="checkbox checkbox-primary" />
+                            <span class="label-text text-gray-700 dark:text-gray-300">Уведомить партнёра по email</span>
+                        </label>
+                    </div>
+                    <div class="form-control mt-3">
+                        <label class="label">
+                            <span class="label-text text-gray-700 dark:text-gray-300">Комментарий для
+                                рекламодателя</span>
+                        </label>
+                        <textarea class="textarea textarea-bordered h-20"
+                            placeholder="Сообщение, которое получит рекламодатель..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="modal-action flex flex-col-reverse sm:flex-row gap-3">
+            <form method="dialog">
+                <button class="btn btn-ghost">Отменить</button>
+            </form>
+            <form id="suspendPartnershipForm" method="post">
+                {% csrf_token %}
+                <button class="btn btn-warning gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Приостановить
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Фон модального окна -->
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
+        <button>close</button>
+    </form>
+</dialog>

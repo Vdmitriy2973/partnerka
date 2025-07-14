@@ -1,0 +1,35 @@
+{% load static %}
+
+<dialog id="resolveDisputeModal" class="modal">
+    <div class="modal-box max-w-2xl">
+        <h3 class="font-bold text-lg">Решение спора #<span id="disputeId"></span></h3>
+        <div class="py-4">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Решение</span>
+                </label>
+                <select class="select select-bordered w-full" id="disputeResolution">
+                    <option value="partner">В пользу партнера</option>
+                    <option value="advertiser">В пользу рекламодателя</option>
+                    <option value="partial">Частичное решение</option>
+                    <option value="cancel">Отменить сделку</option>
+                </select>
+            </div>
+
+            <div class="form-control mt-4">
+                <label class="label">
+                    <span class="label-text">Комментарий</span>
+                </label>
+                <textarea class="textarea textarea-bordered h-24" placeholder="Опишите ваше решение..."></textarea>
+            </div>
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn btn-ghost">Отмена</button>
+            </form>
+            <button class="btn btn-primary" onclick="confirmResolution()">
+                <i class="fas fa-check mr-2"></i> Подтвердить
+            </button>
+        </div>
+    </div>
+</dialog>

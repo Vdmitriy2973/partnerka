@@ -1,0 +1,139 @@
+{% load static %}
+
+<dialog id="PartnerPlatformStatsModal" class="modal">
+    <!-- Модальное окно с анимацией -->
+    <div class="modal-box max-w-md p-0 bg-base-100 rounded-xl shadow-2xl relative overflow-hidden
+              transform transition-all duration-300 ease-out
+              scale-95 opacity-0 translate-y-10
+              [&[open]]:scale-100 [&[open]]:opacity-100 [&[open]]:translate-y-0">
+
+        <!-- Эффект блюра внутри модального окна (только когда открыто) -->
+        <div class="absolute inset-0 bg-base-100/80 backdrop-blur-sm z-[-1] 
+                transition-opacity duration-300
+                opacity-0 [&[open]]:opacity-100" aria-hidden="true"></div>
+
+        <!-- Хедер -->
+        <div class="sticky top-0 z-10 bg-base-100/90 p-4 border-b border-base-300 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary/10 p-2 rounded-lg animate-pulse">
+                    <i class="fas fa-chart-pie text-primary text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold truncate max-w-[200px]" id="partnerName">Название площадки</h3>
+            </div>
+            <button onclick="PartnerPlatformStatsModal.close()"
+                class="btn btn-circle btn-ghost btn-sm hover:rotate-90 transition-transform duration-200">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="p-6 overflow-y-auto max-h-[70vh]">
+            <!-- Статистика в виде карточек -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <!-- Доход -->
+                <div
+                    class="card bg-base-100 border border-success/20 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 text-success">
+                            <i class="fas fa-wallet"></i>
+                            <h4 class="font-semibold">Доход</h4>
+                        </div>
+                        <div class="text-2xl font-bold mt-2" id="totalEarnings">₽24,850</div>
+                        <div class="text-sm opacity-75 mt-1">
+                            <span id="earningsChange" class="text-success">↑12%</span> за месяц
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Конверсия -->
+                <div
+                    class="card bg-base-100 border border-secondary/20 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 text-secondary">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h4 class="font-semibold">Конверсия</h4>
+                        </div>
+                        <div class="text-2xl font-bold mt-2" id="conversionRate">3.2%</div>
+                        <div class="grid grid-cols-2 gap-2 mt-1 text-xs">
+                            <div>
+                                <div class="opacity-75">Переходы</div>
+                                <div id="totalClicks">1,842</div>
+                            </div>
+                            <div>
+                                <div class="opacity-75">Действия</div>
+                                <div id="totalActions">59</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Комиссия -->
+                <div
+                    class="card bg-base-100 border border-primary/20 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 text-primary">
+                            <i class="fas fa-percentage"></i>
+                            <h4 class="font-semibold">Комиссия</h4>
+                        </div>
+                        <div class="text-2xl font-bold mt-2" id="commissionRate">15%</div>
+                        <div class="text-sm opacity-75 mt-1" id="commissionType">Фиксированная</div>
+                    </div>
+                </div>
+
+                <!-- Активность -->
+                <div class="card bg-base-100 border border-info/20 hover:shadow-md transition-all hover:-translate-y-1">
+                    <div class="card-body p-4">
+                        <div class="flex items-center gap-2 text-info">
+                            <i class="fas fa-calendar-check"></i>
+                            <h4 class="font-semibold">Активность</h4>
+                        </div>
+                        <div class="text-2xl font-bold mt-2" id="lastActivity">5</div>
+                        <div class="text-sm opacity-75 mt-1">дней назад</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дополнительная информация -->
+            <div class="collapse collapse-arrow bg-base-200">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium">
+                    <i class="fas fa-info-circle mr-2"></i> Детальная информация
+                </div>
+                <div class="collapse-content">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-sm opacity-75">Дата подключения</div>
+                            <div class="font-semibold" id="joinDate">15.03.2025</div>
+                        </div>
+                        <div>
+                            <div class="text-sm opacity-75">Тип площадки</div>
+                            <div class="font-semibold" id="partnerType">Блог</div>
+                        </div>
+                        <div>
+                            <div class="text-sm opacity-75">Последний платёж</div>
+                            <div class="font-semibold" id="lastPayment">₽5,200</div>
+                        </div>
+                        <div>
+                            <div class="text-sm opacity-75">Статус</div>
+                            <div class="font-semibold text-success" id="statusBadge">Активен</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Футер -->
+        <div class="sticky bottom-0 bg-base-100/90 p-4 border-t border-base-300 flex justify-end">
+            <button onclick="PartnerPlatformStatsModal.close()"
+                class="btn btn-primary hover:scale-105 active:scale-95 transition-transform">
+                Закрыть
+            </button>
+        </div>
+    </div>
+
+    <!-- Фон с блюром (только когда модальное окно открыто) -->
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
+        <button>close</button>
+    </form>
+</dialog>

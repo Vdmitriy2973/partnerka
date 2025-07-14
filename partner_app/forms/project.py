@@ -22,7 +22,7 @@ class ProjectForm(forms.ModelForm):
                 'rows': 5,
                 'placeholder': 'Опишите ваш проект (минимум 15 символов)...'
             }),
-            'url': forms.URLInput(attrs={
+            'url': forms.TextInput(attrs={
                 'class': 'input input-bordered w-full',
                 'placeholder': 'https://example.com'
             }),

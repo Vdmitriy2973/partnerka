@@ -1,0 +1,52 @@
+{% load static %}
+
+<div class="navbar bg-white shadow-lg sticky top-0 z-50" id="navbar">
+    <div class="navbar-start">
+        <div class="dropdown lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+                <i class="fas fa-bars text-lg"></i>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a class="nav-item" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i>Дашборд</a></li>
+                <li><a class="nav-item" data-page="sales"><i class="fas fa-shopping-cart"></i>Продажи</a></li>
+                <li><a class="nav-item" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+                <li><a class="nav-item" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+                <li><a class="nav-item" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
+            </ul>
+        </div>
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-handshake text-blue-600 mr-2"></i>
+            <span>LinkOffer</span>
+        </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="dashboard"><i class="fas fa-chart-line mr-2"></i> Дашборд</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="sales"><i class="fas fa-shopping-cart"></i>Продажи</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="projects"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="partners"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+            <li><a class="nav-item btn-xs text-xs xl:text-sm flex items-center" data-page="payments"><i class="fas fa-money-bill-wave mr-2"></i> Выплаты</a></li>
+        </ul>
+    </div>
+    <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                    <i class="fas fa-user text-lg mt-2.5 ml-0.5"></i>
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a></li>
+                <li><a class="nav-item text-lg w-full" data-page="settings"><i class="fas fa-cog"></i> Настройки</a></li>
+                <li class="w-full p-0 cursor-pointer">
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

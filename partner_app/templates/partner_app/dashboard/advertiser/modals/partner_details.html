@@ -1,0 +1,42 @@
+{% load static %}
+
+<dialog id="partnerDetailsModal" class="modal backdrop-blur-sm">
+    <div class="modal-box max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold">Подробная информация о партнёре</h3>
+            <button onclick="document.getElementById('partnerDetailsModal').close()" class="btn btn-sm btn-circle">
+                ✕
+            </button>
+        </div>
+
+        <!-- Основная информация -->
+        <div class="flex items-start gap-4 mb-6">
+            <div class="flex-1">
+                <h4 class="text-lg font-semibold">
+                    <span id="partnerFirstName"></span>
+                    <span id="partnerLastName"></span>
+                </h4>
+                <div class="space-y-1 mt-2">
+                    <p><strong>Email:</strong> <span id="partnerEmail"></span></p>
+                    <p><strong>Телефон:</strong> <span id="partnerPhone"></span></p>
+                    <p><strong>Описание:</strong> <span id="partnerDescription"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Площадки партнёра -->
+        <div>
+            <h4 class="font-medium mb-3 border-b pb-2">Площадки партнёра</h4>
+            <div class="space-y-4" id="partnerPlatforms">
+                <!-- Площадки будут добавляться динамически -->
+                <p class="text-gray-400">Загрузка данных...</p>
+            </div>
+        </div>
+
+        <div class="modal-action mt-4">
+            <button onclick="document.getElementById('partnerDetailsModal').close()" class="btn">
+                Закрыть
+            </button>
+        </div>
+    </div>
+</dialog>

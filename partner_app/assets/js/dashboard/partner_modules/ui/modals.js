@@ -1,131 +1,189 @@
-export function setupWithdrawModal() {
-  const payoutBtn = document.getElementById('make_payout');
-  payoutBtn.addEventListener('click', () => {
-    document.getElementById('withdrawModal').showModal();
-  })
-}
+export function setupPartnerModals() {
+  function setupWithdrawModal() {
+    const payoutBtn = document.getElementById('make_payout');
+    if (!payoutBtn) return;
 
-
-export function setupConnectionModal() {
-  const dialog = document.getElementById('partnerConnectModal');
-  const form = document.getElementById('partnerConnectForm');
-  const submitButton = document.getElementById('submitPartnerRequest');
-  const closeButtons = [
-    document.getElementById('closePartnerDialog'),
-    document.getElementById('closePartnerDialogFooter')
-  ];
-
-  // Открытие модалки с подстановкой данных
-  document.querySelectorAll('.ConnectProjectModal').forEach(button => {
-    button.addEventListener('click', function () {
-      const dataset = this.dataset;
-
-      dialog.querySelector('[data-field="project-name"]').textContent = dataset.projectName;
-      dialog.querySelector('[data-field="advertiser"]').textContent = dataset.projectAdvertiser;
-      dialog.querySelector('[data-field="commission"]').textContent = dataset.projectCommissionRate + '%';
-      dialog.querySelector('[data-field="partners-count"]').textContent = dataset.projectPartnersCount;
-      dialog.querySelector('[data-field="created-at"]').textContent = dataset.projectCreatedAt;
-      dialog.querySelector('[data-field="project-url"]').href = dataset.projectUrl;
-      dialog.querySelector('[data-field="description"]').innerHTML = dataset.projectDescription;
-
-      form.action = `/connect_project/${dataset.projectId}`;
-
-      if (typeof dialog.showModal === 'function') {
-        dialog.showModal();
-      } else {
-        alert('Ваш браузер не поддерживает диалоги.');
-      }
+    payoutBtn.addEventListener('click', () => {
+      document.getElementById('withdrawModal')?.showModal();
     });
-  });
-
-
-  // Отправка формы
-  submitButton.addEventListener('click', function () {
-    form.submit();
-  });
-
-  // Закрытие модалки
-  closeButtons.forEach(btn => {
-    btn.addEventListener('click', () => dialog.close());
-  });
-}
-
-
-export function setupProjectStatsModal() {
-  const showProjectStatsBtns = document.querySelectorAll(".show_project_stats");
-  const modalStats = document.getElementById('connectedProjectStatsModal');
-  const copyPartnerLinkBtn = document.getElementById('copy_partner_link');
-
-  copyPartnerLinkBtn.addEventListener('click', () => {
-    const link = document.getElementById('ProjectPartnerLink');
-    if (!navigator.clipboard) {
-      console.warn('Clipboard API не поддерживается');
-      fallbackCopy(link.value);
-      return;
-    }
-
-    try {
-      navigator.clipboard.writeText(link.value);
-      console.log('API ключ скопирован!', 'success');
-    } catch (err) {
-      console.error('Ошибка копирования:', err);
-      fallbackCopy(link.value);
-    }
-  })
-
-  function fallbackCopy(text) {
-    try {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed'; // Невидимый элемент
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      const successful = document.execCommand('copy');
-      document.body.removeChild(textarea);
-
-      if (successful) {
-        console.log('API ключ скопирован', 'success');
-      } else {
-        throw new Error('Резервное копирование не удалось');
-      }
-    } catch (err) {
-      console.error('Резервное копирование не удалось:', err);
-      console.log('Не удалось скопировать ключ. Скопируйте вручную.', 'error');
-    }
   }
 
-  const closeButtons = [
-    document.getElementById('close_project_stats_header'),
-    document.getElementById('close_project_stats_footer')
-  ]
+  function setupConnectionModal() {
+    const dialog = document.getElementById('partnerConnectModal');
+    if (!dialog) return;
 
-  showProjectStatsBtns.forEach(btn => {
-    btn.addEventListener("click", function () {
-      const dataset = this.dataset;
-      console.log(dataset)
-      document.getElementById('commissionRate').textContent = String(dataset.commissionRate) + "%";
-      document.getElementById('projectTitle').textContent = dataset.projectName;
-      modalStats.showModal();
+    const form = document.getElementById('partnerConnectForm');
+    const submitButton = document.getElementById('submitPartnerRequest');
+    const closeButtons = [
+      document.getElementById('closePartnerDialog'),
+      document.getElementById('closePartnerDialogFooter')
+    ].filter(Boolean);
 
-    })
-  })
+    document.querySelectorAll('.ConnectProjectModal').forEach(button => {
+      button.addEventListener('click', function () {
+        const dataset = this.dataset;
+        const fields = {
+          'project-name': dataset.projectName,
+          'advertiser': dataset.projectAdvertiser,
+          'commission': dataset.projectCommissionRate + '%',
+          'partners-count': dataset.projectPartnersCount,
+          'created-at': dataset.projectCreatedAt,
+          'description': dataset.projectDescription
+        };
 
-  closeButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      modalStats.close()
-    })
-  })
-}
+        Object.entries(fields).forEach(([field, value]) => {
+          const element = dialog.querySelector(`[data-field="${field}"]`);
+          if (element) {
+            field === 'description'
+              ? element.innerHTML = value
+              : element.textContent = value;
+          }
+        });
 
-
-export function setupPartnerPlatformStatsModal() {
-  const showPlatformStatsButtons = document.querySelectorAll('.show_partner_platforms');
-  showPlatformStatsButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      document.getElementById('PartnerPlatformStatsModal').showModal();
+        const urlElement = dialog.querySelector('[data-field="project-url"]');
+        if (urlElement && dataset.projectUrl) {
+          urlElement.href = dataset.projectUrl;
         }
+
+        if (form && dataset.projectId) {
+          form.action = `/connect_project/${dataset.projectId}`;
+        }
+
+        dialog.showModal();
+      });
+    });
+
+    if (submitButton && form) {
+      submitButton.addEventListener('click', () => form.submit());
+    }
+
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', () => dialog.close());
+    });
+  }
+
+  function setupProjectStatsModal() {
+    const showProjectStatsBtns = document.querySelectorAll(".show_project_stats");
+    const modalStats = document.getElementById('connectedProjectStatsModal');
+    const copyPartnerLinkBtn = document.getElementById('copy_partner_link');
+
+    copyPartnerLinkBtn.addEventListener('click', () => {
+      const link = document.getElementById('ProjectPartnerLink');
+      if (!navigator.clipboard) {
+        console.warn('Clipboard API не поддерживается');
+        fallbackCopy(link.value);
+        return;
+      }
+
+      try {
+        navigator.clipboard.writeText(link.value);
+        console.log('API ключ скопирован!', 'success');
+      } catch (err) {
+        console.error('Ошибка копирования:', err);
+        fallbackCopy(link.value);
+      }
+    })
+
+    function fallbackCopy(text) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed'; // Невидимый элемент
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        if (successful) {
+          console.log('API ключ скопирован', 'success');
+        } else {
+          throw new Error('Резервное копирование не удалось');
+        }
+      } catch (err) {
+        console.error('Резервное копирование не удалось:', err);
+        console.log('Не удалось скопировать ключ. Скопируйте вручную.', 'error');
+      }
+    }
+
+    const closeButtons = [
+      document.getElementById('close_project_stats_header'),
+      document.getElementById('close_project_stats_footer')
+    ]
+
+    showProjectStatsBtns.forEach(btn => {
+      btn.addEventListener("click", function () {
+        const dataset = this.dataset;
+        document.getElementById('commissionRate').textContent = String(dataset.commissionRate) + "%";
+        document.getElementById('projectTitle').textContent = dataset.projectName;
+        modalStats.showModal();
+
+      })
+    })
+
+    closeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        modalStats.close()
+      })
+    })
+  }
+
+  function setupPartnerPlatformStatsModal() {
+    const showPlatformStatsButtons = document.querySelectorAll('.show_partner_platforms');
+    showPlatformStatsButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        document.getElementById('PartnerPlatformStatsModal').showModal();
+      }
       )
     }
-  )
+    )
+  }
+
+  function setupStopPartnershipModal() {
+    const stopPartnershipBtns = document.querySelectorAll('.stop_partnership');
+    const stopPartnershipModal = document.getElementById('stopPartnershipModal');
+    const ProjectName = document.getElementById('StopPartnershipProjectName');
+    const stopPartnershipForm = document.getElementById('StopPartnershipForm');
+    const stopPartnershipSubmit = document.getElementById('StopPartnershipSubmit');
+
+    stopPartnershipBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        const dataset = this.dataset;
+        ProjectName.innerHTML = dataset.projectName;
+        stopPartnershipForm.action = `/stop_partnership/${dataset.projectId}`;
+        stopPartnershipModal.showModal();
+      })
+    })
+
+    stopPartnershipSubmit.addEventListener('click', () => {
+      stopPartnershipForm.submit();
+    })
+  }
+
+  function setupSuspendPartnerShipModal() {
+    const suspendPartnershipBtns = document.querySelectorAll('.suspend_partnership');
+    const suspendPartnershipModal = document.getElementById('suspendPartnershipModal');
+    const suspendPartnershipForm = document.getElementById('suspendPartnershipForm')
+
+    suspendPartnershipBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        const dataset = this.dataset;
+        suspendPartnershipForm.action = `/suspend_partnership/${dataset.projectId}`
+        suspendPartnershipModal.showModal();
+      })
+    })
+  }
+
+  // Вызываем все функции сразу при создании
+  function initAllModals() {
+    setupWithdrawModal();
+    setupConnectionModal();
+    setupProjectStatsModal();
+    setupPartnerPlatformStatsModal();
+    setupStopPartnershipModal();
+    setupSuspendPartnerShipModal();
+  }
+
+
+  initAllModals()
 }
