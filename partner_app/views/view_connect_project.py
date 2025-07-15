@@ -21,6 +21,7 @@ def connect_project(request, project_id):
     ProjectPartner.objects.create(
         project=project,
         partner=partner,
-        custom_commission=project.commission_rate
+        custom_commission=project.commission_rate,
+        advertiser=project.advertiser
     )
     return redirect("dashboard")

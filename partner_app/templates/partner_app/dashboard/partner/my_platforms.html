@@ -4,7 +4,8 @@
 <div id="my_platforms" class="page-section">
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-base-content mb-2">Мои площадки</h1>
-        <p class="text-base-content/60">Добавляйте и управляйте своими источниками трафика (TikTok, YouTube, блоги, сайты и др.)</p>
+        <p class="text-base-content/60">Добавляйте и управляйте своими источниками трафика (TikTok, YouTube, блоги,
+            сайты и др.)</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
@@ -74,8 +75,28 @@
             {% if messages %}
             <div class="mt-4">
                 {% for message in messages %}
-                    {% if "platform_add_error" in message.extra_tags %}
+                    {% if "platform_add_success" in message.extra_tags %}
+                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "platform_add_error" in message.extra_tags %}
                     <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "platform_edit_error" in message.extra_tags %}
+                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "platform_edit_success" in message.extra_tags %}
+                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "platform_delete_error" in message.extra_tags %}
+                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "platform_delete_success" in message.extra_tags %}
+                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
                         <b>{{ message }}</b>
                     </div>
                     {% endif %}
@@ -119,22 +140,29 @@
 
                                     <div class="text-sm text-primary truncate">
                                         {% if "http" in platform.url_or_id %}
-                                            <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
+                                        <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
                                         {% else %}
-                                            {{ platform.url_or_id }}
+                                        {{ platform.url_or_id }}
                                         {% endif %}
                                     </div>
 
                                     <div class="flex justify-between items-center">
-                                        <span class="text-sm text-gray-500">{{
-                                            platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
+                                        <span class="text-sm text-gray-500">{{ platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
                                         <div class="dropdown dropdown-end">
                                             <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </div>
                                             <ul tabindex="0"
                                                 class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
-                                                <li><a href="#"><i class="fas fa-edit mr-2"></i>Ред.</a></li>
+                                                <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
+                                                    data-platform-name="{{ platform.name }}"
+                                                    data-platform-type="{{ platform.get_platform_type_display }}"
+                                                    data-platform-url="{{ platform.url_or_id }}"
+                                                    data-platform-description="{{ platform.description }}">
+                                                    <a href="#">
+                                                        <i class="fas fa-edit mr-2"></i>Ред.
+                                                    </a>
+                                                </li>
                                                 <li>
                                                     <a href="#" class="text-error delete-platform-btn"
                                                         data-platform-id="{{ platform.id }}"
@@ -154,9 +182,9 @@
                             <td class="hidden lg:table-cell text-sm text-primary truncate max-w-[150px]">
                                 <div class="text-sm text-primary truncate">
                                     {% if "http" in platform.url_or_id %}
-                                        <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
+                                    <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
                                     {% else %}
-                                        {{ platform.url_or_id }}
+                                    {{ platform.url_or_id }}
                                     {% endif %}
                                 </div>
                             </td>
@@ -175,14 +203,22 @@
                                     <ul tabindex="0"
                                         class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                                         <li class="show_partner_platforms">
-                                            <a href="#">
+                                            <a>
                                                 <i class="fa-solid fa-square-poll-vertical"></i>Статистика
                                             </a>
                                         </li>
-                                        <li><a href="#"><i class="fas fa-edit mr-2"></i>Редактировать</a></li>
+                                        <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
+                                            data-platform-name="{{ platform.name }}"
+                                            data-platform-type="{{ platform.get_platform_type_display }}"
+                                            data-platform-url="{{ platform.url_or_id }}"
+                                            data-platform-description="{{ platform.description }}">
+                                            <a>
+                                                <i class="fas fa-edit mr-2"></i>Редактировать
+                                            </a>
+                                        </li>
                                         <li class="text-error delete-platform-btn" data-platform-id="{{ platform.id }}"
                                             data-platform-name="{{ platform.name }}">
-                                            <a href="#">
+                                            <a>
                                                 <i class="fas fa-trash-alt mr-2"></i>Удалить
                                             </a>
                                         </li>

@@ -1,0 +1,76 @@
+{% load static %}
+
+<dialog id="resumePartnershipModal" class="modal">
+    <div class="modal-box max-w-md bg-white dark:bg-gray-800 shadow-xl">
+        <!-- Заголовок с иконкой -->
+        <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Возобновление сотрудничества</h3>
+        </div>
+
+        <div class="divider my-2"></div>
+
+        <div class="py-4 space-y-5">
+            <p class="text-gray-700 dark:text-gray-300">
+                Вы собираетесь возобновить сотрудничество с проектом
+                <span id="ProjectNameResume" class="font-semibold text-primary">"Название проекта"</span>.
+                Это снова сделает их рекламные материалы активными.
+            </p>
+
+            <!-- Детали возобновления -->
+            <div class="bg-base-200 dark:bg-gray-700 rounded-box p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-600 dark:text-gray-300">Дата приостановки:</span>
+                    <span class="font-medium">15.10.2023</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600 dark:text-gray-300">Причина приостановки:</span>
+                    <span class="font-medium">Технические работы</span>
+                </div>
+            </div>
+
+            <!-- Настройки возобновления -->
+
+            <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-3">
+                    <input type="checkbox" checked class="checkbox checkbox-primary" />
+                    <span class="label-text text-gray-700 dark:text-gray-300">Уведомить рекламодателя по email</span>
+                </label>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text text-gray-700 dark:text-gray-300">Комментарий для рекламодателя</span>
+                </label>
+                <textarea class="textarea textarea-bordered h-20"
+                    placeholder="Сообщение о возобновлении сотрудничества..."></textarea>
+            </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="modal-action flex flex-col-reverse sm:flex-row gap-3">
+            <form method="dialog">
+                <button class="btn btn-ghost">Отменить</button>
+            </form>
+            <form method="post" id="ResumePartnershipForm">
+                {% csrf_token %}
+                <button class="btn btn-success gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Возобновить сотрудничество
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Фон модального окна -->
+    <form method="dialog" class="modal-backdrop">
+        <button>Закрыть</button>
+    </form>
+</dialog>

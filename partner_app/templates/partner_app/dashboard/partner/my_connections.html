@@ -46,7 +46,7 @@
                     {% endif %}
                     <span
                         class="badge status-badge {% if project.partner_memberships.first.status == 'Приостановлен' %}text-gray-500
-                            {% elif project.partner_memberships.first.status == 'Активен' %}text-success{% else %} text-red-500 {% endif %} badge-xs sm:badge-sm">
+                            {% elif project.partner_memberships.first.status == 'Активен'  %}text-success{% else %} text-red-500 {% endif %} badge-xs sm:badge-sm">
                         {{ project.partner_memberships.first.status }}
                     </span>
                 </div>
@@ -94,21 +94,24 @@
                         </div>
                         <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                             {% if project.partner_memberships.first.status == 'Активен' %}
-                            <li class="suspend_partnership" data-project-id="{{ project.id }}"
+                            <li class="suspend_partnership" 
+                                data-project-id="{{ project.id }}"
                                 data-project-name="{{ project.name }}">
                                 <a>
                                     <i class="fas fa-edit mr-2"></i>Приостановить
                                 </a>
                             </li>
                             {% elif project.partner_memberships.first.status == 'Приостановлен' %}
-                            <li class="resume_partnership" data-project-id="{{ project.id }}"
+                            <li class="resume_partnership" 
+                                data-project-id="{{ project.id }}"
                                 data-project-name="{{ project.name }}">
-                                <a href="#">
+                                <a>
                                     <i class="fas fa-edit mr-2"></i>Возобновить
                                 </a>
                             </li>
                             {% endif %}
-                            <li class="text-error stop_partnership" data-project-id="{{ project.id }}"
+                            <li class="text-error stop_partnership" 
+                                data-project-id="{{ project.id }}"
                                 data-project-name="{{ project.name }}">
                                 <a>
                                     <i class="fas fa-trash-alt mr-2"></i>Отключиться

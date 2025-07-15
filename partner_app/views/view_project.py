@@ -14,10 +14,10 @@ def add_project(request):
         project = form.save(commit=False)
         project.advertiser  = request.user
         project.save()
-        return redirect("dashboard")
+        messages.success(request, "Проект успешно добавлен",extra_tags="project_add_success")
     except Exception as e:
         print(e)
-        messages.error(request, "Уже существует проект с таким  URL или ID или названием.",extra_tags="project_add_error")
+        messages.error(request, "Уже существует проект с таким  URL или ID или названием",extra_tags="project_add_error")
         
     return redirect("dashboard")
 
@@ -26,8 +26,13 @@ def add_project(request):
 @login_required
 @require_POST
 def delete_project(request, project_id):
-    project = Project.objects.get(id=project_id,advertiser=request.user)
-    project.delete()
+    try:
+        project = Project.objects.get(id=project_id,advertiser=request.user)
+        project.delete()
+        messages.success(request, "Проект успешно удалён",extra_tags="project_delete_success")
+    except Exception as e:
+        print(e)
+        messages.success(request, "Произошла ошибка при удалении проекта",extra_tags="project_delete_error")
     return redirect("dashboard")
 
 
@@ -36,6 +41,7 @@ def delete_project(request, project_id):
 def edit_project(request,project_id):
     project = Project.objects.get(id=project_id,advertiser=request.user)
     try:
+        exc = None
         project.name = request.POST.get('name', project.name)
         project.url = request.POST.get('url', project.url)
         project.description = request.POST.get('description', project.description)
@@ -50,12 +56,13 @@ def edit_project(request,project_id):
         # Валидация
         project.full_clean()
         project.save()
-        print(request.GET.urlencode())
     except Exception as e:
         print("error:", e)
-        messages.error(request, "Ошибка редактирования проекта.",extra_tags="project_edit_error")
+        exc = e
+        messages.error(request, "Ошибка редактирования проекта",extra_tags="project_edit_error")
     
-    messages.success(request,f"Проект {project.name} успешно отредактирован",extra_tags="project_edit_success")
+    if not exc:
+        messages.success(request,f"Проект {project.name} успешно отредактирован",extra_tags="project_edit_success")
     return redirect("dashboard")
 
 

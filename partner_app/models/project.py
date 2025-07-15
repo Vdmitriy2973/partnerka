@@ -5,15 +5,15 @@ from .user import User
 
 class Project(models.Model):
     class StatusType(models.TextChoices):
-        PENDING = 'pending', 'На модерации'
-        APPROVED = 'approved', 'Подтверждено'
-        REJECTED = 'rejected', 'Отклонено'
-        BLOCKED = 'blocked', 'Заблокировано'
+        PENDING = 'На модерации'
+        APPROVED = 'Подтверждено'
+        REJECTED = 'Отклонено'
+        BLOCKED = 'Заблокировано'
         
     advertiser = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='managed_projects',  # Изменено для ясности
+        related_name='managed_projects',
         verbose_name='Рекламодатель',
         limit_choices_to={'user_type': 'advertiser'}
     )
@@ -22,7 +22,7 @@ class Project(models.Model):
         User,
         through='ProjectPartner', 
         through_fields=('project', 'partner'),
-        related_name='participating_projects',  # Изменено для устранения конфликта
+        related_name='participating_projects', 
         verbose_name="Партнёры проекта",
         limit_choices_to={'user_type': 'partner'},
         blank=True

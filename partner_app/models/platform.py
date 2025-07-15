@@ -11,10 +11,10 @@ class Platform(models.Model):
         OTHER = 'other', 'Другое'
 
     class StatusType(models.TextChoices):
-        PENDING = 'pending', 'На модерации'
-        APPROVED = 'approved', 'Подтверждено'
-        REJECTED = 'rejected', 'Отклонено'
-        BLOCKED = 'blocked', 'Заблокировано'
+        PENDING = 'На модерации'
+        APPROVED = 'Подтверждено'
+        REJECTED = 'Отклонено'
+        BLOCKED = 'Заблокировано'
 
     partner = models.ForeignKey(
         User,

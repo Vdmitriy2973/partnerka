@@ -14,6 +14,14 @@ class ProjectPartner(models.Model):
         related_name='project_memberships'  
     )
 
+    advertiser = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="project_owner",
+        null=True,
+        blank=True
+    )
+    
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,

@@ -1,0 +1,84 @@
+<dialog id="edit_platform_modal" class="modal sm:modal-middle">
+    <div class="modal-box max-w-2xl relative">
+        <!-- Кнопка закрытия (крестик) -->
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="edit_platform_modal.close()">
+            ✕
+        </button>
+
+        <h3 class="font-bold text-xl mb-6 pr-8">Редактирование площадки</h3>
+
+        <form id="edit_platform_form" method="post" class="space-y-5">
+            {% csrf_token %}
+            <!-- Название площадки -->
+            <div class="form-control">
+                <label class="label" for="EditPlatformName">
+                    <span class="label-text font-medium">Название площадки</span>
+                </label>
+                <input name="name" type="text" placeholder="Введите название" id="EditPlatformName"
+                    class="input input-bordered w-full" value="Мой маркетплейс" required />
+            </div>
+
+            <!-- Тип площадки -->
+            <div class="form-control">
+                <label class="label" for="EditPlatformType">
+                    <span class="label-text font-medium">Тип площадки</span>
+                </label>
+                <select name="type" id="EditPlatformType" class="select select-bordered w-full">
+                    <option disabled selected value="">Выберите тип</option>
+                    <option value="website">Веб-сайт</option>
+                    <option value="social_networks">Социальные сети</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="blog">Блог</option>
+                    <option value="other">Другое</option>
+                </select>
+            </div>
+
+            <!-- Описание -->
+            <div class="form-control">
+                <label class="label" for="EditPlatformDescription">
+                    <span class="label-text font-medium">Описание площадки</span>
+                    <span class="label-text-alt">Макс. 500 символов</span>
+                </label>
+                <textarea name="description" id="EditPlatformDescription" class="textarea textarea-bordered h-32"
+                    placeholder="Опишите вашу площадку..."
+                    maxlength="500">Мой маркетплейс специализируется на продаже экологичных товаров для дома</textarea>
+                <div class="text-right text-sm text-gray-500 mt-1">
+                    <span id="charCount">0</span>/500
+                </div>
+            </div>
+
+            <!-- URL / ID -->
+            <div class="form-control">
+                <label class="label" for="EditPlatformURL">
+                    <span class="label-text font-medium">URL или ID площадки</span>
+                </label>
+                <div class="join w-full">
+                    <input name="url" id="EditPlatformURL" type="text" placeholder="example.com или username"
+                        class="join-item input input-bordered flex-grow" value="mymarketplace.com" required />
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <!-- Кнопка отмены как отдельная форма -->
+                <form method="dialog">
+                    <button type="button" class="btn btn-ghost" onclick="edit_platform_modal.close()">Отменить</button>
+                </form>
+                <!-- Кнопка сохранения как submit для основной формы -->
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path
+                            d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z" />
+                    </svg>
+                    Сохранить изменения
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Клик вне модального окна для закрытия -->
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
+        <button>close</button>
+    </form>
+</dialog>

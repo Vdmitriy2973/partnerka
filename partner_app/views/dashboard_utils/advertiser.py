@@ -17,21 +17,14 @@ def handle_advertiser_dashboard(request):
     
     # Партнеры с аннотациями и оптимизацией
     partners = User.objects.filter(
-        user_type='partner',
         project_memberships__project__advertiser=request.user
-    ).annotate(
-        active_projects_count=Count(
-            'project_memberships',
-            filter=Q(project_memberships__status='active')
-        )
-    ).distinct().order_by('-project_memberships__joined_at')
+    ).distinct()
     
     projects = Project.objects.filter(
         advertiser=request.user
     ).select_related('advertiser').order_by('-created_at')
 
     if partners_search_q:
-
         partners = _apply_search(partners,partners_search_q,["email"])
 
     if projects_search_q:
