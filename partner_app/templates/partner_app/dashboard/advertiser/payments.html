@@ -2,28 +2,27 @@
 
 <div id="payments" class="page-section">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold">Выплаты</h1>
-        <p class="text-base-content/60">История выплат партнерам</p>
+        <h1 class="text-2xl sm:text-3xl font-bold">Выплаты</h1>
+        <p class="text-base-content/60 text-sm sm:text-base">История выплат партнерам</p>
     </div>
 
     <div class="card bg-base-100 shadow">
-        <div class="card-body">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h2 class="card-title">
+        <div class="card-body p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <h2 class="card-title text-xl sm:text-2xl">
                     <i class="fas fa-money-bill-wave text-primary mr-2"></i>
                     История выплат
                 </h2>
-                <div class="flex gap-2">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus mr-2"></i>
-                        Новая выплата
-                    </button>
-                </div>
+                <button class="btn btn-primary btn-sm sm:btn-md w-full sm:w-auto" onclick="paymentModal.showModal()">
+                    <i class="fas fa-plus sm:mr-2"></i>
+                    <span class="hidden sm:inline">Новая выплата</span>
+                </button>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="table">
-                    <thead>
+                <table class="table table-zebra">
+                    <!-- Видимые колонки на мобильных -->
+                    <thead class="hidden sm:table-header-group">
                         <tr>
                             <th>Дата</th>
                             <th>Партнер</th>
@@ -33,25 +32,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>15.06.2024</td>
-                            <td>Мария Петрова</td>
-                            <td class="font-bold">₽12,540</td>
-                            <td><span class="badge badge-success">Выплачено</span></td>
-                            <td>
-                                <button class="btn btn-ghost btn-xs">
+                        <!-- Первая строка -->
+                        <tr class="flex flex-col sm:table-row border-b sm:border-none">
+                            <td data-label="Дата" class="font-semibold sm:font-normal">15.06.2024</td>
+                            <td data-label="Партнер">Мария Петрова</td>
+                            <td data-label="Сумма" class="font-bold text-primary">₽12,540</td>
+                            <td data-label="Статус">
+                                <span class="badge badge-success badge-sm sm:badge-md">Выплачено</span>
+                            </td>
+                            <td data-label="Детали" class="text-right sm:text-center">
+                                <button class="btn btn-ghost btn-xs sm:btn-sm">
                                     <i class="fas fa-eye"></i>
+                                    <span class="sm:hidden">Подробнее</span>
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>10.06.2024</td>
-                            <td>Иван Иванов</td>
-                            <td class="font-bold">₽9,870</td>
-                            <td><span class="badge badge-success">Выплачено</span></td>
-                            <td>
-                                <button class="btn btn-ghost btn-xs">
+
+                        <!-- Вторая строка -->
+                        <tr class="flex flex-col sm:table-row border-b sm:border-none">
+                            <td data-label="Дата" class="font-semibold sm:font-normal">10.06.2024</td>
+                            <td data-label="Партнер">Иван Иванов</td>
+                            <td data-label="Сумма" class="font-bold text-primary">₽9,870</td>
+                            <td data-label="Статус">
+                                <span class="badge badge-success badge-sm sm:badge-md">Выплачено</span>
+                            </td>
+                            <td data-label="Детали" class="text-right sm:text-center">
+                                <button class="btn btn-ghost btn-xs sm:btn-sm">
                                     <i class="fas fa-eye"></i>
+                                    <span class="sm:hidden">Подробнее</span>
                                 </button>
                             </td>
                         </tr>

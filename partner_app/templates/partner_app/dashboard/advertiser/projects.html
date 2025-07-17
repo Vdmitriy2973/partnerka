@@ -7,62 +7,74 @@
         <p class="text-base-content/60">Создавайте и настраивайте проекты для партнеров</p>
     </div>
 
-    <div class="flex sm:flew-row justify-between items-center mb-6">
-        <div class="flex justify-between items-center mb-6">
-            <form method="get" action="" class="join w-full">
-                <div>
-                    <div>
-                        <input name="projects_search" class="input input-bordered join-item"
-                            placeholder="Поиск проектов..." value="{{ projects_search_query }}">
-                    </div>
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <!-- Форма поиска -->
+        <div class="flex-grow">
+            <form method="get" action="" class="flex flex-col sm:flex-row gap-2 w-full">
+                <!-- Поле поиска -->
+                <div class="flex-grow">
+                    <input name="projects_search" class="input input-bordered w-full" placeholder="Поиск проектов..."
+                        value="{{ projects_search_query }}">
                 </div>
-                <div class="indicator">
-                    <button type="submit" class="btn join-item btn-primary">
-                        <i class="fas fa-search mr-2"></i> Найти
+
+                <!-- Группа кнопок формы -->
+                <div class="flex gap-2">
+                    <!-- Кнопка поиска -->
+                    <button type="submit" class="btn btn-primary flex-1 sm:flex-none min-w-[100px]">
+                        <i class="fas fa-search sm:mr-2"></i>
+                        <span class="hidden sm:inline">Найти</span>
+                    </button>
+
+                    <!-- Кнопка сброса -->
+                    <button type="reset" class="btn flex-1 sm:flex-none min-w-[100px]"
+                        onclick="window.location.href='{{ request.path }}'">
+                        <i class="fas fa-times sm:mr-2"></i>
+                        <span class="hidden sm:inline">Сбросить</span>
                     </button>
                 </div>
-                <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
-                    <i class="fas fa-times mr-2"></i> Сбросить
-                </button>
             </form>
         </div>
 
-        <button class="btn btn-primary" id="create_project">
-            <i class="fas fa-plus mr-2"></i> Новый проект
-        </button>
+        <!-- Кнопка создания проекта -->
+        <div class="sm:self-center">
+            <button class="btn btn-primary w-full sm:w-auto" id="create_project">
+                <i class="fas fa-plus sm:mr-2"></i>
+                <span>Новый проект</span>
+            </button>
+        </div>
     </div>
 
     <!-- Уведомления -->
     {% if messages %}
-        <div class="mt-4">
-            {% for message in messages %}
-                {% if "project_add_success" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
-                        <b>{{ message }}</b>
-                    </div>
-                {% elif "project_add_error" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
-                        <b>{{ message }}</b>
-                    </div>
-                {% elif "project_edit_error" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
-                        <b>{{ message }}</b>
-                    </div>
-                {% elif "project_edit_success" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
-                        <b>{{ message }}</b>
-                    </div>
-                {% elif "project_delete_error" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
-                        <b>{{ message }}</b>
-                    </div>
-                {% elif "project_delete_success" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
-                        <b>{{ message }}</b>
-                    </div>
-                {% endif %}
-            {% endfor %}
+    <div class="mt-4">
+        {% for message in messages %}
+        {% if "project_add_success" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+            <b>{{ message }}</b>
         </div>
+        {% elif "project_add_error" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+            <b>{{ message }}</b>
+        </div>
+        {% elif "project_edit_error" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+            <b>{{ message }}</b>
+        </div>
+        {% elif "project_edit_success" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+            <b>{{ message }}</b>
+        </div>
+        {% elif "project_delete_error" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+            <b>{{ message }}</b>
+        </div>
+        {% elif "project_delete_success" in message.extra_tags %}
+        <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+            <b>{{ message }}</b>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
     {% endif %}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in projects %}
@@ -107,30 +119,38 @@
                         <span>{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
                     </div>
                 </div>
-                <div class="card-actions mt-6">
-                    <button class="showProjectDetailsModal btn btn-primary btn-block" data-project-id="{{ project.id }}"
-                        data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
-                        data-project-url="{{ project.url }}" data-project-status="{{ project.status }}"
-                        data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
-                        data-project-partners-count="{{ project.partners.count }}"
-                        data-project-commission-rate="{{ project.commission_rate }}"
-                        data-project-min-payout="{{ project.min_payout }}"
-                        data-project-cookie-lifetime="{{ project.cookie_lifetime }}">
-                        <i class="fas fa-eye mr-2"></i> Просмотр
-                    </button>
-                    <button class="editProjectModal btn btn-primary btn-block" data-project-id="{{ project.id }}"
-                        data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
-                        data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
-                        data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
-                        data-project-commission-rate="{{ project.commission_rate }}"
-                        data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
-                        data-project-min-payout="{{ project.min_payout }}">
-                        <i class="fas fa-edit mr-1"></i> Редактировать
-                    </button>
-                    <button class="delProjectModal btn btn-error btn-block" data-project-id="{{ project.id }}"
-                        data-project-name="{{ project.name }}">
-                        <i class="fas fa-trash-alt mr-2"></i> Удалить
-                    </button>
+                <div class="dropdown flex justify-end">
+                    <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li class="showProjectDetailsModal" data-project-id="{{ project.id }}"
+                            data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
+                            data-project-url="{{ project.url }}" data-project-status="{{ project.status }}"
+                            data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
+                            data-project-partners-count="{{ project.partners.count }}"
+                            data-project-commission-rate="{{ project.commission_rate }}"
+                            data-project-min-payout="{{ project.min_payout }}"
+                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}">
+                            <a><i class="fas fa-eye mr-1"></i> Просмотр</a>
+                        </li>
+                        <li class="ShowConnectedPartners">
+                            <a>Партнёры</a>
+                        </li>
+                        <li class="editProjectModal" data-project-id="{{ project.id }}"
+                            data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
+                            data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
+                            data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
+                            data-project-commission-rate="{{ project.commission_rate }}"
+                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
+                            data-project-min-payout="{{ project.min_payout }}">
+                            <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
+                        </li>
+                        <li class="delProjectModal" data-project-id="{{ project.id }}"
+                            data-project-name="{{ project.name }}">
+                            <a><i class="fas fa-trash-alt mr-2"></i> Удалить</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

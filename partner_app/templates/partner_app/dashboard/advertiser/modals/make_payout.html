@@ -1,0 +1,264 @@
+{% load static %}
+<!-- Модальное окно -->
+<dialog id="paymentModal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box max-w-2xl p-0 overflow-hidden max-h-[90vh] flex flex-col">
+    <!-- Заголовок -->
+    <div class="sticky top-0 bg-base-100 p-6 pb-4 border-b border-base-200 z-10">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-bold">Создать выплату</h3>
+        <button onclick="paymentModal.close()" class="btn btn-circle btn-ghost btn-sm">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <div class="flex-1 overflow-y-auto p-6">
+      <!-- Поиск партнёра -->
+      <div class="mb-6">
+        <label class="label">
+          <span class="label-text">Поиск партнёра</span>
+        </label>
+        <div class="relative">
+          <input 
+            type="text" 
+            id="partnerSearch" 
+            placeholder="Введите имя, email или ID..." 
+            class="input input-bordered w-full pl-10"
+          >
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2">
+            <i class="fas fa-search text-gray-400"></i>
+          </span>
+        </div>
+        <div id="partnerList" class="mt-2 border rounded-lg max-h-60 overflow-y-auto hidden">
+          <!-- Список будет заполняться JavaScript -->
+        </div>
+      </div>
+
+      <!-- Выбранный партнёр -->
+      <div id="selectedPartnerContainer" class="hidden mb-6 p-4 bg-base-200 rounded-lg">
+        <div class="flex justify-between items-center">
+          <div>
+            <h4 class="font-bold" id="selectedPartnerName"></h4>
+            <p class="text-sm opacity-70" id="selectedPartnerDetails"></p>
+          </div>
+          <button onclick="clearPartnerSelection()" class="btn btn-ghost btn-sm">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Сумма выплаты -->
+      <div class="mb-6">
+        <label class="label">
+          <span class="label-text">Сумма выплаты</span>
+        </label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">₽</span>
+          <input 
+            type="number" 
+            id="paymentAmount" 
+            placeholder="0.00" 
+            class="input input-bordered w-full pl-8"
+            min="0"
+            step="0.01"
+          >
+        </div>
+      </div>
+
+      <!-- Способ выплаты -->
+      <div class="mb-6">
+        <label class="label">
+          <span class="label-text">Способ выплаты</span>
+        </label>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button class="payment-method-btn btn btn-outline btn-sm sm:btn-md" data-method="card">
+            <i class="fas fa-credit-card mr-2"></i> Карта
+          </button>
+          <button class="payment-method-btn btn btn-outline btn-sm sm:btn-md" data-method="bank">
+            <i class="fas fa-university mr-2"></i> Банк
+          </button>
+          <button class="payment-method-btn btn btn-outline btn-sm sm:btn-md" data-method="paypal">
+            <i class="fab fa-paypal mr-2"></i> PayPal
+          </button>
+          <button class="payment-method-btn btn btn-outline btn-sm sm:btn-md" data-method="crypto">
+            <i class="fas fa-wallet mr-2"></i> Крипто
+          </button>
+        </div>
+        <input type="hidden" id="paymentMethod">
+      </div>
+
+      <!-- Комментарий -->
+      <div>
+        <label class="label">
+          <span class="label-text">Комментарий (необязательно)</span>
+        </label>
+        <textarea 
+          id="paymentComment" 
+          class="textarea textarea-bordered w-full" 
+          placeholder="Укажите детали выплаты..."
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Футер -->
+    <div class="sticky bottom-0 bg-base-100 p-6 pt-4 border-t border-base-200">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button onclick="paymentModal.close()" class="btn btn-ghost flex-1">
+          Отменить
+        </button>
+        <button 
+          id="submitPaymentBtn" 
+          class="btn btn-primary flex-1"
+          disabled
+        >
+          <i class="fas fa-paper-plane mr-2"></i> Создать выплату
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Затемнение фона -->
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<script>
+// Инициализация модального окна
+const paymentModal = document.getElementById('paymentModal');
+const partnerSearch = document.getElementById('partnerSearch');
+const partnerList = document.getElementById('partnerList');
+const selectedPartnerContainer = document.getElementById('selectedPartnerContainer');
+const selectedPartnerName = document.getElementById('selectedPartnerName');
+const selectedPartnerDetails = document.getElementById('selectedPartnerDetails');
+const submitPaymentBtn = document.getElementById('submitPaymentBtn');
+
+// Дебаунс для поиска
+let searchTimeout;
+const DEBOUNCE_DELAY = 300;
+
+// Хранилище данных
+let selectedPartner = null;
+let selectedPaymentMethod = null;
+let partners = []; // Будет заполняться из API
+
+// Поиск партнёров
+partnerSearch.addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const query = this.value.toLowerCase();
+    if (query.length < 2) {
+      partnerList.classList.add('hidden');
+      return;
+    }
+    
+    // Здесь должен быть запрос к API или фильтрация локальных данных
+    // Для примера используем моковые данные
+    const filteredPartners = partners.filter(partner => 
+      partner.name.toLowerCase().includes(query) ||
+      partner.email.toLowerCase().includes(query) ||
+      partner.id.toString().includes(query)
+    ).slice(0, 50); // Ограничиваем количество результатов
+    
+    renderPartnerList(filteredPartners);
+  }, DEBOUNCE_DELAY);
+});
+
+// Отрисовка списка партнёров
+function renderPartnerList(partners) {
+  if (partners.length === 0) {
+    partnerList.innerHTML = '<div class="p-4 text-center text-gray-500">Ничего не найдено</div>';
+    partnerList.classList.remove('hidden');
+    return;
+  }
+  
+  partnerList.innerHTML = partners.map(partner => `
+    <div class="partner-item p-3 border-b border-base-200 hover:bg-base-200 cursor-pointer"
+         data-id="${partner.id}"
+         data-name="${partner.name}"
+         data-email="${partner.email}">
+      <div class="font-medium">${partner.name}</div>
+      <div class="text-sm text-gray-500">${partner.email} | ID: ${partner.id}</div>
+    </div>
+  `).join('');
+  
+  partnerList.classList.remove('hidden');
+  
+  // Обработка выбора партнёра
+  document.querySelectorAll('.partner-item').forEach(item => {
+    item.addEventListener('click', function() {
+      selectedPartner = {
+        id: this.dataset.id,
+        name: this.dataset.name,
+        email: this.dataset.email
+      };
+      
+      selectedPartnerName.textContent = selectedPartner.name;
+      selectedPartnerDetails.textContent = `${selectedPartner.email} | ID: ${selectedPartner.id}`;
+      selectedPartnerContainer.classList.remove('hidden');
+      partnerList.classList.add('hidden');
+      partnerSearch.value = '';
+      validateForm();
+    });
+  });
+}
+
+// Очистка выбора партнёра
+function clearPartnerSelection() {
+  selectedPartner = null;
+  selectedPartnerContainer.classList.add('hidden');
+  validateForm();
+}
+
+// Выбор способа оплаты
+document.querySelectorAll('.payment-method-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('btn-active'));
+    this.classList.add('btn-active');
+    selectedPaymentMethod = this.dataset.method;
+    document.getElementById('paymentMethod').value = selectedPaymentMethod;
+    validateForm();
+  });
+});
+
+// Валидация формы
+function validateForm() {
+  const amountValid = document.getElementById('paymentAmount').value > 0;
+  submitPaymentBtn.disabled = !(selectedPartner && selectedPaymentMethod && amountValid);
+}
+
+// Загрузка данных партнёров (пример)
+function loadPartners() {
+  // В реальном приложении здесь будет fetch запрос
+  // Для демонстрации используем моковые данные
+  partners = Array.from({ length: 200 }, (_, i) => ({
+    id: 1000 + i,
+    name: `Партнёр ${i + 1}`,
+    email: `partner${i + 1}@example.com`
+  }));
+}
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+  loadPartners();
+  
+  // Валидация при изменении суммы
+  document.getElementById('paymentAmount').addEventListener('input', validateForm);
+  
+  // Обработка отправки формы
+  submitPaymentBtn.addEventListener('click', () => {
+    const paymentData = {
+      partnerId: selectedPartner.id,
+      amount: parseFloat(document.getElementById('paymentAmount').value),
+      method: selectedPaymentMethod,
+      comment: document.getElementById('paymentComment').value
+    };
+    
+    console.log('Создаём выплату:', paymentData);
+    // Здесь будет отправка данных на сервер
+    paymentModal.close();
+  });
+});
+</script>

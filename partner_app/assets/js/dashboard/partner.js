@@ -8,6 +8,7 @@ import { setupTabs } from './partner_modules/ui/tabs.js';
 import { setupClipboard } from './partner_modules/utils/clipboard.js';
 import { setupPartnerModals } from './partner_modules/ui/modals.js';
 import { setupQuickLinks } from './partner_modules/ui/quickLinks.js';
+import { setupInfoMessages } from './partner_modules/ui/info_messages.js';
 
 import "tailwindcss"
 import 'vite/modulepreload-polyfill'
@@ -22,4 +23,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setupClipboard();
     setupQuickLinks();
     setupPartnerModals();
+    setupInfoMessages();
 })

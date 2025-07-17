@@ -57,8 +57,10 @@
                         <div class="font-medium">{{ project.partner_memberships.first.custom_commission }} %</div>
                     </div>
                     <div>
-                        <span class="text-gray-600">Рекламодатель</span>
-                        <a href="{% url 'advertiser' project.advertiser.id %}" class="font-bold">{{ project.advertiser }}</a>
+                        <div class="text-gray-600">Рекламодатель</div>
+                        <div>
+                            <a href="{% url 'advertiser' project.advertiser.id %}" class="font-bold">{{ project.advertiser }}</a>
+                        </div>
                     </div>
                     <div>
                         <div class="text-gray-500">Доход</div>
@@ -75,10 +77,6 @@
                             {% endif %}
                             {% endfor %}
                         </div>
-                    </div>
-                    <div>
-                        <div class="text-gray-500">Конверсии</div>
-                        <div class="font-medium">0</div>
                     </div>
                 </div>
                 <div class="card-actions justify-between">

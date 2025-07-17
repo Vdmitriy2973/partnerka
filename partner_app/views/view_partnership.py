@@ -21,7 +21,6 @@ def stop_partnership_with_partner(request,partner_id):
         advertiser=request.user,
         partner=partner_id
     )
-    print(partneship)
     partneship.delete()
     return redirect('dashboard')
 

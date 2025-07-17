@@ -9,25 +9,30 @@
 
     <div class="card bg-base-100 shadow-sm sm:shadow-lg">
         <div class="card-body p-2 sm:p-4 md:p-6">
-            <div class="flex sm:flew-row justify-between items-center mb-6">
-                <div class="flex justify-between items-center mb-6">
-                    <form method="get" action="" class="join w-full">
-                        <div>
-                            <div>
-                                <input name="partners_search" class="input input-bordered join-item"
-                                    placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
-                            </div>
-                        </div>
-                        <div class="indicator">
-                            <button type="submit" class="btn join-item btn-primary">
-                                <i class="fas fa-search mr-2"></i> Найти
-                            </button>
-                        </div>
-                        <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
-                            <i class="fas fa-times mr-2"></i> Сбросить
+            <div class="mb-6">
+                <form method="get" action="" class="flex flex-col sm:flex-row gap-2 w-full">
+                    <!-- Поле поиска - занимает всю доступную ширину -->
+                    <div class="flex-grow">
+                        <input name="partners_search" class="input input-bordered w-full"
+                            placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
+                    </div>
+
+                    <!-- Группа кнопок - выравнивание по правому краю на десктопе -->
+                    <div class="flex gap-2 justify-end sm:justify-start">
+                        <!-- Кнопка поиска с адаптивным текстом -->
+                        <button type="submit" class="btn btn-primary flex items-center">
+                            <i class="fas fa-search sm:mr-2"></i>
+                            <span class="hidden sm:inline">Найти</span>
                         </button>
-                    </form>
-                </div>
+
+                        <!-- Кнопка сброса с адаптивным текстом -->
+                        <button type="reset" class="btn flex items-center"
+                            onclick="window.location.href='{{ request.path }}'">
+                            <i class="fas fa-times sm:mr-2"></i>
+                            <span class="hidden sm:inline">Сбросить</span>
+                        </button>
+                    </div>
+                </form>
             </div>
 
             <!-- Мобильный вид (карточки) -->
@@ -152,7 +157,7 @@
                                             </li>
                                             <li>
                                                 <a class="stop_partnership_with_partner text-xs sm:text-sm text-error"
-                                                data-partner-id="{{ partner.id }}">
+                                                    data-partner-id="{{ partner.id }}">
                                                     <i class="fas fa-trash-alt mr-1 sm:mr-2"></i>Удалить
                                                 </a>
                                             </li>
