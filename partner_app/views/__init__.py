@@ -9,3 +9,4 @@ from .view_update_notifications import update_notifications_settings
 from .view_partner_detail import partner_detail
 from .view_advertiser_detail import advertiser_detail
 from .view_partnership import stop_partnership_with_project,stop_partnership_with_partner, suspend_partnership, resume_partnership
+from .view_project_detail import project_detail

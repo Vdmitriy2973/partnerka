@@ -18,10 +18,10 @@
             <div class="card-body">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-white/80 text-sm">Всего заработано</p>
-                        <p class="text-2xl font-bold">₽89,450</p>
+                        <p class="text-white/80 text-sm">Доступно новых предложений</p>
+                        <p class="text-2xl font-bold">{{ total_projects }}</p>
                     </div>
-                    <i class="fa-solid text-3xl fa-money-bill"></i>
+                    <i class="fa-solid text-3xl fa-bullhorn"></i>
                 </div>
             </div>
         </div>
@@ -30,8 +30,8 @@
             <div class="card-body">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-white/80 text-sm">Этот месяц</p>
-                        <p class="text-2xl font-bold">₽12,350</p>
+                        <p class="text-white/80 text-sm">Активных подключений</p>
+                        <p class="text-2xl font-bold">{{ active_connected_projects }}</p>
                     </div>
                     <i class="fa-solid text-3xl fa-square-poll-vertical"></i>
                 </div>
@@ -164,14 +164,14 @@
             <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
                     <h2 class="card-title mb-4">
-                        <i class="fas fa-target text-primary mr-2"></i>
+                        <i class="fa-solid fa-wallet"></i>
                         Прогресс выплат
                     </h2>
                     <div class="space-y-4">
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span>До следующей выплаты</span>
-                                <span>₽222,350 / ₽5,000</span>
+                                <span>₽{{request.user.partnerprofile.balance}} / ₽5,000</span>
                             </div>
                             <progress class="progress progress-primary w-full" value="147" max="100"></progress>
                         </div>

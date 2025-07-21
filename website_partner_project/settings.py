@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 from pathlib import Path
+import warnings
+
 
 load_dotenv()
 
@@ -88,7 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website_partner_project.wsgi.application'
 
-
+warnings.filterwarnings('ignore', category=UserWarning, message='.*order.*')
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

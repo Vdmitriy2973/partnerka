@@ -45,6 +45,9 @@ def handle_partner_dashboard(request):
     active_connected_projects = connected_projects.filter(
         partner_memberships__status="Активен"
     ).count()
+    suspended_connected_projects = connected_projects.filter(
+        partner_memberships__status="Приостановлен"
+    ).count()
         
         # Пагинация
     platform_page = _paginate(request, platforms, 5, 'platforms_page')
@@ -66,6 +69,7 @@ def handle_partner_dashboard(request):
             'total_projects': total_projects,
             "connected_projects": connected_projects_page,
             "active_connected_projects": active_connected_projects,
+            "suspended_connected_projects":suspended_connected_projects,
             "total_connected_projects": total_connected_projects,
     }
         

@@ -35,5 +35,8 @@ urlpatterns = [
 
     # Просмотр информации о пользователях
     path('partner/<int:partner_id>', views.partner_detail, name='partner'),
-    path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser')
+    path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser'),
+    
+    # Просмотр информации о площадках/проектах
+    path('project/<int:project_id>',views.project_detail,name='project')
 ]
