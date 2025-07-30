@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path('',views.index,name='index'),
     path('logout', views.logout_view, name='logout'),
@@ -38,5 +37,10 @@ urlpatterns = [
     path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser'),
     
     # Просмотр информации о площадках/проектах
-    path('project/<int:project_id>',views.project_detail,name='project')
+    path('project/<int:project_id>',views.project_detail,name='project'),
+    
+    # Редирект партнёрской ссылки
+    # path('ref/<int:partner_id>/<int:project_id>',views.partner_redirect,name='partner_redirect')
+    path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
+    path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
 ]

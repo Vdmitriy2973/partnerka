@@ -1,4 +1,7 @@
 django
+djangorestframework
 django-vite
 psycopg2  
 python-dotenv
+markdown
+django-filter

@@ -1,10 +1,8 @@
 from django.shortcuts import render
 from django.db.models import Count, Case, When, IntegerField
 
-from traceback import format_exc
-
 from partner_app.models import Platform, Project
-from partner_app.forms import PlatformForm
+from partner_app.forms import PlatformForm,ProjectParamForm
 from .common import _apply_search, _paginate
 
 def handle_partner_dashboard(request):
@@ -28,10 +26,12 @@ def handle_partner_dashboard(request):
         platforms = _apply_search(platforms, platforms_search_q, ['name'])
         
     projects = _get_available_projects(request)
+
     if projects_search_q:
         projects = _apply_search(projects, projects_search_q, ['name'])
         
     connected_projects = _get_connected_projects(request)
+
     if connection_search_q:
         connected_projects = _apply_search(connected_projects, connection_search_q, ['name'])
         
@@ -78,16 +78,15 @@ def handle_partner_dashboard(request):
 def _get_available_projects(request):
     """Получение доступных проектов с оптимизацией"""
     return Project.objects.filter(
-        status='Подтверждено',
+        status=Project.StatusType.APPROVED,
         is_active=True
     ).exclude(
-        partner_memberships__partner=request.user
-    ).select_related('advertiser')
-
+        partners=request.user 
+    ).select_related(
+        'advertiser' 
+    )
 def _get_connected_projects(request):
     """Получение подключенных проектов"""
     return Project.objects.filter(
         partner_memberships__partner=request.user
-    ).prefetch_related(
-        'partner_memberships'
-    ).distinct().order_by('-partner_memberships__joined_at')
+    ).order_by('-partner_memberships__joined_at').distinct()

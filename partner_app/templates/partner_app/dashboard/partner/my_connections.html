@@ -82,12 +82,15 @@
                     </div>
                 </div>
                 <div class="card-actions justify-between">
-                    <a class="show_project_stats btn btn-primary btn-xs sm:btn-sm"
+                    <button class="show_project_stats btn btn-primary btn-xs sm:btn-sm"
                         data-project-name="{{ project.name }}"
-                        data-commission-rate="{{ project.partner_memberships.first.custom_commission }}">
+                        data-commission-rate="{{ project.partner_memberships.first.custom_commission }}" disabled>
                         <i class="fas fa-chart-line"></i>
                         <span class="hidden sm:inline ml-1">Статистика</span>
-                    </a>
+                    </button>
+                    <button data-partner-id="{{ project.partner_memberships.first.partner.id }}" data-project-link="{{ project.url }}" onclick="document.getElementById('partnerLinkModal').showModal()" class="generate_partner_link btn btn-primary btn-xs sm:btn-sm">
+                        Получить ссылку
+                    </button>
                     <div class="dropdown dropdown-end">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
                             <i class="fas fa-ellipsis-v"></i>

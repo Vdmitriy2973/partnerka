@@ -49,27 +49,33 @@
     <div class="mt-4">
         {% for message in messages %}
         {% if "project_add_success" in message.extra_tags %}
-        <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+        <div class="alert alert-success mb-4">
+            <i class="fas fa-check-circle mr-2"></i>
             <b>{{ message }}</b>
         </div>
         {% elif "project_add_error" in message.extra_tags %}
-        <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+        <div class="alert alert-error mb-4">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <b>{{ message }}</b>
         </div>
         {% elif "project_edit_error" in message.extra_tags %}
-        <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+        <div class="alert alert-error mb-4">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <b>{{ message }}</b>
         </div>
         {% elif "project_edit_success" in message.extra_tags %}
-        <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+        <div class="alert alert-success mb-4">
+            <i class="fas fa-check-circle mr-2"></i>
             <b>{{ message }}</b>
         </div>
         {% elif "project_delete_error" in message.extra_tags %}
-        <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+        <div class="alert alert-error mb-4">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <b>{{ message }}</b>
         </div>
         {% elif "project_delete_success" in message.extra_tags %}
-        <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+        <div class="alert alert-success mb-4">
+            <i class="fas fa-check-circle mr-2"></i>
             <b>{{ message }}</b>
         </div>
         {% endif %}
@@ -142,15 +148,21 @@
                             <a><i class="fas fa-eye mr-1"></i> Просмотр</a>
                         </li>
                         <li><a href="{% url 'project' project.id %}"><i class="fas fa-info mr-3"></i>Подробнее</a></li>
-                        <li class="editProjectModal" data-project-id="{{ project.id }}"
-                            data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
-                            data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
-                            data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
-                            data-project-commission-rate="{{ project.commission_rate }}"
-                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
-                            data-project-min-payout="{{ project.min_payout }}">
-                            <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
-                        </li>
+                        {% if project.status == 'Подтверждено' %}
+                            <li class="editProjectModal" data-project-id="{{ project.id }}"
+                                data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
+                                data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
+                                data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
+                                data-project-commission-rate="{{ project.commission_rate }}"
+                                data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
+                                data-project-min-payout="{{ project.min_payout }}">
+                                <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
+                            </li>
+                        {% elif project.status == 'На модерации' %}
+                            <li onclick="alert('Недоступно, пока проект на модерации')">
+                                <a class="text-red-500"><i class="fas fa-edit mr-1"></i> Редактировать</a>
+                            </li>
+                        {% endif %}
                         <li class="delProjectModal" data-project-id="{{ project.id }}"
                             data-project-name="{{ project.name }}">
                             <a><i class="fas fa-trash-alt mr-2"></i> Удалить</a>

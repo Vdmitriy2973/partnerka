@@ -5,12 +5,14 @@ export function setupProjectActions() {
             const projectData = this.dataset;
 
             // Заполняем модальное окно
+            document.getElementById('ProjectID').textContent = `ID проекта: ${projectData.projectId}`;
             document.getElementById('ProjectTitle').textContent = projectData.projectName;
             document.getElementById('ProjectDescription').textContent = projectData.projectDescription;
             document.getElementById('ProjectPartnersCount').textContent = projectData.projectPartnersCount;
             document.getElementById('ProjectComissionRate').textContent = projectData.projectCommissionRate + '%';
             document.getElementById('MinPayout').textContent = projectData.projectMinPayout + ' ₽';
             document.getElementById('CookiePeriod').textContent = projectData.projectCookieLifetime + ' дней';
+            document.getElementById('ProjectUrl').textContent = projectData.projectUrl;
             
             // Статус проекта
             const statusBadge = document.getElementById('ProjectStatusBadge');
@@ -24,11 +26,6 @@ export function setupProjectActions() {
                 statusBadge.className = 'badge badge-error';
                 statusText.textContent = 'Неактивный';
             }
-            
-            // URL проекта
-            // const urlElement = document.getElementById('ProjectUrl');
-            const projectUrl = projectData.projectUrl;
-            // urlElement.href = projectUrl.startsWith('http') ? projectUrl : `https://${projectUrl}`;
 
             document.getElementById('projectDetailsModal').showModal();
         });

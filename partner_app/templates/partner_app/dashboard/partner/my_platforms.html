@@ -76,27 +76,33 @@
             <div class="mt-4">
                 {% for message in messages %}
                     {% if "platform_add_success" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "platform_add_error" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "platform_edit_error" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "platform_edit_success" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "platform_delete_error" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-red-500 mb-4">
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "platform_delete_success" in message.extra_tags %}
-                    <div class="alert alert-{{ message.tags }} text-green-500 mb-4">
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% endif %}

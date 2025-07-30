@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
-from .user import User
+
 
 class Platform(models.Model):
     class PlatformType(models.TextChoices):
@@ -17,7 +17,7 @@ class Platform(models.Model):
         BLOCKED = 'Заблокировано'
 
     partner = models.ForeignKey(
-        User,
+        'User',
         on_delete=models.CASCADE,
         related_name='owned_platforms',  # Изменено для устранения конфликта
         verbose_name='Партнёр',

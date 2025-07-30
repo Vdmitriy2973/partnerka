@@ -81,8 +81,8 @@
                     страница</a>
               </li>
             {% endif %}
-            {% if request.user.is_authenticated %}
-              {% if request.path != 'dashboard' %}
+            {% if request.path != '/dashboard' %}
+              {% if request.user.is_authenticated %}
                 <li>
                   <a href="{% url 'dashboard' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Личный
                     кабинет</a>
@@ -177,7 +177,7 @@
             </div>
             <div class="collapse-content">
               <div class="space-y-2">
-                {% if request.path != '/' %}
+                {% if request.path == '/' %}
                   <a href="#features"
                     class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Возможности</a>
                   <a href="#programs"
@@ -188,11 +188,15 @@
                     class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Отзывы</a>
                   <a href="#testimonials"
                     class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Отзывы</a>
+                {% endif %}
+                {% if request.path != '/' %}
                   <a href="{% url 'index' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Главная
                     страница</a>
                 {% endif %}
-                {% if request.user.is_authenticated %}
-                  <a href="{% url 'dashboard' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Личный кабинет</a>
+                {% if request.path != '/dashboard' %}
+                  {% if request.user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Личный кабинет</a>
+                  {% endif %}
                 {% endif %}
               </div>
             </div>

@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator,MinValueValidator
-from .user import User
 
+import re
 
 class Project(models.Model):
     class StatusType(models.TextChoices):
@@ -11,7 +11,7 @@ class Project(models.Model):
         BLOCKED = 'Заблокировано'
         
     advertiser = models.ForeignKey(
-        User,
+        'User',
         on_delete=models.CASCADE,
         related_name='managed_projects',
         verbose_name='Рекламодатель',
@@ -19,7 +19,7 @@ class Project(models.Model):
     )
     
     partners = models.ManyToManyField(
-        User,
+        'User',
         through='ProjectPartner', 
         through_fields=('project', 'partner'),
         related_name='participating_projects', 
@@ -78,9 +78,48 @@ class Project(models.Model):
         choices=StatusType,
         verbose_name='Статус'
     )
+    
+    link_template = models.CharField(
+        max_length=500,
+        verbose_name='Шаблон ссылки',
+        default=None,
+        blank=True,
+        null=True,
+        help_text= 'Введите адрес партнёрской ссылки и добавьте ниже необходимые параметры'
+    )
 
     is_active = models.BooleanField(default=True)
 
+    def generate_partner_link(self, params_dict):
+        """Генерирует партнерскую ссылку на основе шаблона"""
+        if not self.link_template:
+            return self.url  # fallback
+        
+        try:
+            # Заменяем {param} на значения
+            link = self.link_template
+            for param, value in params_dict.items():
+                link = link.replace(f'{{{param}}}', str(value))
+            
+            # Удаляем незаполненные параметры
+            link = re.sub(r'\?[^=]+=\{[^}]+\}&?', '?', link)
+            link = re.sub(r'&[^=]+=\{[^}]+\}', '', link)
+            link = link.replace('?&', '?').replace('&&', '&')
+            if link.endswith('?'):
+                link = link[:-1]
+                
+            return link
+        except Exception:
+            return self.url
+
+    def get_required_params(self):
+        """Возвращает список обязательных параметров"""
+        return list(self.params.filter(param_type='required').values_list('name', flat=True))
+    
+    def get_optional_params(self):
+        """Возвращает список опциональных параметров"""
+        return list(self.params.filter(param_type='optional').values_list('name', flat=True))
+    
     class Meta:
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
@@ -93,4 +132,45 @@ class Project(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.id} {self.name}"
+    
+
+class ProjectParam(models.Model):
+    PARAM_TYPE_CHOICES = [
+        ('required', 'Обязательный'),
+        ('optional', 'Опциональный'),
+    ]
+    
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='params',
+        verbose_name='Проект'
+    )
+    name = models.CharField(
+        max_length=50,
+        verbose_name='Имя параметра'
+    )
+    description = models.CharField(
+        max_length=200,
+        verbose_name='Описание',
+        blank=True
+    )
+    param_type = models.CharField(
+        max_length=10,
+        choices=PARAM_TYPE_CHOICES,
+        default='optional',
+        verbose_name='Тип параметра'
+    )
+    example_value = models.CharField(
+        max_length=100,
+        verbose_name='Пример значения',
+        blank=True
+    )
+    
+    class Meta:
+        verbose_name = 'Параметр проекта'
+        verbose_name_plural = 'Параметры проекта'
+    
+    def __str__(self):
+        return f"{self.name} ({self.get_param_type_display()})"

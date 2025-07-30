@@ -1,5 +1,8 @@
 from django import forms
-from partner_app.models import Project
+
+import re
+
+from partner_app.models import Project, ProjectParam
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -10,7 +13,8 @@ class ProjectForm(forms.ModelForm):
             'url', 
             'min_payout', 
             'commission_rate', 
-            'cookie_lifetime'
+            'cookie_lifetime',
+            'link_template'
         ]
         widgets = {
             'name': forms.TextInput(attrs={
@@ -22,7 +26,7 @@ class ProjectForm(forms.ModelForm):
                 'rows': 5,
                 'placeholder': 'Опишите ваш проект (минимум 15 символов)...'
             }),
-            'url': forms.TextInput(attrs={
+            'url': forms.URLInput(attrs={
                 'class': 'input input-bordered w-full',
                 'placeholder': 'https://example.com'
             }),
@@ -43,12 +47,22 @@ class ProjectForm(forms.ModelForm):
                 'min': 0,
                 'value': 30
             }),
+            'link_template': forms.TextInput(attrs={'class': 'input input-bordered w-full',
+                'placeholder': 'https://example.com'
+            })
         }
         labels = {
+            'url':'URL проекта',
             'min_payout': 'Минимальная выплата ₽',
             'commission_rate': 'Комиссия (%)',
-            'cookie_lifetime': 'Срок действия куки (дней)'
+            'cookie_lifetime': 'Срок действия куки (дней)',
+            'link_template': 'Адрес партнёрской ссылки'
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['link_template'].initial = self.instance.link_template
 
     def clean(self):
         cleaned_data = super().clean()
@@ -61,4 +75,49 @@ class ProjectForm(forms.ModelForm):
             raise forms.ValidationError({
                 'commission_rate': 'Комиссия не может превышать 100%'
             })
+        
+        # Валидация шаблона ссылки
+        link_template = cleaned_data.get('link_template', '')
+        if link_template:
+            if not re.match(r'^https?://', link_template):
+                raise forms.ValidationError({
+                    'link_template': 'Шаблон должен начинаться с http:// или https://'
+                })
+        
         return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.link_template = self.cleaned_data.get('link_template', '')
+        if commit:
+            instance.save()
+        return instance
+    
+    
+class ProjectParamForm(forms.ModelForm):
+    class Meta:
+        model = ProjectParam
+        fields = ['name', 'description', 'param_type', 'example_value']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'input input-bordered input-sm w-full',
+                'placeholder': 'utm_source'
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'input input-bordered input-sm w-full',
+                'placeholder': 'Источник трафика'
+            }),
+            'param_type': forms.Select(attrs={
+                'class': 'select select-bordered select-sm w-full'
+            }),
+            'example_value': forms.TextInput(attrs={
+                'class': 'input input-bordered input-sm w-full',
+                'placeholder': 'Пример значения'
+            })
+        }
+        labels = {
+            'name': 'Имя параметра',
+            'description': 'Описание',
+            'param_type': 'Тип параметра',
+            'example_value': 'Пример значения'
+        }

@@ -47,21 +47,34 @@ class User(AbstractUser):
 
 
 class PartnerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    traffic_source = models.CharField(max_length=100)
-    balance = models.DecimalField (
-        verbose_name="Мин. выплата",
+    user = models.OneToOneField(
+        'User', 
+        on_delete=models.CASCADE,
+        related_name='partner_profile',
+        verbose_name='Пользователь'
+    )
+    traffic_source = models.CharField(
+        'Источник трафика',
+        max_length=100,
+        blank=True
+    )
+    balance = models.DecimalField(
+        verbose_name="Баланс",
         decimal_places=2,
         default=0.00, 
         max_digits=10,
-        validators=[
-            MinValueValidator(0.00),
-        ],
+        validators=[MinValueValidator(0.00)],
     )
+    
+    class Meta:
+        verbose_name = 'Профиль партнёра'
+        verbose_name_plural = 'Профили партнёров'
+
+    def __str__(self):
+        return f"Профиль: {self.user.username}" if self.user else "Непривязанный профиль"
 
 class AdvertiserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField('User', on_delete=models.CASCADE)
 
     position = models.CharField(max_length=255)
     company_name = models.CharField(max_length=255)
@@ -76,7 +89,21 @@ class AdvertiserProfile(models.Model):
             MinValueValidator(0.00),
         ],
     )
+    
+    class Meta:
+        verbose_name = 'Рекламодатель'
+        verbose_name_plural = 'Рекламодатели'
+
+    def __str__(self):
+        return f"Профиль: {self.user.username}" if self.user else "Непривязанный профиль"
 
 
 class ManagerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = 'Менеджер'
+        verbose_name_plural = 'Менеджеры'
+
+    def __str__(self):
+        return f"Профиль: {self.user.username}" if self.user else "Непривязанный профиль"

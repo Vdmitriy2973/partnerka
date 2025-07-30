@@ -117,14 +117,20 @@
                         Быстрые действия
                     </h2>
                     <div class="space-y-2">
+                        <button id="fill_balance" class="btn btn-outline btn-block justify-start" 
+                                onclick="document.getElementById('topup_modal').showModal()">
+                            <i class="fas fa-coins text-yellow-500 mr-2"></i>
+                            Пополнить баланс
+                        </button>
                         <button id="add_project_quick" class="btn btn-outline btn-block justify-start nav-item"
                             data-page="projects">
-                            <i class="fas fa-plus mr-2"></i>
+                            <i class="fas fa-plus text-indigo-600 mr-2"></i>
                             Добавить проект
                         </button>
-                        <button class="btn btn-outline btn-block justify-start nav-item" data-page="payments">
-                            <i class="fas fa-money-bill-wave mr-2"></i>
-                            Создать выплату
+                        <button class="btn btn-outline btn-block justify-start nav-item" 
+                                onclick="document.getElementById('paymentModal').showModal()" data-page="payments">
+                            <i class="fas fa-money-bill-wave text-green-700 mr-2"></i>
+                            Создать выплату партнёру 
                         </button>
                     </div>
                 </div>

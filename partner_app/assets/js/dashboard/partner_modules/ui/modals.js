@@ -65,50 +65,50 @@ export function setupPartnerModals() {
   function setupProjectStatsModal() {
     const showProjectStatsBtns = document.querySelectorAll(".show_project_stats");
     const modalStats = document.getElementById('connectedProjectStatsModal');
-    const copyPartnerLinkBtn = document.getElementById('copy_partner_link');
+    // const copyPartnerLinkBtn = document.getElementById('copy_partner_link');
 
-    copyPartnerLinkBtn.addEventListener('click', () => {
-      const link = document.getElementById('ProjectPartnerLink');
-      if (!navigator.clipboard) {
-        console.warn('Clipboard API не поддерживается');
-        fallbackCopy(link.value);
-        return;
-      }
+    // copyPartnerLinkBtn.addEventListener('click', () => {
+    //   const link = document.getElementById('ProjectPartnerLink');
+    //   if (!navigator.clipboard) {
+    //     console.warn('Clipboard API не поддерживается');
+    //     fallbackCopy(link.value);
+    //     return;
+    //   }
 
-      try {
-        navigator.clipboard.writeText(link.value);
-        console.log('API ключ скопирован!', 'success');
-      } catch (err) {
-        console.error('Ошибка копирования:', err);
-        fallbackCopy(link.value);
-      }
-    })
+    //   try {
+    //     navigator.clipboard.writeText(link.value);
+    //     console.log('API ключ скопирован!', 'success');
+    //   } catch (err) {
+    //     console.error('Ошибка копирования:', err);
+    //     fallbackCopy(link.value);
+    //   }
+    // })
 
-    function fallbackCopy(text) {
-      try {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed'; // Невидимый элемент
-        document.body.appendChild(textarea);
-        textarea.select();
+    // function fallbackCopy(text) {
+    //   try {
+    //     const textarea = document.createElement('textarea');
+    //     textarea.value = text;
+    //     textarea.style.position = 'fixed'; // Невидимый элемент
+    //     document.body.appendChild(textarea);
+    //     textarea.select();
 
-        const successful = document.execCommand('copy');
-        document.body.removeChild(textarea);
+    //     const successful = document.execCommand('copy');
+    //     document.body.removeChild(textarea);
 
-        if (successful) {
-          console.log('API ключ скопирован', 'success');
-        } else {
-          throw new Error('Резервное копирование не удалось');
-        }
-      } catch (err) {
-        console.error('Резервное копирование не удалось:', err);
-        console.log('Не удалось скопировать ключ. Скопируйте вручную.', 'error');
-      }
-    }
+    //     if (successful) {
+    //       console.log('Партнёрская ссылка скопирован', 'success');
+    //     } else {
+    //       throw new Error('Резервное копирование не удалось');
+    //     }
+    //   } catch (err) {
+    //     console.error('Резервное копирование не удалось:', err);
+    //     console.log('Не удалось скопировать ключ. Скопируйте вручную.', 'error');
+    //   }
+    // }
 
     const closeButtons = [
-      document.getElementById('close_project_stats_header'),
-      document.getElementById('close_project_stats_footer')
+       document.getElementById('close_project_stats_header'),
+       document.getElementById('close_project_stats_footer')
     ]
 
     showProjectStatsBtns.forEach(btn => {

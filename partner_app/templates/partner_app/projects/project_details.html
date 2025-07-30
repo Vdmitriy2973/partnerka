@@ -93,16 +93,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Кнопки действий -->
-                <div class="flex flex-wrap gap-3 justify-end">
-                    <button class="btn btn-outline">
-                        <i class="fas fa-pause mr-2"></i> Приостановить
-                    </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-edit mr-2"></i> Редактировать
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -224,7 +214,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         // Копирование ссылки проекта
         document.querySelector('[aria-label="Copy link"]').addEventListener('click', function () {
-            navigator.clipboard.writeText("{{project.url}}");
+            navigator.clipboard.writeText("{{ project.url }}");
             alert('Ссылка скопирована в буфер обмена!');
         });
     });

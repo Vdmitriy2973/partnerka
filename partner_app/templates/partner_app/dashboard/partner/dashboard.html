@@ -123,7 +123,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <h3 class="text-sm font-medium opacity-80">Текущий баланс</h3>
-                            <p class="text-3xl font-bold">₽{{request.user.partnerprofile.balance}}</p>
+                            <p class="text-3xl font-bold">₽{{ request.user.partner_profile.balance }}</p>
                         </div>
                         <div class="flex flex-col items-end">
                             <div class="badge badge-accent mb-2 gap-1">
@@ -148,12 +148,12 @@
                     <div class="space-y-2">
                         <button id="add_platform_quick" class="btn btn-outline btn-block justify-start nav-item"
                             data-page="my_platforms">
-                            <i class="fas fa-globe mr-2"></i>
+                            <i class="fas fa-globe text-indigo-600 mr-2"></i>
                             Добавить площадку
                         </button>
                         <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item"
                             data-page="payments">
-                            <i class="fas fa-credit-card mr-2"></i>
+                            <i class="fas fa-credit-card text-green-700 mr-2"></i>
                             Запросить выплату
                         </button>
                     </div>
@@ -171,7 +171,7 @@
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span>До следующей выплаты</span>
-                                <span>₽{{request.user.partnerprofile.balance}} / ₽5,000</span>
+                                <span>₽ {{ request.user.partner_profile.balance }} / ₽5,000</span>
                             </div>
                             <progress class="progress progress-primary w-full" value="147" max="100"></progress>
                         </div>

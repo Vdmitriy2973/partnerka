@@ -8,12 +8,12 @@ import '../css/index.css'
 // Hero section
 // Tab switching functionality
 const adv_tab = document.getElementById("advertiser-tab");
-adv_tab.addEventListener("click", () => {
+adv_tab?.addEventListener("click", () => {
   switchTab("advertiser");
 })
 
 const partner_tab = document.getElementById("partner-tab");
-partner_tab.addEventListener("click", () => {
+partner_tab?.addEventListener("click", () => {
   switchTab("partner");
 })
 
@@ -107,11 +107,11 @@ else if(type == "partner" || type == "advertiser")
 
 
 const becomePartnerBtn = document.getElementById("become_partner");
-becomePartnerBtn.addEventListener("click",()=>{
+becomePartnerBtn?.addEventListener("click",()=>{
   openModalReg("partner");
 })
 
 const becomeAdvertiserBtn = document.getElementById("become_advertiser");
-becomeAdvertiserBtn.addEventListener("click",()=>{
+becomeAdvertiserBtn?.addEventListener("click",()=>{
   openModalReg("advertiser");
 })

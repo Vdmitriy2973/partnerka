@@ -11,10 +11,12 @@
                     <p id="ProjectStatusText">Активный</p>
                 </div>
             </div>
+            <div class="text-sm mt-2" id="ProjectID"></div>
         </div>
 
         <!-- Body content -->
         <div class="p-4 space-y-4">
+
             <!-- Project Info -->
             <div class="card bg-base-100 shadow-sm">
                 <div class="card-body p-4">
@@ -23,6 +25,14 @@
                     </h4>
                     <p id="ProjectDescription" class="mt-2 text-gray-600 text-sm">
                         Описание
+                    </p>
+                </div>
+                <div class="card-body p-4">
+                    <h4 class="card-title text-lg">
+                        URL проекта
+                    </h4>
+                    <p id="ProjectUrl" class="mt-2 text-gray-600 text-sm">
+                        url
                     </p>
                 </div>
             </div>
@@ -81,4 +91,10 @@
             <button id="closeProjectDetailsModal" class="btn btn-sm w-full">Закрыть</button>
         </div>
     </div>
+
+    <!-- Фон модального окна -->
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
+        <button>close</button>
+    </form>
 </dialog>

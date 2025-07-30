@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render
 
 from partner_app.models import Project
-from partner_app.forms import ProjectForm, ApiSettingsForm
+from partner_app.forms import ProjectForm, ApiSettingsForm, ProjectParamForm
 from .common import _paginate, _apply_search
 
 def handle_advertiser_dashboard(request):
@@ -45,6 +45,7 @@ def handle_advertiser_dashboard(request):
     context = {
         "user": request.user,
         "projectForm": ProjectForm(),
+        'projectParamForm':ProjectParamForm(),
         "apiSettingsForm": ApiSettingsForm(request=request),
         "projects": projects_page,
         "user_projects_count": status_counts.get('active_approved', 0),
