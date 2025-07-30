@@ -11,7 +11,7 @@ def partner_detail(request, partner_id):
         # Получаем пользователя или 404
         partner = get_object_or_404(User, id=partner_id)
         # Проверяем, является ли пользователь партнером
-        if not hasattr(partner, 'partnerprofile'):  # Или другая проверка на партнера
+        if not hasattr(partner, 'partner_profile'):  # Или другая проверка на партнера
             print("not partner")
             messages.error(request, "Этот пользователь не является партнером")
             return redirect('dashboard')  # Или другая подходящая страница
