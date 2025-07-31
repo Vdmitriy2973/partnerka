@@ -4,8 +4,9 @@
 Инструкция по развёртыванию Django
 1. venv\Scripts\activate
 2. pip install -r requirements.txt
-3. python manage.py runserver
+3. python manage.py migrate
+4. python manage.py runserver
 
 Инструкция по развёртыванию Vite
 1. yarn
-2. yarn vite
+2. yarn vite (для разработки) / yarn vite (для production)
