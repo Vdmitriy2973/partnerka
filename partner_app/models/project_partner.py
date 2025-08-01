@@ -13,6 +13,7 @@ class ProjectPartner(models.Model):
         related_name='project_memberships',
         verbose_name='Партнёр'
     )
+    
     advertiser = models.ForeignKey(
         'User',
         on_delete=models.CASCADE,
@@ -21,12 +22,14 @@ class ProjectPartner(models.Model):
         blank=True,
         verbose_name='Рекламодатель'
     )
+    
     project = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE,
         related_name='partner_memberships',
         verbose_name='Проект'
     )
+    
     status = models.CharField(
         max_length=20,
         choices=StatusType.choices,
@@ -47,6 +50,13 @@ class ProjectPartner(models.Model):
         blank=True,
         verbose_name='Дата начала сотрудничества'
     )
+    
+    total_income = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name='Сумма заказа',
+        default=0
+    )
 
     class Meta:
         unique_together = ('project', 'partner')
@@ -58,3 +68,5 @@ class ProjectPartner(models.Model):
 
     def __str__(self):
         return f"{self.partner} → {self.project} ({self.get_status_display()})"
+    
+    

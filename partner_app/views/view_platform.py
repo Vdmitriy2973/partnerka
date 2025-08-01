@@ -17,13 +17,15 @@ def add_platform(request):
         platform.save()
         return redirect("dashboard")
     except Exception as e:
-        print(e)
+        print(form.errors)
         exc = e 
-        messages.error(request, "Уже существует площадка с таким  URL или ID или названием.",extra_tags="platform_add_error")
-        platform = PlatformForm()
+        if "description" in form.errors:
+            messages.error(request, "Описание должно содержать минимум 15 символов.",extra_tags="platform_add_error")
+        else:
+            messages.error(request, "Уже существует площадка с таким  URL или ID или названием.",extra_tags="platform_add_error")
         
     if not exc: 
-        messages.success(request,f"Платформа {platform.name} успешно отредактирован",extra_tags="platform_add_success")
+        messages.success(request,f"Платформа {platform.name} успешно добавлена",extra_tags="platform_add_success")
     return redirect("dashboard")
 
 @login_required

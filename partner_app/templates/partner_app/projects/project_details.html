@@ -39,7 +39,7 @@
                                 </span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Дата подключения:</span>
+                                <span class="text-gray-600">Дата создания:</span>
                                 <span>{{ project.created_at|date:"d.m.Y" }}</span>
                             </div>
                             <div class="flex justify-between">
@@ -58,20 +58,20 @@
                         {% if "http" in project.url %}
                             <h2 class="text-xl font-semibold mb-4">URL проекта</h2>
                             <div class="flex items-center justify-between bg-base-100 p-3 rounded-lg">
-                                <span class="truncate">{{ project.url|truncatechars:20 }}</span>
-                                <a href="{{ project.url }}" target="_blank" class="btn btn-sm btn-ghost">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
+                            <span class="truncate">{{ project.url|truncatechars:20 }}</span>
+                            <a id="project-url" href="{{ project.url }}" target="_blank" class="btn btn-sm btn-ghost">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
                             </div>
                         {% else %}
                             <h2 class="text-xl font-semibold mb-4">ID проекта</h2>
                             <div class="flex items-center justify-between bg-base-100 p-3 rounded-lg">
-                                <span class="truncate">{{ project.url|truncatechars:20 }}</span>
+                            <span id="project-id" class="truncate">{{ project.url|truncatechars:20 }}</span>
                             </div>
                         {% endif %}
                         <div class="mt-4">
-                            <button class="btn btn-primary btn-sm">
-                                <i class="fas fa-copy mr-2"></i> Копировать
+                            <button id="copy-link" onclick="copyToClipboard()" class="btn btn-primary btn-sm">
+                            <i class="fas fa-copy mr-2"></i> Копировать
                             </button>
                         </div>
                     </div>
@@ -83,12 +83,10 @@
                             <div class="stat">
                                 <div class="stat-title">Партнеров</div>
                                 <div class="stat-value">{{ total_partners }}</div>
-                                <div class="stat-desc">за все время</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-title">Конверсия</div>
-                                <div class="stat-value">12.5%</div>
-                                <div class="stat-desc">↑ 5% за месяц</div>
+                                <div class="stat-value">{{ project.conversions_percent }}%</div>
                             </div>
                         </div>
                     </div>
@@ -102,6 +100,7 @@
                 <h2 class="card-title text-2xl mb-6">Подключенные партнеры ({{ active_partners }})</h2>
 
                 <!-- Фильтры и поиск -->
+                {% if partnerships %}
                 <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
                     <div class="join">
                         <input class="input input-bordered join-item w-full md:w-64" placeholder="Поиск партнеров...">
@@ -110,64 +109,67 @@
                         </button>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- Таблица партнеров -->
                 <div class="overflow-x-auto">
                     <table class="table table-zebra table-pin-rows">
                         <thead>
-                        <tr>
-                            <th class="hidden sm:table-cell">ID</th>
-                            <th>Партнер</th>
-                            <th class="hidden md:table-cell">Подключен</th>
-                            <th class="hidden lg:table-cell">Конверсии</th>
-                            <th class="hidden lg:table-cell">Заработано</th>
-                            <th>Статус</th>
-                            <th>Действия</th>
-                        </tr>
+                            <tr>
+                                <th class="hidden sm:table-cell">ID</th>
+                                <th>Партнер</th>
+                                <th class="hidden md:table-cell">Подключен</th>
+                                <th class="hidden lg:table-cell">Конверсии</th>
+                                <th class="hidden lg:table-cell">Заработано</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for partnership in partnerships %}
-                        <tr>
-                            <td class="hidden sm:table-cell">{{ partnership.partner.id }}</td>
-                            <td>
-                            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                                <div>
-                                <div class="font-bold">
-                                    <a href="{% url 'partner' partnership.partner.id %}" class="link link-hover">
-                                    {{ partnership.partner.first_name }} {{ partnership.partner.last_name }}
-                                    </a>
-                                </div>
-                                <div class="text-xs text-gray-500 truncate max-w-[120px] sm:max-w-none">
-                                    {{ partnership.partner.email|default:"Отсутствует" }}
-                                </div>
-                                </div>
-                            </div>
-                            </td>
-                            <td class="hidden md:table-cell">
-                            <span class="whitespace-nowrap">{{ partnership.joined_at|date:"d.m.Y" }}</span>
-                            </td>
-                            <td class="hidden lg:table-cell">-</td>
-                            <td class="hidden lg:table-cell">-</td>
-                            <td>
-                            <span class="badge {% if partnership.status == 'Активен' %}badge-success{% else %}badge-error{% endif %} badge-sm whitespace-nowrap">
-                                {% if partnership.partner.is_active %}Активен{% else %}Неактивен{% endif %}
-                            </span>
-                            </td>
-                            <td>
-                            <button class="btn btn-circle btn-ghost btn-xs">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center py-4">Нет подключенных партнеров</td>
-                        </tr>
-                        {% endfor %}
+                            {% for partnership in partnerships %}
+                            <tr>
+                                <td class="hidden sm:table-cell">{{ partnership.partner.id }}</td>
+                                <td>
+                                    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                        <div>
+                                            <div class="font-bold">
+                                                <a href="{% url 'partner' partnership.partner.id %}"
+                                                    class="link link-hover">
+                                                    {{ partnership.partner.first_name }} {{ partnership.partner.last_name }}
+                                                </a>
+                                            </div>
+                                            <div class="text-xs text-gray-500 truncate max-w-[120px] sm:max-w-none">
+                                                {{ partnership.partner.email|default:"Отсутствует" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="hidden md:table-cell">
+                                    <span class="whitespace-nowrap">{{ partnership.joined_at|date:"d.m.Y" }}</span>
+                                </td>
+                                <td class="hidden lg:table-cell">-</td>
+                                <td class="hidden lg:table-cell">-</td>
+                                <td>
+                                    <span
+                                        class="badge {% if partnership.status == 'Активен' %}badge-success{% else %}badge-error{% endif %} badge-sm whitespace-nowrap">
+                                        {% if partnership.partner.is_active %}Активен{% else %}Неактивен{% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-circle btn-ghost btn-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4">Нет подключенных партнеров</td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Пагинация -->
                 <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
                     {% if partnerships.has_previous %}
@@ -185,9 +187,11 @@
 
                     <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
                         <span class="hidden sm:inline">Страница</span>
-                        <input type="number" min="1" max="{{ partnerships.paginator.num_pages }}" value="{{ partnerships.number }}"
+                        <input type="number" min="1" max="{{ partnerships.paginator.num_pages }}"
+                            value="{{ partnerships.number }}"
                             class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                            onchange="window.location.href = '?partners_page=' + this.value" aria-label="Номер страницы">
+                            onchange="window.location.href = '?partners_page=' + this.value"
+                            aria-label="Номер страницы">
                         <span>из {{ partnerships.paginator.num_pages }}</span>
                     </div>
 
@@ -208,14 +212,32 @@
         </div>
     </div>
 </div>
-{% endblock %}
+
 <script>
-    // Здесь можно добавить JavaScript для интерактивности
-    document.addEventListener('DOMContentLoaded', function () {
-        // Копирование ссылки проекта
-        document.querySelector('[aria-label="Copy link"]').addEventListener('click', function () {
-            navigator.clipboard.writeText("{{ project.url }}");
-            alert('Ссылка скопирована в буфер обмена!');
-        });
-    });
+    function copyToClipboard() {
+        // Определяем, что копируем (URL или ID)
+        const textToCopy = document.getElementById('project-url')
+            ? document.getElementById('project-url').href
+            : document.getElementById('project-id').textContent.trim();
+
+        // Используем Clipboard API
+        console.log(textToCopy)
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                // Визуальная обратная связь
+                const btn = document.getElementById('copy-link');
+                btn.innerHTML = '<i class="fas fa-check mr-2"></i> Скопировано!';
+
+                // Возвращаем исходный текст через 2 секунды
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy mr-2"></i> Копировать';
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Ошибка копирования: ', err);
+                alert('Не удалось скопировать. Разрешите доступ к буферу обмена.');
+            });
+    }
 </script>
+
+{% endblock %}

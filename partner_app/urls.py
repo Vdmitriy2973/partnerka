@@ -16,6 +16,8 @@ urlpatterns = [
     path('stop_partnership_with_project/<int:project_id>',views.stop_partnership_with_project,name="stop_partnership_with_project"),
     path('suspend_partnership/<int:project_id>',views.suspend_partnership,name='suspend_partnership'),
     path('resume_partnership/<int:project_id>',views.resume_partnership,name='resume_partnership'),
+    path('generate_partner_link/<int:partnership_id>',views.generate_link,name='generate_link'),
+    path('delete_partner_link/<int:link_id>',views.delete_partner_link,name='delete_partner_link'),
     
     # Рекламодатель
     path('add_project',views.add_project,name='add_project'),
@@ -43,4 +45,5 @@ urlpatterns = [
     # path('ref/<int:partner_id>/<int:project_id>',views.partner_redirect,name='partner_redirect')
     path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
+    path("api/clicks",views.ClickAPIView.as_view(),name="api_click")
 ]

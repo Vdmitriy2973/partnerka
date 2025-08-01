@@ -110,7 +110,6 @@
                         <thead>
                             <tr>
                                 <th class="py-1 sm:py-2">Партнер</th>
-                                <th class="py-1 sm:py-2">Тип</th>
                                 <th class="py-1 sm:py-2">Продажи</th>
                                 <th class="py-1 sm:py-2">Доход</th>
                                 <th class="py-1 sm:py-2">Действия</th>
@@ -130,9 +129,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td class="text-sm sm:text-base">
-                                    {{ partner.partnerprofile.traffic_source|default:"Не указан" }}
                                 </td>
                                 <td class="text-sm sm:text-base">
                                     {{ partner.get_conversions_count|default:"0" }}

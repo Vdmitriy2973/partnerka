@@ -22,7 +22,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 // -----------------------------
 window.addEventListener("scroll", () => {
   const navbar = document.getElementById("navbar");
-  navbar.classList.toggle("scrolled", window.scrollY > 50);
+  navbar?.classList.toggle("scrolled", window.scrollY > 50);
 });
 
 
@@ -37,7 +37,7 @@ let currentType = "partner";
 
 // Авторизация
 const authBtn = document.getElementById("authModal");
-if (authBtn){ 
+if (authBtn) {
   authBtn.addEventListener("click", () => {
     openModal("auth");
   });
@@ -45,7 +45,7 @@ if (authBtn){
 
 // Регистрация
 const regPartnerBtn = document.getElementById("reg_partner-btn");
-if (regPartnerBtn){
+if (regPartnerBtn) {
   regPartnerBtn.addEventListener("click", () => {
     openModal('register', 'partner');
   })
@@ -53,7 +53,7 @@ if (regPartnerBtn){
 
 
 const regAdvertiserBtn = document.getElementById("reg_advertiser-btn");
-if (regAdvertiserBtn){
+if (regAdvertiserBtn) {
   regAdvertiserBtn.addEventListener("click", () => {
     openModal('register', 'advertiser');
   })
@@ -61,7 +61,7 @@ if (regAdvertiserBtn){
 
 // Вкладка партнёра
 const partnerTab = document.getElementById("tab-partner");
-if (partnerTab){
+if (partnerTab) {
   partnerTab.addEventListener("click", () => {
     openModal('register', 'partner');
   })
@@ -69,7 +69,7 @@ if (partnerTab){
 
 // Вкладка рекламодателя
 const advertiserTab = document.getElementById("tab-advertiser");
-if (advertiserTab){
+if (advertiserTab) {
   advertiserTab.addEventListener("click", () => {
     openModal('register', 'advertiser');
   })
@@ -77,15 +77,15 @@ if (advertiserTab){
 
 // Вкладка регистрации
 const registrationLink = document.getElementById("registration-link");
-if (registrationLink){
-  registrationLink.addEventListener("click",()=>{
-    closeModal('auth'); 
+if (registrationLink) {
+  registrationLink.addEventListener("click", () => {
+    closeModal('auth');
     openModal('register', 'partner')
   })
 }
 // Вкладка авторизации
 const authorizationLink = document.getElementById("authorization-Link");
-if (authorizationLink){
+if (authorizationLink) {
   authorizationLink.addEventListener("click", () => {
     closeModal('register');
     openModal('auth');
@@ -161,4 +161,12 @@ function switchModalTab(type) {
   icon.style.margin = "0 auto";
   title.textContent = config.title;
   subtitle.textContent = config.subtitle;
+}
+
+
+const msg = document.querySelector('.alert');
+if (msg) {
+  setTimeout(function () {
+    msg.remove()
+  }, 5000)
 }

@@ -45,14 +45,17 @@
                 </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
-                <li><a class="nav-item text-lg w-full" data-page="settings"><i class="fas fa-cog"></i> Настройки</a>
+                <li>
+                    <a class="nav-item text-lg w-full" data-page="settings">
+                        <i class="fas fa-cog"></i> Настройки
+                    </a>
                 </li>
-                <li class="w-full p-0 cursor-pointer">
+                <li>
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
-                        <button type="submit"
-                            class="hover:bg-gray-200 text-lg flex justify-start w-30 cursor-pointer"><i
-                                class="fas fa-sign-out-alt mr-2"></i> Выход</button>
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-full cursor-pointer">
+                            <i class="fas fa-sign-out-alt"></i> Выход
+                        </button>
                     </form>
                 </li>
             </ul>

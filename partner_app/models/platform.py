@@ -19,7 +19,7 @@ class Platform(models.Model):
     partner = models.ForeignKey(
         'User',
         on_delete=models.CASCADE,
-        related_name='owned_platforms',  # Изменено для устранения конфликта
+        related_name='owned_platforms',
         verbose_name='Партнёр',
         limit_choices_to={'user_type': 'partner'},
     )
@@ -47,6 +47,14 @@ class Platform(models.Model):
         verbose_name='URL или ID',
         help_text='Ссылка или идентификатор (@username, channel ID)'
     )
+
+    income = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name='Доход',
+        default=0
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата добавления'
@@ -58,6 +66,20 @@ class Platform(models.Model):
     )
 
     is_active = models.BooleanField(default=True)
+    
+    @property
+    def conversions_count(self):
+        return self.conversions.count()
+    
+    @property 
+    def conversions_percent(self):
+        if self.clicks.count() == 0:
+            return 0.0
+        return (self.conversions.count() / self.clicks.count()) * 100
+    
+    @property
+    def clicks_count(self):
+        return self.clicks.count()
     
     class Meta:
         verbose_name = 'Площадка'

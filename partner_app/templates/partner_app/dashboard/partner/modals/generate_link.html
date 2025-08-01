@@ -1,115 +1,74 @@
 <dialog id="partnerLinkModal" class="modal">
     <!-- Модальное окно -->
-    <div class="modal-box max-w-4xl"> <!-- Увеличил max-width для таблицы -->
-        <!-- Заголовок -->
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-bold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-                Получение партнёрской ссылки
-            </h3>
-            <button onclick="document.getElementById('partnerLinkModal').close()" class="btn btn-sm btn-circle btn-ghost">
-                ✕
-            </button>
-        </div>
-
-        <!-- Результат генерации -->
-        <div id="generatedLinkContainer" class="mt-6 hidden">
-            <div class="alert alert-success mb-4">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <div class="modal-box max-w-4xl">
+        <form method="post" id="generate_partner_link_form">
+            {% csrf_token %}
+            <!-- Заголовок -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                     </svg>
-                    <span>Ссылка успешно сгенерирована!</span>
+                    Получение партнёрской ссылки
+                </h3>
+                <div  onclick="document.getElementById('partnerLinkModal').close()" class="btn btn-sm btn-circle btn-ghost">
+                    ✕
                 </div>
             </div>
 
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-medium">Ваша партнёрская ссылка</span>
-                </label>
-                <div class="relative">
-                    <input type="text" id="generatedLink" class="input input-bordered w-full pr-16" readonly />
-                    <button id="copyLinkBtn" class="btn btn-primary absolute right-0 top-0 rounded-l-none" title="Копировать в буфер">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                        </svg>
-                    </button>
+            <!-- Результат генерации -->
+            <div id="generatedLinkContainer" class="mt-6 hidden">
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Ваша партнёрская ссылка</span>
+                    </label>
+                    <div class="relative">
+                        <input name="generated_link" type="text" id="generatedLink" class="input input-bordered w-full pr-16" readonly />
+                        <button id="copyLinkBtn" class="btn btn-primary absolute right-0 top-0 rounded-l-none" title="Копировать в буфер">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Таблица параметров -->
-        <div class="mt-8">
-            <h4 class="text-lg font-semibold mb-3 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-info" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                Доступные параметры для ссылки
-            </h4>
-            
-            <div class="overflow-x-auto">
-                <table class="table table-zebra w-full">
-                    <thead>
-                        <tr>
-                            <th>Параметр</th>
-                            <th>Описание</th>
-                            <th>Обязательный</th>
-                            <th>Пример значения</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>source</code></td>
-                            <td>Источник трафика (utm_source)</td>
-                            <td><span class="badge">Нет</span></td>
-                            <td><code>social_facebook</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>campaign</code></td>
-                            <td>Название кампании (utm_campaign)</td>
-                            <td><span class="badge">Нет</span></td>
-                            <td><code>summer_sale</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>content</code></td>
-                            <td>Идентификатор контента (utm_content)</td>
-                            <td><span class="badge">Нет</span></td>
-                            <td><code>banner_300x250</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>medium</code></td>
-                            <td>Тип трафика (utm_medium)</td>
-                            <td><span class="badge">Нет</span></td>
-                            <td><code>cpc</code>, <code>email</code></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Фиксированный параметр pid -->
+            <div class="mt-6 bg-base-200 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">Обязательный параметр</h4>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 bg-base-100 rounded-lg">
+                    <label class="flex-1">
+                        <span class="font-medium">pid (Partner ID)</span>
+                        <span class="text-sm opacity-70 block">Идентификатор партнёра</span>
+                    </label>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <input type="text" id="fixedPidInput" class="input input-bordered input-sm flex-1" readonly />
+                    </div>
+                </div>
             </div>
-            
-            <div class="alert alert-info mt-4">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+            <!-- Управление параметрами -->
+            <div class="mt-4 bg-base-200 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">Дополнительные параметры</h4>
+                <div id="paramsControls" class="space-y-3">
+                    <!-- Параметры будут добавляться сюда динамически -->
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="modal-action">
+                <div onclick="document.getElementById('partnerLinkModal').close()" class="btn btn-ghost">
+                    Закрыть
+                </div>
+                <button id="generateLinkBtn" type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                     </svg>
-                    <span>Добавляйте параметры к ссылке через <code>&</code>, например: <code>?source=social%utm_campaign=summer</code></span>
-                </div>
+                    Сгенерировать ссылку
+                </button>
             </div>
-        </div>
-
-        <!-- Кнопки -->
-        <div class="modal-action">
-            <button onclick="document.getElementById('partnerLinkModal').close()" class="btn btn-ghost">
-                Закрыть
-            </button>
-            <button id="generateLinkBtn" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-                Сгенерировать ссылку
-            </button>
-        </div>
+        </form>
     </div>
 
     <!-- Фон модального окна -->
@@ -124,26 +83,120 @@
         const copyBtn = document.getElementById('copyLinkBtn');
         const generatedLinkContainer = document.getElementById('generatedLinkContainer');
         const generatedLinkInput = document.getElementById('generatedLink');
+        const paramsControls = document.getElementById('paramsControls');
+        const generatePartnerLinkForm = document.getElementById('generate_partner_link_form');
+        const generateLinkBtn = document.getElementById('generateLinkBtn');
+        const fixedPidInput = document.getElementById('fixedPidInput');
+        
+        let currentParams = [];
+        let currentBaseUrl = '';
+        let currentPid = '';
+        let currentPartnershipId = '';
 
+        // Открытие модального окна
         generateBtns.forEach(generateBtn => {
-            generateBtn.addEventListener('click', function () {
-                const baseUrl = `${this.dataset.projectLink}?`;
-                const partnerId = this.dataset.partnerId;
-
-                const params = new URLSearchParams();
-                params.append('pid', partnerId);
-
-                // Добавляем дополнительные параметры, если они есть в data-атрибутах
-                if (this.dataset.source) params.append('source', this.dataset.source);
-                if (this.dataset.campaign) params.append('campaign', this.dataset.campaign);
-
-                const fullLink = baseUrl + params.toString();
-                generatedLinkInput.value = fullLink;
-                generatedLinkContainer.classList.remove('hidden');
+            generateBtn.addEventListener('click', function() {
+                try {
+                    currentPid = this.dataset.partnerId;
+                    console.log(this.dataset)
+                    currentPartnershipId = this.dataset.partnership;
+                    currentBaseUrl = this.dataset.projectLink;
+                    currentParams = JSON.parse(this.dataset.projectParams);
+                    
+                    fixedPidInput.value = currentPid;
+                    paramsControls.innerHTML = '';
+                    
+                    currentParams
+                        .filter(param => param.name !== 'pid')
+                        .forEach(param => {
+                            const paramControl = document.createElement('div');
+                            paramControl.className = 'flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 bg-base-100 rounded-lg';
+                            
+                            const label = document.createElement('label');
+                            label.className = 'flex-1';
+                            label.innerHTML = `
+                                <span class="font-medium">${param.name}</span>
+                                ${param.description ? `<span class="text-sm opacity-70 block">Описание: ${param.description}</span>` : ''}
+                                ${param.example ? `<span class="text-sm opacity-70 block">Пример: <code>${param.example}</code></span>` : ''}
+                                ${param.type === 'required' ? `<span class="text-xs badge badge-error mt-1">Обязательный</span>` : '<span class="text-xs badge badge-info mt-1">Опциональный</span>'}
+                            `;
+                            
+                            const inputGroup = document.createElement('div');
+                            inputGroup.className = 'flex items-center gap-2 w-full sm:w-auto';
+                            
+                            if (param.type !== 'required') {
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.className = 'toggle toggle-sm';
+                                checkbox.checked = true;
+                                checkbox.dataset.param = param.name;
+                                
+                                checkbox.addEventListener('change', function() {
+                                    input.disabled = !this.checked;
+                                    updateGeneratedLink();
+                                });
+                                
+                                inputGroup.appendChild(checkbox);
+                            }
+                            
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.placeholder = 'Значение';
+                            input.className = 'input input-bordered input-sm flex-1';
+                            input.dataset.param = param.name;
+                            if (param.example) input.value = param.example;
+                            
+                            input.addEventListener('input', updateGeneratedLink);
+                            
+                            inputGroup.appendChild(input);
+                            paramControl.appendChild(label);
+                            paramControl.appendChild(inputGroup);
+                            paramsControls.appendChild(paramControl);
+                        });
+                    
+                    updateGeneratedLink();
+                    generatedLinkContainer.classList.remove('hidden');
+                    
+                } catch (error) {
+                    console.error('Ошибка парсинга параметров:', error);
+                    alert('Ошибка при обработке параметров ссылки');
+                }
             });
         });
 
-        copyBtn.addEventListener('click', function () {
+        function updateGeneratedLink() {
+            const url = new URL(currentBaseUrl);
+            url.searchParams.set('pid', currentPid);
+            
+            document.querySelectorAll('#paramsControls input[type="text"]').forEach(input => {
+                const paramName = input.dataset.param;
+                const paramConfig = currentParams.find(p => p.name === paramName);
+                
+                if (paramConfig.type === 'required' && input.value.trim()) {
+                    url.searchParams.set(paramName, input.value.trim());
+                } 
+                else if (paramConfig.type !== 'required') {
+                    const checkbox = input.previousElementSibling;
+                    if (checkbox?.checked && input.value.trim()) {
+                        url.searchParams.set(paramName, input.value.trim());
+                    }
+                    else {
+                        url.searchParams.delete(paramName)
+                    }
+                }
+            });
+            
+            generatedLinkInput.value = url.toString();
+        }
+
+        generateLinkBtn.addEventListener('click', ()=>{
+            generatePartnerLinkForm.action = `generate_partner_link/${currentPartnershipId}`;
+            generatePartnerLinkForm.submit()
+        });
+
+
+        // Копировать ссылку
+        copyBtn.addEventListener('click', function() {
             generatedLinkInput.select();
             document.execCommand('copy');
             

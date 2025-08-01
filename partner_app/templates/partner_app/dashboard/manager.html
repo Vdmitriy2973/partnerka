@@ -37,4 +37,13 @@
 <!-- Модальное окно решения спора -->
 {% include "partner_app/dashboard/manager/modals/resolve_dispute.html" %}
 
+<script>
+    const msg = document.querySelector('.alert');
+if (msg) {
+  setTimeout(function () {
+    msg.remove()
+  }, 5000)
+}
+</script>
+
 {% endblock %}

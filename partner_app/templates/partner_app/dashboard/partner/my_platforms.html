@@ -19,21 +19,21 @@
         <div class="card bg-base-100 shadow-lg">
             <div class="card-body text-center">
                 <i class="fas fa-check-circle text-3xl text-success mb-2"></i>
-                <div id="approved-platforms" class="text-2xl font-bold">{{ approved_platforms }}</div>
+                <div id="approved-platforms" class="text-2xl font-bold">{{ approved_platforms_count }}</div>
                 <p class="text-sm text-base-content/60">Подтверждено</p>
             </div>
         </div>
         <div class="card bg-base-100 shadow-lg">
             <div class="card-body text-center">
                 <i class="fas fa-hourglass-half text-3xl text-warning mb-2"></i>
-                <div id="pending-platforms" class="text-2xl font-bold">{{ pending_platforms }}</div>
+                <div id="pending-platforms" class="text-2xl font-bold">{{ pending_platforms_count }}</div>
                 <p class="text-sm text-base-content/60">Ожидают модерации</p>
             </div>
         </div>
         <div class="card bg-base-100 shadow-lg">
             <div class="card-body text-center">
                 <i class="fa fa-ban text-3xl text-error mb-2"></i>
-                <div id="pending-platforms" class="text-2xl font-bold">{{ rejected_platforms }}</div>
+                <div id="pending-platforms" class="text-2xl font-bold">{{ rejected_platforms_count }}</div>
                 <p class="text-sm text-base-content/60">Отклонено</p>
             </div>
         </div>
@@ -160,6 +160,18 @@
                                             </div>
                                             <ul tabindex="0"
                                                 class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                                                <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
+                                                    data-platform-type="{{ platform.get_platform_type_display }}"
+                                                    data-platform-income="{{ platform.income }}"
+                                                    data-platform-conversions-percent="{{ platform.conversions_percent }}"
+                                                    data-platform-clicks-count="{{ platform.clicks_count }}"
+                                                    data-platform-conversions-count="{{ platform.conversions_count }}"
+                                                    data-platform-created-at="{{ platform.created_at }}"
+                                                    data-platform-status="{{ platform.is_active }}">
+                                                    <a>
+                                                        <i class="fa-solid fa-square-poll-vertical mr-2"></i>Стат.
+                                                    </a>
+                                                </li>
                                                 <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
                                                     data-platform-name="{{ platform.name }}"
                                                     data-platform-type="{{ platform.get_platform_type_display }}"
@@ -208,9 +220,16 @@
                                     </div>
                                     <ul tabindex="0"
                                         class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                                        <li class="show_partner_platforms">
+                                        <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
+                                            data-platform-type="{{ platform.get_platform_type_display }}"
+                                            data-platform-income="{{ platform.income }}"
+                                            data-platform-conversions-percent="{{ platform.conversions_percent }}"
+                                            data-platform-clicks-count="{{ platform.clicks_count }}"
+                                            data-platform-conversions-count="{{ platform.conversions_count }}"
+                                            data-platform-created-at="{{ platform.created_at }}"
+                                            data-platform-status="{{ platform.is_active }}">
                                             <a>
-                                                <i class="fa-solid fa-square-poll-vertical"></i>Статистика
+                                                <i class="fa-solid fa-square-poll-vertical mr-2"></i>Статистика
                                             </a>
                                         </li>
                                         <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"

@@ -15,6 +15,29 @@ class Conversion(models.Model):
         blank=True,
         related_name='conversions'
     )
+    partner_link = models.ForeignKey(
+        'PartnerLink',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='conversions'
+    )
+    platform = models.ForeignKey(
+        'Platform',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='conversions'
+    )
+    partnership = models.ForeignKey(
+        'ProjectPartner',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=None,
+        related_name='conversions',
+        verbose_name="Сотрудничество партнёра с проектом"
+    )
     order_id = models.PositiveIntegerField(
         blank=True,
         null=True,
@@ -22,7 +45,7 @@ class Conversion(models.Model):
     amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        verbose_name='Сумма заказа'
+        verbose_name='Сумма конверсии'
     )
     created_at = models.DateTimeField(auto_now_add=True,)
     meta = models.TextField(blank=True)

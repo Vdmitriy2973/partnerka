@@ -65,50 +65,10 @@ export function setupPartnerModals() {
   function setupProjectStatsModal() {
     const showProjectStatsBtns = document.querySelectorAll(".show_project_stats");
     const modalStats = document.getElementById('connectedProjectStatsModal');
-    // const copyPartnerLinkBtn = document.getElementById('copy_partner_link');
-
-    // copyPartnerLinkBtn.addEventListener('click', () => {
-    //   const link = document.getElementById('ProjectPartnerLink');
-    //   if (!navigator.clipboard) {
-    //     console.warn('Clipboard API не поддерживается');
-    //     fallbackCopy(link.value);
-    //     return;
-    //   }
-
-    //   try {
-    //     navigator.clipboard.writeText(link.value);
-    //     console.log('API ключ скопирован!', 'success');
-    //   } catch (err) {
-    //     console.error('Ошибка копирования:', err);
-    //     fallbackCopy(link.value);
-    //   }
-    // })
-
-    // function fallbackCopy(text) {
-    //   try {
-    //     const textarea = document.createElement('textarea');
-    //     textarea.value = text;
-    //     textarea.style.position = 'fixed'; // Невидимый элемент
-    //     document.body.appendChild(textarea);
-    //     textarea.select();
-
-    //     const successful = document.execCommand('copy');
-    //     document.body.removeChild(textarea);
-
-    //     if (successful) {
-    //       console.log('Партнёрская ссылка скопирован', 'success');
-    //     } else {
-    //       throw new Error('Резервное копирование не удалось');
-    //     }
-    //   } catch (err) {
-    //     console.error('Резервное копирование не удалось:', err);
-    //     console.log('Не удалось скопировать ключ. Скопируйте вручную.', 'error');
-    //   }
-    // }
 
     const closeButtons = [
-       document.getElementById('close_project_stats_header'),
-       document.getElementById('close_project_stats_footer')
+      document.getElementById('close_project_stats_header'),
+      document.getElementById('close_project_stats_footer')
     ]
 
     showProjectStatsBtns.forEach(btn => {
@@ -116,6 +76,9 @@ export function setupPartnerModals() {
         const dataset = this.dataset;
         document.getElementById('commissionRate').textContent = String(dataset.commissionRate) + "%";
         document.getElementById('projectTitle').textContent = dataset.projectName;
+        document.getElementById('clickCount').textContent = dataset.clicksCount;
+        document.getElementById('actionCount').textContent = dataset.conversionsCount;
+        document.getElementById('conversionRate').textContent = String(dataset.conversionsPercent) + "%";
         modalStats.showModal();
 
       })
@@ -131,7 +94,30 @@ export function setupPartnerModals() {
   function setupPartnerPlatformStatsModal() {
     const showPlatformStatsButtons = document.querySelectorAll('.show_partner_platforms');
     showPlatformStatsButtons.forEach(button => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', function () {
+        const dataset = this.dataset;
+        console.log(dataset)
+        document.getElementById('platformName').textContent = dataset.platformName;
+        document.getElementById('totalEarnings').textContent = "₽"+String(dataset.platformIncome);
+        document.getElementById('platformConversionRate').textContent = String(dataset.platformConversionsPercent)+"%";
+        document.getElementById('totalClicks').textContent = dataset.platformClicksCount;
+        document.getElementById('totalActions').textContent = dataset.platformConversionsCount;
+        document.getElementById('platformJoinDate').textContent = dataset.platformCreatedAt;
+        document.getElementById('platformType').textContent = dataset.platformType;
+
+
+        const platformStatus = document.getElementById('statusBadge');
+        if (dataset.platformStatus === "True") {
+          platformStatus.classList.replace('text-red-500','text-success')
+          platformStatus.textContent = "Активен";
+        }
+        else 
+        {
+          platformStatus.classList.replace('text-success','text-red-500')
+          platformStatus.textContent = "Неактивен";
+        }
+
+
         document.getElementById('PartnerPlatformStatsModal').showModal();
       }
       )
@@ -208,7 +194,7 @@ export function setupPartnerModals() {
         const dataset = this.dataset;
         console.log(dataset)
         editPlatformName.value = dataset.platformName || '';
-        
+
         editPlatformType.value = dataset.platformType || '';
         for (let i = 0; i < editPlatformType.options.length; i++) {
           if (editPlatformType.options[i].text === dataset.platformType) {
@@ -226,6 +212,18 @@ export function setupPartnerModals() {
     })
   }
 
+  function setupDeletePartnerLinkModal() {
+    const DeletePartnerLinkModal = document.getElementById('delete-partner-link-modal');
+    const deletePartnerLinkForm = document.getElementById('delete-partner-link-form');
+    const deletePartnerLinkBtns = document.querySelectorAll('.delete_generated_link');
+    deletePartnerLinkBtns.forEach(btn => {
+      btn.addEventListener('click', function(){
+        deletePartnerLinkForm.action = `/delete_partner_link/${this.dataset.linkId}`
+        DeletePartnerLinkModal.showModal();
+      })
+    })
+  }
+
   // Вызываем все функции сразу при создании
   function initAllModals() {
     setupWithdrawModal();
@@ -236,6 +234,7 @@ export function setupPartnerModals() {
     setupSuspendPartnershipModal();
     setupResumePartnershipModal();
     setupEditPlatformModal();
+    setupDeletePartnerLinkModal();
   }
 
 

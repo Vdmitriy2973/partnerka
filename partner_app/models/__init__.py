@@ -5,3 +5,5 @@ from .project import Project, ProjectParam
 
 from .project_partner import ProjectPartner
 from .project_conversion import Conversion
+from .partner_link import PartnerLink
+from .project_clicks import ClickEvent

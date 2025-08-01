@@ -21,7 +21,7 @@ class PlatformForm(forms.ModelForm):
                 'placeholder': 'Опишите вашу площадку (минимум 15 символов)...',
                 'required':'required'
             }),
-            'url_or_id': forms.TextInput(attrs={
+            'url_or_id': forms.URLInput(attrs={
                 'placeholder': 'Введите полный URL или ID площадки',
                 'class':'input input-bordered w-full hover:outline-none',
                 'required': 'required'}),

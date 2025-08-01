@@ -153,7 +153,8 @@
         {% if messages %}
         {% for message in messages %}
         {% if "login_error" in message.extra_tags %}
-        <div class="alert alert-error text-white">
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             {{ message }}
         </div>
         {% endif %}
@@ -219,6 +220,7 @@
                 {% for message in messages %}
                 {% if "reg_error_partner" in message.extra_tags %}
                 <div class="alert alert-error mt-2 text-white">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
                     {{ message }}
                 </div>
                 {% endif %}
@@ -253,13 +255,14 @@
                 </button>
 
                 {% if messages %}
-                {% for message in messages %}
-                {% if "reg_error_advertiser" in message.extra_tags %}
-                <div class="alert alert-error mt-2 text-white">
-                    {{ message }}
-                </div>
-                {% endif %}
-                {% endfor %}
+                    {% for message in messages %}
+                        {% if "reg_error_advertiser" in message.extra_tags %}
+                            <div class="alert alert-error mt-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             </form>
 

@@ -19,36 +19,43 @@ class ProjectForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'input input-bordered w-full',
-                'placeholder': 'Введите название проекта (минимум 3 символа)'
+                'placeholder': 'Введите название проекта (минимум 3 символа)',
+                'required':'required',
             }),
             'description': forms.Textarea(attrs={
                 'class': 'textarea textarea-bordered w-full h-32',
                 'rows': 5,
-                'placeholder': 'Опишите ваш проект (минимум 15 символов)...'
+                'placeholder': 'Опишите ваш проект (минимум 15 символов)...',
+                'required':'required',
             }),
             'url': forms.URLInput(attrs={
                 'class': 'input input-bordered w-full',
-                'placeholder': 'https://example.com'
+                'placeholder': 'https://example.com',
+                'required':'required',
             }),
             'min_payout': forms.NumberInput(attrs={
                 'class': 'input input-bordered w-full',
                 'min': 0,
                 'step': '0.01',
-                'placeholder': '5000.00'
+                'placeholder': '5000.00',
+                'required':'required',
             }),
             'commission_rate': forms.NumberInput(attrs={
                 'class': 'input input-bordered w-full',
                 'min': 0,
                 'max': 100,
-                'value': 10
+                'value': 10,
+                'required':'required',
             }),
             'cookie_lifetime': forms.NumberInput(attrs={
                 'class': 'input input-bordered w-full',
                 'min': 0,
-                'value': 30
+                'value': 30,
+                'required':'required',
             }),
             'link_template': forms.TextInput(attrs={'class': 'input input-bordered w-full',
-                'placeholder': 'https://example.com'
+                'placeholder': 'https://example.com',
+                'required':'required',
             })
         }
         labels = {

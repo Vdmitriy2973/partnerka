@@ -21,7 +21,6 @@ export default defineConfig((mode) => {
           partner: join(INPUT_DIR, "/js/dashboard/partner.js"),
           advertiser: join(INPUT_DIR, "/js/dashboard/advertiser.js"),
           manager: join(INPUT_DIR, "/js/dashboard/manager.js"),
-          tracker:join(INPUT_DIR,"./tracker.js")
         },
       },
     },

@@ -14,8 +14,10 @@ from .view_advertiser_detail import advertiser_detail
 
 from .view_partnership import stop_partnership_with_project,stop_partnership_with_partner, suspend_partnership, resume_partnership
 from .view_project_detail import project_detail
-
+from .view_generate_partner_link import generate_link
+from .view_delete_partner_link import delete_partner_link
 
 # REST API
 from .api.view_api_protected import ProtectedAPIView
 from .api.view_api_conversion import ConversionAPIView
+from .api.view_api_click import ClickAPIView

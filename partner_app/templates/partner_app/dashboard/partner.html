@@ -71,4 +71,15 @@
 
 <!-- Модальное окно генерации партнёрской ссылки -->
 {% include "partner_app/dashboard/partner/modals/generate_link.html" %}
+
+<!-- Модальное окно удаления партнёрской ссылки -->
+{% include "partner_app/dashboard/partner/modals/delete_link.html" %}
+<script>
+    const msg = document.querySelector('.alert');
+if (msg) {
+  setTimeout(function () {
+    msg.remove()
+  }, 5000)
+}
+</script>
 {% endblock %}

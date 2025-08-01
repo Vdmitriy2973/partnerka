@@ -18,7 +18,7 @@
                 <div class="bg-primary/10 p-2 rounded-lg animate-pulse">
                     <i class="fas fa-chart-pie text-primary text-xl"></i>
                 </div>
-                <h3 class="text-xl font-bold truncate max-w-[200px]" id="partnerName">Название площадки</h3>
+                <h3 class="text-xl font-bold truncate max-w-[200px]" id="platformName">Название площадки</h3>
             </div>
             <button onclick="PartnerPlatformStatsModal.close()"
                 class="btn btn-circle btn-ghost btn-sm hover:rotate-90 transition-transform duration-200">
@@ -39,9 +39,6 @@
                             <h4 class="font-semibold">Доход</h4>
                         </div>
                         <div class="text-2xl font-bold mt-2" id="totalEarnings">₽24,850</div>
-                        <div class="text-sm opacity-75 mt-1">
-                            <span id="earningsChange" class="text-success">↑12%</span> за месяц
-                        </div>
                     </div>
                 </div>
 
@@ -53,7 +50,7 @@
                             <i class="fas fa-exchange-alt"></i>
                             <h4 class="font-semibold">Конверсия</h4>
                         </div>
-                        <div class="text-2xl font-bold mt-2" id="conversionRate">3.2%</div>
+                        <div class="text-2xl font-bold mt-2" id="platformConversionRate">3.2%</div>
                         <div class="grid grid-cols-2 gap-2 mt-1 text-xs">
                             <div>
                                 <div class="opacity-75">Переходы</div>
@@ -64,31 +61,6 @@
                                 <div id="totalActions">59</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Комиссия -->
-                <div
-                    class="card bg-base-100 border border-primary/20 hover:shadow-md transition-all hover:-translate-y-1">
-                    <div class="card-body p-4">
-                        <div class="flex items-center gap-2 text-primary">
-                            <i class="fas fa-percentage"></i>
-                            <h4 class="font-semibold">Комиссия</h4>
-                        </div>
-                        <div class="text-2xl font-bold mt-2" id="commissionRate">15%</div>
-                        <div class="text-sm opacity-75 mt-1" id="commissionType">Фиксированная</div>
-                    </div>
-                </div>
-
-                <!-- Активность -->
-                <div class="card bg-base-100 border border-info/20 hover:shadow-md transition-all hover:-translate-y-1">
-                    <div class="card-body p-4">
-                        <div class="flex items-center gap-2 text-info">
-                            <i class="fas fa-calendar-check"></i>
-                            <h4 class="font-semibold">Активность</h4>
-                        </div>
-                        <div class="text-2xl font-bold mt-2" id="lastActivity">5</div>
-                        <div class="text-sm opacity-75 mt-1">дней назад</div>
                     </div>
                 </div>
             </div>
@@ -103,15 +75,11 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <div class="text-sm opacity-75">Дата подключения</div>
-                            <div class="font-semibold" id="joinDate">15.03.2025</div>
+                            <div class="font-semibold" id="platformJoinDate">15.03.2025</div>
                         </div>
                         <div>
                             <div class="text-sm opacity-75">Тип площадки</div>
-                            <div class="font-semibold" id="partnerType">Блог</div>
-                        </div>
-                        <div>
-                            <div class="text-sm opacity-75">Последний платёж</div>
-                            <div class="font-semibold" id="lastPayment">₽5,200</div>
+                            <div class="font-semibold" id="platformType">Блог</div>
                         </div>
                         <div>
                             <div class="text-sm opacity-75">Статус</div>

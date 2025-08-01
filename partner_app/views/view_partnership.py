@@ -10,7 +10,8 @@ from partner_app.models import ProjectPartner
 def stop_partnership_with_project(request,project_id):
     """Остановить сотрудничество партнёра с проектом рекламодателя"""
     partnership = ProjectPartner.objects.get(partner=request.user,project=project_id)
-    partnership.partner_link.delete()
+    if partnership.partner_link:
+        partnership.partner_link.delete()
     partnership.delete()
     return redirect('dashboard')
 
@@ -21,12 +22,13 @@ def stop_partnership_with_project(request,project_id):
 def stop_partnership_with_partner(request,partner_id):
     """Остановить сотрудничество рекламодателя с партнёром"""
     
-    partneship = ProjectPartner.objects.filter(
+    partnership = ProjectPartner.objects.filter(
         advertiser=request.user,
         partner=partner_id
     )
-    partneship.partner_link.delete()
-    partneship.delete()
+    if partnership.partner_link:
+        partnership.partner_link.delete()
+    partnership.delete()
     return redirect('dashboard')
 
 @login_required
