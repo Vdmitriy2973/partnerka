@@ -1,0 +1,374 @@
+<div id="transactions" class="page-section max-w-7xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold">Выплаты партнёрам</h1>
+        <p class="text-base-content/60">Модерация запросов на вывод средств</p>
+    </div>
+
+    <!-- Фильтры и поиск -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div class="join w-full md:w-auto">
+            <div>
+                <input class="input input-bordered join-item w-full" placeholder="Поиск по имени, email или ID...">
+            </div>
+            <select class="select select-bordered join-item">
+                <option disabled selected>Статус</option>
+                <option>Все</option>
+                <option>Ожидают</option>
+                <option>Одобрены</option>
+                <option>Отклонены</option>
+                <option>Завершены</option>
+            </select>
+            <select class="select select-bordered join-item">
+                <option disabled selected>Период</option>
+                <option>Сегодня</option>
+                <option>Неделя</option>
+                <option>Месяц</option>
+                <option>Все время</option>
+            </select>
+            <div class="indicator">
+                <button class="btn join-item btn-primary">
+                    <i class="fas fa-filter mr-2"></i> Применить
+                </button>
+            </div>
+        </div>
+
+        <div class="stats shadow bg-base-100 w-full md:w-auto">
+            <div class="stat">
+                <div class="stat-title">Всего выплат</div>
+                <div class="stat-value text-primary">125,430 ₽</div>
+                <div class="stat-desc">24 запроса</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица выплат -->
+    <div class="overflow-x-auto bg-base-100 rounded-box shadow">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Партнёр</th>
+                    <th>Сумма</th>
+                    <th>Реквизиты</th>
+                    <th>Дата запроса</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Пример строки с выплатой в ожидании -->
+                <tr class="hover:bg-base-200 transition-colors">
+                    <td>#1024</td>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div class="avatar">
+                                <div class="mask mask-squircle w-10 h-10">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Аватар партнёра">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-bold">Иван Петров</div>
+                                <div class="text-sm opacity-50">ivan.petrov@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="font-bold text-lg">15,000 ₽</span>
+                    </td>
+                    <td>
+                        <div class="flex flex-col">
+                            <span class="font-medium">Банковская карта</span>
+                            <span class="text-sm text-gray-500 truncate max-w-[180px]">
+                                •••• 5678
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        15.10.2023 14:30
+                        <div class="text-xs text-gray-500">2 часа назад</div>
+                    </td>
+                    <td>
+                        <span class="badge badge-warning">
+                            Ожидает
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="btn btn-sm btn-success approve-btn" data-payout-id="1024">
+                                <i class="fas fa-check mr-1"></i> Одобрить
+                            </button>
+                            <button class="btn btn-sm btn-error reject-btn" data-payout-id="1024">
+                                <i class="fas fa-times mr-1"></i> Отклонить
+                            </button>
+                            <button class="btn btn-sm btn-outline details-btn" data-payout-id="1024">
+                                <i class="fas fa-info-circle mr-1"></i> Подробнее
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Пример одобренной выплаты -->
+                <tr class="hover:bg-base-200 transition-colors">
+                    <td>#1023</td>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div class="avatar">
+                                <div class="mask mask-squircle w-10 h-10">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Аватар партнёра">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-bold">Анна Сидорова</div>
+                                <div class="text-sm opacity-50">anna.s@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="font-bold text-lg">8,500 ₽</span>
+                    </td>
+                    <td>
+                        <div class="flex flex-col">
+                            <span class="font-medium">ЮMoney</span>
+                            <span class="text-sm text-gray-500 truncate max-w-[180px]">
+                                410011234567890
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        14.10.2023 11:45
+                        <div class="text-xs text-gray-500">1 день назад</div>
+                    </td>
+                    <td>
+                        <span class="badge badge-info">
+                            Одобрена
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="btn btn-sm btn-primary complete-btn" data-payout-id="1023">
+                                <i class="fas fa-check-circle mr-1"></i> Завершить
+                            </button>
+                            <button class="btn btn-sm btn-outline details-btn" data-payout-id="1023">
+                                <i class="fas fa-info-circle mr-1"></i> Подробнее
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Пример завершенной выплаты -->
+                <tr class="hover:bg-base-200 transition-colors">
+                    <td>#1022</td>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div class="avatar">
+                                <div class="mask mask-squircle w-10 h-10">
+                                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Аватар партнёра">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-bold">Сергей Иванов</div>
+                                <div class="text-sm opacity-50">s.ivanov@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="font-bold text-lg">23,750 ₽</span>
+                    </td>
+                    <td>
+                        <div class="flex flex-col">
+                            <span class="font-medium">QIWI</span>
+                            <span class="text-sm text-gray-500 truncate max-w-[180px]">
+                                +79001234567
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        13.10.2023 09:20
+                        <div class="text-xs text-gray-500">2 дня назад</div>
+                    </td>
+                    <td>
+                        <span class="badge badge-success">
+                            Завершена
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex gap-2">
+                            <button class="btn btn-sm btn-outline details-btn" data-payout-id="1022">
+                                <i class="fas fa-info-circle mr-1"></i> Подробнее
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+        <button class="btn btn-sm btn-square btn-primary" aria-label="Первая страница">
+            <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button class="btn btn-sm btn-outline">
+            <span class="hidden sm:inline">Предыдущая</span>
+            <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+        </button>
+
+        <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+            <span class="hidden sm:inline">Страница</span>
+            <input type="number" min="1" max="5" value="1"
+                class="input input-bordered input-sm w-12 md:w-16 mx-1 md:mx-2 text-center" aria-label="Номер страницы">
+            <span>из 5</span>
+        </div>
+
+        <button class="btn btn-sm btn-outline">
+            <span class="hidden sm:inline">Следующая</span>
+            <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+        </button>
+        <button class="btn btn-sm btn-square btn-primary" aria-label="Последняя страница">
+            <i class="fas fa-angle-double-right"></i>
+        </button>
+    </div>
+
+    <!-- Модальное окно для деталей выплаты -->
+    <dialog id="payout-details-modal" class="modal">
+        <div class="modal-box max-w-2xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg">Детали выплаты #1024</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Информация о выплате</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">ID выплаты</p>
+                            <p class="font-medium">#1024</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Статус</p>
+                            <p><span class="badge badge-warning">Ожидает</span></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Сумма</p>
+                            <p class="font-bold text-xl">15,000 ₽</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Дата запроса</p>
+                            <p>15.10.2023 14:30</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Дата обработки</p>
+                            <p>-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Информация о партнёре</h4>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="avatar">
+                            <div class="mask mask-squircle w-16 h-16">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Аватар партнёра">
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-lg">Иван Петров</h5>
+                            <p class="text-gray-500">ivan.petrov@example.com</p>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">Способ выплаты</p>
+                            <p class="font-medium">Банковская карта</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Реквизиты</p>
+                            <div class="font-mono text-sm bg-base-200 p-2 rounded">
+                                Карта: •••• 5678<br>
+                                Банк: Тинькофф<br>
+                                Получатель: Иван Петров
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Комментарий</p>
+                            <p class="italic">Вывод средств на основную карту</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <form id="approve-form" class="hidden">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check mr-2"></i> Подтвердить одобрение
+                    </button>
+                </form>
+                <form id="reject-form" class="hidden">
+                    <div class="flex gap-2">
+                        <input type="text" name="reason" placeholder="Причина отклонения"
+                            class="input input-bordered flex-1">
+                        <button type="submit" class="btn btn-error">
+                            <i class="fas fa-times mr-2"></i> Подтвердить отклонение
+                        </button>
+                    </div>
+                </form>
+                <form id="complete-form" class="hidden">
+                    <div class="flex gap-2">
+                        <input type="text" name="external_id" placeholder="ID транзакции"
+                            class="input input-bordered flex-1">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check-circle mr-2"></i> Подтвердить выплату
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </dialog>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('payout-details-modal');
+
+        // Обработчики для кнопок действий
+        document.querySelectorAll('.approve-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.getElementById('approve-form').classList.remove('hidden');
+                document.getElementById('reject-form').classList.add('hidden');
+                document.getElementById('complete-form').classList.add('hidden');
+                modal.showModal();
+            });
+        });
+
+        document.querySelectorAll('.reject-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.getElementById('approve-form').classList.add('hidden');
+                document.getElementById('reject-form').classList.remove('hidden');
+                document.getElementById('complete-form').classList.add('hidden');
+                modal.showModal();
+            });
+        });
+
+        document.querySelectorAll('.complete-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.getElementById('approve-form').classList.add('hidden');
+                document.getElementById('reject-form').classList.add('hidden');
+                document.getElementById('complete-form').classList.remove('hidden');
+                modal.showModal();
+            });
+        });
+
+        document.querySelectorAll('.details-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.getElementById('approve-form').classList.add('hidden');
+                document.getElementById('reject-form').classList.add('hidden');
+                document.getElementById('complete-form').classList.add('hidden');
+                modal.showModal();
+            });
+        });
+    });
+</script>

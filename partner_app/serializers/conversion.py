@@ -4,4 +4,4 @@ from partner_app.models import Conversion
 class ConversionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversion
-        fields = ["project", "partner", "order_id", "amount", "meta"]
+        fields = ["project", "partner", "amount", "details","partner_link","platform","partnership"]

@@ -14,7 +14,7 @@
                     <!-- Поле поиска - занимает всю доступную ширину -->
                     <div class="flex-grow">
                         <input name="partners_search" class="input input-bordered w-full"
-                            placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
+                            placeholder="Поиск партнёров по email..." value="{{ partners_search_query }}">
                     </div>
 
                     <!-- Группа кнопок - выравнивание по правому краю на десктопе -->
@@ -78,7 +78,7 @@
                                     <ul tabindex="0"
                                         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48 sm:w-52">
                                         <li>
-                                            <a href="{% url 'partner' partner.id %}" class="text-xs sm:text-sm">
+                                            <a href="{% url 'partner' partner.id %}" target="_blank" class="text-xs sm:text-sm">
                                                 <i class="fa-solid fa-circle-user"></i>Просмотр
                                             </a>
                                         </li>
@@ -131,10 +131,10 @@
                                     </div>
                                 </td>
                                 <td class="text-sm sm:text-base">
-                                    {{ partner.get_conversions_count|default:"0" }}
+                                    {{ partner.conversions_count }}
                                 </td>
                                 <td class="text-sm sm:text-base">
-                                    ₽{{ partner.get_total_income|default:"0" }}
+                                    ₽{{ partner.conversions_total }}
                                 </td>
                                 <td>
                                     <div class="dropdown dropdown-end">

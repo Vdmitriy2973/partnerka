@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 from django.db.utils import IntegrityError
 
 from partner_app.forms import ProjectForm
-from partner_app.models import Project, ProjectParam
+from partner_app.models import Project, ProjectParam, AdvertiserActivity
 from django.contrib import messages
 
 import json
@@ -130,6 +130,12 @@ def approve_project(request, project_id):
     project = Project.objects.get(id=project_id)
     project.status = 'Подтверждено'
     project.save()
+    AdvertiserActivity.objects.create(
+        advertiser=project.advertiser.advertiserprofile,
+        activity_type='approve',
+        title='Проект одобрен',
+        details=f'{project.name} был одобрен модератором'
+    )
     return redirect("dashboard")
 
 
@@ -140,4 +146,10 @@ def reject_project(request, project_id):
     project.status = 'Отклонено'
     project.is_active = False
     project.save()
+    AdvertiserActivity.objects.create(
+        advertiser=project.advertiser.advertiserprofile,
+        activity_type='reject',
+        title='Проект отклонен',
+        details=f'{project.name} был отклонен модератором'
+    )
     return redirect("dashboard")

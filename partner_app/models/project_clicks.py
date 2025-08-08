@@ -63,4 +63,4 @@ class ClickEvent(models.Model):
         ]
 
     def __str__(self):
-        return f"Клик #{self.id} (Проект: {self.project}, Партнёр: {self.partner}, Платформа: {self.platform} )"
+        return f"Клик #{self.id}, {self.project}, Партнёр: {self.partner}, Платформа: {self.platform}"

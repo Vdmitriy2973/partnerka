@@ -13,7 +13,9 @@ export function setupProjectActions() {
             document.getElementById('MinPayout').textContent = projectData.projectMinPayout + ' ₽';
             document.getElementById('CookiePeriod').textContent = projectData.projectCookieLifetime + ' дней';
             document.getElementById('ProjectUrl').textContent = projectData.projectUrl;
-            
+            document.getElementById('ProjectTemplateUrl').textContent = projectData.projectLinkTemplate;
+            document.getElementById('ProjectConversion').textContent = projectData.projectConversionsPercent + '%';
+
             // Статус проекта
             const statusBadge = document.getElementById('ProjectStatusBadge');
             const statusText = document.getElementById('ProjectStatusText');

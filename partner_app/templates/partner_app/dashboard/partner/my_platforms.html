@@ -115,9 +115,10 @@
                     {% if platforms %}
                     <thead class="hidden lg:table-header-group">
                         <tr>
+                            <th class="whitespace-nowrap">ID</th>
                             <th class="whitespace-nowrap">Название</th>
                             <th class="whitespace-nowrap">Тип</th>
-                            <th class="whitespace-nowrap">URL / ID</th>
+                            <th class="whitespace-nowrap">URL</th>
                             <th class="whitespace-nowrap">Статус</th>
                             <th class="whitespace-nowrap">Дата добавления</th>
                             <th class="whitespace-nowrap">Действия</th>
@@ -132,6 +133,7 @@
                             <td class="lg:hidden p-4">
                                 <div class="flex flex-col gap-2">
                                     <div class="flex justify-between items-start">
+                                        <strong class="text-lg">{{ platform.id }}</strong>
                                         <div>
                                             <strong class="text-lg">{{ platform.name }}</strong>
                                             <div class="text-sm text-gray-500">{{ platform.get_platform_type_display }}
@@ -163,11 +165,13 @@
                                                 <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
                                                     data-platform-type="{{ platform.get_platform_type_display }}"
                                                     data-platform-income="{{ platform.income }}"
-                                                    data-platform-conversions-percent="{{ platform.conversions_percent }}"
-                                                    data-platform-clicks-count="{{ platform.clicks_count }}"
-                                                    data-platform-conversions-count="{{ platform.conversions_count }}"
                                                     data-platform-created-at="{{ platform.created_at }}"
-                                                    data-platform-status="{{ platform.is_active }}">
+                                                    data-platform-status="{{ platform.is_active }}"
+                                                    
+                                                    data-platform-conversions-total="{{ platform.conversions_total }}"
+                                                    data-platform-conversions-count="{{ platform.conversion_count }}"
+                                                    data-platform-conversions-percent="{{ platform.conversions_percent }}"
+                                                    data-platform-clicks-count="{{ platform.clicks_count }}">
                                                     <a>
                                                         <i class="fa-solid fa-square-poll-vertical mr-2"></i>Стат.
                                                     </a>
@@ -195,12 +199,13 @@
                             </td>
 
                             <!-- Десктопная версия -->
+                             <td class="hidden lg:table-cell"><strong>{{ platform.id }}</strong></td>
                             <td class="hidden lg:table-cell"><strong>{{ platform.name }}</strong></td>
                             <td class="hidden lg:table-cell">{{ platform.get_platform_type_display }}</td>
                             <td class="hidden lg:table-cell text-sm text-primary truncate max-w-[150px]">
                                 <div class="text-sm text-primary truncate">
                                     {% if "http" in platform.url_or_id %}
-                                    <a href='{{ platform.url_or_id }}' target="_blank">URL</a>
+                                    <a href='{{ platform.url_or_id }}' target="_blank">{{ platform.url_or_id|truncatechars:20 }}</a>
                                     {% else %}
                                     {{ platform.url_or_id }}
                                     {% endif %}
@@ -223,11 +228,13 @@
                                         <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
                                             data-platform-type="{{ platform.get_platform_type_display }}"
                                             data-platform-income="{{ platform.income }}"
-                                            data-platform-conversions-percent="{{ platform.conversions_percent }}"
-                                            data-platform-clicks-count="{{ platform.clicks_count }}"
-                                            data-platform-conversions-count="{{ platform.conversions_count }}"
                                             data-platform-created-at="{{ platform.created_at }}"
-                                            data-platform-status="{{ platform.is_active }}">
+                                            data-platform-status="{{ platform.is_active }}"
+                                            
+                                            data-platform-conversions-total="{{ platform.conversions_total }}"
+                                            data-platform-conversions-count="{{ platform.conversion_count }}"
+                                            data-platform-conversions-percent="{{ platform.conversions_percent }}"
+                                            data-platform-clicks-count="{{ platform.clicks_count }}">
                                             <a>
                                                 <i class="fa-solid fa-square-poll-vertical mr-2"></i>Статистика
                                             </a>

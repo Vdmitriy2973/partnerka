@@ -41,8 +41,10 @@ urlpatterns = [
     # Просмотр информации о площадках/проектах
     path('project/<int:project_id>',views.project_detail,name='project'),
     
+    # Просмотр информации о площадках/проектах
+    path('api/docs',views.api_docs,name='api_docs'),
+    
     # Редирект партнёрской ссылки
-    # path('ref/<int:partner_id>/<int:project_id>',views.partner_redirect,name='partner_redirect')
     path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
     path("api/clicks",views.ClickAPIView.as_view(),name="api_click")

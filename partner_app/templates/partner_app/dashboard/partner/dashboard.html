@@ -4,12 +4,12 @@
 <div id="dashboard" class="page-section active">
     <!-- Welcome Section -->
     <div class="mb-8">
-        {% if request.user.first_name %}
-        <h1 class="text-3xl font-bold">Добро пожаловать, {{ request.user.first_name }}!</h1>
+        {% if user.first_name %}
+        <h1 class="text-3xl font-bold">Добро пожаловать, {{ user.first_name }}!</h1>
         {% else %}
         <h1 class="text-3xl font-bold">Добро пожаловать!</h1>
         {% endif %}
-        <p class="text-base-content/60">Партнёр с {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+        <p class="text-base-content/60">Партнёр с {{ user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
     </div>
 
     <!-- Stats Cards -->
@@ -75,41 +75,56 @@
                         Последняя активность
                     </h2>
                     <div class="space-y-4">
-                        <div class="flex items-center p-3 bg-success/10 rounded-lg">
-                            <div
-                                class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-shopping-cart text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="font-medium">Новая продажа</p>
-                                <p class="text-sm text-base-content/60">Комиссия: ₽850</p>
-                            </div>
-                            <span class="text-sm text-base-content/60">2 часа назад</span>
-                        </div>
+                        {% for activity in last_activity %}
+                            <div class="flex items-center p-3 bg-success/10 rounded-lg">
 
-                        <div class="flex items-center p-3 bg-info/10 rounded-lg">
-                            <div
-                                class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-eye text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="font-medium">150 новых переходов</p>
-                                <p class="text-sm text-base-content/60">По ссылке "promo-2024"</p>
-                            </div>
-                            <span class="text-sm text-base-content/60">5 часов назад</span>
-                        </div>
+                                {% if activity.activity_type == 'sale'%}
+                                    <div
+                                        class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-shopping-cart text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'clicks' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'payout' %}
+                                    <div
+                                        class="w-10 h-10 bg-warning text-warning-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-credit-card text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'system' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-suitcase text-sm"></i>
+                                    </div>                                
+                                {% elif activity.activity_type == 'approve' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-check text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'reject' %}
+                                    <div
+                                        class="w-10 h-10 bg-error text-white rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-ban text-sm"></i>
+                                    </div>
+                                {% endif %}
 
-                        <div class="flex items-center p-3 bg-warning/10 rounded-lg">
-                            <div
-                                class="w-10 h-10 bg-warning text-warning-content rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-credit-card text-sm"></i>
+                                <div class="flex-1">
+                                    <p class="font-medium">{{ activity.title }}</p>
+                                    <p class="text-sm text-base-content/60">{{ activity.details }}</p>
+                                </div>
+                                <span class="text-sm text-base-content/60">{{ activity.created_at|timesince }} назад</span>
                             </div>
-                            <div class="flex-1">
-                                <p class="font-medium">Выплата обработана</p>
-                                <p class="text-sm text-base-content/60">₽15,420 переведено</p>
+                        {% empty %}
+                            <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                                <div class="text-gray-300 text-5xl mb-4">
+                                    <i class="fas fa-link"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-500 mb-2">Нет партнёрских последних активностей</h3>
+                                <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться последние уведомления</p>
                             </div>
-                            <span class="text-sm text-base-content/60">1 день назад</span>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -123,16 +138,21 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <h3 class="text-sm font-medium opacity-80">Текущий баланс</h3>
-                            <p class="text-3xl font-bold">₽{{ request.user.partner_profile.balance }}</p>
+                            <p class="text-3xl font-bold">₽{{ user.partner_profile.balance }}</p>
                         </div>
                         <div class="flex flex-col items-end">
-                            <div class="badge badge-accent mb-2 gap-1">
-                                <i class="fas fa-check-circle"></i>
-                                Доступно к выплате
+                            <div class="badge {% if is_payout_today and user.partner_profile.balance >= min_payout %}badge-accent{% else %}badge-error{% endif %} mb-2 gap-1">
+                                {% if is_payout_today and user.partner_profile.balance >= min_payout %}
+                                    <i class="fas fa-check-circle"></i>
+                                    Доступно к выплате
+                                {% else %}
+                                    <i class="fas fa-ban"></i>
+                                    Выплата недоступна
+                                {% endif %}
                             </div>
                             <div class="text-right">
-                                <p class="text-sm opacity-80">След. выплата</p>
-                                <p class="font-medium">15 июля</p>
+                                <p class="text-sm opacity-80">{% if not is_payout_today %}След. выплата{% else %}Сегодня день выплат! 🎉{% endif %}</p>
+                                {% if not is_payout_today %}<p class="font-medium">📅 <strong>{{ payout_info|date:"j E" }}</strong></p>{% endif %}
                             </div>
                         </div>
                     </div>
@@ -151,7 +171,7 @@
                             <i class="fas fa-globe text-indigo-600 mr-2"></i>
                             Добавить площадку
                         </button>
-                        <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item"
+                        <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item" {% if not is_payout_today or not user.partner_profile.balance < min_payout %}disabled{% endif %}
                             data-page="payments">
                             <i class="fas fa-credit-card text-green-700 mr-2"></i>
                             Запросить выплату
@@ -171,12 +191,12 @@
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span>До следующей выплаты</span>
-                                <span>₽ {{ request.user.partner_profile.balance }} / ₽5,000</span>
+                                <span>₽ {{ user.partner_profile.balance }} / ₽ {{ min_payout }}</span>
                             </div>
-                            <progress class="progress progress-primary w-full" value="147" max="100"></progress>
+                            <progress class="progress progress-primary w-full" value="{{ int_balance }}" max="{{ min_payout }}"></progress>
                         </div>
                         <div class="text-sm text-base-content/60">
-                            <p><i class="fas fa-info-circle mr-1"></i> Минимальная сумма: ₽5,000</p>
+                            <p><i class="fas fa-info-circle mr-1"></i> Минимальная сумма: ₽ {{ min_payout }}</p>
                             <p><i class="fas fa-calendar mr-1"></i> Выплаты: каждые 15 дней</p>
                         </div>
                     </div>

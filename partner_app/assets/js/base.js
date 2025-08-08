@@ -162,11 +162,3 @@ function switchModalTab(type) {
   title.textContent = config.title;
   subtitle.textContent = config.subtitle;
 }
-
-
-const msg = document.querySelector('.alert');
-if (msg) {
-  setTimeout(function () {
-    msg.remove()
-  }, 5000)
-}

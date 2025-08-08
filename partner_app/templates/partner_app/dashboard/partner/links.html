@@ -19,8 +19,8 @@
         <div class="card bg-base-100 shadow-sm sm:shadow-lg">
             <div class="card-body p-3 sm:p-4 text-center">
                 <i class="fas fa-mouse-pointer text-xl sm:text-3xl text-info mb-1 sm:mb-2"></i>
-                <div class="text-lg sm:text-2xl font-bold">{{ request.user.clicks|length }}</div>
-                <p class="text-xs sm:text-sm text-base-content/60">Всего кликов</p>
+                <div class="text-lg sm:text-2xl font-bold">{{ clicks_count }}</div>
+                <p class="text-xs sm:text-sm text-base-content/60">Всего переходов</p>
             </div>
         </div>
         <div class="card bg-base-100 shadow-sm sm:shadow-lg">
@@ -60,6 +60,7 @@
                 <table class="table table-zebra">
                     <thead>
                         <tr class="hidden sm:table-row">
+                            <th>ID</th>
                             <th>Ссылка</th>
                             <th>Статус</th>
                             <th>Клики</th>
@@ -73,25 +74,26 @@
                     <tbody>
                         {% for link in partner_links %}
                             <tr class="sm:table-row block sm:table-row mb-4 sm:mb-0">
+                                <td class="hidden sm:table-cell">{{ link.id }}</td>
                                 <td class="block sm:table-cell p-0 sm:p-3">
                                     <div class="flex flex-col p-3 sm:p-0">
-                                        <div class="font-bold">{{ link.project.name }}</div>
+                                        <a href="{% url 'project' link.project.id %}"><div class="font-bold">{{ link.project.name }}</div></a>
                                         <div class="text-xs text-primary break-all"><a href="{{ link.url }}">{{ link.url|truncatechars:30 }}</a></div>
                                         <div class="flex sm:hidden justify-between mt-2">
                                             <div>
                                                 <span class="badge badge-{%if link.is_active %}success{% else %}error{% endif %} mr-2">{% if link.is_active %}Активна{% else %} Неактивна {% endif %} </span>
-                                                <span>Клики: {{ link.clicks|length }}</span>
-                                                <span>Конверсии: {{ link.conversions|length }}</span>
+                                                <span>Клики: {{ link.clicks.all|length }}</span>
+                                                <span>Конверсии: {{ link.conversions.all|length }}</span>
                                             </div>
-                                            <div class="text-success font-bold">₽12,670</div>
+                                            <div class="text-success font-bold">₽{{ link.conversions_total }}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="hidden sm:table-cell"><span class="badge badge-{%if link.is_active %}success{% else %}error{% endif %} mr-2">{% if link.is_active %}Активна{% else %} Неактивна {% endif %} </span></td>
-                                <td class="hidden sm:table-cell">{{ link.clicks|length }}</td>
-                                <td class="hidden sm:table-cell">{{ link.conversions|length }}</td>
-                                <td class="hidden sm:table-cell"><span class="badge badge-warning">{{ link.conversion_percent }}%</span></td>
-                                <td class="hidden sm:table-cell font-bold text-success">₽{{ link.income }}</td>
+                                <td class="hidden sm:table-cell">{{ link.clicks.all|length }}</td>
+                                <td class="hidden sm:table-cell">{{ link.conversions.all|length }}</td>
+                                <td class="hidden sm:table-cell"><span class="badge badge-warning">{{ link.conversion_percent|floatformat:2 }}%</span></td>
+                                <td class="hidden sm:table-cell font-bold text-success">₽{{ link.conversions_total }}</td>
                                 <td class="hidden sm:table-cell">{{ link.created_at|date:"d.m.Y" }}</td>
                                 <td class="block sm:table-cell p-0 sm:p-3">
                                     <div class="flex justify-end sm:justify-center p-3 sm:p-0">

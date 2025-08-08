@@ -32,7 +32,6 @@ export function setupModals() {
             document.getElementById('modalAdvertiser').textContent = data.owner || 'Не указан';
             document.getElementById('modalCommission').textContent = `${data.commission} %` || 'Не указана';
             document.getElementById('modalCookieDays').textContent = data.cookieDays ? `${data.cookieDays} дней` : 'Не указан';
-            document.getElementById('modalCategory').textContent = data.category || 'Не указана';
         } else {
             document.getElementById('modalAdvertiserContainer').classList.add('hidden');
             document.getElementById('modalPartnerContainer').classList.remove('hidden');

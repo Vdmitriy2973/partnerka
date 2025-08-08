@@ -144,7 +144,9 @@
                             data-project-partners-count="{{ project.partners.count }}"
                             data-project-commission-rate="{{ project.commission_rate }}"
                             data-project-min-payout="{{ project.min_payout }}"
-                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}">
+                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
+                            data-project-link-template="{{ project.link_template }}"
+                            data-project-conversions-percent="{{ project.conversions_percent }}">
                             <a><i class="fas fa-eye mr-1"></i> Просмотр</a>
                         </li>
                         <li><a href="{% url 'project' project.id %}"><i class="fas fa-info mr-3"></i>Подробнее</a></li>

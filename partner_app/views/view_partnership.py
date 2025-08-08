@@ -10,8 +10,6 @@ from partner_app.models import ProjectPartner
 def stop_partnership_with_project(request,project_id):
     """Остановить сотрудничество партнёра с проектом рекламодателя"""
     partnership = ProjectPartner.objects.get(partner=request.user,project=project_id)
-    if partnership.partner_link:
-        partnership.partner_link.delete()
     partnership.delete()
     return redirect('dashboard')
 
@@ -26,8 +24,6 @@ def stop_partnership_with_partner(request,partner_id):
         advertiser=request.user,
         partner=partner_id
     )
-    if partnership.partner_link:
-        partnership.partner_link.delete()
     partnership.delete()
     return redirect('dashboard')
 

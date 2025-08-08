@@ -157,3 +157,11 @@ DJANGO_VITE = {
     "dev_mode": os.getenv('VITE_DEV_MODE','False') == 'True'
   },
 }
+
+PARTNER_PAYOUT_SETTINGS = {
+    'min_amount': 300,
+    'fee_percent': 5,
+    'payment_methods': [
+        {'id': 'bank_card', 'name': 'Банковская карта'}
+    ]
+}

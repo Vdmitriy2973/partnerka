@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import User, PartnerProfile, AdvertiserProfile, ManagerProfile,Platform,Project,ProjectPartner,Conversion
+from .models import User, PartnerProfile, AdvertiserProfile, ManagerProfile,Platform,Project,ProjectPartner,Conversion,ClickEvent
 
 admin.site.register(User)
 
@@ -21,3 +21,4 @@ admin.site.register(Platform)
 admin.site.register(Project)
 admin.site.register(ProjectPartner)
 admin.site.register(Conversion)
+admin.site.register(ClickEvent)

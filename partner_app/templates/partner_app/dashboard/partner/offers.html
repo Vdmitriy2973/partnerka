@@ -69,13 +69,18 @@
                     </button>
                 </div>
             </div>
-        </div>
-        {% empty %}
-        <div class="col-span-full text-center py-10">
-            <p class="text-gray-500">Проекты не найдены</p>
-        </div>
+        </div>        
         {% endfor %}
     </div>
+    {% if not projects %}
+        <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+            <div class="text-gray-300 text-5xl mb-4">
+                <i class="fas fa-link"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-500 mb-2">Новые предложения не найдены</h3>
+            <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться доступные проекты</p>
+        </div>
+    {% endif %}
     <!-- Пагинация -->
 
     <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">

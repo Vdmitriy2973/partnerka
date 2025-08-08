@@ -29,6 +29,7 @@ class Conversion(models.Model):
         blank=True,
         related_name='conversions'
     )
+    
     partnership = models.ForeignKey(
         'ProjectPartner',
         on_delete=models.SET_NULL,
@@ -48,13 +49,17 @@ class Conversion(models.Model):
         verbose_name='Сумма конверсии'
     )
     created_at = models.DateTimeField(auto_now_add=True,)
-    meta = models.TextField(blank=True)
+    details = models.TextField(blank=True)
 
     class Meta:
+        verbose_name ="Конверсия"
+        verbose_name_plural ="Конверсии"
         indexes = [
-            models.Index(fields=['order_id']),
+            models.Index(fields=['project']),
+            models.Index(fields=['partner']),
+            models.Index(fields=['partnership']),
             models.Index(fields=['created_at']),
         ]
 
     def __str__(self):
-        return f"Конверсия #{self} (Партнёр: {self.partner})"
+        return f"Конверсия #{self.id} (Партнёр: {self.partner})"

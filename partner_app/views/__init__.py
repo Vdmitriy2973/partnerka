@@ -17,6 +17,8 @@ from .view_project_detail import project_detail
 from .view_generate_partner_link import generate_link
 from .view_delete_partner_link import delete_partner_link
 
+from .view_api_documetation import api_docs
+
 # REST API
 from .api.view_api_protected import ProtectedAPIView
 from .api.view_api_conversion import ConversionAPIView

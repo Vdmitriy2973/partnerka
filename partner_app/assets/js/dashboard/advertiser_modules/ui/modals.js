@@ -19,13 +19,6 @@ export function setupAdvertiserModals() {
         closeCreateProjectModal();
     })
 
-
-
-    function showProjectDetails(projectId) {
-        // Здесь можно загрузить данные проекта по ID
-        document.getElementById('projectDetailsModal').showModal();
-    }
-
     // Удалить проект
     const deleteProjectModal = document.getElementById('deleteProjectModal');
     const deleteButtons = document.querySelectorAll('.delProjectModal');

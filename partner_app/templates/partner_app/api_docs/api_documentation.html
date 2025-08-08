@@ -1,0 +1,286 @@
+{% extends 'partner_app/base.html' %}
+{% load static %}
+{% load tz %}
+{% load django_vite %}
+
+{% block title %}API документация | LinkOffer{% endblock %}
+
+{% block header %}
+{% include "partner_app/api_docs/components/header.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="drawer lg:drawer-open">
+  <input id="api-docs-drawer" type="checkbox" class="drawer-toggle" />
+  
+  <!-- Mobile Toggle -->
+  <div class="drawer-content lg:hidden fixed top-4 left-4 z-50">
+    <label for="api-docs-drawer" class="btn btn-ghost btn-circle shadow-md bg-white">
+      <i class="fas fa-bars text-xl"></i>
+    </label>
+  </div>
+  
+  <!-- Sidebar -->
+  <div class="drawer-side z-40">
+    <label for="api-docs-drawer" class="drawer-overlay"></label> 
+    <div class="menu p-4 w-80 h-full bg-white text-base-content border-r border-gray-200">
+      <div class="mb-6 flex items-center">
+        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+          <i class="fas fa-code text-white text-lg"></i>
+        </div>
+        <div class="text-xl font-bold text-gray-800">API Документация</div>
+      </div>
+      
+      <div class="flex-1 overflow-y-auto">
+        <ul class="space-y-1">
+          <li class="menu-title"><span>Основные разделы</span></li>
+          <li><a href="#getting-started" class="active:bg-blue-50"><i class="fas fa-rocket text-blue-500"></i>Начало работы</a></li>
+          <li><a href="#api-key-section" class="active:bg-blue-50"><i class="fas fa-key text-yellow-500"></i>API ключ</a></li>
+          
+          <li class="menu-title mt-6"><span>Интеграция</span></li>
+          <li><a href="#click-tracking" class="active:bg-blue-50"><i class="fas fa-mouse-pointer text-green-500"></i>Клики</a></li>
+          <li><a href="#conversion-tracking" class="active:bg-blue-50"><i class="fas fa-shopping-cart text-purple-500"></i>Конверсии</a></li>
+          
+          <li class="menu-title mt-6"><span>Справочник</span></li>
+          <li><a href="#examples" class="active:bg-blue-50"><i class="fas fa-code text-gray-500"></i>Примеры</a></li>
+          <li><a href="#error-codes" class="active:bg-blue-50"><i class="fas fa-exclamation-circle text-orange-500"></i>Ошибки</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="drawer-content overflow-x-hidden">
+    <div class="container mx-auto px-4 py-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold">API Документация</h1>
+        <p class="text-gray-500">Интеграция с партнерской программой</p>
+      </div>
+      
+      <!-- Getting Started -->
+      <section id="getting-started" class="card bg-white shadow-xl mb-6">
+        <div class="card-body">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+              <i class="fas fa-rocket text-white text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">Начало работы</h2>
+          </div>
+          
+          <div class="prose">
+            <p class="text-gray-600">
+              Добро пожаловать в API документацию! Наш API позволяет легко интегрировать отслеживание кликов и конверсий.
+            </p>
+            
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl mt-4 border-l-4 border-blue-500">
+              <h3 class="text-lg font-semibold text-blue-800 mb-2 flex items-center">
+                <i class="fas fa-info-circle mr-2"></i>
+                Основные возможности:
+              </h3>
+              <ul class="text-gray-700 space-y-2">
+                <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Отслеживание кликов</li>
+                <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Отслеживание конверсий</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- API Key Section -->
+      <section id="api-key-section" class="card bg-base-100 shadow-lg mb-8">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">
+            <i class="fas fa-key text-yellow-500 mr-2"></i>
+            Получение API ключа
+          </h2>
+
+          <div class="space-y-4">
+            <!-- Steps -->
+            <div class="steps steps-vertical lg:steps-horizontal">
+              <div class="step step-primary">
+                <div class="step-circle">1</div>
+                <div class="step-content">
+                  <h3 class="font-bold">Авторизуйтесь</h3>
+                  <p class="text-sm">В личном кабинете рекламодателя</p>
+                </div>
+              </div>
+              <div class="step step-primary">
+                <div class="step-circle">2</div>
+                <div class="step-content">
+                  <h3 class="font-bold">Настройки</h3>
+                  <p class="text-sm">Раздел "API настройки"</p>
+                </div>
+              </div>
+              <div class="step step-primary">
+                <div class="step-circle">3</div>
+                <div class="step-content">
+                  <h3 class="font-bold">Сгенерируйте</h3>
+                  <p class="text-sm">Кнопка "Сгенерировать новый ключ"</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Code Example -->
+            <div class="mockup-code bg-gray-900 text-gray-100 mt-4">
+              <pre><code><span class="text-gray-400"># Ваш API-ключ (храните в секрете!)</span></code></pre>
+              <pre><code>exampleApiToken012345678900000000000000000000000</code></pre>
+            </div>
+
+            <!-- Warning -->
+            <div class="alert alert-warning mt-4">
+              <div>
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Никогда не передавайте ключ третьим лицам и не размещайте в публичных репозиториях</span>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            {% if request.user.advertiserprofile %}
+              <div class="flex flex-wrap gap-2 mt-4">
+                <a href="{% url 'dashboard' %}" onclick="localStorage.setItem('activePage','settings')" class="btn btn-primary">
+                  <i class="fas fa-key mr-2"></i> Получить API ключ
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Click Tracking -->
+          <section id="click-tracking" class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title">
+                <i class="fas fa-mouse-pointer text-green-500 mr-2"></i>
+                Отслеживание кликов
+              </h2>
+              
+              <!-- <p>Добавьте этот код перед <code>&lt;/body&gt;</code>:</p> -->
+              
+              <div class="mockup-code bg-gray-900 text-gray-100 mt-4">
+                <!-- <pre><code>// JavaScript код для отслеживания кликов</code></pre>
+                <pre><code>document.querySelectorAll('a').forEach(link => {</code></pre>
+                <pre><code>  link.addEventListener('click', () => {</code></pre>
+                <pre><code>    fetch('/track/click', {</code></pre>
+                <pre><code>      method: 'POST',</code></pre>
+                <pre><code>      headers: {</code></pre>
+                <pre><code>        'Authorization': 'Bearer your_api_key'</code></pre>
+                <pre><code>      }</code></pre>
+                <pre><code>    });</code></pre>
+                <pre><code>  });</code></pre>
+                <pre><code>});</code></pre> -->
+                <pre><code>curl -X POST https://linkoffer.ru/api/clicks </code></pre>
+                <pre><code>-H "Authorization: Bearer your_api_key" </code></pre>
+                <pre><code>-H "Content-Type: application/json"</code></pre> 
+                <pre><code>-d '{</code></pre>
+                <pre><code>  "project": "1", // ID проекта (Можно получить при просмотре проекта, нажав на проекте кнопку "Просмотр")</code></pre>
+                <pre><code>  "partner": "1", // ID партнёра (Указывается автоматически при генерации партнёрской ссылки)</code></pre>
+                <pre><code>}'</code></pre>
+
+              </div>
+            </div>
+          </section>
+
+          <!-- Conversion Tracking -->
+          <section id="conversion-tracking" class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title">
+                <i class="fas fa-shopping-cart text-purple-500 mr-2"></i>
+                Отслеживание конверсий
+              </h2>
+              
+              <p>Код для страницы успешного завершения:</p>
+              
+              <div class="mockup-code bg-gray-900 text-gray-100 mt-4">
+                <pre><code>curl -X POST 'https://linkoffer.ru/api/conversions' \</code></pre>
+                <pre><code>-H "Authorization: Bearer your_api_key" \</code></pre>
+                <pre><code>-H "Content-Type: application/json" \</code></pre>
+                <pre><code>-d '{</code></pre>
+                <pre><code>  "project": "1", // ID проекта (Можно получить при просмотре проекта, нажав на проекте кнопку "Просмотр")</code></pre>
+                <pre><code>  "partner": "1", // ID партнёра (Указывается автоматически при генерации партнёрской ссылки)</code></pre>
+                <pre><code>  "amount": "500", // Цена конверсии (указывается в рублях)</code></pre>
+                <pre><code>  "details": "Конверсия" // Информация о конверсии (покупка, подписка и т.д.)</code></pre>
+                <pre><code>}'</code></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+          <!-- API Examples -->
+          <section id="examples" class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title">
+                <i class="fas fa-code text-gray-500 mr-2"></i>
+                Примеры запросов
+              </h2>
+              
+              <div class="mockup-code bg-gray-900 text-gray-100">
+                <pre><code>POST api/clicks HTTP/1.1</code></pre>
+                <pre><code>Host: linkoffer.ru</code></pre>
+                <pre><code>Authorization: Bearer your_api_key</code></pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Error Codes -->
+          <section id="error-codes" class="card bg-base-100 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title">
+                <i class="fas fa-exclamation-circle text-orange-500 mr-2"></i>
+                Коды ошибок
+              </h2>
+              
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th>Код</th>
+                      <th>Описание</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>400</td><td>Неверный запрос</td></tr>
+                    <tr><td>401</td><td>Не авторизован</td></tr>
+                    <tr><td>429</td><td>Лимит запросов</td></tr>
+                    <tr><td>500</td><td>Ошибка сервера</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Анимация появления элементов
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card').forEach((card, i) => {
+      card.classList.add('opacity-0', 'translate-y-5');
+      setTimeout(() => {
+        card.classList.add('transition-all', 'duration-300', 'ease-out');
+        card.classList.remove('opacity-0', 'translate-y-5');
+      }, 100 * i);
+    });
+    
+    // Плавная прокрутка
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  });
+</script>
+
+{% endblock %}

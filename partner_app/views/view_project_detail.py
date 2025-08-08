@@ -1,6 +1,9 @@
+from decimal import Decimal
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.db.models import Count,Sum
+from django.db.models import Sum, Value
+from django.db.models.functions import Coalesce
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
@@ -14,7 +17,9 @@ def project_detail(request, project_id):
         project = Project.objects.get(id=project_id)
 
         # Получаем статистику по партнёрам проекта
-        partnership_stats = ProjectPartner.objects.filter(project=project).select_related('partner').order_by('-joined_at')
+        partnership_stats = ProjectPartner.objects.filter(project=project).select_related('partner').annotate(
+            conversions_total=Coalesce(Sum('conversions__amount'),Value(Decimal(0)))
+        ).order_by('-joined_at')
 
         # Пагинация
         paginator = Paginator(partnership_stats, 5)

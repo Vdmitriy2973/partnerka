@@ -1,25 +1,39 @@
-from django.shortcuts import render
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum
+from datetime import date
+from dateutil.relativedelta import relativedelta
+from decimal import Decimal
 
-from partner_app.models import Platform, Project, PartnerLink
+from django.conf import settings
+from django.shortcuts import render
+from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value
+from django.db.models.functions import Coalesce
+
+from partner_app.models import Platform, Project, PartnerLink, PartnerActivity
 from partner_app.forms import PlatformForm
 from .common import _apply_search, _paginate
 
 def handle_partner_dashboard(request):
     """Обработчик личного кабинета партнера"""
-    # Основные QuerySets с оптимизацией
+    
+    # Платформы
     platforms = Platform.objects.filter(
-            partner=request.user).order_by('-created_at')
+            partner=request.user).annotate(
+        conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0))),
+        conversion_count=Coalesce(Count('conversions'),Value(0))
+    ).order_by('-created_at')
     
+    # Партнёрские ссылки 
+    partner_links = PartnerLink.objects.filter(partner=request.user).annotate(
+        conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0)))
+    ).order_by('-created_at')
     
-    partner_links = PartnerLink.objects.filter(partner=request.user).order_by('-created_at')
-        # Получаем параметры поиска
+    last_activity = PartnerActivity.objects.filter(partner=request.user.partner_profile).order_by('-created_at')[:5]
+    
+    # Получаем параметры поиска
     platforms_search_q = request.GET.get('platforms_search', '').strip()
     projects_search_q = request.GET.get('offers_search', '').strip()
     connection_search_q = request.GET.get('connections_search', '').strip()
         
-        # Применение поиска
-        
+    # Применение поиска
     available_projects = _get_available_projects(request)        
     connected_projects = _get_connected_projects(request)
     
@@ -66,11 +80,10 @@ def handle_partner_dashboard(request):
     clicks_count = request.user.clicks.count()
     if not best_link:
         best_link = "Отсутствует"
-    if request.user.clicks.count() == 0:
+    if clicks_count == 0:
         conversion = 0
     else:
         conversion =  f"{(request.user.conversions.count() / request.user.clicks.count()) * 100:.2f}"
-    
     
     # Пагинация
     platform_page = _paginate(request, platforms, 5, 'platforms_page')
@@ -78,7 +91,9 @@ def handle_partner_dashboard(request):
     connected_projects_page = _paginate(request, connected_projects, 6, 'connected_projects_page')
 
     context = {
+        
             "user": request.user,  
+            "int_balance":int(request.user.partner_profile.balance),
             'platformForm': PlatformForm(),
             'platforms': platform_page,
             'total_platforms': total_platforms,
@@ -103,9 +118,16 @@ def handle_partner_dashboard(request):
             "clicks_count":clicks_count,
             "conversion":conversion,
             "active_links":active_links,
-            "best_link":best_link 
+            "best_link":best_link,
+            
+            "last_activity":last_activity,
+            
+            "min_payout": settings.PARTNER_PAYOUT_SETTINGS["min_amount"],
+            "fee_percent": settings.PARTNER_PAYOUT_SETTINGS["fee_percent"],
+            "payout_info":get_next_payout_date(),
+            'is_payout_today': date.today().day in [1,15],
+            "days_until_payment":get_days_until_payout(),
     }
-        
     return render(request, 'partner_app/dashboard/partner.html', context)
 
 def _get_available_projects(request):
@@ -117,9 +139,40 @@ def _get_available_projects(request):
         partners=request.user 
     ).select_related(
         'advertiser' 
-    )
+    ).order_by('-created_at')
+    
 def _get_connected_projects(request):
     """Получение подключенных проектов"""
-    return Project.objects.prefetch_related('params', 'partner_memberships','project_links').filter(
+    return Project.objects.prefetch_related('params', 'partner_memberships','project_links',"conversions").filter(
         partner_memberships__partner=request.user
+    ).annotate(
+        conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0)))
     ).order_by('-partner_memberships__joined_at').distinct()
+    
+def get_next_payout_date():
+    today = date.today()
+    
+    if today.day > 15:
+        # Если сегодня после 15 числа - следующая выплата 1 числа следующего месяца
+        next_payout = date(today.year, today.month, 1) + relativedelta(months=1)
+    elif today.day > 1:
+        # Если сегодня между 1 и 15 - следующая выплата 15 текущего месяца
+        next_payout = date(today.year, today.month, 15)
+    else:
+        # Если сегодня 1 число - выплата сегодня
+        next_payout = today
+    
+    return next_payout
+
+def get_days_until_payout():
+    today = date.today()
+    if today.day > 15:
+        # Если сегодня после 15 числа - следующая выплата 1 числа следующего месяца
+        day = today.day - 1
+    elif today.day > 1:
+        # Если сегодня между 1 и 15 - следующая выплата 15 текущего месяца
+        day = 15 - today.day
+    elif today.day == 1 or today.day == 15:
+        day = today
+    
+    return day

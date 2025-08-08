@@ -18,7 +18,7 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="text-sm opacity-80">Баланс</p>
-                        <p class="text-2xl font-bold">₽{{ request.user.advertiserprofile.balance }}</p>
+                        <p class="text-2xl font-bold {% if request.user.advertiserprofile.balance < 0%}text-red-500{% endif %}">₽{{ request.user.advertiserprofile.balance }}</p>
                     </div>
                     <i class="fas fa-wallet text-3xl opacity-80"></i>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="text-sm opacity-80">Продажи</p>
-                        <p class="text-2xl font-bold">142</p>
+                        <p class="text-2xl font-bold">{{ conversions_count }}</p>
                     </div>
                     <i class="fas fa-shopping-cart text-3xl opacity-80"></i>
                 </div>
@@ -74,34 +74,56 @@
                         Последняя активность
                     </h2>
                     <div class="space-y-4">
-                        <div class="flex items-center p-3 bg-success/10 rounded-lg">
-                            <div
-                                class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-shopping-cart"></i>
+                        {% for activity in last_activity %}
+                            <div class="flex items-center p-3 bg-success/10 rounded-lg">
+
+                                {% if activity.activity_type == 'sale'%}
+                                    <div
+                                        class="w-10 h-10 bg-success text-success-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-shopping-cart text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'clicks' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'payout' %}
+                                    <div
+                                        class="w-10 h-10 bg-warning text-warning-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-credit-card text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'system' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-suitcase text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'approve' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-check text-sm"></i>
+                                    </div>
+                                {% elif activity.activity_type == 'reject' %}
+                                    <div
+                                        class="w-10 h-10 bg-error text-white rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-ban text-sm"></i>
+                                    </div>
+                                {% endif %}
+
+                                <div class="flex-1">
+                                    <p class="font-medium">{{ activity.title }}</p>
+                                    <p class="text-sm text-base-content/60">{{ activity.details }}</p>
+                                </div>
+                                <span class="text-sm text-base-content/60">{{ activity.created_at|timesince }} назад</span>
                             </div>
-                            <div class="flex-1">
-                                <p class="font-medium">Продажа #2456</p>
-                                <p class="text-sm opacity-60">Партнер: Мария Петрова</p>
+                        {% empty %}
+                            <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                                <div class="text-gray-300 text-5xl mb-4">
+                                    <i class="fas fa-link"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-500 mb-2">Нет последних активностей</h3>
+                                <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться последние уведомления</p>
                             </div>
-                            <div class="text-right">
-                                <p class="font-bold">₽12,540</p>
-                                <p class="text-sm opacity-60">2 часа назад</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center p-3 bg-info/10 rounded-lg">
-                            <div
-                                class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="font-medium">Продажа #2455</p>
-                                <p class="text-sm opacity-60">Партнер: Иван Иванов</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold">₽9,870</p>
-                                <p class="text-sm opacity-60">5 часов назад</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -127,39 +149,9 @@
                             <i class="fas fa-plus text-indigo-600 mr-2"></i>
                             Добавить проект
                         </button>
-                        <button class="btn btn-outline btn-block justify-start nav-item" 
-                                onclick="document.getElementById('paymentModal').showModal()" data-page="payments">
-                            <i class="fas fa-money-bill-wave text-green-700 mr-2"></i>
-                            Создать выплату партнёру 
-                        </button>
                     </div>
                 </div>
             </div>
-            <!-- 
-                     Program Stats
-                    <div class="card bg-base-100 shadow">
-                        <div class="card-body">
-                            <h2 class="card-title">
-                                <i class="fas fa-chart-pie text-primary mr-2"></i>
-                                Статистика программы
-                            </h2>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span>Конверсия</span>
-                                        <span>8.5%</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span>Средний чек</span>
-                                        <span>₽3,240</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
             <!-- Support -->
             <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">

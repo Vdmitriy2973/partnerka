@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 class ProjectPartner(models.Model):
     """Основная модель партнёрства"""
@@ -50,13 +51,6 @@ class ProjectPartner(models.Model):
         blank=True,
         verbose_name='Дата начала сотрудничества'
     )
-    
-    total_income = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name='Сумма заказа',
-        default=0
-    )
 
     class Meta:
         unique_together = ('project', 'partner')
@@ -68,5 +62,3 @@ class ProjectPartner(models.Model):
 
     def __str__(self):
         return f"{self.partner} → {self.project} ({self.get_status_display()})"
-    
-    

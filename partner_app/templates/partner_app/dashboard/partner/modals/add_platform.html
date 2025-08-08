@@ -1,9 +1,9 @@
 {% load static %}
 
 <dialog id="modal-add-platform" class="modal backdrop-blur-sm">
-    <div class="modal-box relative max-w-lg">
+    <div class="modal-box relative overflow-hidden max-w-lg">
         <label for="modal-add-platform" class="btn btn-sm btn-circle absolute right-2 top-2"
-            id="btn-close-modal">✕</label>
+            id="btn-close-add-platform-modal">✕</label>
         <h3 class="text-lg font-bold mb-4">Добавить новую площадку</h3>
 
         <form action="{% url 'add_platform' %}" id="form-add-platform" method="POST" class="flex flex-col gap-4">
@@ -32,6 +32,7 @@
     <!-- Фон модального окна -->
     <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
                            opacity-0 [dialog[open]_&]:opacity-100">
-        <button>close</button>
+        <label for="modal-add-platform" class="btn btn-sm btn-circle absolute right-2 top-2"
+            id="btn-close-add-platform-modal-background">close</label>
     </form>
 </dialog>

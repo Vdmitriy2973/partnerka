@@ -48,13 +48,6 @@ class Platform(models.Model):
         help_text='Ссылка или идентификатор (@username, channel ID)'
     )
 
-    income = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name='Доход',
-        default=0
-    )
-
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата добавления'
@@ -75,7 +68,7 @@ class Platform(models.Model):
     def conversions_percent(self):
         if self.clicks.count() == 0:
             return 0.0
-        return (self.conversions.count() / self.clicks.count()) * 100
+        return f"{(self.conversions.count() / self.clicks.count()) * 100:.2f}"
     
     @property
     def clicks_count(self):

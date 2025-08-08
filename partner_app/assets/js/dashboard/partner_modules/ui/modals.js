@@ -96,9 +96,8 @@ export function setupPartnerModals() {
     showPlatformStatsButtons.forEach(button => {
       button.addEventListener('click', function () {
         const dataset = this.dataset;
-        console.log(dataset)
         document.getElementById('platformName').textContent = dataset.platformName;
-        document.getElementById('totalEarnings').textContent = "₽"+String(dataset.platformIncome);
+        document.getElementById('totalEarnings').textContent = "₽"+String(dataset.platformConversionsTotal);
         document.getElementById('platformConversionRate').textContent = String(dataset.platformConversionsPercent)+"%";
         document.getElementById('totalClicks').textContent = dataset.platformClicksCount;
         document.getElementById('totalActions').textContent = dataset.platformConversionsCount;

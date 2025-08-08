@@ -1,6 +1,5 @@
 {% extends "partner_app/base.html" %}
 {% load static %}
-
 {% load django_vite %}
 {% vite_hmr_client %}
 {% block title %}Панель управления{% endblock title %}
@@ -30,9 +29,6 @@
     <!-- Partners Page -->
     {% include "partner_app/dashboard/advertiser/partners.html" %}
 
-    <!-- Payments Page -->
-    {% include "partner_app/dashboard/advertiser/payments.html" %}
-
     <!-- Settings Page -->
     {% include "partner_app/dashboard/advertiser/settings.html" %}
 </div>
@@ -54,9 +50,6 @@
 
 <!-- Модальное окно Прекратить сотрудничество с партнёром -->
 {% include "partner_app/dashboard/advertiser/modals/stop_partnership_with_partner.html" %}
-
-<!-- Модальное окно Сделать выплату партнёру -->
-{% include "partner_app/dashboard/advertiser/modals/make_payout.html" %}
 
 <!-- Модальное окно Пополнить баланс -->
 {% include "partner_app/dashboard/advertiser/modals/top_up_balance.html" %}

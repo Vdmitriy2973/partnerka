@@ -10,9 +10,20 @@
         <div class="card bg-base-100 shadow-lg">
             <div class="card-body text-center">
                 <i class="fas fa-wallet text-3xl text-primary mb-2"></i>
-                <div class="text-2xl font-bold">₽2,350</div>
-                <p class="text-sm text-base-content/60">Доступно к выводу</p>
-                <button id="make_payout" class="btn btn-primary btn-sm mt-2">Вывести</button>
+                <div class="text-2xl font-bold">₽ {{ user.partner_profile.balance }}</div>
+                {% if is_payout_today and user.partner_profile.balance >= min_payout %}
+                    <p class="text-sm text-base-content/60">Доступно к выводу</p>
+                {% elif not is_payout_day %}
+                    <div class="text-xs mt-2 text-warning">
+                        {% if user.partner_profile.balance < 300 %}
+                            <p class="text-sm text-base-content/60">Минимальная сумма вывода: 300₽</p>
+                        {% else %}
+                            <p class="text-sm text-base-content/60">Вывод доступен 1 и 15 числа</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <button id="make_payout" class="btn btn-primary btn-sm mt-2"
+                {% if not is_payout_today or not user.partner_profile.balance >= min_payout %}disabled{% endif %}>Вывести</button>
             </div>
         </div>
         <div class="card bg-base-100 shadow-lg">
@@ -32,7 +43,7 @@
         <div class="card bg-base-100 shadow-lg">
             <div class="card-body text-center">
                 <i class="fas fa-calendar text-3xl text-info mb-2"></i>
-                <div class="text-2xl font-bold">15</div>
+                <div class="text-2xl font-bold">{{ days_until_payment }}</div>
                 <p class="text-sm text-base-content/60">Дней до выплаты</p>
             </div>
         </div>
@@ -230,12 +241,21 @@
                         </div>
                     </div>
                 </div>
+                {% if not transactions %}
+                    <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                        <div class="text-gray-300 text-5xl mb-4">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-500 mb-2">Транзакции не найдены</h3>
+                        <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться ваши финансовые транзакции</p>
+                    </div>
+                {% endif %}
                 <!-- История платежей -->
             </div>
         </div>
 
         <div class="space-y-6">
-            <div class="card bg-base-100 shadow-lg">
+            <!-- <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
                     <h2 class="card-title mb-4">
                         <i class="fas fa-cog text-primary mr-2"></i>
@@ -274,7 +294,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
@@ -294,7 +314,7 @@
                             <i class="fas fa-percentage text-info mr-2 mt-0.5"></i>
                             <div>
                                 <p class="font-medium">Комиссия</p>
-                                <p class="text-base-content/60">Без комиссии</p>
+                                <p class="text-base-content/60">{{ fee_percent }}%</p>
                             </div>
                         </div>
                         <div class="flex items-start">

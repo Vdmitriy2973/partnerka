@@ -146,7 +146,7 @@ class Project(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.id} {self.name}"
+        return f"Проект #{self.id} Рекламодатель: {self.advertiser.first_name} {self.advertiser.last_name}"
     
 
 class ProjectParam(models.Model):
