@@ -51,6 +51,22 @@ class ProjectPartner(models.Model):
         blank=True,
         verbose_name='Дата начала сотрудничества'
     )
+    
+    suspension_reason = models.TextField(
+        max_length=50,
+        verbose_name="Причина приостановления сотрудничества",
+        help_text="Например: Тех. работы",
+        blank=True,
+        null=True,
+        default=None
+    )
+    suspension_comment = models.TextField(
+        max_length=300,
+        verbose_name="Доп. комментарий к приостановке сотрудничества",
+        blank=True,
+        null=True,
+        default=None
+    )
 
     class Meta:
         unique_together = ('project', 'partner')

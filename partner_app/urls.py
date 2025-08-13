@@ -18,6 +18,8 @@ urlpatterns = [
     path('resume_partnership/<int:project_id>',views.resume_partnership,name='resume_partnership'),
     path('generate_partner_link/<int:partnership_id>',views.generate_link,name='generate_link'),
     path('delete_partner_link/<int:link_id>',views.delete_partner_link,name='delete_partner_link'),
+    path('update_payout_settings',views.payout_settings_view,name='update_payout_settings'),
+    path('create_payout_request',views.create_payout_request,name='create_payout_request'),
     
     # Рекламодатель
     path('add_project',views.add_project,name='add_project'),
@@ -33,6 +35,10 @@ urlpatterns = [
     ## Действия с проектами рекламодателей
     path('approve_project/<int:project_id>',views.approve_project,name='approve_project'),
     path('reject_project/<int:project_id>',views.reject_project,name='reject_project'),
+
+    ## Действия с транзакциями партнёров
+    path('approve_transaction/<int:transaction_id>/<int:partner_id>',views.approve_transaction,name='approve_transaction'),
+    path('reject_transaction/<int:transaction_id>/<int:partner_id>',views.reject_transaction,name='reject_transaction'),
 
     # Просмотр информации о пользователях
     path('partner/<int:partner_id>', views.partner_detail, name='partner'),

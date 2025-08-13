@@ -25,7 +25,7 @@
     </div>
 
     <!-- Фильтры и временной период -->
-    <div class="bg-base-100 rounded-xl shadow-sm p-3 sm:p-4 mb-6 transition-all duration-300 hover:shadow-md">
+    <!-- <div class="bg-base-100 rounded-xl shadow-sm p-3 sm:p-4 mb-6 transition-all duration-300 hover:shadow-md">
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4">
             <div class="flex-1 w-full">
                 <form class="flex flex-col sm:flex-row gap-2 sm:gap-3">
@@ -89,7 +89,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Графики и сводка -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -98,18 +98,22 @@
             class="lg:col-span-2 bg-base-100 p-4 sm:p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
                 <h2 class="text-lg sm:text-xl font-semibold">Динамика конверсий</h2>
-                <div class="tabs tabs-boxed tabs-sm sm:tabs-md">
+                <!-- <div class="tabs tabs-boxed tabs-sm sm:tabs-md">
                     <a class="tab tab-active">День</a>
                     <a class="tab">Неделя</a>
                     <a class="tab">Месяц</a>
-                </div>
+                </div> -->
             </div>
             <div class="h-48 sm:h-64">
                 <!-- Здесь будет график (заглушка) -->
+                {% if conversions %}
+                    <canvas id="conversionsChart"></canvas>
+                {% else %}
                 <div
                     class="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center text-gray-400 text-sm sm:text-base">
                     <p>График конверсий по дням</p>
                 </div>
+                {% endif %}
             </div>
         </div>
 
@@ -118,17 +122,17 @@
 
             <div class="stats shadow bg-gradient-to-br from-secondary to-secondary-focus text-secondary-content">
                 <div class="stat p-3 sm:p-4">
-                    <div class="stat-title text-xs sm:text-sm">Средний чек</div>
+                    <div class="stat-title text-xs sm:text-sm">Средняя сумма конверсий</div>
                     <div class="text-black stat-value text-lg sm:text-2xl">₽{{ conversions_average }}</div>
-                    <div class="text-black stat-desc text-xs">+8% за месяц</div>
+                    <!-- <div class="text-black stat-desc text-xs">+8% за месяц</div> -->
                 </div>
             </div>
 
             <div class="stats shadow bg-gradient-to-br from-accent to-accent-focus text-accent-content">
                 <div class="stat p-3 sm:p-4">
-                    <div class="stat-title text-xs sm:text-sm">Общий доход за всё время</div>
-                    <div class="text-black stat-value text-lg sm:text-2xl">₽214,150</div>
-                    <div class="text-black stat-desc text-xs">+22% за месяц</div>
+                    <div class="stat-title text-xs sm:text-sm">Сумма всех конверсий</div>
+                    <div class="text-black stat-value text-lg sm:text-2xl">₽{{ conversions_total }}</div>
+                    <!-- <div class="text-black stat-desc text-xs">+22% за месяц</div> -->
                 </div>
             </div>
         </div>
@@ -147,7 +151,6 @@
                         <th class="text-xs sm:text-sm">Проект</th>
                         <th class="text-xs sm:text-sm">Дата</th>
                         <th class="text-xs sm:text-sm">Сумма</th>
-                        <th class="text-xs sm:text-sm">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -155,7 +158,7 @@
                      {% for conversion in conversions %}
                     <tr class="hover:bg-base-200 transition-colors duration-150">
                         <td class="text-xs sm:text-sm">#{{ conversion.id }}</td>
-                        <td><a href="{% url 'partner' conversion.partner.id %}"> {{ conversion.partner.get_full_name }}</a></td>
+                        <td><a href="{% url 'partner' conversion.partner.id %}"><div class="font-bold text-xs sm:text-sm"> {{ conversion.partner.get_full_name }} </div></a></td>
                         <td>
                             <div class="flex items-center gap-2 sm:gap-3">
                                 <div>
@@ -167,17 +170,6 @@
                             {{ conversion.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}
                         </td>
                         <td class="text-xs sm:text-sm">₽{{ conversion.amount }}</td>
-                        <td>
-                            <button class="btn btn-ghost btn-xs">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -199,52 +191,29 @@
         <!-- Мобильная версия таблицы (карточки) -->
         <div class="sm:hidden space-y-3 p-3">
             <!-- Карточка продажи -->
-            <div class="card bg-base-100 shadow-sm border border-base-200">
-                <div class="card-body p-4">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h3 class="card-title text-sm font-bold">#24587 - Курс маркетинга</h3>
-                            <p class="text-xs text-gray-500">AcademyPro</p>
+            {% for conversion in conversions %}
+               <div class="card bg-base-100 shadow-sm border border-base-200">
+                    <div class="card-body p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="card-title text-sm font-bold">#{{ conversion.id }}</h3>
+                                <p class="text-xs text-gray-500">{{ conversion.project.name }}</p>
+                            </div>
                         </div>
-                        <span class="badge badge-success badge-xs gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Подтв.
-                        </span>
-                    </div>
 
-                    <div class="grid grid-cols-2 gap-3 text-xs">
-                        <div>
-                            <div class="text-gray-500">Дата</div>
-                            <div>12.07.2025 14:32</div>
-                        </div>
-                        <div>
-                            <div class="text-gray-500">Сумма</div>
-                            <div class="font-medium">₽12,990</div>
-                        </div>
-                        <div>
-                            <div class="text-gray-500">Комиссия</div>
-                            <div class="font-medium text-success">₽1,299 (10%)</div>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <div class="text-gray-500">Дата</div>
+                                <div>{{ conversion.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">Сумма</div>
+                                <div class="font-medium">₽ {{ conversion.amount }}</div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="card-actions justify-end mt-3">
-                        <button class="btn btn-xs btn-ghost">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            Детали
-                        </button>
-                    </div>
-                </div>
-            </div>
+               </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -285,3 +254,76 @@
         {% endif %}
     </div>
 </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const conversions = JSON.parse('{{ conversions_json|escapejs }}').reverse();
+// Инициализация графика
+const ctx = document.getElementById('conversionsChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: conversions.map(conv => conv.date), // Время (часы:минуты)
+        datasets: [{
+            label: 'Сумма (P)',
+            data: conversions.map(conv => conv.amount),
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                title: {
+                    display: true,
+                    text: 'Сумма (P)',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    color: '#666'
+                },
+                beginAtZero: true,
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Время',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    color: '#666'
+                },
+                grid: { display: false }
+            }
+
+            
+        }
+    }
+});
+
+// Фильтрация по периодам (День/Неделя/Месяц)
+document.querySelectorAll('[data-period]').forEach(tab => {
+    tab.addEventListener('click', () => {
+        // Удаляем активный класс у всех вкладок
+        document.querySelectorAll('[data-period]').forEach(t => t.classList.remove('tab-active'));
+        // Добавляем активный класс текущей вкладке
+        tab.classList.add('tab-active');
+        
+        // Здесь можно добавить логику фильтрации данных
+        // Например, загружать новые данные через fetch или фильтровать имеющиеся
+        console.log('Выбран период:', tab.dataset.period);
+    });
+});
+</script>

@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 from datetime import timedelta
 
-from partner_app.models import Project, Platform
+from partner_app.models import Project, Platform, PartnerTransaction
 from .common import _paginate
 
 
@@ -24,12 +24,15 @@ def handle_manager_dashboard(request):
     pending_platforms = Platform.objects.filter(status='На модерации').order_by('-created_at')
     pending_list = list(pending_projects) + list(pending_platforms)
     pending_items = _paginate(request,pending_list,count,"users_page")
-
+    
+    transactions = PartnerTransaction.objects.filter(status='В обработке').order_by('-date')
+    transactions_page=_paginate(request,transactions,count,"transactions_page")
     context = {
         "user":request.user,
         "users":users,
         "pending_items": pending_items,
         "pending_items_len": len(pending_list),
+        "pending_transactions":transactions_page,
         "new_users_count":new_users
     }
     return render(request, "partner_app/dashboard/manager.html",context)

@@ -7,6 +7,23 @@
         <p class="text-base-content/60">Создавайте и настраивайте проекты для партнеров</p>
     </div>
 
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mb-6 sm:mb-8">
+        <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+            <div class="card-body p-3 sm:p-4 text-center">
+                <i class="fas fa-mouse-pointer text-xl sm:text-3xl text-info mb-1 sm:mb-2"></i>
+                <div class="text-lg sm:text-2xl font-bold">{{ clicks_count }}</div>
+                <p class="text-xs sm:text-sm text-base-content/60">Всего переходов</p>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+            <div class="card-body p-3 sm:p-4 text-center">
+                <i class="fas fa-chart-line text-xl sm:text-3xl text-success mb-1 sm:mb-2"></i>
+                <div class="text-lg sm:text-2xl font-bold">{{ conversion_percent }}%</div>
+                <p class="text-xs sm:text-sm text-base-content/60">Средняя конверсия</p>
+            </div>
+        </div>
+    </div>
+
     <div class="flex flex-col sm:flex-row gap-4 mb-6">
         <!-- Форма поиска -->
         <div class="flex-grow">
@@ -146,7 +163,8 @@
                             data-project-min-payout="{{ project.min_payout }}"
                             data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
                             data-project-link-template="{{ project.link_template }}"
-                            data-project-conversions-percent="{{ project.conversions_percent }}">
+                            data-project-conversions-percent="{{ project.conversions_percent }}"
+                            data-project-total-clicks="{{ project.clicks_count }}">
                             <a><i class="fas fa-eye mr-1"></i> Просмотр</a>
                         </li>
                         <li><a href="{% url 'project' project.id %}"><i class="fas fa-info mr-3"></i>Подробнее</a></li>

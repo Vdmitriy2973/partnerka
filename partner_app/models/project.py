@@ -121,6 +121,10 @@ class Project(models.Model):
         return list(self.params.filter(param_type='optional').values_list('name', flat=True))
     
     @property
+    def clicks_count(self):
+        return self.clicks.count()
+    
+    @property
     def conversions_count(self):
         return self.conversions.count()
     

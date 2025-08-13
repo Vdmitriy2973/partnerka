@@ -64,12 +64,14 @@ def approve_platform(request, platform_id):
     platform = Platform.objects.get(id=platform_id)
     platform.status = 'Подтверждено'
     platform.save()
+    
     PartnerActivity.objects.create(
         partner=platform.partner.partner_profile,
         activity_type='approve',
         title='Платформа одобрена',
         details=f'{platform.name} была одобрена модератором'
     )
+    
     return redirect("dashboard")
 
 

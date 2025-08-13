@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value
 from django.db.models.functions import Coalesce
 
-from partner_app.models import Platform, Project, PartnerLink, PartnerActivity
+from partner_app.models import Platform, Project, PartnerLink, PartnerActivity, PartnerTransaction
 from partner_app.forms import PlatformForm
 from .common import _apply_search, _paginate
 
@@ -77,6 +77,18 @@ def handle_partner_dashboard(request):
             is_active=True
     ).order_by('-score').first()
     
+    transactions = PartnerTransaction.objects.filter(partner=request.user)
+    total_paid = PartnerTransaction.objects.filter(
+        status=PartnerTransaction.STATUS_CHOICES.COMPLETED
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+    total_proccessing_payments = PartnerTransaction.objects.filter(
+        status=PartnerTransaction.STATUS_CHOICES.PENDING
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+    
     clicks_count = request.user.clicks.count()
     if not best_link:
         best_link = "Отсутствует"
@@ -89,6 +101,7 @@ def handle_partner_dashboard(request):
     platform_page = _paginate(request, platforms, 5, 'platforms_page')
     available_projects_page = _paginate(request, available_projects, 6, 'projects_page')
     connected_projects_page = _paginate(request, connected_projects, 6, 'connected_projects_page')
+    transactions_page = _paginate(request,transactions,5,'trasactions_page')
 
     context = {
         
@@ -124,9 +137,10 @@ def handle_partner_dashboard(request):
             
             "min_payout": settings.PARTNER_PAYOUT_SETTINGS["min_amount"],
             "fee_percent": settings.PARTNER_PAYOUT_SETTINGS["fee_percent"],
-            "payout_info":get_next_payout_date(),
-            'is_payout_today': date.today().day in [1,15],
-            "days_until_payment":get_days_until_payout(),
+            
+            'transactions_page':transactions_page,
+            'total_paid':total_paid,
+            'total_proccessing_payments':total_proccessing_payments
     }
     return render(request, 'partner_app/dashboard/partner.html', context)
 
@@ -148,31 +162,3 @@ def _get_connected_projects(request):
     ).annotate(
         conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0)))
     ).order_by('-partner_memberships__joined_at').distinct()
-    
-def get_next_payout_date():
-    today = date.today()
-    
-    if today.day > 15:
-        # Если сегодня после 15 числа - следующая выплата 1 числа следующего месяца
-        next_payout = date(today.year, today.month, 1) + relativedelta(months=1)
-    elif today.day > 1:
-        # Если сегодня между 1 и 15 - следующая выплата 15 текущего месяца
-        next_payout = date(today.year, today.month, 15)
-    else:
-        # Если сегодня 1 число - выплата сегодня
-        next_payout = today
-    
-    return next_payout
-
-def get_days_until_payout():
-    today = date.today()
-    if today.day > 15:
-        # Если сегодня после 15 числа - следующая выплата 1 числа следующего месяца
-        day = today.day - 1
-    elif today.day > 1:
-        # Если сегодня между 1 и 15 - следующая выплата 15 текущего месяца
-        day = 15 - today.day
-    elif today.day == 1 or today.day == 15:
-        day = today
-    
-    return day

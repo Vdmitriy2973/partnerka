@@ -1,23 +1,23 @@
+import json
+import traceback
+
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.db.utils import IntegrityError
+from django.contrib import messages
 
 from partner_app.forms import ProjectForm
 from partner_app.models import Project, ProjectParam, AdvertiserActivity
-from django.contrib import messages
+from partner_app.utils import send_email_via_mailru
 
-import json
-import traceback
 
 @login_required
 @require_POST
 def add_project(request):
     form = ProjectForm(request.POST)
-    print("Incoming POST data:", request.POST)  # Логируем входящие данные
     
     if not form.is_valid():
-        print("Form errors:", form.errors.as_json())  # Детальный лог ошибок валидации
         messages.error(request, f"Ошибка валидации: {form.errors.as_text()}", extra_tags="project_add_error")
         return redirect("dashboard")
     
@@ -130,6 +130,9 @@ def approve_project(request, project_id):
     project = Project.objects.get(id=project_id)
     project.status = 'Подтверждено'
     project.save()
+    
+    send_email_via_mailru(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.")
+    
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,
         activity_type='approve',
@@ -146,6 +149,9 @@ def reject_project(request, project_id):
     project.status = 'Отклонено'
     project.is_active = False
     project.save()
+    
+    send_email_via_mailru(project.advertiser.email,f"Проект {project.name} не был одобрен модератором")
+    
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,
         activity_type='reject',

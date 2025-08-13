@@ -9,7 +9,7 @@ class ClickAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        referrer = request.META.get('HTTP_REFERER')
+        referrer = request.data.get('referrer')
         if referrer:
             platform = Platform.objects.get(
                 partner=request.data["partner"],

@@ -8,10 +8,9 @@ from partner_app.serializers import ConversionSerializer
 from decimal import Decimal
 
 class ConversionAPIView(APIView):
-    permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        referrer = request.META.get('HTTP_REFERER')
+        referrer = request.data.get('referrer')
         if referrer:
             platform = Platform.objects.get(
                 partner=request.data["partner"],
@@ -32,12 +31,23 @@ class ConversionAPIView(APIView):
                 {"detail": "Нет такого проекта или партнёр не сотрудничает с ним!"},
                 status=status.HTTP_404_NOT_FOUND
             )
+        
+        if partnership.status != partnership.StatusType.ACTIVE:
+            return Response(
+                {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        
+        
         meta = None
         if 'details' in request.data:
             meta = request.data["details"]
         if not partnership:
             return Response({"detail":"Нет такого проекта или партнёр не сотрудничает с ним!"},status=status.HTTP_404_NOT_FOUND)
         
+        if len(partnership.partner_links.all()) < 1:
+            return Response({"detail":"Конверсия не может быть засчитана, т.к. не сгенерирована партнёрская ссылка!"},status=status.HTTP_400_BAD_REQUEST)
         data = {
             "project":request.data["project"],
             "partner":request.data["partner"],

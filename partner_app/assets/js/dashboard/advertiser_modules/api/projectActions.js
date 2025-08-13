@@ -10,6 +10,7 @@ export function setupProjectActions() {
             document.getElementById('ProjectDescription').textContent = projectData.projectDescription;
             document.getElementById('ProjectPartnersCount').textContent = projectData.projectPartnersCount;
             document.getElementById('ProjectComissionRate').textContent = projectData.projectCommissionRate + '%';
+            document.getElementById('ProjectTotalClicks').textContent = projectData.projectTotalClicks;
             document.getElementById('MinPayout').textContent = projectData.projectMinPayout + ' ₽';
             document.getElementById('CookiePeriod').textContent = projectData.projectCookieLifetime + ' дней';
             document.getElementById('ProjectUrl').textContent = projectData.projectUrl;

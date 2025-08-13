@@ -10,3 +10,5 @@ from .project_clicks import ClickEvent
 
 from .partner_activity import PartnerActivity
 from .advertiser_activity import AdvertiserActivity
+from .partner_transaction import PartnerTransaction
+from .partner_payout_settings import PartnerPayoutSettings

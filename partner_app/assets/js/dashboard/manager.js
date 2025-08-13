@@ -1,5 +1,6 @@
 import { setupNavigation } from "./manager_modules/ui/navigation.js";
 import { setupModals } from "./manager_modules/ui/modals.js";
+import { setupTransactions } from "./manager_modules/moderation/transactions.js";
 
 import "tailwindcss"
 import 'vite/modulepreload-polyfill'
@@ -9,7 +10,9 @@ import '/partner_app/assets/css/dashboard/manager.css'
 document.addEventListener('DOMContentLoaded', () => {
     setupModals();
     setupNavigation();
+    setupTransactions();
 });
+
 
 // // Функции для споров
 // function showDisputeDetailsModal(id) {

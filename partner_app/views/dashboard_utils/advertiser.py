@@ -1,10 +1,11 @@
 from decimal import Decimal
+import json 
 
 from django.db.models import Sum, Count, Avg, OuterRef, Subquery,Value
 from django.shortcuts import render
 from django.db.models.functions import Coalesce
 
-from partner_app.models import Project, Conversion,User, AdvertiserActivity
+from partner_app.models import Project, Conversion,User, AdvertiserActivity, ClickEvent
 from partner_app.forms import ProjectForm, ApiSettingsForm, ProjectParamForm
 from .common import _paginate, _apply_search
 
@@ -43,11 +44,27 @@ def handle_advertiser_dashboard(request):
     last_activity = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).order_by('-created_at')[:5]
     conversions = Conversion.objects.filter(project__advertiser=request.user).select_related("project").order_by("-created_at")
     conversions_count = conversions.count()
+    clicks_count = ClickEvent.objects.filter(project__advertiser=request.user).count()
+    conversion_percent = 0
+    if clicks_count > 0:
+        conversion_percent =  f"{(conversions_count / clicks_count) * 100:.2f}"
     
+    chart_data = None
     if conversions:
+        chart_data = [
+        {
+            "id": conv.id,
+            "project": conv.project.name,  # Пример доступа к связанной модели
+            "date": conv.created_at.strftime("%d-%m-%y"),  # Форматируем дату
+            "amount": float(conv.amount)  # Decimal -> float для JSON
+        }
+        for conv in conversions
+    ]
         conversions_average = f"{conversions.aggregate(avg_price=Avg('amount'))["avg_price"]:.2f}"
+        conversions_total = f"{conversions.aggregate(total_price=Sum('amount'))["total_price"]:.2f}"
     else:
         conversions_average = 0
+    
     
     if partners_search_q:
         partners = _apply_search(partners,partners_search_q,["email"])
@@ -84,9 +101,13 @@ def handle_advertiser_dashboard(request):
         
         "conversions":conversions_page,
         "conversions_count":conversions_count,
+        "conversion_percent":conversion_percent,
         "conversions_average":conversions_average,
+        "conversions_total":conversions_total,
+        "conversions_json": json.dumps(chart_data),
         
         "last_activity":last_activity,
+        "clicks_count":clicks_count,
     }
     
     return render(request, "partner_app/dashboard/advertiser.html", context)

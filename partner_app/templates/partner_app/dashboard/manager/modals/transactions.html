@@ -1,0 +1,83 @@
+{% load static %}
+<dialog id="payout-details-modal" class="modal">
+    <div class="modal-box max-w-2xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="font-bold text-lg">Детали выплаты</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div>
+                <h4 class="text-lg font-semibold mb-4">Информация о выплате</h4>
+                <div class="space-y-3">
+                    <div>
+                        <p class="text-sm text-gray-500">ID выплаты</p>
+                        <p id="TransactionID" class="font-medium">1024</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Статус</p>
+                        <p id="TransactionStatus">
+                            <!-- <span class="badge badge-warning">В обработке</span> -->
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Сумма</p>
+                        <p id="TransactionAmount" class="font-bold text-xl">15,000 ₽</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Дата запроса</p>
+                        <p id="TransactionDate">15.10.2023 14:30</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold mb-4">Информация о партнёре</h4>
+                <div class="flex items-center gap-4 mb-4">
+                    <div>
+                        <h5 id="TransactionPartner" class="font-bold text-lg">Иван Петров</h5>
+                        <p id="TransactionPartnerEmail" class="text-gray-500">ivan.petrov@example.com</p>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="space-y-3">
+                    <div>
+                        <p class="text-sm text-gray-500">Способ выплаты</p>
+                        <p id="TransactionPaymentMethod" class="font-medium">Банковская карта</p>
+                    </div>
+                    <div id="TransactionRequisites">
+                        <p class="text-sm text-gray-500">Реквизиты</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-action">
+            <form id="approve-form" method="POST" class="hidden">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check mr-2"></i> Подтвердить одобрение
+                </button>
+            </form>
+            <form id="reject-form" method="POST" class="hidden">
+                {% csrf_token %}
+                <div class="form-control mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="rejection_reason" name="rejection_reason" class="input input-bordered"
+                            placeholder="Причина отклонения" required />
+                        <button type="submit" class="btn btn-error">
+                            <i class="fas fa-times mr-2"></i> Подтвердить отклонение
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
+                           opacity-0 [dialog[open]_&]:opacity-100">
+        <button>close</button>
+    </form>
+</dialog>

@@ -16,59 +16,49 @@
 
         <div class="py-4 space-y-5">
             <p class="text-gray-700 dark:text-gray-300">
-                Вы собираетесь приостановить сотрудничество с партнёром
+                Вы собираетесь приостановить сотрудничество с проектом
                 <span id="suspendProjectName" class="font-semibold text-primary">"Название проекта"</span>.
-                Это временно скроет их рекламные материалы.
             </p>
 
-            <!-- Причина -->
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text text-gray-700 dark:text-gray-300">Причина (необязательно)</span>
-                </label>
-                <select class="select select-bordered w-full">
-                    <option disabled selected>Выберите причину</option>
-                    <option>Технические работы</option>
-                    <option>Каникулы/Праздники</option>
-                    <option>Проверка контента</option>
-                    <option>Нарушение условий</option>
-                    <option>Другая причина</option>
-                </select>
-            </div>
-
-            <!-- Дополнительные настройки -->
-            <div class="collapse collapse-arrow border border-gray-200 dark:border-gray-700 rounded-box">
-                <input type="checkbox" />
-                <div class="collapse-title font-medium text-gray-700 dark:text-gray-300">
-                    Дополнительные настройки
-                </div>
-                <div class="collapse-content">
-                    <div class="form-control mt-3">
-                        <label class="label cursor-pointer justify-start gap-3">
-                            <input type="checkbox" checked="checked" class="checkbox checkbox-primary" />
-                            <span class="label-text text-gray-700 dark:text-gray-300">Уведомить партнёра по email</span>
-                        </label>
-                    </div>
-                    <div class="form-control mt-3">
-                        <label class="label">
-                            <span class="label-text text-gray-700 dark:text-gray-300">Комментарий для
-                                рекламодателя</span>
-                        </label>
-                        <textarea class="textarea textarea-bordered h-20"
-                            placeholder="Сообщение, которое получит рекламодатель..."></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Кнопки действий -->
-        <div class="modal-action flex flex-col-reverse sm:flex-row gap-3">
-            <form method="dialog">
-                <button class="btn btn-ghost">Отменить</button>
-            </form>
             <form id="suspendPartnershipForm" method="post">
                 {% csrf_token %}
-                <button class="btn btn-warning gap-2">
+                <!-- Причина -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text text-gray-700 dark:text-gray-300">Причина</span>
+                    </label>
+                    <select class="select select-bordered w-full" name="suspension_reason" required>
+                        <option disabled selected>Выберите причину</option>
+                        <option>Технические работы</option>
+                        <option>Каникулы/Праздники</option>
+                        <option>Нарушение условий</option>
+                        <option>Другая причина</option>
+                    </select>
+                </div>
+
+                <!-- Дополнительные настройки -->
+                <div class="collapse collapse-arrow border border-gray-200 dark:border-gray-700 rounded-box">
+                    <input type="checkbox" />
+                    <div class="collapse-title font-medium text-gray-700 dark:text-gray-300">
+                        Дополнительные настройки
+                    </div>
+                    <div class="collapse-content">
+                        <div class="form-control mt-3">
+                            <label class="label">
+                                <span class="label-text text-gray-700 dark:text-gray-300">Комментарий для
+                                    рекламодателя</span>
+                            </label>
+                            <textarea required class="textarea textarea-bordered h-20" name="suspension_comment"
+                                placeholder="Сообщение, которое получит рекламодатель..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-action flex flex-col-reverse sm:flex-row gap-3">
+                <form onclick="document.getElementById('suspendPartnershipModal').close()" method="dialog">
+                    <button class="btn btn-ghost">Отменить</button>
+                </form>
+                <button form="suspendPartnershipForm" class="btn btn-warning gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -76,7 +66,7 @@
                     </svg>
                     Приостановить
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 

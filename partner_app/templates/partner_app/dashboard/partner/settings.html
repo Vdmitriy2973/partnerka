@@ -6,45 +6,45 @@
         <p class="text-base-content/60">Управление аккаунтом и настройки профиля</p>
     </div>
     {% if messages %}
-        <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
-            {% for message in messages %}
-                {% if "profile_update_error" in message.tags %}
-                    <div class="alert alert-error mb-4">
-                        <i class="fas fa-exclamation-circle mr-2"></i>
-                        <span>{{ message }}</span>
-                    </div>
-                {% endif %}
-                {% if "profile_update_success" in message.tags %}
-                    <div class="alert alert-success mb-4">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <span>{{ message }}</span>
-                    </div>
-                {% endif %}
-
-                {% if "password_update_error" in message.tags %}
-                    <div class="alert alert-error mb-4">
-                        <div>
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <span>{{ message }}</span>
-                        </div>
-                    </div>
-                {% endif %}
-                {% if "password_update_success" in message.tags %}
-                <div class="alert alert-success mb-4">
-                    <div>
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <span>{{ message }}</span>
-                    </div>
-                </div>
-                {% endif %}
-                {% if "update_notifications_success" in message.tags %}
-                    <div class="alert alert-success mb-4">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <span>{{ message }}</span>
-                    </div>
-                {% endif %}
-            {% endfor %}
+    <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
+        {% for message in messages %}
+        {% if "profile_update_error" in message.tags %}
+        <div class="alert alert-error mb-4">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span>{{ message }}</span>
         </div>
+        {% endif %}
+        {% if "profile_update_success" in message.tags %}
+        <div class="alert alert-success mb-4">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>{{ message }}</span>
+        </div>
+        {% endif %}
+
+        {% if "password_update_error" in message.tags %}
+        <div class="alert alert-error mb-4">
+            <div>
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <span>{{ message }}</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if "password_update_success" in message.tags %}
+        <div class="alert alert-success mb-4">
+            <div>
+                <i class="fas fa-check-circle mr-2"></i>
+                <span>{{ message }}</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if "update_notifications_success" in message.tags %}
+        <div class="alert alert-success mb-4">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>{{ message }}</span>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
     {% endif %}
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -222,6 +222,139 @@
                     </form>
                 </div>
             </div>
+            <!-- Payments settings -->
+            <div class="card bg-base-100 shadow-lg max-w-lg mx-auto">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-credit-card text-primary mr-2"></i>
+                        Настройки вывода средств
+                    </h2>
+
+                    <form id="payoutForm" class="space-y-6" method="post" action="{% url 'update_payout_settings' %}" novalidate>
+                        {% csrf_token %}
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Способ вывода</span>
+                            </label>
+                            <select id="payout_method" name="payout_method" class="select select-bordered w-full"
+                                required>
+                                <option value="" disabled selected>Выберите способ</option>
+                                <option value="card">Банковская карта</option>
+                                <option value="bank_transfer" disabled>Банковский перевод</option>
+                                <option value="e_wallet" disabled>Электронный кошелёк</option>
+                                <option value="sbp" disabled>Система быстрых платежей (СБП)</option>
+                            </select>
+                        </div>
+
+                        <!-- Банковская карта -->
+                        <div id="card_fields" class="hidden space-y-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Номер карты</span></label>
+                                <input type="text" name="card_number" maxlength="19" pattern="\d{16,19}"
+                                    placeholder="0000 0000 0000 0000" class="input input-bordered w-full"
+                                    value = '{{ request.user.payout_settings.card_number }}'
+                                    autocomplete="cc-number" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Имя владельца карты</span></label>
+                                <input type="text" name="cardholder_name" maxlength="100" placeholder="Иван Иванов"
+                                    value = '{{ request.user.payout_settings.cardholder_name }}'
+                                    class="input input-bordered w-full" autocomplete="cc-name" />
+                            </div>
+                        </div>
+
+                        <!-- Банковский перевод -->
+                        <div id="bank_transfer_fields" class="hidden space-y-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Номер счёта</span></label>
+                                <input type="text" name="bank_account_number" maxlength="30"
+                                    placeholder="40817810099910004312" class="input input-bordered w-full" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Владелец счёта</span></label>
+                                <input type="text" name="bank_account_holder_name" maxlength="100"
+                                    placeholder="Иван Иванов" class="input input-bordered w-full" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">БИК банка</span></label>
+                                <input type="text" name="bank_bic_transfer" maxlength="9" pattern="\d{9}"
+                                    placeholder="044525225" class="input input-bordered w-full" />
+                            </div>
+                        </div>
+
+                        <!-- Электронный кошелёк -->
+                        <div id="e_wallet_fields" class="hidden space-y-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Идентификатор кошелька</span></label>
+                                <input type="text" name="e_wallet_identifier" maxlength="100"
+                                    placeholder="Email или номер кошелька" class="input input-bordered w-full" />
+                            </div>
+                        </div>
+
+                        <!-- СБП -->
+                        <div id="sbp_fields" class="hidden space-y-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Идентификатор СБП</span></label>
+                                <input type="text" name="sbp_identifier" maxlength="100"
+                                    placeholder="Номер телефона или email" class="input input-bordered w-full" />
+                            </div>
+                        </div>
+
+                        <div class="card-actions flex justify-end mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-2"></i>
+                                Сохранить изменения
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<script>
+    const payoutMethodSelect = document.getElementById('payout_method');
+
+    const fieldsMap = {
+        card: document.getElementById('card_fields'),
+        bank_transfer: document.getElementById('bank_transfer_fields'),
+        e_wallet: document.getElementById('e_wallet_fields'),
+        sbp: document.getElementById('sbp_fields'),
+    };
+
+    function hideAllFields() {
+        Object.values(fieldsMap).forEach(div => {
+            div.classList.add('hidden');
+            // очищаем значения всех inputs чтобы не отправлять лишнее
+            div.querySelectorAll('input').forEach(input => {
+                input.disabled = true;
+            });
+        });
+    }
+
+    function showFields(method) {
+        hideAllFields();
+        if (fieldsMap[method]) {
+            fieldsMap[method].classList.remove('hidden');
+            fieldsMap[method].querySelectorAll('input').forEach(input => {
+                input.disabled = false;
+            });
+        }
+    }
+
+    payoutMethodSelect.addEventListener('change', e => {
+        showFields(e.target.value);
+    });
+
+    // При загрузке страницы, если выбран метод, показываем поля
+    document.addEventListener('DOMContentLoaded', () => {
+        if (payoutMethodSelect.value) {
+            showFields(payoutMethodSelect.value);
+        } else {
+            hideAllFields();
+        }
+    });
+</script>

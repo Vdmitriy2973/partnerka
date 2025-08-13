@@ -38,12 +38,17 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'partner_app.api_authentication.AdvertiserAPIKeyAuthentication',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'partner_app.api_authentication.AdvertiserAPIKeyAuthentication',
+    # ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
+    
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny', 
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
 }
 
 CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
@@ -159,9 +164,19 @@ DJANGO_VITE = {
 }
 
 PARTNER_PAYOUT_SETTINGS = {
-    'min_amount': 300,
-    'fee_percent': 5,
+    'min_amount': os.getenv('MIN_AMOUNT'),
+    'fee_percent': os.getenv('FEE_PERCENT'),
     'payment_methods': [
         {'id': 'bank_card', 'name': 'Банковская карта'}
     ]
 }
+
+
+# Email settings
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')  # SMTP-сервер Mail.ru
+EMAIL_PORT = os.getenv('EMAIL_PORT')  # Для SSL
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')  # Обязательно для Mail.ru
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # Полный email
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # Пароль от почты или пароль приложения
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')  # Email отправителя
