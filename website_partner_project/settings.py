@@ -38,17 +38,17 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'partner_app.api_authentication.AdvertiserAPIKeyAuthentication',
-    # ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
-    
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny', 
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'partner_app.api_authentication.AdvertiserAPIKeyAuthentication',
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.AllowAny', 
+    # ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [],
 }
 
 CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
