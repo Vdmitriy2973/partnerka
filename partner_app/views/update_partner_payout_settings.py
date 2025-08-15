@@ -20,7 +20,7 @@ def payout_settings_view(request):
     if request.method == 'POST':
         payout_method = request.POST.get('payout_method',None)
         if payout_method not in dict(PartnerPayoutSettings.PAYOUT_METHOD_CHOICES) and payout_method is not None:
-            messages.error(request, "Выберите корректный способ вывода средств.","payout_settings_error")
+            messages.error(request, message="Выберите корректный способ вывода средств.",extra_tags="payout_settings_error")
             return redirect('payout_settings')
 
         # Начинаем транзакцию для атомарности
@@ -53,7 +53,7 @@ def payout_settings_view(request):
             settings_obj.active_payout_method = payout_method
             settings_obj.save()
 
-        messages.success(request, "Настройки вывода средств сохранены.")
+        messages.success(request, message="Настройки вывода средств сохранены.",extra_tags='payout_settings_success')
         return redirect('dashboard')
 
     redirect('dashboard')

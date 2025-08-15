@@ -9,10 +9,8 @@ export function setupProjectActions() {
             document.getElementById('ProjectTitle').textContent = projectData.projectName;
             document.getElementById('ProjectDescription').textContent = projectData.projectDescription;
             document.getElementById('ProjectPartnersCount').textContent = projectData.projectPartnersCount;
-            document.getElementById('ProjectComissionRate').textContent = projectData.projectCommissionRate + '%';
             document.getElementById('ProjectTotalClicks').textContent = projectData.projectTotalClicks;
-            document.getElementById('MinPayout').textContent = projectData.projectMinPayout + ' ₽';
-            document.getElementById('CookiePeriod').textContent = projectData.projectCookieLifetime + ' дней';
+            document.getElementById('CostPerAction').textContent = projectData.projectCost + ' ₽';
             document.getElementById('ProjectUrl').textContent = projectData.projectUrl;
             document.getElementById('ProjectTemplateUrl').textContent = projectData.projectLinkTemplate;
             document.getElementById('ProjectConversion').textContent = projectData.projectConversionsPercent + '%';

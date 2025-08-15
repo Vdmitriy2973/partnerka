@@ -26,20 +26,51 @@
                 </div>
             </div>
 
+            <!-- Уведомления -->
+            {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                    {% if "block_user_success" in message.extra_tags %}
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "unblock_user_success" in message.extra_tags %}
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "platform_add_error" in message.extra_tags %}
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <div class="space-y-4">
                 {% for user in users %}
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body p-4">
-                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                        <div class="grid grid-cols-1 sm:grid-cols-14 gap-4 items-center">
+                            <!-- Колонка с ID пользователя -->
+                            <div class="sm:col-span-2">
+                                <div class="text-sm opacity-50 truncate">ID: {{ user.id }}</div>
+                            </div>
+
                             <!-- Колонка с именем и email (5 колонок) -->
                             <div class="sm:col-span-5">
-                                <div class="font-bold truncate">
-                                    {% if user.first_name and user.last_name %}
-                                    {{ user.first_name }} {{ user.last_name }}
-                                    {% else %}
-                                    Не указано
-                                    {% endif %}
-                                </div>
+                                <a href="{% url user.user_type user.id %}">
+                                    <div class="font-bold truncate">
+                                        {% if user.first_name and user.last_name %}
+                                        {{ user.first_name }} {{ user.last_name }}
+                                        {% else %}
+                                        Не указано
+                                        {% endif %}
+                                    </div>
+                                </a>
                                 <div class="text-sm opacity-50 truncate">{{ user.email }}</div>
                             </div>
 
@@ -58,8 +89,8 @@
                             <!-- Колонка со статусом (1 колонка) -->
                             <div class="sm:col-span-1">
                                 <span
-                                    class="badge {% if user.is_active %}badge-success{% else %}badge-error{% endif %}">
-                                    {% if user.is_active %}Активен{% else %}Неактивен{% endif %}
+                                    class="badge {% if not user.is_blocked %}badge-success{% else %}badge-error{% endif %}">
+                                    {% if not user.is_blocked %}Активен{% else %}{% if user.block_until %}Заблокирован временно{% else %}Заблокирован навсегда{% endif %} {% endif %}
                                 </span>
                             </div>
 
@@ -73,7 +104,24 @@
                                         <li><a href="{% url user.user_type user.id %}"><i class="fas fa-eye mr-2"></i>
                                                 Просмотр</a></li>
                                         <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
-                                        <li><a class="text-error"><i class="fas fa-ban mr-2"></i> Заблокировать</a></li>
+                                        {% if not user.is_blocked %}
+                                            <li class="block_user" data-user-id="{{ user.id }}" data-user-email="{{ user.email }}" data-user-full-name="{{ user.get_full_name }}">
+                                                <a class="text-error">
+                                                <i class="fas fa-ban mr-2"></i> Заблокировать
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="unblock_user" 
+                                                data-user-id="{{ user.id }}" 
+                                                data-user-role="{{ user.user_type }}" 
+                                                data-user-block-reason="{{ user.blocking_reason }}" 
+                                                data-user-email="{{ user.email }}" 
+                                                data-user-full-name="{{ user.get_full_name }}">
+                                                <a class="text-blue-500">
+                                                <i class="fas fa-ellipsis-h mr-2"></i> Разблокировать
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>

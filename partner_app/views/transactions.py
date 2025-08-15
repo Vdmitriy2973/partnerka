@@ -14,7 +14,7 @@ from partner_app.utils import send_email_via_mailru
 def create_payout_request(request):
     user = request.user
     if not hasattr(user, 'partner_profile'):
-        messages.error(request, 'Доступ запрещён.',extra_tags='create_payout_error')
+        messages.error(request, message='Доступ запрещён.',extra_tags='create_payout_error')
         return redirect('dashboard')  # поменяйте на нужный URL
 
     # Получаем данные из формы
@@ -26,19 +26,19 @@ def create_payout_request(request):
         amount = Decimal(amount_str)
         MinValueValidator(Decimal('0.01'))(amount)
     except Exception:
-        messages.error(request, 'Введите корректную сумму.',extra_tags='create_payout_error')
+        messages.error(request, message='Введите корректную сумму.',extra_tags='create_payout_error')
         return redirect('some_view_name')
 
     # Проверяем, что сумма не превышает баланс партнёра
     balance = user.partner_profile.balance
     if amount > balance:
-        messages.error(request, 'Сумма превышает доступный баланс.',extra_tags='create_payout_error')
+        messages.error(request, message='Сумма превышает доступный баланс.',extra_tags='create_payout_error')
         return redirect('dashboard')
 
     # Проверяем выбранный способ вывода
     valid_methods = [choice[0] for choice in PartnerTransaction.PAYMENT_METHOD_CHOICES]
     if payout_method not in valid_methods:
-        messages.error(request, 'Выберите корректный способ выплаты.',extra_tags='create_payout_error')
+        messages.error(request, message='Выберите корректный способ выплаты.',extra_tags='create_payout_error')
         return redirect('dashboard')
 
     # Создаём заявку на выплату
@@ -53,7 +53,7 @@ def create_payout_request(request):
     user.partner_profile.balance -= amount
     user.partner_profile.save()
 
-    messages.success(request, f'Заявка на выплату {amount} ₽ создана успешно.',extra_tags='create_payout_success')
+    messages.success(request, message=f'Заявка на выплату {amount} ₽ создана успешно.',extra_tags='create_payout_success')
     return redirect('dashboard') 
 
 

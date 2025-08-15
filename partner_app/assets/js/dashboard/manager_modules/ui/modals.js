@@ -30,8 +30,7 @@ export function setupModals() {
             document.getElementById('modalPlatformDetails').classList.add('hidden');
             
             document.getElementById('modalAdvertiser').textContent = data.owner || 'Не указан';
-            document.getElementById('modalCommission').textContent = `${data.commission} %` || 'Не указана';
-            document.getElementById('modalCookieDays').textContent = data.cookieDays ? `${data.cookieDays} дней` : 'Не указан';
+            document.getElementById('modalCost').textContent = `${data.cost} ₽` || 'Не указана';
         } else {
             document.getElementById('modalAdvertiserContainer').classList.add('hidden');
             document.getElementById('modalPartnerContainer').classList.remove('hidden');
@@ -44,34 +43,7 @@ export function setupModals() {
         
         // Описание
         document.getElementById('modalDescription').textContent = data.description || 'Описание отсутствует';
-        
-        // Материалы (если есть)
-        const assetsContent = document.getElementById('modalAssetsContent');
-        assetsContent.innerHTML = '';
-        
-        if (data.assets) {
-            const assets = JSON.parse(data.assets);
-            assets.forEach(asset => {
-                const assetEl = document.createElement(asset.type === 'image' ? 'img' : 'a');
-                assetEl.className = 'rounded border p-1';
                 
-                if (asset.type === 'image') {
-                    assetEl.src = asset.url;
-                    assetEl.alt = asset.title || 'Материал';
-                } else {
-                    assetEl.href = asset.url;
-                    assetEl.textContent = asset.title || 'Ссылка';
-                    assetEl.target = '_blank';
-                    assetEl.className += ' link link-primary';
-                }
-                
-                assetsContent.appendChild(assetEl);
-            });
-            document.getElementById('modalAssets').classList.remove('hidden');
-        } else {
-            document.getElementById('modalAssets').classList.add('hidden');
-        }
-        
         modal.showModal();
     }
 

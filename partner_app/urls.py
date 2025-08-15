@@ -53,5 +53,9 @@ urlpatterns = [
     # Редирект партнёрской ссылки
     path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
-    path("api/clicks",views.ClickAPIView.as_view(),name="api_click")
+    path("api/clicks",views.ClickAPIView.as_view(),name="api_click"),
+
+    path("block_user/<int:user_id>",views.block_user,name='block_user'),
+    path("unblock_user/<int:user_id>",views.unblock_user,name='unblock_user')
+
 ]

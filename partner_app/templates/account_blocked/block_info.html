@@ -1,0 +1,103 @@
+{% extends 'partner_app/base.html' %}
+
+{% load static %}
+{% load tz %}
+
+
+{% block title %} Ваш аккаунт заблокирован {% endblock %}
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="flex items-start gap-3">
+                    <div class="avatar avatar-placeholder">
+                        <div class="bg-red-500 text-white rounded-full w-12">
+                            <span class="text-xl"><i class="fas fa-user-slash"></i></span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h1 class="card-title text-2xl">Ваш аккаунт заблокирован</h1>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Мы уважаем принцип <span class="font-semibold">презумпции невиновности</span> —
+                            если вы считаете, что произошла ошибка, свяжитесь с нами в Telegram для оперативного
+                            решения.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Тип блокировки -->
+                <div class="mt-4">
+                    {% if request.user.block_until %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-hourglass-half"></i>
+                            <div>
+                                <h3 class="font-semibold">Временная блокировка</h3>
+                                <p>Доступ будет восстановлен автоматически: <span class="font-medium" id="ban-end-at">{{ request.user.block_until }}</span></p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-error">
+                            <i class="fas fa-ban"></i>
+                            <div>
+                                <h3 class="font-semibold">Постоянная блокировка</h3>
+                                <p>Доступ к аккаунту ограничен без даты окончания.</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Данные аккаунта -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="space-y-3">
+                        <h2 class="text-lg font-semibold">Данные аккаунта</h2>
+                        <div>
+                            <p class="text-sm text-base-content/60">Имя и фамилия</p>
+                            <p class="font-medium">{{ user.get_full_name }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-base-content/60">Email</p>
+                            <p class="font-medium">{{ user.email }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-base-content/60">Роль</p>
+                            <div class="badge badge-outline">
+                                {% if user.user_type == 'partner' %}Партнёр{% elif user.user_type == 'advertiser' %}Рекламодатель{% else %}Пользователь{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h2 class="text-lg font-semibold">Причина</h2>
+                        <div class="p-4 rounded-2xl bg-base-200 border border-base-300">
+                            <p class="whitespace-pre-line">{{ request.user.blocking_reason|default:"Причина не указана." }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Действия -->
+                <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                    <a href="#" target="_blank" class="btn btn-primary btn-wide">
+                        <i class="fab fa-telegram-plane mr-2"></i>
+                        Связаться в Telegram
+                    </a>
+
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-ghost">
+                            Выйти из аккаунта
+                        </a>
+                    </form>
+                </div>
+
+                <!-- Примечание -->
+                <p class="mt-4 text-sm text-base-content/60">
+                    Мы рассмотрим обращение как можно быстрее. Пожалуйста, укажите максимум деталей —
+                    это ускорит проверку и восстановление доступа при отсутствии нарушений.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

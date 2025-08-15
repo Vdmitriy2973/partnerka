@@ -2,8 +2,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.views.decorators.http import require_POST
-from partner_app.models import ProjectPartner
+from partner_app.models import ProjectPartner,User
 from partner_app.utils import send_email_via_mailru
+from django.utils.timezone import now
 
 @login_required
 @require_POST
@@ -15,8 +16,15 @@ def stop_partnership_with_partner(request,partner_id):
         advertiser=request.user,
         partner=partner_id
     )
+    user = User.objects.get(id=partner_id)
     partnership.delete()
+    date_str = now().strftime("%d.%m.%Y %H:%M")
     
+    title = ""
+    message = f"""Здравствуйте,{user.get_full_name()}!\n\n
+Рекламодатель {request.user.get_full_name()} прекратил сотрудничество с вами {date_str}.\n\n\n
+С уважением,\nКоманда поддержки"""
+    send_email_via_mailru(user.email,message,"❌ Остановка сотрудничества")
     return redirect('dashboard')
 
 @login_required
@@ -37,8 +45,7 @@ def stop_partnership_with_project(request,project_id):
 - Новые переходы с его ресурсов не учитываются  
 - Статистика доступна в личном кабинете  
 
-Это письмо отправлено автоматически.
-"""    
+Это письмо отправлено автоматически."""    
 
     send_email_via_mailru(partnership.advertiser.email,message,title)
     return redirect('dashboard')
@@ -83,8 +90,7 @@ def resume_partnership(request,project_id):
     message = f"""Партнёр {partnership.partner.get_full_name()} снова продвигает ваш проект «{partnership.project.name}».  
 
 После возобновления сотрудничества у вас будут учитываться конверсии/переходы.
-Это письмо отправлено автоматически.
-    """
+Это письмо отправлено автоматически."""
     send_email_via_mailru(partnership.advertiser.email,message,title)
     
     return redirect('dashboard')

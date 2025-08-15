@@ -21,6 +21,9 @@ def dashboard(request):
         elif "password_submit" in request.POST:
             _handle_password_update(request, user)
     
+    
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
     # Обработчики личного кабинета
     handlers = {
         "partner": handle_partner_dashboard,

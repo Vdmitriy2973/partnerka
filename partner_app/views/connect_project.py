@@ -16,7 +16,7 @@ def connect_project(request, project_id):
     partner = request.user
     
     if ProjectPartner.objects.filter(project=project, partner=partner).exists():
-        messages.warning(request, 'Вы уже подключены к этому проекту',extra_tags="already_connected_project")
+        messages.warning(request, message='Вы уже подключены к этому проекту',extra_tags="already_connected_project")
         return redirect('dashboard')
         
     
@@ -25,7 +25,8 @@ def connect_project(request, project_id):
     ProjectPartner.objects.create(
         project=project,
         partner=partner,
-        custom_commission=project.commission_rate,
+        cost_per_action=project.cost_per_action,
         advertiser=project.advertiser
     )
+    messages.success(request,message="Вы успешно подключились к проекту рекламодателя",extra_tags="connect_project_success")
     return redirect("dashboard")

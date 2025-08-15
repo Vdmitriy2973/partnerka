@@ -26,3 +26,6 @@ from .api.api_click import ClickAPIView
 
 from .update_partner_payout_settings import payout_settings_view
 from .transactions import create_payout_request, approve_transaction, reject_transaction
+
+from .block_user import block_user
+from .unblock_user import unblock_user

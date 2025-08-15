@@ -14,14 +14,14 @@ def add_platform(request):
         platform = form.save(commit=False)
         platform.partner = request.user
         platform.save()
-        messages.success(request,f"Платформа {platform.name} успешно добавлена",extra_tags="platform_add_success")
+        messages.success(request,message=f"Платформа {platform.name} успешно добавлена",extra_tags="platform_add_success")
         return redirect("dashboard")
     except Exception as e:
         print(form.errors)
         if "description" in form.errors:
-            messages.error(request, "Описание должно содержать минимум 15 символов.",extra_tags="platform_add_error")
+            messages.error(request, message="Описание должно содержать минимум 15 символов.",extra_tags="platform_add_error")
         else:
-            messages.error(request, "Уже существует площадка с таким  URL или ID или названием.",extra_tags="platform_add_error")
+            messages.error(request, message="Уже существует площадка с таким  URL или ID или названием.",extra_tags="platform_add_error")
     return redirect("dashboard")
 
 @login_required
@@ -37,7 +37,7 @@ def edit_platform(request,platform_id):
         # Валидация
         platform.full_clean()
         platform.save()
-        messages.success(request,f"Платформа {platform.name} успешно отредактирована",extra_tags="platform_edit_success")
+        messages.success(request,message=f"Платформа {platform.name} успешно отредактирована",extra_tags="platform_edit_success")
         return redirect("dashboard")
     except Exception as e:
         print("error:", e)
@@ -50,10 +50,10 @@ def delete_platform(request, platform_id):
     try:
         platform = Platform.objects.get(id=platform_id,partner=request.user)
         platform.delete()
-        messages.success(request,f"Платформа {platform.name} успешно удалена",extra_tags="platform_delete_success")
+        messages.success(request,message=f"Платформа {platform.name} успешно удалена",extra_tags="platform_delete_success")
     except Exception as e:
         print("error:", e)
-        messages.error(request, "Ошибка удаления платформы.",extra_tags="platform_delete_error")
+        messages.error(request, message="Ошибка удаления платформы.",extra_tags="platform_delete_error")
     return redirect("dashboard")
 
 

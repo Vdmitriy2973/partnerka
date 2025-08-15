@@ -37,12 +37,12 @@ class ProjectPartner(models.Model):
         default=StatusType.ACTIVE,
         verbose_name='Статус сотрудничества'
     )
-    custom_commission = models.DecimalField(
+    cost_per_action = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         null=True,
         blank=True,
-        verbose_name='Комиссия партнёра'
+        verbose_name='Цена за действие'
     )
     
     joined_at = models.DateTimeField(

@@ -4,10 +4,10 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.shortcuts import render
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value
+from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value, Prefetch
 from django.db.models.functions import Coalesce
 
-from partner_app.models import Platform, Project, PartnerLink, PartnerActivity, PartnerTransaction
+from partner_app.models import Platform, Project, PartnerLink, PartnerActivity, PartnerTransaction,ProjectPartner
 from partner_app.forms import PlatformForm
 from .common import _apply_search, _paginate
 
@@ -156,8 +156,12 @@ def _get_available_projects(request):
     ).order_by('-created_at')
     
 def _get_connected_projects(request):
-    """Получение подключенных проектов"""
-    return Project.objects.prefetch_related('params', 'partner_memberships','project_links',"conversions").filter(
+    """Получение подключенных проектов у партнёра"""
+    return Project.objects.prefetch_related('params', Prefetch(
+        'partner_memberships',
+        queryset=ProjectPartner.objects.filter(partner=request.user),
+        to_attr='user_memberships'
+    ),'partner_memberships','project_links',"conversions").filter(
         partner_memberships__partner=request.user
     ).annotate(
         conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0)))

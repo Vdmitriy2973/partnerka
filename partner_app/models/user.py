@@ -1,3 +1,6 @@
+from datetime import timedelta
+
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
@@ -38,6 +41,41 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    is_blocked = models.BooleanField(default=False)
+    blocking_reason = models.CharField(
+        'Причина блокировки',
+        max_length=100,
+        default=None,
+        blank=True,
+        null=True
+    )
+    block_until = models.DateTimeField(null=True, blank=True) 
+
+    def block(self, days=None):
+        """Блокировать пользователя"""
+        self.is_blocked = True
+        if days:
+            self.block_until = timezone.now() + timedelta(days=days)
+        else:
+            self.block_until = None  # навсегда
+        self.save()
+
+    def unblock(self):
+        """Разблокировать пользователя"""
+        self.is_blocked = False
+        self.block_until = None
+        self.save()
+
+    def is_currently_blocked(self):
+        """Проверка блокировки"""
+        if not self.is_blocked:
+            return False
+        if self.block_until and timezone.now() > self.block_until:
+            # истёк срок блокировки → снимаем блок
+            self.unblock()
+            return False
+        return True
+    
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'

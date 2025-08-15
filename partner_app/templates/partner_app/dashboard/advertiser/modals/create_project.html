@@ -58,37 +58,41 @@
                         <i class="fas fa-link text-blue-500"></i>
                         Шаблон партнёрской ссылки
                     </h3>
-                    
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1 required-field">
                             {{ projectForm.link_template.label }}
                         </label>
                         <div class="flex gap-2">
                             {{ projectForm.link_template }}
-                            <button type="button" id="copyTemplateBtn" class="btn btn-sm btn-ghost" title="Копировать шаблон">
+                            <button type="button" id="copyTemplateBtn" class="btn btn-sm btn-ghost"
+                                title="Копировать шаблон">
                                 <i class="far fa-copy"></i>
                             </button>
+                        </div>
+                        <div id="error-link-template" class="font-semibold text-red-500">
+
                         </div>
                         <div class="block text-sm font-semibold text-gray-700">
                             {{ projectForm.link_template.help_text }}
                         </div>
                         {% if projectForm.link_template.errors %}
-                            <div class="text-red-500 text-sm mt-1">{{ projectForm.link_template.errors }}</div>
+                        <div class="text-red-500 text-sm mt-1">{{ projectForm.link_template.errors }}</div>
                         {% endif %}
                     </div>
-                    
+
                     <!-- Предпросмотр ссылки -->
                     <div class="mb-4 bg-blue-50 p-3 rounded border border-blue-200">
                         <div class="text-sm font-medium text-gray-700 mb-1">Предпросмотр:</div>
                         <div id="linkPreview" class="text-sm text-blue-600 break-all"></div>
                     </div>
-                    
+
                     <!-- Параметры -->
                     <div class="mb-3">
                         <h4 class="text-md font-medium mb-2">Параметры ссылки</h4>
                         <div id="paramsContainer" class="space-y-3"></div>
                     </div>
-                    
+
                     <!-- Кнопка добавления параметра -->
                     <button type="button" id="addParamBtn" class="btn btn-sm btn-outline btn-primary w-full">
                         <i class="fas fa-plus mr-2"></i> Добавить параметр
@@ -102,32 +106,14 @@
                         <i class="fas fa-money-bill-wave text-blue-500"></i>
                         Финансовые настройки
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">
-                                {{ projectForm.min_payout.label }}
+                                {{ projectForm.cost_per_action.label }}
                             </label>
                             <div class="relative">
-                                {{ projectForm.min_payout }}
+                                {{ projectForm.cost_per_action }}
                                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">₽</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                {{ projectForm.commission_rate.label }}
-                            </label>
-                            <div class="relative">
-                                {{ projectForm.commission_rate }}
-                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">%</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                {{ projectForm.cookie_lifetime.label }}
-                            </label>
-                            <div class="relative">
-                                {{ projectForm.cookie_lifetime }}
-                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">дн.</span>
                             </div>
                         </div>
                     </div>
@@ -137,7 +123,7 @@
             <!-- Кнопки действий -->
             <div class="flex justify-end gap-3 pt-4 border-t">
                 <button type="button" id="close_create_project_modal" class="btn btn-ghost">Отмена</button>
-                <button type="submit" class="btn btn-primary gap-2">
+                <button id="add-project-form-btn" type="submit" class="btn btn-primary gap-2">
                     <i class="fas fa-plus"></i> Добавить проект
                 </button>
             </div>
@@ -152,17 +138,18 @@
 
 <!-- Шаблон для параметров (скрытый) -->
 <template id="paramTemplate">
-    <div class="param-item bg-white p-3 rounded border flex items-start gap-3 transition-all duration-200 hover:shadow-sm">
+    <div
+        class="param-item bg-white p-3 rounded border flex items-start gap-3 transition-all duration-200 hover:shadow-sm">
         <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1 required-field">Имя параметра</label>
-                <input type="text" name="param_name" class="input input-bordered input-sm w-full" 
-                       placeholder="utm_source" required>
+                <input type="text" name="param_name" class="input input-bordered input-sm w-full"
+                    placeholder="utm_source" required>
             </div>
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1">Описание</label>
-                <input type="text" name="param_description" class="input input-bordered input-sm w-full" 
-                       placeholder="Источник трафика">
+                <input type="text" name="param_description" class="input input-bordered input-sm w-full"
+                    placeholder="Источник трафика">
             </div>
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1">Тип</label>
@@ -173,8 +160,8 @@
             </div>
             <div class="md:col-span-3">
                 <label class="block text-xs font-medium text-gray-500 mb-1">Пример значения</label>
-                <input type="text" name="param_example" class="input input-bordered input-sm w-full" 
-                       placeholder="example value">
+                <input type="text" name="param_example" class="input input-bordered input-sm w-full"
+                    placeholder="example value">
             </div>
         </div>
         <button type="button" class="remove-param-btn btn btn-circle btn-sm btn-ghost text-red-500 hover:bg-red-50">
@@ -184,134 +171,169 @@
 </template>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Добавление параметров
-    const addParamBtn = document.getElementById('addParamBtn');
-    const paramsContainer = document.getElementById('paramsContainer');
-    const paramTemplate = document.getElementById('paramTemplate');
-    const linkTemplateInput = document.querySelector('input[name="link_template"]');
-    const linkPreview = document.getElementById('linkPreview');
-    const copyTemplateBtn = document.getElementById('copyTemplateBtn');
-    
-    // Добавление нового параметра
-    addParamBtn.addEventListener('click', function() {
-        if (paramsContainer.children.length < 10) {
-            const clone = paramTemplate.content.cloneNode(true);
-            const newParam = paramsContainer.appendChild(clone);
-            
-            // Анимация добавления
-            newParam.style.opacity = '0';
-            newParam.style.transform = 'translateY(10px)';
-            setTimeout(() => {
-                newParam.style.opacity = '1';
-                newParam.style.transform = 'translateY(0)';
-            }, 10);
-            
-            updateLinkPreview();
+    document.addEventListener('DOMContentLoaded', function () {
+        // Добавление параметров
+        const addParamBtn = document.getElementById('addParamBtn');
+        const paramsContainer = document.getElementById('paramsContainer');
+        const paramTemplate = document.getElementById('paramTemplate');
+        const projectUrlInput = document.querySelector('input[name="url"]')
+        const linkTemplateInput = document.querySelector('input[name="link_template"]');
+        const linkPreview = document.getElementById('linkPreview');
+        const copyTemplateBtn = document.getElementById('copyTemplateBtn');
+        const createProjectBtn = document.getElementById('add-project-form-btn');
+        const errorMsg = document.getElementById("error-link-template");
+
+        function getOriginSafe(value) {
+            try {
+                return new URL(value).origin;
+            } catch (e) {
+                return null; // некорректный URL
             }
         }
 
-    );
-    
-    // Удаление параметров
-    paramsContainer.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-param-btn')) {
-            const paramItem = e.target.closest('.param-item');
-            paramItem.style.opacity = '0';
-            paramItem.style.transform = 'translateY(-10px)';
-            setTimeout(() => paramItem.remove(), 200);
-            updateLinkPreview();
+        function validateOrigins() {
+            const origin1 = getOriginSafe(projectUrlInput.value);
+            const origin2 = getOriginSafe(linkTemplateInput.value);
+
+            if (origin1 && origin2 && origin1 === origin2) {
+                errorMsg.style.display = 'none';
+                errorMsg.textContent = "";
+                createProjectBtn.disabled = false;
+            }
+            else {
+                errorMsg.style.display = "block";
+                errorMsg.textContent = "URL шаблона и проекта должны совпадать";
+                createProjectBtn.disabled = true;
+            }
         }
-    });
-    
-    // Обновление предпросмотра ссылки
-    function updateLinkPreview() {
-        let template = linkTemplateInput.value;
-        const params = [];
-        
-        document.querySelectorAll('.param-item').forEach(item => {
-            const name = item.querySelector('input[name="param_name"]').value;
-            const example = item.querySelector('input[name="param_example"]').value;
-            if (name) {
-                params.push(`${name}=${example || 'value'}`);
+
+        projectUrlInput.addEventListener("input", validateOrigins);
+        linkTemplateInput.addEventListener("input", validateOrigins);
+
+        // Добавление нового параметра
+        addParamBtn.addEventListener('click', function () {
+            if (paramsContainer.children.length < 10) {
+                const clone = paramTemplate.content.cloneNode(true);
+                const newParam = paramsContainer.appendChild(clone);
+
+                // Анимация добавления
+                newParam.style.opacity = '0';
+                newParam.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    newParam.style.opacity = '1';
+                    newParam.style.transform = 'translateY(0)';
+                }, 10);
+
+                updateLinkPreview();
+            }
+        }
+
+        );
+
+        // Удаление параметров
+        paramsContainer.addEventListener('click', function (e) {
+            if (e.target.closest('.remove-param-btn')) {
+                const paramItem = e.target.closest('.param-item');
+                paramItem.style.opacity = '0';
+                paramItem.style.transform = 'translateY(-10px)';
+                setTimeout(() => paramItem.remove(), 200);
+                updateLinkPreview();
             }
         });
-        
-        if (params.length > 0) {
-            const separator = template.includes('?') ? '&' : '?';
-            linkPreview.textContent = template + separator + params.join('&');
-        } else {
-            linkPreview.textContent = template;
-        }
-    }
-    
-    // Копирование шаблона
-    copyTemplateBtn.addEventListener('click', function() {
-        linkTemplateInput.select();
-        document.execCommand('copy');
-        
-        // Визуальная обратная связь
-        const originalText = copyTemplateBtn.innerHTML;
-        copyTemplateBtn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
-        setTimeout(() => {
-            copyTemplateBtn.innerHTML = originalText;
-        }, 2000);
-    });
-    
-    // Слушатели изменений для обновления предпросмотра
-    linkTemplateInput.addEventListener('input', updateLinkPreview);
-    paramsContainer.addEventListener('input', function(e) {
-        if (e.target.matches('input[name="param_name"], input[name="param_example"]')) {
-            updateLinkPreview();
-        }
-    });
-    
-    // Обработка закрытия модального окна
-    document.getElementById('close_create_project_modal').addEventListener('click', function() {
-        document.getElementById('createProjectModal').close();
-    });
-    
-    // Обработка отправки формы
-    document.getElementById('projectForm').addEventListener('submit', function(e) {
-        // Собираем параметры перед отправкой
-        const params = [];
-        document.querySelectorAll('.param-item').forEach(item => {
-            params.push({
-                name: item.querySelector('input[name="param_name"]').value,
-                description: item.querySelector('input[name="param_description"]').value,
-                type: item.querySelector('select[name="param_type"]').value,
-                example: item.querySelector('input[name="param_example"]').value
+
+        // Обновление предпросмотра ссылки
+        function updateLinkPreview() {
+            let template = linkTemplateInput.value;
+            const params = [];
+
+            document.querySelectorAll('.param-item').forEach(item => {
+                const name = item.querySelector('input[name="param_name"]').value;
+                const example = item.querySelector('input[name="param_example"]').value;
+                if (name) {
+                    params.push(`${name}=${example || 'value'}`);
+                }
             });
+
+            if (params.length > 0) {
+                const separator = template.includes('?') ? '&' : '?';
+                linkPreview.textContent = template + separator + params.join('&');
+            } else {
+                linkPreview.textContent = template;
+            }
+        }
+
+        // Копирование шаблона
+        copyTemplateBtn.addEventListener('click', function () {
+            linkTemplateInput.select();
+            document.execCommand('copy');
+
+            // Визуальная обратная связь
+            const originalText = copyTemplateBtn.innerHTML;
+            copyTemplateBtn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
+            setTimeout(() => {
+                copyTemplateBtn.innerHTML = originalText;
+            }, 2000);
         });
-        
-        document.getElementById('paramsJson').value = JSON.stringify(params);
-        
-        // Дополнительная валидация может быть добавлена здесь
+
+        // Слушатели изменений для обновления предпросмотра
+        linkTemplateInput.addEventListener('input', updateLinkPreview);
+        paramsContainer.addEventListener('input', function (e) {
+            if (e.target.matches('input[name="param_name"], input[name="param_example"]')) {
+                updateLinkPreview();
+            }
+        });
+
+        // Обработка закрытия модального окна
+        document.getElementById('close_create_project_modal').addEventListener('click', function () {
+            document.getElementById('createProjectModal').close();
+        });
+
+        // Обработка отправки формы
+        document.getElementById('projectForm').addEventListener('submit', function (e) {
+            // Собираем параметры перед отправкой
+            const params = [];
+            document.querySelectorAll('.param-item').forEach(item => {
+                params.push({
+                    name: item.querySelector('input[name="param_name"]').value,
+                    description: item.querySelector('input[name="param_description"]').value,
+                    type: item.querySelector('select[name="param_type"]').value,
+                    example: item.querySelector('input[name="param_example"]').value
+                });
+            });
+
+            document.getElementById('paramsJson').value = JSON.stringify(params);
+
+            // Дополнительная валидация может быть добавлена здесь
+        });
+
+        // Инициализация предпросмотра
+        updateLinkPreview();
     });
-    
-    // Инициализация предпросмотра
-    updateLinkPreview();
-});
 </script>
 
 
 <style>
-.required-field::after {
-    content: '*';
-    color: #ef4444;
-    margin-left: 4px;
-}
+    .required-field::after {
+        content: '*';
+        color: #ef4444;
+        margin-left: 4px;
+    }
 
-.animate-fadeIn {
-    animation: fadeIn 0.3s ease-out;
-}
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out;
+    }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
 
-.input-error {
-    border-color: #ef4444;
-}
+        to {
+            opacity: 1;
+        }
+    }
+
+    .input-error {
+        border-color: #ef4444;
+    }
 </style>

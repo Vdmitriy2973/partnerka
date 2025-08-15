@@ -13,7 +13,7 @@ def partner_detail(request, partner_id):
         # Проверяем, является ли пользователь партнером
         if not hasattr(partner, 'partner_profile'):  # Или другая проверка на партнера
             print("not partner")
-            messages.error(request, "Этот пользователь не является партнером")
+            messages.error(request, message="Этот пользователь не является партнером")
             return redirect('dashboard')  # Или другая подходящая страница
         
         platforms = partner.owned_platforms.all()
@@ -32,5 +32,5 @@ def partner_detail(request, partner_id):
     except Exception as e:
         # Логирование ошибки (можно настроить логирование)
         print(f"Error in partner_detail: {e}")
-        messages.error(request, "Произошла ошибка при загрузке профиля партнера")
+        messages.error(request, message="Произошла ошибка при загрузке профиля партнера")
         return redirect('dashboard')  # Перенаправление на главную

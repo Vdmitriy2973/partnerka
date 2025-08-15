@@ -63,16 +63,16 @@
                     </span>
                     {% endif %}
                     <span
-                        class="badge status-badge {% if project.partner_memberships.first.status == 'Приостановлен' %}text-gray-500
-                            {% elif project.partner_memberships.first.status == 'Активен'  %}text-success{% else %} text-red-500 {% endif %} badge-xs sm:badge-sm">
-                        {{ project.partner_memberships.first.status }}
+                        class="badge status-badge {% if project.user_memberships.0.status == 'Приостановлен' %}text-gray-500
+                            {% elif project.user_memberships.0.status == 'Активен'  %}text-success{% else %} text-red-500 {% endif %} badge-xs sm:badge-sm">
+                        {{ project.user_memberships.0.status }}
                     </span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm mb-3">
                     <div>
-                        <div class="text-gray-500">Комиссия</div>
-                        <div class="font-medium">{{ project.partner_memberships.first.custom_commission }} %</div>
+                        <div class="text-gray-500">Цена за действие</div>
+                        <div class="font-medium">{{ project.user_memberships.0.cost_per_action }} ₽</div>
                     </div>
                     <div>
                         <div class="text-gray-600">Рекламодатель</div>
@@ -90,9 +90,9 @@
                         <div class="text-gray-500">Дата подключения</div>
                         <div class="font-medium">
                             {% for partner in project.partner_memberships.all %}
-                            {% if partner.partner == request.user %}
-                            <p>{{ partner.joined_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
-                            {% endif %}
+                                {% if partner.partner == request.user %}
+                                    <p>{{ partner.joined_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
@@ -100,7 +100,6 @@
                 <div class="card-actions justify-between">
                     <button class="show_project_stats btn btn-primary btn-xs sm:btn-sm"
                         data-project-name="{{ project.name }}"
-                        data-commission-rate="{% for partnership in project.partner_memberships.all %}{% if partnership.partner == request.user %}{{ partnership.custom_commission }}{% endif %}{% endfor %}" 
                         data-conversions-count="{{ project.conversions_count }}"
                         data-conversions-percent="{{ project.conversions_percent }}"
                         data-clicks-count="{{ project.clicks_count }}"

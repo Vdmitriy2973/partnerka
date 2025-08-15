@@ -43,5 +43,5 @@ def project_detail(request, project_id):
     except Exception as e:
         # Логирование ошибки (можно настроить логирование)
         print(f"Error in project_detail: {e}")
-        messages.error(request, "Произошла ошибка при загрузке страницы проекта")
+        messages.error(request, message="Произошла ошибка при загрузке страницы проекта")
         return redirect('dashboard')  # Перенаправление на главную

@@ -3,7 +3,7 @@ from django.db import models
 class Conversion(models.Model):
     project = models.ForeignKey(
         'Project',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='conversions'
@@ -50,6 +50,9 @@ class Conversion(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True,)
     details = models.TextField(blank=True)
+    
+    user_agent = models.TextField(null=True, blank=True, verbose_name="User-Agent")
+    ip_address = models.GenericIPAddressField(null=True, blank=True, verbose_name="IP-адрес")
 
     class Meta:
         verbose_name ="Конверсия"

@@ -104,7 +104,7 @@
         <div class="card bg-white shadow-sm connection-card">
             <div class="card-body pt-4">
                 <div class="flex justify-between items-start mb-4">
-                    <h2 class="card-title text-lg font-bold">{{ project.name }}</h2>
+                    <h2 class="card-title text-lg font-bold"><a href="{% url 'project' project.id %}">{{ project.name }}</a></h2>
                     <div class="badge {% if project.is_active %}badge-success{% else %}badge-error{% endif %} gap-2">
                         <i class="fas {% if project.is_active %}fa-check{% else %}fa-times{% endif %}"></i>
                         {% if project.is_active %}Активен{% else %}Неактивен{% endif %}
@@ -133,8 +133,8 @@
                     </div>
                     
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-600">Комиссия:</span>
-                        <span class="font-bold">{{ project.commission_rate }}%</span>
+                        <span class="text-gray-600">Оплата за действие:</span>
+                        <span class="font-bold">{{ project.cost_per_action }} ₽</span>
                     </div>
                     
                     <div class="flex justify-between items-center">
@@ -158,10 +158,8 @@
                             data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
                             data-project-url="{{ project.url }}" data-project-status="{{ project.status }}"
                             data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
+                            data-project-cost="{{ project.cost_per_action }}"
                             data-project-partners-count="{{ project.partners.count }}"
-                            data-project-commission-rate="{{ project.commission_rate }}"
-                            data-project-min-payout="{{ project.min_payout }}"
-                            data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
                             data-project-link-template="{{ project.link_template }}"
                             data-project-conversions-percent="{{ project.conversions_percent }}"
                             data-project-total-clicks="{{ project.clicks_count }}">
@@ -172,10 +170,7 @@
                             <li class="editProjectModal" data-project-id="{{ project.id }}"
                                 data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
                                 data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
-                                data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
-                                data-project-commission-rate="{{ project.commission_rate }}"
-                                data-project-cookie-lifetime="{{ project.cookie_lifetime }}"
-                                data-project-min-payout="{{ project.min_payout }}">
+                                data-project-is-active="{{ project.is_active|yesno:'true,false' }}">
                                 <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
                             </li>
                         {% elif project.status == 'На модерации' %}

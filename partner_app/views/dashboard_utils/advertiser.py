@@ -54,15 +54,16 @@ def handle_advertiser_dashboard(request):
         chart_data = [
         {
             "id": conv.id,
-            "project": conv.project.name,  # Пример доступа к связанной модели
-            "date": conv.created_at.strftime("%d-%m-%y"),  # Форматируем дату
-            "amount": float(conv.amount)  # Decimal -> float для JSON
+            "project": conv.project.name, 
+            "date": conv.created_at.strftime("%d-%m-%y"),  
+            "amount": float(conv.amount) 
         }
         for conv in conversions
     ]
         conversions_average = f"{conversions.aggregate(avg_price=Avg('amount'))["avg_price"]:.2f}"
         conversions_total = f"{conversions.aggregate(total_price=Sum('amount'))["total_price"]:.2f}"
     else:
+        conversions_total = 0
         conversions_average = 0
     
     

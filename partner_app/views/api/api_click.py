@@ -2,13 +2,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from partner_app.models import ProjectPartner, Platform
+from partner_app.models import ProjectPartner, Platform,User
 from partner_app.serializers import ClickSerializer
 
 class ClickAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
+        partner = User.objects.get(id=int(request.data["partner"]))
+        if partner.is_currently_blocked():
+            return Response(
+                {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         referrer = request.data.get('referrer')
         if referrer:
             platform = Platform.objects.get(

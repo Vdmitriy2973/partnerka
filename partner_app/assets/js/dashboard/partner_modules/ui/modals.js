@@ -25,7 +25,7 @@ export function setupPartnerModals() {
         const fields = {
           'project-name': dataset.projectName,
           'advertiser': dataset.projectAdvertiser,
-          'commission': dataset.projectCommissionRate + '%',
+          'costPerAction': dataset.projectCost + ' ₽',
           'partners-count': dataset.projectPartnersCount,
           'created-at': dataset.projectCreatedAt,
           'description': dataset.projectDescription
@@ -74,7 +74,7 @@ export function setupPartnerModals() {
     showProjectStatsBtns.forEach(btn => {
       btn.addEventListener("click", function () {
         const dataset = this.dataset;
-        document.getElementById('commissionRate').textContent = String(dataset.commissionRate) + "%";
+        document.getElementById('costPerAction').textContent = String(dataset.projectCost) + "₽";
         document.getElementById('projectTitle').textContent = dataset.projectName;
         document.getElementById('clickCount').textContent = dataset.clicksCount;
         document.getElementById('actionCount').textContent = dataset.conversionsCount;

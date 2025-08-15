@@ -26,10 +26,12 @@ def handle_manager_dashboard(request):
     pending_items = _paginate(request,pending_list,count,"users_page")
     
     transactions = PartnerTransaction.objects.filter(status='В обработке').order_by('-date')
+    transactions_count = transactions.count()
     transactions_page=_paginate(request,transactions,count,"transactions_page")
     context = {
         "user":request.user,
         "users":users,
+        "transactions_count":transactions_count,
         "pending_items": pending_items,
         "pending_items_len": len(pending_list),
         "pending_transactions":transactions_page,

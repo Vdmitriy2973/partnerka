@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinLengthValidator,MinValueValidator
+from django.core.exceptions import ValidationError
 
 import re
 
@@ -49,26 +50,14 @@ class Project(models.Model):
         default=''
     )
 
-    min_payout = models.DecimalField (
-        verbose_name="Мин. выплата",
-        decimal_places=2,
-        default=0.00, 
-        max_digits=10,
-        validators=[
-            MinValueValidator(0.00),
-        ],
-    )
-
-    commission_rate = models.PositiveIntegerField(
-        verbose_name="Комиссия (%)",
-        default=0
-    )
-
-    cookie_lifetime = models.PositiveIntegerField(
-        verbose_name="Срок действия cookie",
+    cost_per_action = models.DecimalField(
+        verbose_name="Цена за действие",
         default=0,
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(1)]
     )
-
+    
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата добавления'

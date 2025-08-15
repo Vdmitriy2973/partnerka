@@ -88,15 +88,11 @@
                             </button>
                         </form>
 
-                        <!-- <button class="btn btn-outline show_platform_details" data-project-id="{{ item.id }}">
-                                    <i class="fas fa-eye mr-2"></i> Подробнее
-                                </button> -->
                         <button class="show_project_details btn btn-outline" data-details="platform" data-id="{{ item.id }}"
                             data-name="{{ item.name }}" data-status="{{ item.status }}"
-                            data-owner="{{ item.partner.first_name }} {{ item.partner.last_name }}"
+                            data-owner="{{ item.partner.get_full_name }}"
                             data-platform-type="{{ item.get_platform_type_display }}" data-email="{{ item.partner.email }} "
-                            data-phone="{{ item.partner.phone }}" data-description="{{ item.description }}"
-                            data-cookie-days="{{ item.cookie_lifetime }}">
+                            data-phone="{{ item.partner.phone }}" data-description="{{ item.description }}">
                             <i class="fas fa-eye mr-2"></i> Подробнее
                         </button>
                     </div>
@@ -108,7 +104,7 @@
                 class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 border-l-4 border-secondary">
                 <div class="card-body">
                     <div class="flex justify-between items-center gap-2 mb-2">
-                        <h2 class="card-title">{{ item.name }}</h2>
+                        <h2 class="card-title"><a href="{% url 'project' item.id %}">{{ item.name }}</a></h2>
                         <div class="badge badge-warning gap-2">
                             <i class="fas fa-clock"></i> {{ item.status }}
                         </div>
@@ -117,11 +113,13 @@
                     <div class="space-y-3">
                         <div>
                             <p class="text-sm text-gray-500">Рекламодатель:</p>
-                            {% if item.advertiser.first_name and item.advertiser.last_name %}
-                            <p>{{ item.advertiser.first_name }} {{ item.advertiser.last_name}}</p>
-                            {% else %}
-                            <p>Не указано</p>
-                            {% endif%}
+                            <a class="font-bold" href="{% url 'advertiser' item.advertiser.id %}">
+                                {% if item.advertiser.first_name and item.advertiser.last_name %}
+                                <p>{{ item.advertiser.first_name }} {{ item.advertiser.last_name}}</p>
+                                {% else %}
+                                <p>Не указано</p>
+                                {% endif%}
+                            </a>
                         </div>
 
 
@@ -139,8 +137,8 @@
                             </div>
 
                             <div>
-                                <p class="text-sm text-gray-500">Cookie:</p>
-                                <p>{{ item.cookie_lifetime }} дней</p>
+                                <p class="text-sm text-gray-500">Цена за целевое действие:</p>
+                                <p>{{ item.cost_per_action }} ₽</p>
                             </div>
                         </div>
                     </div>
@@ -159,9 +157,8 @@
                             </button>
                         </form>
                         <button class="show_project_details btn btn-outline" data-details="project" data-id="{{ item.id }}"
-                            data-name="{{ item.name }}" data-status="{{ item.status }}" data-owner="{{ item.advertiser }}"
-                            data-email="{{ item.advertiser.email }} " data-description="{{ item.description }}"
-                            data-commission="{{ item.commission_rate }}" data-cookie-days="{{ item.cookie_lifetime }}">
+                            data-name="{{ item.name }}" data-status="{{ item.status }}" data-owner="{{ item.advertiser.get_full_name }}" data-cost="{{ item.cost_per_action }}"
+                            data-email="{{ item.advertiser.email }}" data-phone="{{ item.advertiser.phone }}" data-description="{{ item.description }}">
                             <i class="fas fa-eye mr-2"></i> Подробнее
                         </button>
                     </div>

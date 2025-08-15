@@ -27,6 +27,24 @@
         </form>
     </div>
 
+    {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                    {% if "connect_project_success" in message.extra_tags %}
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "already_connected_project" in message.extra_tags %}
+                    <div class="alert alert-error mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
         {% for project in projects %}
@@ -41,8 +59,8 @@
                         <span><a href="{{ project.url }}" class="text-blue-600" target="_blank">перейти</a></span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Комиссия:</span>
-                        <span class="font-bold">{{ project.commission_rate }}%</span>
+                        <span class="text-gray-600">Цена за целевое действие:</span>
+                        <span class="font-bold">{{ project.cost_per_action }} ₽</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Рекламодатель:</span>
@@ -60,8 +78,8 @@
                 <div class="card-actions mt-6">
                     <button class="btn btn-primary btn-block ConnectProjectModal" data-project-id="{{ project.id }}"
                         data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
-                        data-project-advertiser="{{ project.advertiser.username }}"
-                        data-project-commission-rate="{{ project.commission_rate }}"
+                        data-project-advertiser="{{ project.advertiser.get_full_name }}"
+                        data-project-cost="{{ project.cost_per_action }}"
                         data-project-partners-count="{{ project.partners.count }}"
                         data-project-created-at='{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}'
                         data-project-url="{{ project.url }}">

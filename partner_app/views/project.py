@@ -18,7 +18,7 @@ def add_project(request):
     form = ProjectForm(request.POST)
     
     if not form.is_valid():
-        messages.error(request, f"Ошибка валидации: {form.errors.as_text()}", extra_tags="project_add_error")
+        messages.error(request, message=f"Ошибка валидации: {form.errors.as_text()}", extra_tags="project_add_error")
         return redirect("dashboard")
     
     try:
@@ -61,20 +61,20 @@ def add_project(request):
                 example_value=param.get('example', '')
             )
         
-        messages.success(request, "Проект успешно добавлен", extra_tags="project_add_success")
+        messages.success(request, message="Проект успешно добавлен", extra_tags="project_add_success")
     
     except IntegrityError as e:
         print("IntegrityError:", str(e))
-        messages.error(request, "Уже существует проект с таким URL или названием", extra_tags="project_add_error")
+        messages.error(request, message="Уже существует проект с таким URL или названием", extra_tags="project_add_error")
     
     except json.JSONDecodeError as e:
         print("JSONDecodeError:", str(e))
-        messages.error(request, "Ошибка в формате параметров", extra_tags="project_add_error")
+        messages.error(request, message="Ошибка в формате параметров", extra_tags="project_add_error")
     
     except Exception as e:
         print("Unexpected error:", str(e))
         traceback.print_exc()  # Печать полного трейсбека
-        messages.error(request, f"Произошла непредвиденная ошибка: {str(e)}", extra_tags="project_add_error")
+        messages.error(request, message=f"Произошла непредвиденная ошибка: {str(e)}", extra_tags="project_add_error")
         
     return redirect("dashboard")
 
@@ -86,10 +86,10 @@ def delete_project(request, project_id):
     try:
         project = Project.objects.get(id=project_id,advertiser=request.user)
         project.delete()
-        messages.success(request, "Проект успешно удалён",extra_tags="project_delete_success")
+        messages.success(request, message="Проект успешно удалён",extra_tags="project_delete_success")
     except Exception as e:
         print(e)
-        messages.success(request, "Произошла ошибка при удалении проекта",extra_tags="project_delete_error")
+        messages.success(request, message="Произошла ошибка при удалении проекта",extra_tags="project_delete_error")
     return redirect("dashboard")
 
 
@@ -119,7 +119,7 @@ def edit_project(request,project_id):
         messages.error(request, "Ошибка редактирования проекта",extra_tags="project_edit_error")
     
     if not exc:
-        messages.success(request,f"Проект {project.name} успешно отредактирован",extra_tags="project_edit_success")
+        messages.success(request,message=f"Проект {project.name} успешно отредактирован",extra_tags="project_edit_success")
     return redirect("dashboard")
 
 
@@ -131,7 +131,7 @@ def approve_project(request, project_id):
     project.status = 'Подтверждено'
     project.save()
     
-    send_email_via_mailru(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.")
+    send_email_via_mailru(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
     
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,
@@ -150,7 +150,7 @@ def reject_project(request, project_id):
     project.is_active = False
     project.save()
     
-    send_email_via_mailru(project.advertiser.email,f"Проект {project.name} не был одобрен модератором")
+    send_email_via_mailru(project.advertiser.email,f"Проект {project.name} не был одобрен модератором", 'Уведомление об отклонении проекта')
     
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,

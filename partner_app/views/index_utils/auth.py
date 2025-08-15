@@ -9,10 +9,9 @@ def handle_login(request):
         user = form.get_user()
         remember_me = form.cleaned_data.get("remember_me")
         if remember_me:
-            print("remembered")
             request.session.set_expiry(1209600)
         login(request, user)
         return redirect("dashboard")
     else:
-        messages.error(request, "Неверный email или пароль.",extra_tags="login_error")
+        messages.error(request, message="Неверный email или пароль.",extra_tags="login_error")
     return redirect('/?show_modal=auth')

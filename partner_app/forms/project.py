@@ -11,9 +11,7 @@ class ProjectForm(forms.ModelForm):
             'name', 
             'description', 
             'url', 
-            'min_payout', 
-            'commission_rate', 
-            'cookie_lifetime',
+            'cost_per_action',
             'link_template'
         ]
         widgets = {
@@ -33,37 +31,22 @@ class ProjectForm(forms.ModelForm):
                 'placeholder': 'https://example.com',
                 'required':'required',
             }),
-            'min_payout': forms.NumberInput(attrs={
+            'cost_per_action': forms.NumberInput(attrs={
                 'class': 'input input-bordered w-full',
                 'min': 0,
                 'step': '0.01',
                 'placeholder': '5000.00',
                 'required':'required',
             }),
-            'commission_rate': forms.NumberInput(attrs={
-                'class': 'input input-bordered w-full',
-                'min': 0,
-                'max': 100,
-                'value': 10,
-                'required':'required',
-            }),
-            'cookie_lifetime': forms.NumberInput(attrs={
-                'class': 'input input-bordered w-full',
-                'min': 0,
-                'value': 30,
-                'required':'required',
-            }),
-            'link_template': forms.TextInput(attrs={'class': 'input input-bordered w-full',
+            'link_template': forms.URLInput(attrs={'class': 'input input-bordered w-full',
                 'placeholder': 'https://example.com',
                 'required':'required',
             })
         }
         labels = {
             'url':'URL проекта',
-            'min_payout': 'Минимальная выплата ₽',
-            'commission_rate': 'Комиссия (%)',
-            'cookie_lifetime': 'Срок действия куки (дней)',
-            'link_template': 'Адрес партнёрской ссылки'
+            'cost_per_action': 'Цена за целевое действие',
+            'link_template': 'Шаблон партнёрской ссылки'
         }
 
     def __init__(self, *args, **kwargs):
@@ -78,9 +61,9 @@ class ProjectForm(forms.ModelForm):
             raise forms.ValidationError({
                 'description': 'Описание должно содержать минимум 15 символов'
             })
-        if cleaned_data.get('commission_rate', 0) > 100:
+        if cleaned_data.get('cost_per_action', 0) < 1:
             raise forms.ValidationError({
-                'commission_rate': 'Комиссия не может превышать 100%'
+                'cost_per_action': 'Цена за действие не может быть такой маленькой!'
             })
         
         # Валидация шаблона ссылки

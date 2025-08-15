@@ -18,7 +18,7 @@ def _handle_profile_update(request, user):
     )
 
     if not is_correct:
-        messages.error(request,"Имя и фамилия должны содержать только буквы", extra_tags="profile_update_error")
+        messages.error(request,message="Имя и фамилия должны содержать только буквы", extra_tags="profile_update_error")
         return 
 
     # Проверяем, есть ли изменения
@@ -31,7 +31,7 @@ def _handle_profile_update(request, user):
     )
 
     if not has_changes:
-        messages.info(request, "Данные не изменены", extra_tags="profile_update_error")
+        messages.info(request, message="Данные не изменены", extra_tags="profile_update_error")
         return
 
     try:
@@ -46,49 +46,49 @@ def _handle_profile_update(request, user):
         user.full_clean()
         user.save()
         
-        messages.success(request, "Профиль успешно обновлён!", extra_tags="profile_update_success")
+        messages.success(request, message="Профиль успешно обновлён!", extra_tags="profile_update_success")
 
     except ValidationError as e:
         # Обрабатываем ВСЕ ошибки валидации
         for field, errors in e.error_dict.items():
             for error in errors:
                 if field == 'email':
-                    messages.error(request, "Этот email уже занят другим пользователем.", extra_tags="profile_update_error")
+                    messages.error(request, message="Этот email уже занят другим пользователем.", extra_tags="profile_update_error")
                 elif field == 'phone':
-                    messages.error(request, "Этот телефон уже занят другим пользователем.", extra_tags="profile_update_error")
+                    messages.error(request, message="Этот телефон уже занят другим пользователем.", extra_tags="profile_update_error")
                 else:
-                    messages.error(request, f"Ошибка в поле {field}: {error.message}", extra_tags="profile_update_error")
+                    messages.error(request, message=f"Ошибка в поле {field}: {error.message}", extra_tags="profile_update_error")
 
     except IntegrityError as e:
         # Обрабатываем ошибки уникальности из БД
         if 'email' in str(e):
-            messages.error(request, "Этот email уже занят (ошибка базы данных)", extra_tags="profile_update_error")
+            messages.error(request, message="Этот email уже занят (ошибка базы данных)", extra_tags="profile_update_error")
         if 'phone' in str(e):
-            messages.error(request, "Этот телефон уже занят (ошибка базы данных)", extra_tags="profile_update_error")
+            messages.error(request, message="Этот телефон уже занят (ошибка базы данных)", extra_tags="profile_update_error")
 
     except Exception as e:
-        messages.error(request, f"Неизвестная ошибка: {e}.", extra_tags="profile_update_error")
+        messages.error(request, message=f"Неизвестная ошибка: {e}.", extra_tags="profile_update_error")
 
 
 def _handle_password_update(request, user):
     """Изменение пароля пользователя"""
     curr_password = request.POST.get('old_password')
     if not user.check_password(curr_password):
-        messages.error(request, "Текущий пароль введен неверно.",extra_tags="password_update_error")
+        messages.error(request, message="Текущий пароль введен неверно.",extra_tags="password_update_error")
         return
 
 
     new_password = request.POST.get("password1")
     new_password2 = request.POST.get("password2")
     if new_password != new_password2:
-        messages.error(request, "Пароли не совпадают.",extra_tags="password_update_error")
+        messages.error(request, message="Пароли не совпадают.",extra_tags="password_update_error")
         return
 
     if new_password == curr_password:
-        messages.error(request,"Новый пароль не может совпадать со старым.", extra_tags="password_update_error")
+        messages.error(request,message="Новый пароль не может совпадать со старым.", extra_tags="password_update_error")
         return
 
     user.set_password(new_password)
     user.save()
     update_session_auth_hash(request, user)
-    messages.success(request, "Пароль успешно изменен!",extra_tags="password_update_success")
+    messages.success(request, message="Пароль успешно изменен!",extra_tags="password_update_success")
