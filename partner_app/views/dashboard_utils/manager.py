@@ -40,6 +40,8 @@ def handle_manager_dashboard(request):
     
     pending_projects = Project.objects.filter(status='На модерации').order_by('-created_at')
     pending_platforms = Platform.objects.filter(status='На модерации').order_by('-created_at')
+    pending_projects_count = pending_projects.count()
+    pending_platforms_count = pending_platforms.count()
     
     # Применяем поиск если есть
     if moderation_search_q:
@@ -71,7 +73,8 @@ def handle_manager_dashboard(request):
         "users":users,
         "transactions_count":transactions_count,
         "pending_items": pending_items,
-        "pending_items_len": len(pending_list),
+        "pending_projects_count": pending_projects_count,
+        "pending_platforms_count": pending_platforms_count,
         "pending_transactions":transactions_page,
         "moderation_search_q": moderation_search_q,
         "moderation_type_q":moderation_type_q,

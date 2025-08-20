@@ -12,8 +12,8 @@
             <div class="card-body">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-sm opacity-80">На модерации</p>
-                        <p class="text-2xl font-bold">{{ pending_items_len }}</p>
+                        <p class="text-sm opacity-80">Проектов на модерации</p>
+                        <p class="text-2xl font-bold">{{ pending_projects_count }}</p>
                     </div>
                     <i class="fas fa-clock text-3xl opacity-80"></i>
                 </div>
@@ -24,10 +24,10 @@
             <div class="card-body">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-sm opacity-80">Заявок на выплату средств</p>
-                        <p class="text-2xl font-bold">{{ transactions_count }}</p>
+                        <p class="text-sm opacity-80">Площадок на модерации</p>
+                        <p class="text-2xl font-bold">{{ pending_platforms_count }}</p>
                     </div>
-                    <i class="fas fa-exclamation-triangle text-3xl opacity-80"></i>
+                    <i class="fas fa-receipt text-3xl opacity-80"></i>
                 </div>
             </div>
         </div>
@@ -36,10 +36,10 @@
             <div class="card-body">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-sm opacity-80">Новых пользователей</p>
-                        <p class="text-2xl font-bold">{{ new_users_count }}</p>
+                        <p class="text-sm opacity-80">Заявок на выплату средств</p>
+                        <p class="text-2xl font-bold">{{ transactions_count }}</p>
                     </div>
-                    <i class="fas fa-user-plus text-3xl opacity-80"></i>
+                    <i class="fas fa-money-bill text-3xl opacity-80"></i>
                 </div>
             </div>
         </div>
@@ -48,10 +48,10 @@
             <div class="card-body">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-sm opacity-80">Заблокировано</p>
-                        <p class="text-2xl font-bold">3</p>
+                        <p class="text-sm opacity-80">Новых пользователей</p>
+                        <p class="text-2xl font-bold">{{ new_users_count }}</p>
                     </div>
-                    <i class="fas fa-ban text-3xl opacity-80"></i>
+                    <i class="fas fa-user-plus text-3xl opacity-80"></i>
                 </div>
             </div>
         </div>
