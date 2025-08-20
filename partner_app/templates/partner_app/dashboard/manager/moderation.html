@@ -7,25 +7,28 @@
     </div>
 
     <div class="flex justify-between items-center mb-6">
-        <div class="join">
+        <form method="get" action="" class="join w-full">
             <div>
                 <div>
-                    <input class="input input-bordered join-item" placeholder="Поиск...">
+                    <input name="moderation_search" class="input input-bordered join-item"
+                        placeholder="Поиск проектов..." value="{{ moderation_search_q }}">
                 </div>
             </div>
-            <select class="select select-bordered join-item">
-                <option disabled selected>Фильтры</option>
-                <option>Все заявки</option>
-                <option>Проекты</option>
-                <option>Площадки</option>
-                <option>На проверке</option>
+            <select class="select select-bordered join-item" name="moderation_type" required>
+                <option value="" disabled {% if not moderation_type_q %}selected{% endif %}>Фильтры</option>
+                <option value="all" {% if moderation_type_q == 'all' %}selected{% endif %}>Все заявки</option>
+                <option value="projects" {% if moderation_type_q == 'projects' %}selected{% endif %}>Проекты</option>
+                <option value="platforms" {% if moderation_type_q == 'platforms' %}selected{% endif %}>Площадки</option>
             </select>
             <div class="indicator">
-                <button class="btn join-item btn-primary">
+                <button type="submit" class="btn join-item btn-primary">
                     <i class="fas fa-search mr-2"></i> Найти
                 </button>
             </div>
-        </div>
+            <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
+                <i class="fas fa-times mr-2"></i> Сбросить
+            </button>
+        </form>
     </div>
 
     <!-- Уведомления -->

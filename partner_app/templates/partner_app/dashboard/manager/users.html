@@ -8,22 +8,29 @@
 
     <div class="card bg-base-100 shadow-sm sm:shadow-lg">
         <div class="card-body p-4 sm:p-6">
-            <div
-                class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-4">
-                <h2 class="card-title text-lg sm:text-xl">
-                    <i class="fas fa-users text-primary mr-2"></i>
-                    Все пользователи
-                </h2>
-                <div class="w-full sm:w-auto grid grid-cols-1 sm:flex gap-2">
-                    <div class="form-control w-full">
-                        <input type="text" placeholder="Поиск пользователей..." class="input input-bordered w-full">
+            <div class="flex">
+                <form method="get" action="" class="join w-full">
+                    <div>
+                        <div>
+                            <input name="users_search" class="input input-bordered join-item"
+                                placeholder="Поиск пользователей" value="{{ users_search_q }}">
+                        </div>
                     </div>
-                    <select class="select select-bordered w-full sm:w-40">
-                        <option>Все роли</option>
-                        <option>Рекламодатели</option>
-                        <option>Партнеры</option>
+                    <select class="select select-bordered join-item" name="users_type" required>
+                        <option value="" disabled {% if not moderation_type_q %}selected{% endif %}>Фильтры</option>
+                        <option value="all" {% if users_type_q == 'all' %}selected{% endif %}>Все пользователи</option>
+                        <option value="partner" {% if users_type_q == 'partner' %}selected{% endif %}>Партнёры</option>
+                        <option value="advertiser" {% if users_type_q == 'advertiser' %}selected{% endif %}>Рекламодатели</option>
                     </select>
-                </div>
+                    <div class="indicator">
+                        <button type="submit" class="btn join-item btn-primary">
+                            <i class="fas fa-search mr-2"></i> Найти
+                        </button>
+                    </div>
+                    <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
+                        <i class="fas fa-times mr-2"></i> Сбросить
+                    </button>
+                </form>
             </div>
 
             <!-- Уведомления -->

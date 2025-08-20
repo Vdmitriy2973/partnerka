@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_POST
@@ -34,7 +35,10 @@ def create_payout_request(request):
     if amount > balance:
         messages.error(request, message='Сумма превышает доступный баланс.',extra_tags='create_payout_error')
         return redirect('dashboard')
-
+    if amount < float(settings.PARTNER_PAYOUT_SETTINGS["min_amount"]):
+        messages.error(request, message='Сумма превышает доступный баланс.',extra_tags='create_payout_error')
+        return redirect('dashboard')
+    
     # Проверяем выбранный способ вывода
     valid_methods = [choice[0] for choice in PartnerTransaction.PAYMENT_METHOD_CHOICES]
     if payout_method not in valid_methods:
