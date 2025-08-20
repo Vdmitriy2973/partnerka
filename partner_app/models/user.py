@@ -89,7 +89,7 @@ class User(AbstractUser):
         if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', self.email):
             raise ValidationError('Введите корректный email адрес')
         
-        if not re.match(r'^\+?1?\d{11}$',self.phone):
+        if self.phone and not re.match(r'^\+?1?\d{11}$',self.phone):
             raise ValidationError("Телефон должен быть в формате: '+7(999)999-99-99'.")
         
     def save(self,*args,**kwargs):

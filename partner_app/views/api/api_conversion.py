@@ -11,6 +11,11 @@ class ConversionAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
+        if not ["partner","project"] in request.data:
+            return Response(
+                {"detail": "Параметры partner и project необходимы для выполнения запроса!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         partner = User.objects.get(id=int(request.data["partner"]))
         partnerprofile = PartnerProfile.objects.get(
             user=int(partner.id)
