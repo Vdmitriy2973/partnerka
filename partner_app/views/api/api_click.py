@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from partner_app.models import ProjectPartner, Platform,User
+from partner_app.models import ProjectPartner, Platform,User,PartnerProfile,AdvertiserProfile
 from partner_app.serializers import ClickSerializer
 
 class ClickAPIView(APIView):
@@ -10,11 +10,26 @@ class ClickAPIView(APIView):
     
     def post(self, request):
         partner = User.objects.get(id=int(request.data["partner"]))
+        partnerprofile = PartnerProfile.objects.get(
+            user=int(partner.id)
+        )
         if partner.is_currently_blocked():
             return Response(
                 {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
                 status=status.HTTP_400_BAD_REQUEST
             )
+            
+            
+        advertiser = User.objects.get(id=partnership.project.advertiser.id)
+        adv_profile = AdvertiserProfile.objects.get(
+            user=int(advertiser.id)
+        )
+        if advertiser.is_currently_blocked():
+            return Response(
+                {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
         referrer = request.data.get('referrer')
         if referrer:
             platform = Platform.objects.get(
@@ -36,7 +51,7 @@ class ClickAPIView(APIView):
                 {"detail": "Нет такого проекта или партнёр не сотрудничает с ним!"},
                 status=status.HTTP_404_NOT_FOUND
             )
-            
+        
         ip = request.META.get('HTTP_X_FORWARDED_FOR',None)
         if ip:
             ip = ip.split(',')[0]
@@ -44,7 +59,8 @@ class ClickAPIView(APIView):
             ip = request.META.get("REMOTE_ADDR")
         data = {
             "project":request.data["project"],
-            "partner":request.data["partner"],
+            "partner":partnerprofile.id,
+            "advertiser":adv_profile.id,
             "platform":platform_id,
             "partner_link":partnership.partner_links.all()[0].id,
             "partnership":partnership.id,

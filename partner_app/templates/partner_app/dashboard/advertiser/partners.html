@@ -6,7 +6,6 @@
         <h1 class="text-2xl sm:text-3xl font-bold text-base-content">Партнеры</h1>
         <p class="text-sm sm:text-base text-base-content/60">Управление партнерами вашей программы</p>
     </div>
-
     <div class="card bg-base-100 shadow-sm sm:shadow-lg">
         <div class="card-body p-2 sm:p-4 md:p-6">
             <div class="mb-6">
@@ -34,6 +33,25 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Уведомления -->
+            {% if messages %}
+                <div class="mt-4">
+                    {% for message in messages %}
+                        {% if "stop_partnership_success" in message.extra_tags %}
+                        <div class="alert alert-success mb-4">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <b>{{ message }}</b>
+                        </div>
+                        {% elif "stop_partnership_error" in message.extra_tags %}
+                        <div class="alert alert-success mb-4">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <b>{{ message }}</b>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <!-- Мобильный вид (карточки) -->
             <div class="space-y-2 xs:space-y-3 sm:hidden">

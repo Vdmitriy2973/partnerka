@@ -12,6 +12,9 @@ class ConversionAPIView(APIView):
     
     def post(self, request):
         partner = User.objects.get(id=int(request.data["partner"]))
+        partnerprofile = PartnerProfile.objects.get(
+            user=int(partner.id)
+        )
         if partner.is_currently_blocked():
             return Response(
                 {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
@@ -41,7 +44,11 @@ class ConversionAPIView(APIView):
                 {"detail": "Нет такого проекта или партнёр не сотрудничает с ним!"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+        if not project.is_active:
+            return Response(
+                {"detail": "На данный момент проект неактивен!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         if partnership.status != partnership.StatusType.ACTIVE:
             return Response(
                 {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено!"},
@@ -49,10 +56,13 @@ class ConversionAPIView(APIView):
             )
         
         
-        
-        meta = None
+        advertiser = User.objects.get(id=partnership.project.advertiser.id)
+        adv_profile = AdvertiserProfile.objects.get(
+            user=int(advertiser.id)
+        )
+        details = ""
         if 'details' in request.data:
-            meta = request.data["details"]
+            details = request.data["details"]
         if not partnership:
             return Response({"detail":"Нет такого проекта или партнёр не сотрудничает с ним!"},status=status.HTTP_404_NOT_FOUND)
         
@@ -66,9 +76,10 @@ class ConversionAPIView(APIView):
             ip = request.META.get("REMOTE_ADDR")
         data = {
             "project":request.data["project"],
-            "partner":request.data["partner"],
+            "partner":partnerprofile.id,
+            "advertiser":adv_profile.id,
             "amount":project.cost_per_action,
-            "meta":meta,
+            "details":details,
             "partner_link":partnership.partner_links.first().id,
             "partnership":partnership.id,
             "platform":platform_id,
@@ -85,14 +96,6 @@ class ConversionAPIView(APIView):
             partnership.partner.partner_profile.balance += Decimal(project.cost_per_action)
             partnership.project.advertiser.advertiserprofile.save()
             partnership.partner.partner_profile.save()
-            
-            partnerprofile = PartnerProfile.objects.get(
-                user=int(partner.id)
-            )
-            advertiser = User.objects.get(id=partnership.project.advertiser.id)
-            adv_profile = AdvertiserProfile.objects.get(
-                user=int(advertiser.id)
-            )
             
             if 'details' in request.data:
                 title = request.data["details"]

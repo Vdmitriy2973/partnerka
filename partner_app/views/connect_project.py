@@ -9,10 +9,7 @@ from partner_app.utils import send_email_via_mailru
 @login_required
 @require_POST
 def connect_project(request, project_id):
-    try:
-        project = Project.objects.get(id=project_id)
-    except Project.DoesNotExist:
-        return redirect('dashboard')
+    project = get_object_or_404(Project,id=project_id)
     partner = request.user
     
     if ProjectPartner.objects.filter(project=project, partner=partner).exists():
@@ -25,7 +22,6 @@ def connect_project(request, project_id):
     ProjectPartner.objects.create(
         project=project,
         partner=partner,
-        cost_per_action=project.cost_per_action,
         advertiser=project.advertiser
     )
     messages.success(request,message="Вы успешно подключились к проекту рекламодателя",extra_tags="connect_project_success")

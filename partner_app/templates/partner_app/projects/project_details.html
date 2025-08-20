@@ -142,7 +142,7 @@
                                 <td class="hidden md:table-cell">
                                     <span class="whitespace-nowrap">{{ partnership.joined_at|date:"d.m.Y" }}</span>
                                 </td>
-                                <td class="hidden lg:table-cell">{{ partnership.partner.conversions.all|length }}</td>
+                                <td class="hidden lg:table-cell">{{ partnership.partner.partner_profile.conversions.all|length }}</td>
                                 <td class="hidden lg:table-cell">₽{{ partnership.conversions_total }}</td>
                                 <td>
                                     <span

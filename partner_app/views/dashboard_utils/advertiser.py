@@ -25,7 +25,7 @@ def handle_advertiser_dashboard(request):
 
     conversions_count_subquery = Subquery(
         Conversion.objects.filter(partner=OuterRef('id'))
-        .values('partner_id')
+        .values('partner')
         .annotate(count=Count('id'))
         .values('count')[:1]
     )
@@ -42,9 +42,9 @@ def handle_advertiser_dashboard(request):
     ).select_related('advertiser').order_by('-created_at')
 
     last_activity = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).order_by('-created_at')[:5]
-    conversions = Conversion.objects.filter(project__advertiser=request.user).select_related("project").order_by("-created_at")
+    conversions = Conversion.objects.filter(advertiser=request.user.advertiserprofile).select_related("project","partner").order_by("-created_at")
     conversions_count = conversions.count()
-    clicks_count = ClickEvent.objects.filter(project__advertiser=request.user).count()
+    clicks_count = ClickEvent.objects.filter(advertiser=request.user.advertiserprofile).count()
     conversion_percent = 0
     if clicks_count > 0:
         conversion_percent =  f"{(conversions_count / clicks_count) * 100:.2f}"
@@ -54,7 +54,7 @@ def handle_advertiser_dashboard(request):
         chart_data = [
         {
             "id": conv.id,
-            "project": conv.project.name, 
+            "project": conv.project.name if conv.project else None, 
             "date": conv.created_at.strftime("%d-%m-%y"),  
             "amount": float(conv.amount) 
         }

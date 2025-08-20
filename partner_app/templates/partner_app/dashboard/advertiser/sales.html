@@ -158,11 +158,11 @@
                      {% for conversion in conversions %}
                     <tr class="hover:bg-base-200 transition-colors duration-150">
                         <td class="text-xs sm:text-sm">#{{ conversion.id }}</td>
-                        <td><a href="{% url 'partner' conversion.partner.id %}"><div class="font-bold text-xs sm:text-sm"> {{ conversion.partner.get_full_name }} </div></a></td>
+                        <td><a href="{% url 'partner' conversion.partner.id %}"><div class="font-bold text-xs sm:text-sm"> {{ conversion.partner.user.get_full_name }} </div></a></td>
                         <td>
                             <div class="flex items-center gap-2 sm:gap-3">
                                 <div>
-                                    <a href="{% url 'project' conversion.project.id %}"><div class="font-bold text-xs sm:text-sm">{{ conversion.project.name }}</div></a>
+                                    <a {% if conversion.project %}href="{% url 'project' conversion.project.id %}"{% endif %}><div class="font-bold text-xs sm:text-sm">{% if conversion.project %}{{ conversion.project.name }}{% else %}Удалён{% endif %}</div></a>
                                 </div>
                             </div>
                         </td>

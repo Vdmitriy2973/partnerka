@@ -1,8 +1,8 @@
+from decimal import Decimal
+
 from django.db import models
 from django.core.validators import MinLengthValidator,MinValueValidator
 from django.core.exceptions import ValidationError
-
-import re
 
 class Project(models.Model):
     class StatusType(models.TextChoices):
@@ -37,7 +37,7 @@ class Project(models.Model):
     )
 
     description = models.CharField(
-        max_length=300,
+        max_length=200,
         verbose_name="Описание проекта",
         validators=[MinLengthValidator(15)],
         help_text="Например: Интернет магазин с быстрой доставкой, дешёвыми ценами и большим ассортиментом"
@@ -52,10 +52,18 @@ class Project(models.Model):
 
     cost_per_action = models.DecimalField(
         verbose_name="Цена за действие",
-        default=0,
+        default=5,
         max_digits=10,
         decimal_places=2,
-        validators=[MinValueValidator(1)]
+        validators=[MinValueValidator(5)]
+    )
+    
+    first_price = models.DecimalField(
+        verbose_name="Первоначальная цена",
+        default=5,
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(5)]
     )
     
     created_at = models.DateTimeField(
@@ -65,7 +73,7 @@ class Project(models.Model):
     status = models.CharField(
         default="На модерации",
         choices=StatusType,
-        verbose_name='Статус'
+        verbose_name='Статус',
     )
     
     link_template = models.CharField(
@@ -78,36 +86,6 @@ class Project(models.Model):
     )
 
     is_active = models.BooleanField(default=True)
-
-    def generate_partner_link(self, params_dict):
-        """Генерирует партнерскую ссылку на основе шаблона"""
-        if not self.link_template:
-            return self.url  # fallback
-        
-        try:
-            # Заменяем {param} на значения
-            link = self.link_template
-            for param, value in params_dict.items():
-                link = link.replace(f'{{{param}}}', str(value))
-            
-            # Удаляем незаполненные параметры
-            link = re.sub(r'\?[^=]+=\{[^}]+\}&?', '?', link)
-            link = re.sub(r'&[^=]+=\{[^}]+\}', '', link)
-            link = link.replace('?&', '?').replace('&&', '&')
-            if link.endswith('?'):
-                link = link[:-1]
-                
-            return link
-        except Exception:
-            return self.url
-
-    def get_required_params(self):
-        """Возвращает список обязательных параметров"""
-        return list(self.params.filter(param_type='required').values_list('name', flat=True))
-    
-    def get_optional_params(self):
-        """Возвращает список опциональных параметров"""
-        return list(self.params.filter(param_type='optional').values_list('name', flat=True))
     
     @property
     def clicks_count(self):
@@ -127,6 +105,12 @@ class Project(models.Model):
     def clicks_count(self):
         return self.clicks.count()
     
+    @property
+    def get_reduced_price(self):
+        if self.first_price <= 6:
+            return Decimal('5')
+        return Decimal(self.first_price) * Decimal(0.85)
+    
     class Meta:
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
@@ -140,6 +124,23 @@ class Project(models.Model):
 
     def __str__(self):
         return f"Проект #{self.id} Рекламодатель: {self.advertiser.first_name} {self.advertiser.last_name}"
+    
+    def clean(self):
+        super().clean()
+        if self.first_price is None:
+            self.first_price = self.cost_per_action
+        if Decimal(self.cost_per_action) < self.get_reduced_price:
+            raise ValidationError('Цена не должна быть меньше первоначальной, более чем на 15%')
+        if float(self.cost_per_action) <= 4:
+            raise ValidationError('Цена за действие не может быть такой маленькой!')
+        if any(char in self.url for char in [' ', '"', "'"]):
+            raise ValidationError('URL не должен содержать пробелы или кавычки.')
+        if self.url not in self.link_template:
+            raise ValidationError('Шаблон ссылки не может отличаться от URL проекта')
+        
+    def save(self,*args,**kwargs):
+        self.full_clean()
+        super().save(*args,**kwargs)
     
 
 class ProjectParam(models.Model):

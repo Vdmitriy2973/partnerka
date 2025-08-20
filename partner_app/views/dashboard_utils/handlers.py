@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 
+from .common import is_valid_russian_text
+
 def _handle_profile_update(request, user):
     """Обновление профиля с выводом ВСЕХ ошибок"""
     new_first_name = request.POST.get('first_name', '')
@@ -18,8 +20,16 @@ def _handle_profile_update(request, user):
     )
 
     if not is_correct:
-        messages.error(request,message="Имя и фамилия должны содержать только буквы", extra_tags="profile_update_error")
-        return 
+        return messages.error(request,message="Имя и фамилия должны содержать только буквы", extra_tags="profile_update_error")
+        
+    
+    is_russian_text = (
+        is_valid_russian_text(new_first_name) and
+        is_valid_russian_text(new_last_name)
+    )
+    
+    if not is_russian_text:
+        return messages.error(request,message="Имя и фамилия должны быть на русском языке", extra_tags="profile_update_error")
 
     # Проверяем, есть ли изменения
     has_changes = (
@@ -57,14 +67,14 @@ def _handle_profile_update(request, user):
                 elif field == 'phone':
                     messages.error(request, message="Этот телефон уже занят другим пользователем.", extra_tags="profile_update_error")
                 else:
-                    messages.error(request, message=f"Ошибка в поле {field}: {error.message}", extra_tags="profile_update_error")
+                    messages.error(request, message=f"Ошибка: {error.messages[0]}", extra_tags="profile_update_error")
 
     except IntegrityError as e:
         # Обрабатываем ошибки уникальности из БД
         if 'email' in str(e):
-            messages.error(request, message="Этот email уже занят (ошибка базы данных)", extra_tags="profile_update_error")
+            messages.error(request, message="Этот email уже занят", extra_tags="profile_update_error")
         if 'phone' in str(e):
-            messages.error(request, message="Этот телефон уже занят (ошибка базы данных)", extra_tags="profile_update_error")
+            messages.error(request, message="Этот телефон уже занят", extra_tags="profile_update_error")
 
     except Exception as e:
         messages.error(request, message=f"Неизвестная ошибка: {e}.", extra_tags="profile_update_error")

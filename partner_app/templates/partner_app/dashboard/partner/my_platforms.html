@@ -162,29 +162,31 @@
                                             </div>
                                             <ul tabindex="0"
                                                 class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
-                                                <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
-                                                    data-platform-type="{{ platform.get_platform_type_display }}"
-                                                    data-platform-income="{{ platform.income }}"
-                                                    data-platform-created-at="{{ platform.created_at }}"
-                                                    data-platform-status="{{ platform.is_active }}"
-                                                    
-                                                    data-platform-conversions-total="{{ platform.conversions_total }}"
-                                                    data-platform-conversions-count="{{ platform.conversion_count }}"
-                                                    data-platform-conversions-percent="{{ platform.conversions_percent }}"
-                                                    data-platform-clicks-count="{{ platform.clicks_count }}">
-                                                    <a>
-                                                        <i class="fa-solid fa-square-poll-vertical mr-2"></i>Стат.
-                                                    </a>
-                                                </li>
-                                                <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
-                                                    data-platform-name="{{ platform.name }}"
-                                                    data-platform-type="{{ platform.get_platform_type_display }}"
-                                                    data-platform-url="{{ platform.url_or_id }}"
-                                                    data-platform-description="{{ platform.description }}">
-                                                    <a href="#">
-                                                        <i class="fas fa-edit mr-2"></i>Ред.
-                                                    </a>
-                                                </li>
+                                                {% if platform.status != 'Отклонено' %}
+                                                    <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
+                                                        data-platform-type="{{ platform.get_platform_type_display }}"
+                                                        data-platform-income="{{ platform.income }}"
+                                                        data-platform-created-at="{{ platform.created_at }}"
+                                                        data-platform-status="{{ platform.is_active }}"
+                                                        
+                                                        data-platform-conversions-total="{{ platform.conversions_total }}"
+                                                        data-platform-conversions-count="{{ platform.conversion_count }}"
+                                                        data-platform-conversions-percent="{{ platform.conversions_percent }}"
+                                                        data-platform-clicks-count="{{ platform.clicks_count }}">
+                                                        <a>
+                                                            <i class="fa-solid fa-square-poll-vertical mr-2"></i>Стат.
+                                                        </a>
+                                                    </li>
+                                                    <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
+                                                        data-platform-name="{{ platform.name }}"
+                                                        data-platform-type="{{ platform.get_platform_type_display }}"
+                                                        data-platform-url="{{ platform.url_or_id }}"
+                                                        data-platform-description="{{ platform.description }}">
+                                                        <a href="#">
+                                                            <i class="fas fa-edit mr-2"></i>Ред.
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
                                                 <li>
                                                     <a href="#" class="text-error delete-platform-btn"
                                                         data-platform-id="{{ platform.id }}"
@@ -225,29 +227,31 @@
                                     </div>
                                     <ul tabindex="0"
                                         class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                                        <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
-                                            data-platform-type="{{ platform.get_platform_type_display }}"
-                                            data-platform-income="{{ platform.income }}"
-                                            data-platform-created-at="{{ platform.created_at }}"
-                                            data-platform-status="{{ platform.is_active }}"
-                                            
-                                            data-platform-conversions-total="{{ platform.conversions_total }}"
-                                            data-platform-conversions-count="{{ platform.conversion_count }}"
-                                            data-platform-conversions-percent="{{ platform.conversions_percent }}"
-                                            data-platform-clicks-count="{{ platform.clicks_count }}">
-                                            <a>
-                                                <i class="fa-solid fa-square-poll-vertical mr-2"></i>Статистика
-                                            </a>
-                                        </li>
-                                        <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
-                                            data-platform-name="{{ platform.name }}"
-                                            data-platform-type="{{ platform.get_platform_type_display }}"
-                                            data-platform-url="{{ platform.url_or_id }}"
-                                            data-platform-description="{{ platform.description }}">
-                                            <a>
-                                                <i class="fas fa-edit mr-2"></i>Редактировать
-                                            </a>
-                                        </li>
+                                        {% if platform.status != 'Отклонено' %}
+                                            <li class="show_partner_platforms" data-platform-name="{{ platform.name }}"
+                                                data-platform-type="{{ platform.get_platform_type_display }}"
+                                                data-platform-income="{{ platform.income }}"
+                                                data-platform-created-at="{{ platform.created_at }}"
+                                                data-platform-status="{{ platform.is_active }}"
+                                                
+                                                data-platform-conversions-total="{{ platform.conversions_total }}"
+                                                data-platform-conversions-count="{{ platform.conversion_count }}"
+                                                data-platform-conversions-percent="{{ platform.conversions_percent }}"
+                                                data-platform-clicks-count="{{ platform.clicks_count }}">
+                                                <a>
+                                                    <i class="fa-solid fa-square-poll-vertical mr-2"></i>Статистика
+                                                </a>
+                                            </li>
+                                            <li class="edit-platform-btn" data-platform-id="{{ platform.id }}"
+                                                data-platform-name="{{ platform.name }}"
+                                                data-platform-type="{{ platform.get_platform_type_display }}"
+                                                data-platform-url="{{ platform.url_or_id }}"
+                                                data-platform-description="{{ platform.description }}">
+                                                <a>
+                                                    <i class="fas fa-edit mr-2"></i>Редактировать
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                         <li class="text-error delete-platform-btn" data-platform-id="{{ platform.id }}"
                                             data-platform-name="{{ platform.name }}">
                                             <a>

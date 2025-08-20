@@ -1,5 +1,3 @@
-from datetime import date
-from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 
 from django.conf import settings
@@ -89,13 +87,13 @@ def handle_partner_dashboard(request):
         total=Sum('amount')
     )['total'] or 0
     
-    clicks_count = request.user.clicks.count()
+    clicks_count = request.user.partner_profile.clicks.count()
     if not best_link:
         best_link = "Отсутствует"
     if clicks_count == 0:
         conversion = 0
     else:
-        conversion =  f"{(request.user.conversions.count() / request.user.clicks.count()) * 100:.2f}"
+        conversion =  f"{(request.user.partner_profile.conversions.count() / request.user.partner_profile.clicks.count()) * 100:.2f}"
     
     # Пагинация
     platform_page = _paginate(request, platforms, 5, 'platforms_page')
@@ -135,6 +133,7 @@ def handle_partner_dashboard(request):
             
             "last_activity":last_activity,
             
+            "is_payout_available": request.user.partner_profile.balance > float(settings.PARTNER_PAYOUT_SETTINGS["min_amount"]),
             "min_payout": settings.PARTNER_PAYOUT_SETTINGS["min_amount"],
             "fee_percent": settings.PARTNER_PAYOUT_SETTINGS["fee_percent"],
             

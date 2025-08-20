@@ -11,15 +11,15 @@
             <div class="card-body text-center">
                 <i class="fas fa-wallet text-3xl text-primary mb-2"></i>
                 <div class="text-2xl font-bold">₽ {{ user.partner_profile.balance }}</div>
-                {% if not user.partner_profile.balance < min_payout %}
+                {% if is_payout_available %}
                     <p class="text-sm text-base-content/60">Доступно к выводу</p>
-                {% elif user.partner_profile.balance < min_payout %}
+                {% else %}
                     <div class="text-xs mt-2 text-warning">
                         <p class="text-sm text-base-content/60">Минимальная сумма вывода: {{ min_payout }}₽</p>
                     </div>
                 {% endif %}
                 <button id="make_payout" class="btn btn-primary btn-sm mt-2"
-                {% if user.partner_profile.balance < min_payout %}disabled{% endif %}>Вывести</button>
+                {% if not is_payout_available %}disabled{% endif %}>Вывести</button>
             </div>
         </div>
         <div class="card bg-base-100 shadow-lg">
@@ -37,7 +37,24 @@
             </div>
         </div>
     </div>
-
+    {% if messages %}
+        <div class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
+            {% for message in messages %}
+                {% if "create_payout_error" in message.tags %}
+                <div class="alert alert-error mb-4">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+                {% endif %}
+                {% if "create_payout_success" in message.tags %}
+                <div class="alert alert-success mb-4">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2">
             <div class="card bg-base-100 shadow-lg">

@@ -13,7 +13,7 @@ def send_email_via_mailru(recipient,message,subject):
         send_mail(
             subject,
             message,
-            None,  # Использует DEFAULT_FROM_EMAIL
+            None,
             recipient_list,
             fail_silently=False,
         )

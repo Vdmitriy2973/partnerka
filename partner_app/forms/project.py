@@ -25,6 +25,7 @@ class ProjectForm(forms.ModelForm):
                 'rows': 5,
                 'placeholder': 'Опишите ваш проект (минимум 15 символов)...',
                 'required':'required',
+                'max':200
             }),
             'url': forms.URLInput(attrs={
                 'class': 'input input-bordered w-full',
@@ -33,9 +34,9 @@ class ProjectForm(forms.ModelForm):
             }),
             'cost_per_action': forms.NumberInput(attrs={
                 'class': 'input input-bordered w-full',
-                'min': 0,
+                'min': 5,
                 'step': '0.01',
-                'placeholder': '5000.00',
+                'placeholder': 5,
                 'required':'required',
             }),
             'link_template': forms.URLInput(attrs={'class': 'input input-bordered w-full',
@@ -58,21 +59,16 @@ class ProjectForm(forms.ModelForm):
         cleaned_data = super().clean()
         # Дополнительная валидация
         if len(cleaned_data.get('description', '')) < 15:
-            raise forms.ValidationError({
-                'description': 'Описание должно содержать минимум 15 символов'
-            })
-        if cleaned_data.get('cost_per_action', 0) < 1:
-            raise forms.ValidationError({
-                'cost_per_action': 'Цена за действие не может быть такой маленькой!'
-            })
+            raise forms.ValidationError('Описание должно содержать минимум 15 символов')
         
         # Валидация шаблона ссылки
         link_template = cleaned_data.get('link_template', '')
         if link_template:
             if not re.match(r'^https?://', link_template):
-                raise forms.ValidationError({
-                    'link_template': 'Шаблон должен начинаться с http:// или https://'
-                })
+                raise forms.ValidationError('Шаблон должен начинаться с http:// или https://')
+        
+        if cleaned_data.get('url') not in link_template:
+            raise forms.ValidationError('Шаблон ссылки не может отличаться от URL проекта')
         
         return cleaned_data
 

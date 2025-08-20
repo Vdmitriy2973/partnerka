@@ -8,8 +8,15 @@ class Conversion(models.Model):
         blank=True,
         related_name='conversions'
     )
+    advertiser = models.ForeignKey(
+        'AdvertiserProfile',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='conversions'
+    )
     partner = models.ForeignKey(
-        'User',
+        'PartnerProfile',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -38,10 +45,6 @@ class Conversion(models.Model):
         default=None,
         related_name='conversions',
         verbose_name="Сотрудничество партнёра с проектом"
-    )
-    order_id = models.PositiveIntegerField(
-        blank=True,
-        null=True,
     )
     amount = models.DecimalField(
         max_digits=10,

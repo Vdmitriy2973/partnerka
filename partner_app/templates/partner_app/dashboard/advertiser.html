@@ -55,11 +55,10 @@
 {% include "partner_app/dashboard/advertiser/modals/top_up_balance.html" %}
 
 <script>
-    const msg = document.querySelector('.alert');
-if (msg) {
-  setTimeout(function () {
-    msg.remove()
-  }, 5000)
-}
+  const msg = document.querySelectorAll('.alert').forEach(element => {
+    setTimeout(function () {
+      element.remove()
+    }, 5000)
+  });
 </script>
 {% endblock content %}

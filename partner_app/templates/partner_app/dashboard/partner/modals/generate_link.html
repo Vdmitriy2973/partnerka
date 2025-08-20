@@ -26,9 +26,7 @@
                     <div class="relative">
                         <input name="generated_link" type="text" id="generatedLink" class="input input-bordered w-full pr-16" readonly />
                         <button id="copyLinkBtn" class="btn btn-primary absolute right-0 top-0 rounded-l-none" title="Копировать в буфер">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                            </svg>
+                            <i class="fas fa-copy mr-2"></i> Копировать
                         </button>
                     </div>
                 </div>
@@ -98,7 +96,6 @@
             generateBtn.addEventListener('click', function() {
                 try {
                     currentPid = this.dataset.partnerId;
-                    console.log(this.dataset)
                     currentPartnershipId = this.dataset.partnership;
                     currentBaseUrl = this.dataset.projectLink;
                     currentParams = JSON.parse(this.dataset.projectParams);
@@ -197,22 +194,23 @@
 
         // Копировать ссылку
         copyBtn.addEventListener('click', function() {
-            generatedLinkInput.select();
-            document.execCommand('copy');
-            
-            const originalHtml = this.innerHTML;
-            this.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Скопировано!
-            `;
-            this.classList.add('btn-success');
+            event.preventDefault()
+            const textToCopy = document.getElementById('generatedLink');
+            navigator.clipboard.writeText(textToCopy.value)
+                .then(() => {
+                    // Визуальная обратная связь
+                    const btn = document.getElementById('copyLinkBtn');
+                    btn.innerHTML = '<i class="fas fa-check mr-2"></i> Скопировано!';
 
-            setTimeout(() => {
-                this.innerHTML = originalHtml;
-                this.classList.remove('btn-success');
-            }, 2000);
+                    // Возвращаем исходный текст через 2 секунды
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fas fa-copy mr-2"></i> Копировать';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Ошибка копирования: ', err);
+                    alert('Не удалось скопировать. Разрешите доступ к буферу обмена.');
+                });
         });
     });
 </script>

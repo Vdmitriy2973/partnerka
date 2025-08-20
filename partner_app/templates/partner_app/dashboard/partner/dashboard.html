@@ -112,7 +112,7 @@
 
                                 <div class="flex-1">
                                     <p class="font-medium">{{ activity.title }}</p>
-                                    <p class="text-sm text-base-content/60">{{ activity.details }}</p>
+                                    <p class="text-sm text-base-content/60 break-all">{{ activity.details }}</p>
                                 </div>
                                 <span class="text-sm text-base-content/60">{{ activity.created_at|timesince }} назад</span>
                             </div>
@@ -141,8 +141,8 @@
                             <p class="text-3xl font-bold">₽{{ user.partner_profile.balance }}</p>
                         </div>
                         <div class="flex flex-col items-end">
-                            <div class="badge {% if not user.partner_profile.balance < min_payout %}badge-accent{% else %}badge-error{% endif %} mb-2 gap-1">
-                                {% if not user.partner_profile.balance < min_payout %}
+                            <div class="badge {% if is_payout_available %}badge-accent{% else %}badge-error{% endif %} mb-2 gap-1">
+                                {% if is_payout_available %}
                                     <i class="fas fa-check-circle"></i>
                                     Доступно к выплате
                                 {% else %}
@@ -167,8 +167,7 @@
                             <i class="fas fa-globe text-indigo-600 mr-2"></i>
                             Добавить площадку
                         </button>
-                        <!-- <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item" {% if not is_payout_today or not user.partner_profile.balance < min_payout %}disabled{% endif %} -->
-                        <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item" {% if user.partner_profile.balance < min_payout %}disabled{% endif %}
+                        <button id="make_payout_quick" class="btn btn-outline btn-block justify-start nav-item" {% if not is_payout_available %}disabled{% endif %}
                             data-page="payments">
                             <i class="fas fa-credit-card text-green-700 mr-2"></i>
                             Запросить выплату
@@ -209,16 +208,12 @@
                     </h2>
                     <div class="space-y-3">
                         <div class="flex items-center">
-                            <i class="fas fa-book text-info mr-3"></i>
-                            <a href="#" class="link link-hover">База знаний</a>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-comments text-success mr-3"></i>
-                            <a href="#" class="link link-hover">Чат поддержки</a>
+                            <i class="fa-solid fa-receipt text-error mr-3.5"></i>
+                            <a href="#" class="link link-hover">Жалоба</a>
                         </div>
                         <div class="flex items-center">
                             <i class="fas fa-envelope text-warning mr-3"></i>
-                            <a href="#" class="link link-hover">Email: support@site.com</a>
+                            <a href="mailto:support@site.com" class="link link-hover">Email: support@site.com</a>
                         </div>
                     </div>
                 </div>

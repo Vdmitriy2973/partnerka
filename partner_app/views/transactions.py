@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,7 @@ def create_payout_request(request):
     user = request.user
     if not hasattr(user, 'partner_profile'):
         messages.error(request, message='Доступ запрещён.',extra_tags='create_payout_error')
-        return redirect('dashboard')  # поменяйте на нужный URL
+        return redirect('dashboard')
 
     # Получаем данные из формы
     amount_str = request.POST.get('amount')
@@ -27,7 +27,7 @@ def create_payout_request(request):
         MinValueValidator(Decimal('0.01'))(amount)
     except Exception:
         messages.error(request, message='Введите корректную сумму.',extra_tags='create_payout_error')
-        return redirect('some_view_name')
+        return redirect('dashboard')
 
     # Проверяем, что сумма не превышает баланс партнёра
     balance = user.partner_profile.balance
@@ -60,15 +60,11 @@ def create_payout_request(request):
 @login_required
 @require_POST
 def approve_transaction(request, transaction_id,partner_id):
-    transaction = PartnerTransaction.objects.get(
-        id=transaction_id,
-    )
+    transaction = get_object_or_404(PartnerTransaction,id=transaction_id)
     transaction.status = PartnerTransaction.STATUS_CHOICES.COMPLETED
     transaction.save()
     
-    user = User.objects.get(
-        id=partner_id
-    )
+    user = get_object_or_404(User,id=partner_id)
     PartnerActivity.objects.create(
         partner=user.partner_profile,
         activity_type=PartnerActivity.ActivityType.PAYOUT,
@@ -86,16 +82,11 @@ def reject_transaction(request, transaction_id, partner_id):
     
     if rejection_reason is None:
         rejection_reason = f'Модератор отклонил транзакцию №{transaction_id}.'
-    transaction = PartnerTransaction.objects.get(
-        id=transaction_id
-    )
+    transaction = get_object_or_404(PartnerTransaction,id=transaction_id)
     
     transaction.status = PartnerTransaction.STATUS_CHOICES.REJECTED
     transaction.save()
-    
-    user = User.objects.get(
-        id=partner_id
-    )
+    user = get_object_or_404(User,id=partner_id)
     user.partner_profile.balance += transaction.amount
     user.partner_profile.save()
     PartnerActivity.objects.create(

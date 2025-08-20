@@ -11,13 +11,21 @@ class ClickEvent(models.Model):
         related_name='clicks'
     )
     partner = models.ForeignKey(
-        'User',
+        'PartnerProfile',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         verbose_name="ID партнёра",
         related_name='clicks',
         help_text="Необязательно, если клик не от партнёра"
+    )
+    advertiser = models.ForeignKey(
+        'AdvertiserProfile',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name="ID рекламодателя",
+        related_name='clicks'
     )
     platform =  models.ForeignKey(
         'Platform',

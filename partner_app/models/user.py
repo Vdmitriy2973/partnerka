@@ -1,9 +1,11 @@
 from datetime import timedelta
+import re 
 
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -71,7 +73,6 @@ class User(AbstractUser):
         if not self.is_blocked:
             return False
         if self.block_until and timezone.now() > self.block_until:
-            # истёк срок блокировки → снимаем блок
             self.unblock()
             return False
         return True
@@ -82,7 +83,18 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username or self.email
-
+    
+    def clean(self):
+        super().clean()
+        if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', self.email):
+            raise ValidationError('Введите корректный email адрес')
+        
+        if not re.match(r'^\+?1?\d{11}$',self.phone):
+            raise ValidationError("Телефон должен быть в формате: '+7(999)999-99-99'.")
+        
+    def save(self,*args,**kwargs):
+        self.full_clean()
+        super().save(*args,**kwargs)
 
 class PartnerProfile(models.Model):
     user = models.OneToOneField(

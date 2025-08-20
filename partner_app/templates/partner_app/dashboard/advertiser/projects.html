@@ -63,41 +63,41 @@
 
     <!-- Уведомления -->
     {% if messages %}
-    <div class="mt-4">
-        {% for message in messages %}
-        {% if "project_add_success" in message.extra_tags %}
-        <div class="alert alert-success mb-4">
-            <i class="fas fa-check-circle mr-2"></i>
-            <b>{{ message }}</b>
+        <div class="mt-4">
+            {% for message in messages %}
+            {% if "project_add_success" in message.extra_tags %}
+            <div class="alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_add_error" in message.extra_tags %}
+            <div class="alert alert-error mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_edit_error" in message.extra_tags %}
+            <div class="alert alert-error mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_edit_success" in message.extra_tags %}
+            <div class="alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_delete_error" in message.extra_tags %}
+            <div class="alert alert-error mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_delete_success" in message.extra_tags %}
+            <div class="alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% elif "project_add_error" in message.extra_tags %}
-        <div class="alert alert-error mb-4">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <b>{{ message }}</b>
-        </div>
-        {% elif "project_edit_error" in message.extra_tags %}
-        <div class="alert alert-error mb-4">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <b>{{ message }}</b>
-        </div>
-        {% elif "project_edit_success" in message.extra_tags %}
-        <div class="alert alert-success mb-4">
-            <i class="fas fa-check-circle mr-2"></i>
-            <b>{{ message }}</b>
-        </div>
-        {% elif "project_delete_error" in message.extra_tags %}
-        <div class="alert alert-error mb-4">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <b>{{ message }}</b>
-        </div>
-        {% elif "project_delete_success" in message.extra_tags %}
-        <div class="alert alert-success mb-4">
-            <i class="fas fa-check-circle mr-2"></i>
-            <b>{{ message }}</b>
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
     {% endif %}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in projects %}
@@ -131,7 +131,10 @@
                             {% endif %}
                         </span>
                     </div>
-                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">ID проекта:</span>
+                        <span class="font-bold">{{ project.id }}</span>
+                    </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-600">Оплата за действие:</span>
                         <span class="font-bold">{{ project.cost_per_action }} ₽</span>
@@ -170,6 +173,8 @@
                             <li class="editProjectModal" data-project-id="{{ project.id }}"
                                 data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
                                 data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
+                                data-project-cost="{{ project.cost_per_action }}"
+                                data-project-reduced-price="{{ project.get_reduced_price }}"
                                 data-project-is-active="{{ project.is_active|yesno:'true,false' }}">
                                 <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
                             </li>

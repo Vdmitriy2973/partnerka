@@ -18,20 +18,20 @@
 
 <!-- Main Content -->
 <div class="container mx-auto px-4 py-6 max-w-7xl">
-    <!-- Dashboard Page -->
-    {% include "partner_app/dashboard/manager/dashboard.html" %}
+  <!-- Dashboard Page -->
+  {% include "partner_app/dashboard/manager/dashboard.html" %}
 
-    <!-- Moderation Page -->
-    {% include "partner_app/dashboard/manager/moderation.html" %}
+  <!-- Moderation Page -->
+  {% include "partner_app/dashboard/manager/moderation.html" %}
 
-    <!-- Users Management Page -->
-    {% include "partner_app/dashboard/manager/users.html" %}
+  <!-- Users Management Page -->
+  {% include "partner_app/dashboard/manager/users.html" %}
 
-    <!-- Disputes Page -->
-    {% include "partner_app/dashboard/manager/disputes.html" %}
+  <!-- Disputes Page -->
+  {% include "partner_app/dashboard/manager/disputes.html" %}
 
-    <!-- Transactions Page -->
-    {% include "partner_app/dashboard/manager/transactions.html" %}
+  <!-- Transactions Page -->
+  {% include "partner_app/dashboard/manager/transactions.html" %}
 </div>
 
 <!-- Модальное окно деталей -->
@@ -49,12 +49,11 @@
 <!-- Модальное окно блокировки пользователя -->
 {% include "partner_app/dashboard/manager/modals/unblock_user.html" %}
 <script>
-    const msg = document.querySelector('.alert');
-if (msg) {
-  setTimeout(function () {
-    msg.remove()
-  }, 5000)
-}
+  const msg = document.querySelectorAll('.alert').forEach(element => {
+    setTimeout(function () {
+      element.remove()
+    }, 5000)
+  });
 </script>
 
 {% endblock %}

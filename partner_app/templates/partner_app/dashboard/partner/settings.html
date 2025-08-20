@@ -8,41 +8,41 @@
     {% if messages %}
     <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
         {% for message in messages %}
-        {% if "profile_update_error" in message.tags %}
-        <div class="alert alert-error mb-4">
-            <i class="fas fa-exclamation-circle mr-2"></i>
-            <span>{{ message }}</span>
-        </div>
-        {% endif %}
-        {% if "profile_update_success" in message.tags %}
-        <div class="alert alert-success mb-4">
-            <i class="fas fa-check-circle mr-2"></i>
-            <span>{{ message }}</span>
-        </div>
-        {% endif %}
-
-        {% if "password_update_error" in message.tags %}
-        <div class="alert alert-error mb-4">
-            <div>
-                <i class="fas fa-exclamation-triangle mr-2"></i>
+            {% if "profile_update_error" in message.tags %}
+            <div class="alert alert-error mb-4">
+                <i class="fas fa-exclamation-circle mr-2"></i>
                 <span>{{ message }}</span>
             </div>
-        </div>
-        {% endif %}
-        {% if "password_update_success" in message.tags %}
-        <div class="alert alert-success mb-4">
-            <div>
+            {% endif %}
+            {% if "profile_update_success" in message.tags %}
+            <div class="alert alert-success mb-4">
                 <i class="fas fa-check-circle mr-2"></i>
                 <span>{{ message }}</span>
             </div>
-        </div>
-        {% endif %}
-        {% if "update_notifications_success" in message.tags %}
-        <div class="alert alert-success mb-4">
-            <i class="fas fa-check-circle mr-2"></i>
-            <span>{{ message }}</span>
-        </div>
-        {% endif %}
+            {% endif %}
+
+            {% if "password_update_error" in message.tags %}
+            <div class="alert alert-error mb-4">
+                <div>
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if "password_update_success" in message.tags %}
+            <div class="alert alert-success mb-4">
+                <div>
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if "update_notifications_success" in message.tags %}
+            <div class="alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span>{{ message }}</span>
+            </div>
+            {% endif %}
         {% endfor %}
     </div>
     {% endif %}

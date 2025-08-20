@@ -39,6 +39,19 @@
         </div>
     </div>
 
+    {% if messages %}
+    <div class="mt-4">
+        {% for message in messages %}
+            {% if "delete_link_success" in message.extra_tags %}
+            <div class="alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <!-- Таблица с адаптивным поведением -->
     <div class="card bg-base-100 shadow-sm sm:shadow-lg">
         <div class="card-body p-3 sm:p-6">

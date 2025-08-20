@@ -28,6 +28,25 @@
         </div>
     </div>
 
+    <!-- Уведомления -->
+    {% if messages %}
+        <div class="mt-4">
+            {% for message in messages %}
+                {% if "approve_success" in message.extra_tags %}
+                <div class="alert alert-success mb-4">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <b>{{ message }}</b>
+                </div>
+                {% elif "reject_success" in message.extra_tags %}
+                <div class="alert alert-success mb-4">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <b>{{ message }}</b>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="grid grid-cols-1 gap-6">
         {% for item in pending_items %}
         {% if item.partner %}
@@ -74,7 +93,31 @@
                         </div>
                     </div>
                     <div class="card-actions justify-end">
-                        <form method="post" action="{% url 'approve_platform' item.id %}" class="inline">
+                        <button type="submit" class="approve_platform btn btn-success"
+                            data-details="platform" 
+                            data-action-type="approve"
+                            data-id="{{ item.id }}"
+                            data-name="{{ item.name }}" 
+                            data-status="{{ item.status }}"
+                            data-owner="{{ item.partner.get_full_name }}"
+                            data-platform-type="{{ item.get_platform_type_display }}"
+                            data-email="{{ item.partner.email }} "
+                            data-description="{{ item.description }}">
+                                <i class="fas fa-check mr-2"></i> Одобрить
+                        </button>
+                        <button type="submit" class="reject_platform btn btn-error"
+                            data-details="platform" 
+                            data-action-type="reject"
+                            data-id="{{ item.id }}"
+                            data-name="{{ item.name }}" 
+                            data-status="{{ item.status }}"
+                            data-owner="{{ item.partner.get_full_name }}"
+                            data-platform-type="{{ item.get_platform_type_display }}"
+                            data-email="{{ item.partner.email }} "
+                            data-description="{{ item.description }}">
+                                <i class="fas fa-times mr-2"></i> Отклонить
+                        </button>
+                        <!-- <form method="post" action="{% url 'approve_platform' item.id %}" class="inline">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-check mr-2"></i> Одобрить
@@ -86,13 +129,17 @@
                             <button type="submit" class="btn btn-error">
                                 <i class="fas fa-times mr-2"></i> Отклонить
                             </button>
-                        </form>
+                        </form> -->
 
-                        <button class="show_project_details btn btn-outline" data-details="platform" data-id="{{ item.id }}"
-                            data-name="{{ item.name }}" data-status="{{ item.status }}"
+                        <button class="show_project_details btn btn-outline" 
+                            data-details="platform" 
+                            data-id="{{ item.id }}"
+                            data-name="{{ item.name }}" 
+                            data-status="{{ item.status }}"
                             data-owner="{{ item.partner.get_full_name }}"
-                            data-platform-type="{{ item.get_platform_type_display }}" data-email="{{ item.partner.email }} "
-                            data-phone="{{ item.partner.phone }}" data-description="{{ item.description }}">
+                            data-platform-type="{{ item.get_platform_type_display }}"
+                            data-email="{{ item.partner.email }} "
+                            data-description="{{ item.description }}">
                             <i class="fas fa-eye mr-2"></i> Подробнее
                         </button>
                     </div>
@@ -143,7 +190,31 @@
                         </div>
                     </div>
                     <div class="card-actions justify-end">
-                        <form method="post" action="{% url 'approve_project' item.id %}" class="inline">
+                        <button type="submit" class="approve_project btn btn-success"
+                            data-details="project" 
+                            data-action-type="approve"
+                            data-id="{{ item.id }}"
+                            data-name="{{ item.name }}"
+                            data-status="{{ item.status }}"
+                            data-owner="{{ item.advertiser.get_full_name }}"
+                            data-cost="{{ item.cost_per_action }}"
+                            data-email="{{ item.advertiser.email }}"
+                            data-description="{{ item.description }}">
+                            <i class="fas fa-check mr-2"></i> Одобрить
+                        </button>
+                        <button type="submit" class="reject_project btn btn-error"
+                            data-details="project" 
+                            data-action-type="reject"
+                            data-id="{{ item.id }}"
+                            data-name="{{ item.name }}"
+                            data-status="{{ item.status }}"
+                            data-owner="{{ item.advertiser.get_full_name }}"
+                            data-cost="{{ item.cost_per_action }}"
+                            data-email="{{ item.advertiser.email }}"
+                            data-description="{{ item.description }}">
+                                <i class="fas fa-times mr-2"></i> Отклонить
+                        </button>
+                        <!-- <form method="post" action="{% url 'approve_project' item.id %}" class="inline">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-check mr-2"></i> Одобрить
@@ -155,10 +226,16 @@
                             <button type="submit" class="btn btn-error">
                                 <i class="fas fa-times mr-2"></i> Отклонить
                             </button>
-                        </form>
-                        <button class="show_project_details btn btn-outline" data-details="project" data-id="{{ item.id }}"
-                            data-name="{{ item.name }}" data-status="{{ item.status }}" data-owner="{{ item.advertiser.get_full_name }}" data-cost="{{ item.cost_per_action }}"
-                            data-email="{{ item.advertiser.email }}" data-phone="{{ item.advertiser.phone }}" data-description="{{ item.description }}">
+                        </form> -->
+                        <button class="show_project_details btn btn-outline" 
+                            data-details="project" 
+                            data-id="{{ item.id }}"
+                            data-name="{{ item.name }}"
+                            data-status="{{ item.status }}"
+                            data-owner="{{ item.advertiser.get_full_name }}"
+                            data-cost="{{ item.cost_per_action }}"
+                            data-email="{{ item.advertiser.email }}"
+                            data-description="{{ item.description }}">
                             <i class="fas fa-eye mr-2"></i> Подробнее
                         </button>
                     </div>

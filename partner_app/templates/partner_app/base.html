@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% block meta %}{% endblock meta %}
   {% load django_vite %}
   {% vite_hmr_client %}
 
@@ -16,11 +17,11 @@
 
 <body>
   {% include 'partner_app/preloader.html' %}
-  {% block header%}
-  {% endblock header%}
+  {% block header %}
+  {% endblock header %}
 
   <main class="{% block main_class %}{% endblock main_class %}">
-    {% block content %} {% endblock content%}
+    {% block content %} {% endblock content %}
   </main>
 
   <footer class="bg-base-300 text-base-content w-full">
@@ -125,10 +126,6 @@
             <div class="flex items-center space-x-3">
               <i class="fas fa-envelope text-primary w-4"></i>
               <span class="text-base-content/70 text-sm">support@linkoffer.ru</span>
-            </div>
-            <div class="flex items-center space-x-3">
-              <i class="fas fa-phone text-primary w-4"></i>
-              <span class="text-base-content/70 text-sm">+7 (495) 123-45-67</span>
             </div>
             <div class="flex items-center space-x-3">
               <i class="fas fa-clock text-primary w-4"></i>

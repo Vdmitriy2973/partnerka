@@ -27,8 +27,7 @@ def block_user(request, user_id):
     user.block(durations.get(duration))
     
     blocking_type = "навсегда" if not user.block_until else "временно"
-    message = f"""Здравствуйте, {user.get_full_name()}
-
+    message = f"""Здравствуйте, {user.get_full_name()}\n
 Мы вынуждены сообщить, что ваш аккаунт был {blocking_type} заблокирован модератором по причине {user.blocking_reason}.
 Если вы считаете, что произошла ошибка, вы можете связаться с нами для рассмотрения ситуации."""
     send_email_via_mailru(user.email,message,'Уведомление о блокировке аккаунта')

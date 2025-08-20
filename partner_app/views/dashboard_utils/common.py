@@ -24,3 +24,9 @@ def _apply_search(queryset, search_term, fields):
     for field in fields:
         q_objects |= Q(**{f"{field}__icontains": search_term})
     return queryset.filter(q_objects)
+
+def is_valid_russian_text(text: str) -> bool:
+    for char in text:
+        if not (('а' <= char <= 'я') or ('А' <= char <= 'Я') or char in 'ёЁ' or char == '-'):
+            return False
+    return True

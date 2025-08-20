@@ -31,7 +31,7 @@ class Platform(models.Model):
     )
 
     description = models.CharField(
-        max_length=300,
+        max_length=200,
         verbose_name="Описание площадки",
         validators=[MinLengthValidator(15)],
         help_text="Например: Блог о путешествиях"

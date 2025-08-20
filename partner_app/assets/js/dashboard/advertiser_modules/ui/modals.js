@@ -56,22 +56,28 @@ export function setupAdvertiserModals() {
                 url: this.dataset.projectUrl,
                 description: this.dataset.projectDescription,
                 isActive: this.dataset.projectIsActive === 'true',
-                commissionRate: this.dataset.projectCommissionRate,
-                cookieLifetime: this.dataset.projectCookieLifetime,
-                minPayout: this.dataset.projectMinPayout
+                costPerAction: this.dataset.projectCost.replace(',','.'),
+                reducedPrice: this.dataset.projectReducedPrice.replace(',','.')
             };
-
-            console.log(document.getElementById('editProjectMinPayout'));
+            
             // Заполняем форму
             document.getElementById('editProjectId').value = projectData.id;
             document.getElementById('editProjectName').value = projectData.name;
             document.getElementById('editProjectUrl').value = projectData.url;
             document.getElementById('editProjectDescription').value = projectData.description;
             document.getElementById('editProjectActive').checked = projectData.isActive;
-            document.getElementById('editProjectCommission').value = projectData.commissionRate;
-            document.getElementById('editProjectCookie').value = projectData.cookieLifetime;
-            document.getElementById('editProjectMinPayout').value = parseFloat(projectData.minPayout.replace(",", ".")).toFixed(2);
+            document.getElementById('costPerActionInput').value = projectData.costPerAction;
 
+            let reducedPrice;
+            if (Number(projectData.reducedPrice) <= 6)
+            {
+                reducedPrice = 5
+            }
+            else 
+            {
+                reducedPrice = projectData.reducedPrice;
+            }
+            document.getElementById('costPerActionInput').min = reducedPrice;
             // Настраиваем форму
             const form = document.getElementById('editProjectForm');
             form.action = `/edit_project/${projectData.id}`;

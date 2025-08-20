@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Sum, Value, Q
 from django.db.models.functions import Coalesce
@@ -14,15 +14,24 @@ def project_detail(request, project_id):
     # Основная информация о проекте
     try:
         # Проект
-        project = Project.objects.get(id=project_id)
+        project = get_object_or_404(Project,id=project_id)
 
         # Получаем статистику по партнёрам проекта
-        partnership_stats = ProjectPartner.objects.filter(project=project).select_related('partner').annotate(
-            conversions_total=Coalesce(
-                Sum('partner__conversions__amount', filter=Q(partner__conversions__project=project)), 
-                Value(Decimal(0))
+        partnership_stats = (
+            ProjectPartner.objects
+            .filter(project=project)
+            .select_related('partner')
+            .annotate(
+                conversions_total=Coalesce(
+                    Sum(
+                        'conversions__amount',
+                        filter=Q(conversions__project_id=project.id)
+                    ),
+                    Value(Decimal('0.00'))
+                )
             )
-        ).order_by('-joined_at')
+            .order_by('-joined_at')
+        )
 
         # Пагинация
         paginator = Paginator(partnership_stats, 5)

@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Sum
 
 class ProjectPartner(models.Model):
     """Основная модель партнёрства"""
@@ -36,13 +35,6 @@ class ProjectPartner(models.Model):
         choices=StatusType.choices,
         default=StatusType.ACTIVE,
         verbose_name='Статус сотрудничества'
-    )
-    cost_per_action = models.DecimalField(
-        max_digits=5,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        verbose_name='Цена за действие'
     )
     
     joined_at = models.DateTimeField(
