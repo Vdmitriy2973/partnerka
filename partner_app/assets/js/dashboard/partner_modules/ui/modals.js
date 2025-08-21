@@ -186,7 +186,7 @@ export function setupPartnerModals() {
     const editPlatformType = document.getElementById('EditPlatformType');
     const editPlatformDescription = document.getElementById('EditPlatformDescription');
     const editPlatformURL = document.getElementById('EditPlatformURL');
-
+    const editPlatformActive = document.getElementById('editPlatformActive');
 
     editPlatformBtns.forEach(btn => {
       btn.addEventListener('click', function () {
@@ -204,6 +204,7 @@ export function setupPartnerModals() {
 
         editPlatformDescription.value = dataset.platformDescription || '';
         editPlatformURL.value = dataset.platformUrl || '';
+        editPlatformActive.checked = dataset.platformIsActive === 'True'
 
         editPlatformForm.action = `/edit_platform/${dataset.platformId}`
         editPlatformModal.showModal();

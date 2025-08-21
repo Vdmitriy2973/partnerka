@@ -96,16 +96,19 @@
                 <h2 class="card-title text-2xl mb-6">Подключенные партнеры ({{ active_partners }})</h2>
 
                 <!-- Фильтры и поиск -->
-                {% if partnerships %}
                 <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
-                    <div class="join">
-                        <input class="input input-bordered join-item w-full md:w-64" placeholder="Поиск партнеров...">
-                        <button class="btn join-item btn-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
+                    <form method="GET" action="">
+                        <div class="join">
+                            <input class="input input-bordered join-item w-full md:w-64" name="partners_search" placeholder="Поиск партнеров..." value="{{ partners_search_q }}">
+                            <button class="btn join-item btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
+                                Сбросить
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                {% endif %}
 
                 <!-- Таблица партнеров -->
                 <div class="overflow-x-auto">
@@ -130,7 +133,7 @@
                                             <div class="font-bold">
                                                 <a href="{% url 'partner' partnership.partner.id %}"
                                                     class="link link-hover">
-                                                    {{ partnership.partner.first_name }} {{ partnership.partner.last_name }}
+                                                    {{ partnership.partner.get_full_name }}
                                                 </a>
                                             </div>
                                             <div class="text-xs text-gray-500 truncate max-w-[120px] sm:max-w-none">
@@ -142,12 +145,12 @@
                                 <td class="hidden md:table-cell">
                                     <span class="whitespace-nowrap">{{ partnership.joined_at|date:"d.m.Y" }}</span>
                                 </td>
-                                <td class="hidden lg:table-cell">{{ partnership.partner.partner_profile.conversions.all|length }}</td>
+                                <td class="hidden lg:table-cell">{{ partnership.conversions_count }}</td>
                                 <td class="hidden lg:table-cell">₽{{ partnership.conversions_total }}</td>
                                 <td>
                                     <span
-                                        class="badge {% if partnership.status == 'Активен' %}badge-success{% else %}badge-error{% endif %} badge-sm whitespace-nowrap">
-                                        {% if partnership.partner.is_active %}Активен{% else %}Неактивен{% endif %}
+                                        class="badge {% if partnership.status == 'Активен' %}badge-success{% elif partnership.status == 'Приостановлен' %}badge-warning{% endif %} badge-sm whitespace-nowrap">
+                                        {% if partnership.status == 'Активен' %}Активен{% else %}{{ partnership.status }}{% endif %}
                                     </span>
                                 </td>
                             </tr>

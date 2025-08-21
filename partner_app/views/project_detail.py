@@ -2,12 +2,13 @@ from decimal import Decimal
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Sum, Value, Q
+from django.db.models import Sum, Value, Q,Count
 from django.db.models.functions import Coalesce
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from partner_app.models import ProjectPartner,Project
+from partner_app.views.dashboard_utils.common import _paginate
 
 @login_required
 def project_detail(request, project_id):
@@ -28,14 +29,30 @@ def project_detail(request, project_id):
                         filter=Q(conversions__project_id=project.id)
                     ),
                     Value(Decimal('0.00'))
+                ),
+                conversions_count=Coalesce(
+                    Count(
+                        'conversions',
+                        filter=Q(conversions__project_id=project.id)
+                    ),
+                    Value(0)
                 )
             )
             .order_by('-joined_at')
         )
 
+        partners_search_q = request.GET.get('partners_search','').strip()
+        if partners_search_q:
+            partnership_stats = partnership_stats.filter(
+            Q(partner__username__icontains=partners_search_q) |
+            Q(partner__first_name__icontains=partners_search_q) |
+            Q(partner__last_name__icontains=partners_search_q) |
+            Q(partner__email__icontains=partners_search_q) | 
+            Q(partner__phone__icontains=partners_search_q) 
+        )
         # Пагинация
         paginator = Paginator(partnership_stats, 5)
-        page_number = request.GET.get('page')
+        page_number = request.GET.get('partners_page')
         partnerships = paginator.get_page(page_number)
         
         # Общая статистика по проекту
@@ -43,6 +60,7 @@ def project_detail(request, project_id):
         active_partners = partnership_stats.filter(status=ProjectPartner.StatusType.ACTIVE).count()
         
         return render(request, 'partner_app/projects/project_details.html', {
+            'partners_search_q':partners_search_q,
             'project': project,
             'partnerships': partnerships,
             'total_partners': total_partners,

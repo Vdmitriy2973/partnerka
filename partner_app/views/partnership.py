@@ -55,7 +55,7 @@ def stop_partnership_with_project(request,project_id):
 Это письмо отправлено автоматически."""    
 
     send_email_via_mailru(partnership.advertiser.email,message,title)
-    messages.success(request,message="Сотрудничество с партнёром успешно остановлено!",extra_tags="stop_partnership_success")
+    messages.success(request,message="Сотрудничество с рекламодателем успешно остановлено!",extra_tags="stop_partnership_success")
     return redirect('dashboard')
 
 @login_required
@@ -81,7 +81,7 @@ def suspend_partnership(request,project_id):
 Это письмо отправлено автоматически."""
     
     send_email_via_mailru(partnership.advertiser.email,message,title)
-    messages.success(request,message="Сотрудничество с партнёром успешно приостановлено!",extra_tags="suspend_partnership_success")
+    messages.success(request,message="Сотрудничество с рекламодателем успешно приостановлено!",extra_tags="suspend_partnership_success")
     return redirect('dashboard')
 
 
@@ -101,5 +101,5 @@ def resume_partnership(request,project_id):
 После возобновления сотрудничества у вас будут учитываться конверсии/переходы.
 Это письмо отправлено автоматически."""
     send_email_via_mailru(partnership.advertiser.email,message,title)
-    messages.success(request,message="Сотрудничество с партнёром успешно возобновлено!",extra_tags="resume_partnership_success")
+    messages.success(request,message="Сотрудничество с рекламодателем успешно возобновлено!",extra_tags="resume_partnership_success")
     return redirect('dashboard')

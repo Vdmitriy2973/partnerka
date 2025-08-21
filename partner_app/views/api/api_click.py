@@ -13,9 +13,20 @@ class ClickAPIView(APIView):
         partnerprofile = PartnerProfile.objects.get(
             user=int(partner.id)
         )
+        
+        try:
+            partnership = ProjectPartner.objects.get(
+                partner=request.data["partner"],
+                project=request.data["project"]
+            )
+        except ProjectPartner.DoesNotExist:
+            return Response(
+                {"detail": "Нет такого проекта или партнёр не сотрудничает с ним!"},
+                status=status.HTTP_404_NOT_FOUND
+            )
         if partner.is_currently_blocked():
             return Response(
-                {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
+                {"detail": "Сотрудничество с данным партнёром приостановлено, т.к. аккаунт партнёра заблокирован!"},
                 status=status.HTTP_400_BAD_REQUEST
             )
             
@@ -26,7 +37,7 @@ class ClickAPIView(APIView):
         )
         if advertiser.is_currently_blocked():
             return Response(
-                {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
+                {"detail": "Сотрудничество с данным рекламодателем приостановлено, т.к. аккаунт рекламодателя заблокирован!"},
                 status=status.HTTP_400_BAD_REQUEST
             )
             
@@ -40,17 +51,6 @@ class ClickAPIView(APIView):
         else:
             referrer = None
             platform_id = None
-            
-        try:
-            partnership = ProjectPartner.objects.get(
-                partner=request.data["partner"],
-                project=request.data["project"]
-            )
-        except ProjectPartner.DoesNotExist:
-            return Response(
-                {"detail": "Нет такого проекта или партнёр не сотрудничает с ним!"},
-                status=status.HTTP_404_NOT_FOUND
-            )
         
         ip = request.META.get('HTTP_X_FORWARDED_FOR',None)
         if ip:

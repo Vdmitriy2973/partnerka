@@ -35,7 +35,10 @@ def edit_platform(request,platform_id):
         platform.url_or_id = request.POST.get('url', platform.url_or_id)
         platform.platform_type = request.POST.get('type',platform.platform_type)
         platform.description = request.POST.get('description', platform.description)
-        
+        if request.POST.get('is_active',None):
+            platform.is_active = True
+        else:
+            platform.is_active = False
         # Валидация
         platform.full_clean()
         platform.save()
@@ -66,7 +69,7 @@ def approve_platform(request, platform_id):
     platform = get_object_or_404(Platform,id=platform_id)
     platform.status = 'Подтверждено'
     platform.save()
-    send_email_via_mailru(platform.advertiser.email,f"Платформа {platform.name} была одобрена модератором", 'Уведомление о подтверждении платформы')
+    send_email_via_mailru(platform.partner.email,f"Платформа {platform.name} была одобрена модератором", 'Уведомление о подтверждении платформы')
     PartnerActivity.objects.create(
         partner=platform.partner.partner_profile,
         activity_type='approve',

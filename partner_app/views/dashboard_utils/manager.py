@@ -36,7 +36,7 @@ def handle_manager_dashboard(request):
         )
     
     if users_type_q and users_type_q != 'all':
-        users = users.filter(user_type=users_type_q).exclude(user_type='manager')
+        users = users.filter(user_type=users_type_q)
     
     pending_projects = Project.objects.filter(status='На модерации').order_by('-created_at')
     pending_platforms = Platform.objects.filter(status='На модерации').order_by('-created_at')

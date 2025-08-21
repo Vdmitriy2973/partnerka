@@ -11,7 +11,7 @@ class ConversionAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        if not ["partner","project"] in request.data:
+        if not "partner" in request.data or not "project" in request.data:
             return Response(
                 {"detail": "Параметры partner и project необходимы для выполнения запроса!"},
                 status=status.HTTP_400_BAD_REQUEST
@@ -69,7 +69,7 @@ class ConversionAPIView(APIView):
         if 'details' in request.data:
             details = request.data["details"]
         if not partnership:
-            return Response({"detail":"Нет такого проекта или партнёр не сотрудничает с ним!"},status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail":"Нет такого проекта или партнёр не сотрудничает с ним!"},status=status.HTTP_400_BAD_REQUEST)
         
         if len(partnership.partner_links.all()) < 1:
             return Response({"detail":"Конверсия не может быть засчитана, т.к. не сгенерирована партнёрская ссылка!"},status=status.HTTP_400_BAD_REQUEST)
