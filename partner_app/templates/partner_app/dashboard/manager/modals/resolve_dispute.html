@@ -1,6 +1,6 @@
 {% load static %}
 
-<dialog id="resolveDisputeModal" class="modal">
+<dialog id="resolveDisputeModal" class="modal backdrop-blur-sm">
     <div class="modal-box max-w-2xl">
         <h3 class="font-bold text-lg">Решение спора #<span id="disputeId"></span></h3>
         <div class="py-4">
@@ -34,8 +34,7 @@
     </div>
 
     <!-- Фон модального окна -->
-    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
-                           opacity-0 [dialog[open]_&]:opacity-100">
+    <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>

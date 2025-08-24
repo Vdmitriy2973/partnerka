@@ -43,7 +43,7 @@
 <!-- Модальное окно блокировки пользователя -->
 {% include "partner_app/dashboard/manager/modals/unblock_user.html" %}
 <script>
-  const msg = document.querySelectorAll('.alert').forEach(element => {
+  const msg = document.querySelectorAll('.alert-message').forEach(element => {
     setTimeout(function () {
       element.remove()
     }, 5000)

@@ -38,16 +38,16 @@
             <div class="mt-4">
                 {% for message in messages %}
                     {% if "block_user_success" in message.extra_tags %}
+                    <div class="alert-message alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "alert-message unblock_user_success" in message.extra_tags %}
                     <div class="alert alert-success mb-4">
                         <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
-                    {% elif "unblock_user_success" in message.extra_tags %}
-                    <div class="alert alert-success mb-4">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <b>{{ message }}</b>
-                    </div>
-                    {% elif "platform_add_error" in message.extra_tags %}
+                    {% elif "alert-message platform_add_error" in message.extra_tags %}
                     <div class="alert alert-error mb-4">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
                         <b>{{ message }}</b>
@@ -72,7 +72,7 @@
                                 <a href="{% url user.user_type user.id %}">
                                     <div class="font-bold truncate">
                                         {% if user.first_name and user.last_name %}
-                                        {{ user.first_name }} {{ user.last_name }}
+                                        {{ user.get_full_name }}
                                         {% else %}
                                         Не указано
                                         {% endif %}

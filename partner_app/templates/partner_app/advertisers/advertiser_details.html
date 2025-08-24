@@ -4,7 +4,7 @@
 {% block title %} Рекламодатель {{ advertiser }} {% endblock %}
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 py-8 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         
         <!-- Хлебные крошки -->
         <div class="text-sm breadcrumbs mb-6">
@@ -50,7 +50,7 @@
             </h2>
 
             {% if projects %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 {% for project in projects %}
                 <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
                     <div class="card-body">

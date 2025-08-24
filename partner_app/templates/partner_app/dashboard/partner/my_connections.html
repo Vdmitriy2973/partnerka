@@ -54,27 +54,27 @@
         <div class="mt-4">
             {% for message in messages %}
                 {% if "resume_partnership_success" in message.extra_tags %}
-                    <div class="alert alert-success mb-4">
+                    <div class="alert-message alert alert-success mb-4">
                         <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "suspend_partnership_success" in message.extra_tags %}
-                    <div class="alert alert-success mb-4">
+                    <div class="alert-message alert alert-success mb-4">
                         <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "stop_partnership_success" in message.extra_tags %}
-                    <div class="alert alert-success mb-4">
+                    <div class="alert-message alert alert-success mb-4">
                         <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "generate_link_success" in message.extra_tags %}
-                    <div class="alert alert-success mb-4">
+                    <div class="alert-message alert alert-success mb-4">
                         <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "generate_link_error" in message.extra_tags %}
-                    <div class="alert alert-error mb-4">
+                    <div class="alert-message alert alert-error mb-4">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>

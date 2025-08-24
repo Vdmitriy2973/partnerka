@@ -1,21 +1,12 @@
 {% load static %}
 
-<dialog id="PartnerPlatformStatsModal" class="modal">
+<dialog id="PartnerPlatformStatsModal" class="modal backdrop-blur-sm">
     <!-- Модальное окно с анимацией -->
-    <div class="modal-box max-w-md p-0 bg-base-100 rounded-xl shadow-2xl relative overflow-hidden
-              transform transition-all duration-300 ease-out
-              scale-95 opacity-0 translate-y-10
-              [&[open]]:scale-100 [&[open]]:opacity-100 [&[open]]:translate-y-0">
-
-        <!-- Эффект блюра внутри модального окна (только когда открыто) -->
-        <div class="absolute inset-0 bg-base-100/80 backdrop-blur-sm z-[-1] 
-                transition-opacity duration-300
-                opacity-0 [&[open]]:opacity-100" aria-hidden="true"></div>
-
+    <div class="modal-box max-w-4xl">
         <!-- Хедер -->
         <div class="sticky top-0 z-10 bg-base-100/90 p-4 border-b border-base-300 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-primary/10 p-2 rounded-lg animate-pulse">
+                <div class="bg-primary/10 p-2 rounded-lg">
                     <i class="fas fa-chart-pie text-primary text-xl"></i>
                 </div>
                 <h3 class="text-xl font-bold truncate max-w-[200px]" id="platformName">Название площадки</h3>

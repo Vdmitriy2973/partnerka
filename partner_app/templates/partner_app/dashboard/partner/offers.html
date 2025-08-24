@@ -31,12 +31,12 @@
             <div class="mt-4">
                 {% for message in messages %}
                     {% if "connect_project_success" in message.extra_tags %}
-                    <div class="alert alert-success mb-4">
+                    <div class="alert-message alert alert-success mb-4">
                         <i class="fas fa-check-circle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>
                     {% elif "already_connected_project" in message.extra_tags %}
-                    <div class="alert alert-error mb-4">
+                    <div class="alert-message alert alert-error mb-4">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
                         <b>{{ message }}</b>
                     </div>

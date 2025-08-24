@@ -1,7 +1,7 @@
 {% load static %}
 
-<dialog id="resumePartnershipModal" class="modal">
-    <div class="modal-box max-w-md bg-white dark:bg-gray-800 shadow-xl">
+<dialog id="resumePartnershipModal" class="modal backdrop-blur-sm">
+    <div class="modal-box max-w-4xl bg-white dark:bg-gray-800 shadow-xl">
         <!-- Заголовок с иконкой -->
         <div class="flex items-center gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24"
@@ -40,8 +40,7 @@
         </div>
     </div>
 <!-- Фон модального окна -->
-    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
-                           opacity-0 [dialog[open]_&]:opacity-100">
+    <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>

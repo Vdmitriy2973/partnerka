@@ -1,6 +1,6 @@
 {% load static %}
 
-<dialog id="unblockUserModal" class="modal">
+<dialog id="unblockUserModal" class="modal backdrop-blur-sm">
     <div class="modal-box max-w-lg">
         <!-- Кнопка закрытия -->
         <form method="dialog">
@@ -42,7 +42,7 @@
 
     <!-- Фон модального окна -->
     <form method="dialog"
-        class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300 opacity-0 [dialog[open]_&]:opacity-100">
+        class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>

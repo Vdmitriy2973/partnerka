@@ -9,20 +9,20 @@
         <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
             {% for message in messages %}
                 {% if "profile_update_error" in message.tags %}
-                    <div class="alert alert-error">
+                    <div class="alert-message alert alert-error">
                         <i class="fas fa-exclamation-circle mr-2"></i>
                         <span>{{ message }}</span>
                     </div>
                 {% endif %}
                 {% if "profile_update_success" in message.tags %}
-                    <div class="alert alert-success">
+                    <div class="alert-message alert alert-success">
                         <i class="fas fa-check-circle mr-2"></i>
                         <span>{{ message }}</span>
                     </div>
                 {% endif %}
 
                 {% if "password_update_error" in message.tags %}
-                    <div class="alert alert-error shadow-lg">
+                    <div class="alert-message alert alert-error shadow-lg">
                         <div>
                             <i class="fas fa-exclamation-triangle mr-2"></i>
                             <span>{{ message }}</span>
@@ -30,7 +30,7 @@
                     </div>
                 {% endif %}
                 {% if "password_update_success" in message.tags %}
-                    <div class="alert alert-success shadow-lg">
+                    <div class="alert-message alert alert-success shadow-lg">
                         <div>
                             <i class="fas fa-check-circle mr-2"></i>
                             <span>{{ message }}</span>
@@ -38,13 +38,13 @@
                     </div>
                 {% endif %}
                 {% if "update_notifications_success" in message.tags %}
-                    <div class="alert alert-success">
+                    <div class="alert-message alert alert-success">
                         <i class="fas fa-check-circle mr-2"></i>
                         <span>{{ message }}</span>
                     </div>
                 {% endif %}
                 {% if "update_api_error" in message.tags %}
-                    <div class="alert alert-error shadow-lg">
+                    <div class="alert-message alert alert-error shadow-lg">
                         <div>
                             <i class="fas fa-exclamation-triangle mr-2"></i>
                             <span>{{ message }}</span>
@@ -52,7 +52,7 @@
                     </div>
                 {% endif %}
                 {% if "update_api_success" in message.tags %}
-                    <div class="alert alert-success shadow-lg">
+                    <div class="alert-message alert alert-success shadow-lg">
                     <div>
                         <i class="fas fa-check-circle mr-2"></i>
                         <span>{{ message }}</span>

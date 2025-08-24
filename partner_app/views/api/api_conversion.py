@@ -25,13 +25,13 @@ class ConversionAPIView(APIView):
                 {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        referrer = request.data.get('referrer')
-        if referrer:
+        referrer_id = request.data.get('referrer')
+        if referrer_id:
             platform = Platform.objects.get(
-                partner=request.data["partner"],
-                url_or_id__contains=referrer
+                id=referrer_id
             )
-            platform_id = platform.id
+            platform_id = referrer_id
+            referrer = platform.url_or_id
         else:
             referrer = None
             platform_id = None

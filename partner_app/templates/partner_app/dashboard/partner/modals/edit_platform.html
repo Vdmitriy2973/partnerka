@@ -1,4 +1,4 @@
-<dialog id="edit_platform_modal" class="modal sm:modal-middle">
+<dialog id="edit_platform_modal" class="modal sm:modal-middle backdrop-blur-sm">
     <div class="modal-box max-w-2xl relative">
         <!-- Кнопка закрытия (крестик) -->
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="edit_platform_modal.close()">
@@ -85,8 +85,7 @@
     </div>
 
     <!-- Клик вне модального окна для закрытия -->
-    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
-                           opacity-0 [dialog[open]_&]:opacity-100">
+    <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>

@@ -1,4 +1,4 @@
-<dialog id="topup_modal" class="modal">
+<dialog id="topup_modal" class="modal backdrop-blur-sm overflow-hidden">
     <div class="modal-box bg-gradient-to-br from-base-100 to-base-200">
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -88,8 +88,7 @@
     </div>
     
     <!-- Затемнение фона -->
-    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
-                           opacity-0 [dialog[open]_&]:opacity-100">
+    <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>

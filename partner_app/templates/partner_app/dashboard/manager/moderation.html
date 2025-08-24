@@ -36,12 +36,12 @@
         <div class="mt-4">
             {% for message in messages %}
                 {% if "approve_success" in message.extra_tags %}
-                <div class="alert alert-success mb-4">
+                <div class="alert-message alert alert-success mb-4">
                     <i class="fas fa-check-circle mr-2"></i>
                     <b>{{ message }}</b>
                 </div>
                 {% elif "reject_success" in message.extra_tags %}
-                <div class="alert alert-success mb-4">
+                <div class="alert-message alert alert-success mb-4">
                     <i class="fas fa-check-circle mr-2"></i>
                     <b>{{ message }}</b>
                 </div>

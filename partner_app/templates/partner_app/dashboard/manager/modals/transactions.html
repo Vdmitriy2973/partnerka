@@ -1,5 +1,5 @@
 {% load static %}
-<dialog id="payout-details-modal" class="modal">
+<dialog id="payout-details-modal" class="modal backdrop-blur-sm">
     <div class="modal-box max-w-2xl">
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -76,8 +76,7 @@
         </div>
     </div>
 
-    <form method="dialog" class="modal-backdrop backdrop-blur-sm bg-black/30 transition-opacity duration-300
-                           opacity-0 [dialog[open]_&]:opacity-100">
+    <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>
