@@ -1,6 +1,6 @@
 {% load static %}
 <!-- Withdraw Modal -->
-<dialog id="withdrawModal" class="modal backdrop-blur-sm">
+<dialog id="withdrawModal" class="modal">
   <form method="post" action="{% url 'create_payout_request' %}" class="modal-box space-y-4">
     {% csrf_token %}
     <h3 class="font-bold text-lg mb-4">Запросить выплату</h3>
@@ -14,30 +14,15 @@
       <label class="label" for="amount">
         <span class="label-text">Сумма к выводу</span>
       </label>
-      <input
-        id="amount"
-        name="amount"
-        type="number"
-        placeholder="0"
-        min="{{ min_payout }}"
-        max="{{ int_balance }}"
-        step="0.01"
-        class="input input-bordered"
-        required
-        min="0.01"
-      />
+      <input id="amount" name="amount" type="number" placeholder="0" min="{{ min_payout }}" max="{{ int_balance }}"
+        step="0.01" class="input input-bordered" required min="0.01" />
     </div>
 
     <div class="form-control">
       <label class="label" for="transaction_payout_method">
         <span class="label-text">Способ выплаты</span>
       </label>
-      <select
-        id="transaction_payout_method"
-        name="transaction_payout_method"
-        class="select select-bordered"
-        required
-      >
+      <select id="transaction_payout_method" name="transaction_payout_method" class="select select-bordered" required>
         <option value="" disabled selected>Выберите способ</option>
         <option value="card">Банковская карта</option>
         <option value="bank_transfer" disabled>Банковский перевод</option>
@@ -58,7 +43,7 @@
   </form>
 
   <!-- Фон модального окна -->
-  <form method="dialog" class="modal-backdrop">
+  <form method="dialog" class="modal-backdrop backdrop-blur-sm">
     <button>close</button>
   </form>
 </dialog>

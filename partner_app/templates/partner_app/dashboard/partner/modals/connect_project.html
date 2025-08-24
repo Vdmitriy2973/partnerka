@@ -1,5 +1,5 @@
 {% load static %}
-<dialog id="partnerConnectModal" class="modal backdrop-blur-sm">
+<dialog id="partnerConnectModal" class="modal">
     <div class="modal-box w-11/12 max-w-5xl">
         <form method="post" id="partnerConnectForm">
             {% csrf_token %}
@@ -49,7 +49,7 @@
     </div>
 
     <!-- Фон модального окна -->
-    <form method="dialog" class="modal-backdrop">
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm">
         <button>close</button>
     </form>
 </dialog>
