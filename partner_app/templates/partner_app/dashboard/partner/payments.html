@@ -67,25 +67,32 @@
 
                     <div class="space-y-4 sm:hidden">
                         <!-- Мобильные карточки (видно только на мобильных) -->
-                        <div class="card bg-base-100 shadow-sm">
-                            <div class="card-body p-4">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <div class="font-bold">04.06.2024</div>
-                                        <div class="text-primary text-sm mt-1">TXN-2024-001234</div>
+                        {% for transaction in transactions_page %}
+                            <div class="card bg-base-100 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <div class="font-bold">{{ transaction.date|date:"d.m.Y" }}</div>
+                                            <div class="text-primary text-sm mt-1">{{ transaction.id }}</div>
+                                        </div>
+                                        <span class="badge badge-success">Выплачено</span>
                                     </div>
-                                    <span class="badge badge-success">Выплачено</span>
-                                </div>
-                                <div class="divider my-2"></div>
-                                <div class="flex items-center text-lg font-bold">
-                                    ₽15,420
-                                </div>
-                                <div class="flex items-center mt-2 text-sm">
-                                    <i class="fas fa-credit-card mr-2 text-primary"></i>
-                                    Банковская карта
+                                    <div class="divider my-2"></div>
+                                    <div class="flex items-center text-lg font-bold">
+                                        ₽{{ transaction.amount }}
+                                    </div>
+                                    <div class="flex items-center mt-2 text-sm">
+                                        {% if transaction.payment_method == 'card' %}
+                                            <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                            Банковская карта 
+                                        {% elif transaction.payment_method == 'bank_transfer' %}
+                                            <i class="fa-solid fa-suitcase mr-2 text-primary"></i>
+                                            Банковский перевод
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
 
                     <!-- Десктопная таблица (видна только на больших экранах) -->
@@ -105,12 +112,15 @@
                                     {% for transaction in transactions_page %}
                                     <tr>
                                         <td>{{ transaction.date|date:"d.m.Y" }}</td>
-                                        <td class="font-bold">₽{{ transaction.amount}}</td>
+                                        <td class="font-bold">₽{{ transaction.amount }}</td>
                                         <td>
                                             <div class="flex items-center">
                                                 {% if transaction.payment_method == 'card' %}
                                                 <i class="fas fa-credit-card mr-2 text-primary"></i>
                                                 Банковская карта 
+                                                {% elif transaction.payment_method == 'bank_transfer' %}
+                                                <i class="fa-solid fa-suitcase mr-2 text-primary"></i>
+                                                Банковский перевод
                                                 {% endif %}
 
                                             </div>
@@ -131,7 +141,7 @@
                 {% if not transactions_page %}
                     <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
                         <div class="text-gray-300 text-5xl mb-4">
-                            <i class="fas fa-link"></i>
+                            <i class="fas fa-sad-cry"></i>
                         </div>
                         <h3 class="text-lg font-medium text-gray-500 mb-2">Транзакции не найдены</h3>
                         <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться ваши финансовые транзакции</p>

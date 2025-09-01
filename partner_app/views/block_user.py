@@ -30,6 +30,8 @@ def block_user(request, user_id):
     message = f"""Здравствуйте, {user.get_full_name()}\n
 Мы вынуждены сообщить, что ваш аккаунт был {blocking_type} заблокирован модератором по причине {user.blocking_reason}.
 Если вы считаете, что произошла ошибка, вы можете связаться с нами для рассмотрения ситуации."""
-    send_email_via_mailru(user.email,message,'Уведомление о блокировке аккаунта')
+    task = send_email_via_mailru.delay(recipient=user.email,message=message,subject='Уведомление о блокировке аккаунта')
+    print(task.id)
+    print(task.status)
     messages.success(request,message=f'Пользователь {user.get_full_name()} (ID: {user.id}) был заблокирован {duration_cases.get(duration)}',extra_tags="block_user_success")
     return redirect('dashboard')

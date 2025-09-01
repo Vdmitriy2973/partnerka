@@ -28,11 +28,7 @@
                     <div class="flex-1">
                         <h2 class="card-title text-2xl mb-2">
                             <div class="badge badge-primary badge-lg ml-2 animate-pulse">Партнер</div>
-                            {% if partner.first_name and partner.last_name %}
-                                {{ partner.first_name }} {{ partner.last_name }}
-                            {% else %}
-                                {{ partner }}
-                            {% endif %}
+                                {{ partner.username }}
                         </h2>
                         <p class="text-base-content/60">Присоединился {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
                     </div>
@@ -60,10 +56,7 @@
                             <div class="badge badge-outline {% if platform.is_active %}badge-success{% else %}badge-error{% endif %}">
                                 {% if platform.is_active %}Активна{% else %}Приостановлена{% endif %}
                             </div>
-                        </div>
-                        
-                        <p class="text-base-content/80 mb-3 w-full break-words overflow-wrap-break-word whitespace-normal">{{ platform.description|default:"Описание отсутствует" }}</p>
-                        
+                        </div>                        
                         <div class="space-y-2 text-sm">
                             <div class="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -92,6 +85,11 @@
                                 <span class="font-medium">Создана:</span>
                                 <span>{{ platform.created_at|date:"d.m.Y" }}</span>
                             </div>
+
+                            <h4 class="card-title">Описание</h4>
+                            <p class="text-base-content/80 mb-3 w-full break-words overflow-wrap-break-word whitespace-normal">
+                                {{ platform.description|default:"Описание отсутствует" }}
+                            </p>
                         </div>
                     </div>
                 </div>

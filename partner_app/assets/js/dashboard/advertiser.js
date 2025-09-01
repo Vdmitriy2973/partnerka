@@ -4,6 +4,8 @@ import { setupProjectActions } from "./advertiser_modules/api/projectActions.js"
 import { setupApiKeyHandlers } from "./advertiser_modules/api/apiKey.js";
 import { setupQuickLinks } from "./advertiser_modules/ui/quickLinks.js";
 import { setupInfoMessages } from './advertiser_modules/ui/info_messages.js';
+import { setupTopUpBalance } from './advertiser_modules/utils/top_up_balance.js'
+
 
 import "tailwindcss"
 import 'vite/modulepreload-polyfill'
@@ -20,4 +22,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     setupAdvertiserModals();
     setupInfoMessages();
+    setupTopUpBalance();
 });

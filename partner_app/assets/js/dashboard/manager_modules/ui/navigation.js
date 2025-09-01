@@ -12,7 +12,7 @@ export function setupNavigation() {
         });
     }
 
-    const allowed_pages = ['dashboard', 'moderation', 'users', 'disputes','transactions'];
+    const allowed_pages = ['dashboard', 'moderation', 'users', 'disputes','partner_transactions','advertiser_transactions'];
 
     const savedPage = localStorage.getItem('activePage') || 'dashboard';
     if (!allowed_pages.includes(savedPage)) {

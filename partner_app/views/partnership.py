@@ -28,10 +28,13 @@ def stop_partnership_with_partner(request,partner_id):
     date_str = now().strftime("%d.%m.%Y %H:%M")
     
     title = "❌ Остановка сотрудничества"
-    message = f"""Здравствуйте,{user.get_full_name()}!\n\n
+    message = f"""Здравствуйте,{user.get_full_name()}!
+    
+    
+    
 Рекламодатель {request.user.get_full_name()} прекратил сотрудничество с вами {date_str}.\n\n\n
 С уважением,\nКоманда поддержки"""
-    send_email_via_mailru(user.email,message,title)
+    send_email_via_mailru.delay(user.email,message,title)
     messages.success(request,message="Сотрудничество с партнёром успешно остановлено!",extra_tags="stop_partnership_success")
     return redirect('dashboard')
 
@@ -54,7 +57,7 @@ def stop_partnership_with_project(request,project_id):
 - Статистика доступна в личном кабинете\n\n
 Это письмо отправлено автоматически."""    
 
-    send_email_via_mailru(partnership.advertiser.email,message,title)
+    send_email_via_mailru.delay(partnership.advertiser.email,message,title)
     messages.success(request,message="Сотрудничество с рекламодателем успешно остановлено!",extra_tags="stop_partnership_success")
     return redirect('dashboard')
 
@@ -80,7 +83,7 @@ def suspend_partnership(request,project_id):
 
 Это письмо отправлено автоматически."""
     
-    send_email_via_mailru(partnership.advertiser.email,message,title)
+    send_email_via_mailru.delay(partnership.advertiser.email,message,title)
     messages.success(request,message="Сотрудничество с рекламодателем успешно приостановлено!",extra_tags="suspend_partnership_success")
     return redirect('dashboard')
 
@@ -100,6 +103,6 @@ def resume_partnership(request,project_id):
 
 После возобновления сотрудничества у вас будут учитываться конверсии/переходы.
 Это письмо отправлено автоматически."""
-    send_email_via_mailru(partnership.advertiser.email,message,title)
+    send_email_via_mailru.delay(partnership.advertiser.email,message,title)
     messages.success(request,message="Сотрудничество с рекламодателем успешно возобновлено!",extra_tags="resume_partnership_success")
     return redirect('dashboard')

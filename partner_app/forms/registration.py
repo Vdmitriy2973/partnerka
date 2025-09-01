@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth.forms import UserCreationForm
-from partner_app.models import PartnerProfile, AdvertiserProfile, User
+from partner_app.models import PartnerProfile, AdvertiserProfile,AdvertiserRequisites, User
 
 
 class PartnerRegistrationForm(UserCreationForm):
@@ -139,4 +139,5 @@ class AdvertiserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
             AdvertiserProfile.objects.create(user=user)
+            AdvertiserRequisites.objects.create(user=user)
         return user

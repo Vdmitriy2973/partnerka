@@ -4,8 +4,11 @@
 {% vite_hmr_client %}
 {% block title %}Панель управления{% endblock title %}
 {% block head_js_scripts %}
+{% vite_asset 'partner_app/assets/js/index.js' %}
 {% vite_asset 'partner_app/assets/js/dashboard/advertiser.js' %}
-{% endblock %}
+{% endblock head_js_scripts %}
+
+
 
 
 {% block header %}
@@ -31,6 +34,9 @@
 
     <!-- Settings Page -->
     {% include "partner_app/dashboard/advertiser/settings.html" %}
+
+    <!-- Settings Page -->
+    {% include "partner_app/dashboard/advertiser/requisites.html" %}
 </div>
 
 <!-- Модальное окно создания проекта -->
@@ -57,7 +63,8 @@
 <script>
   const msg = document.querySelectorAll('.alert-message').forEach(element => {
     setTimeout(function () {
-      element.remove()
+      element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
+      setTimeout(() => element.remove(), 300);
     }, 5000)
   });
 </script>

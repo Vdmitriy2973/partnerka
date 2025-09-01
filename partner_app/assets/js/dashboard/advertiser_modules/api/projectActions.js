@@ -14,6 +14,7 @@ export function setupProjectActions() {
             document.getElementById('ProjectUrl').textContent = projectData.projectUrl;
             document.getElementById('ProjectTemplateUrl').textContent = projectData.projectLinkTemplate;
             document.getElementById('ProjectConversion').textContent = projectData.projectConversionsPercent + '%';
+            document.getElementById('ProjectTotalConversion').textContent = projectData.projectConversionCount;
 
             // Статус проекта
             const statusBadge = document.getElementById('ProjectStatusBadge');

@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 
-from partner_app.models import Project, Platform, PartnerTransaction
+from partner_app.models import Project, Platform, PartnerTransaction, AdvertiserTransaction
 from .common import _paginate
 
 
@@ -21,10 +21,6 @@ def handle_manager_dashboard(request):
         
     users = User.objects.filter(user_type__in=['partner', 'advertiser']).order_by("-date_joined")
     count = 10
-
-    new_users = User.objects.filter(
-        date_joined__gte=timezone.now() - timedelta(days=1)
-    ).count()
     
     if users_search_q:
         users = users.filter(
@@ -68,6 +64,9 @@ def handle_manager_dashboard(request):
     transactions = PartnerTransaction.objects.filter(status='В обработке').order_by('-date')
     transactions_count = transactions.count()
     transactions_page=_paginate(request,transactions,count,"transactions_page")
+    
+    advertiser_transactions = AdvertiserTransaction.objects.filter(Q(status='В обработке') | Q(status='Обработано')).order_by('-date')
+    adv_transactions_page=_paginate(request,advertiser_transactions,count,"adv_transactions_page")
     context = {
         "user":request.user,
         "users":users,
@@ -76,10 +75,12 @@ def handle_manager_dashboard(request):
         "pending_projects_count": pending_projects_count,
         "pending_platforms_count": pending_platforms_count,
         "pending_transactions":transactions_page,
+        'advertiser_transactions':advertiser_transactions,
+        "advertiser_transactions_count":advertiser_transactions.count(),
+        "adv_transactions_page":adv_transactions_page,
         "moderation_search_q": moderation_search_q,
         "moderation_type_q":moderation_type_q,
         "users_search_q":users_search_q,
         "users_type_q":users_type_q,
-        "new_users_count":new_users
     }
     return render(request, "partner_app/dashboard/manager.html",context)

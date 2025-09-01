@@ -17,7 +17,7 @@ def connect_project(request, project_id):
         return redirect('dashboard')
         
     
-    send_email_via_mailru(project.advertiser.email,f"К проекту {project.name} подключился партнёр {partner.get_full_name()} {partner.email}","Новый партнёр")
+    send_email_via_mailru.delay(project.advertiser.email,f"К проекту {project.name} подключился партнёр {partner.get_full_name()} {partner.email}","Новый партнёр")
     
     ProjectPartner.objects.create(
         project=project,

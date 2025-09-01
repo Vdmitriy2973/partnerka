@@ -4,6 +4,7 @@ import json
 from django.db.models import Sum, Count, Avg, OuterRef, Subquery,Value
 from django.shortcuts import render
 from django.db.models.functions import Coalesce
+from django.conf import settings
 
 from partner_app.models import Project, Conversion,User, AdvertiserActivity, ClickEvent
 from partner_app.forms import ProjectForm, ApiSettingsForm, ProjectParamForm
@@ -68,7 +69,7 @@ def handle_advertiser_dashboard(request):
     
     
     if partners_search_q:
-        partners = _apply_search(partners,partners_search_q,["email"])
+        partners = _apply_search(partners,partners_search_q,["username"])
 
     if projects_search_q:
         projects = _apply_search(projects, projects_search_q,['name'])
@@ -109,6 +110,8 @@ def handle_advertiser_dashboard(request):
         
         "last_activity":last_activity,
         "clicks_count":clicks_count,
+        "fee_percent": settings.PARTNER_PAYOUT_SETTINGS["fee_percent"],
+        "min_payout": settings.PARTNER_PAYOUT_SETTINGS["min_amount"],
     }
     
     return render(request, "partner_app/dashboard/advertiser.html", context)

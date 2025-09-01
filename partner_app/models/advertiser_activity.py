@@ -6,7 +6,8 @@ class AdvertiserActivity(models.Model):
         SALE = 'sale', _('Новая продажа')
         APPROVE = 'approve', _('Одобрение')
         REJECT = 'reject', _('Отклонение')
-        CLICKS = 'clicks', _('Переходы по ссылке')
+        CLICKS = 'clicks', _('Переходы по ссылке'),
+        TOPUP = 'topup',_('Пополнение баланса'),
         SYSTEM = 'system', _('Системное уведомление')
 
     advertiser = models.ForeignKey(

@@ -18,11 +18,10 @@ def add_platform(request):
         messages.success(request,message=f"Платформа {platform.name} успешно добавлена",extra_tags="platform_add_success")
         return redirect("dashboard")
     except Exception as e:
-        print(form.errors)
         if "description" in form.errors:
             messages.error(request, message="Описание должно содержать минимум 15 символов.",extra_tags="platform_add_error")
         else:
-            messages.error(request, message="Уже существует площадка с таким  URL или ID или названием.",extra_tags="platform_add_error")
+            messages.error(request, message="Уже существует площадка с таким  URL или названием.",extra_tags="platform_add_error")
     return redirect("dashboard")
 
 @login_required
@@ -57,7 +56,6 @@ def delete_platform(request, platform_id):
         platform.delete()
         messages.success(request,message=f"Платформа {platform.name} успешно удалена",extra_tags="platform_delete_success")
     except Exception as e:
-        print("error:", e)
         messages.error(request, message="Ошибка удаления платформы.",extra_tags="platform_delete_error")
     return redirect("dashboard")
 
@@ -69,7 +67,7 @@ def approve_platform(request, platform_id):
     platform = get_object_or_404(Platform,id=platform_id)
     platform.status = 'Подтверждено'
     platform.save()
-    send_email_via_mailru(platform.partner.email,f"Платформа {platform.name} была одобрена модератором", 'Уведомление о подтверждении платформы')
+    send_email_via_mailru.delay(platform.partner.email,f"Платформа {platform.name} была одобрена модератором", 'Уведомление о подтверждении платформы')
     PartnerActivity.objects.create(
         partner=platform.partner.partner_profile,
         activity_type='approve',
@@ -87,7 +85,7 @@ def reject_platform(request, platform_id):
     platform.is_active = False
     platform.save()
     reason = request.POST.get('moderation_rejection_reason')
-    send_email_via_mailru(platform.partner.email,f"Платформа {platform.name} была отклонена модератором по причине: {reason}", 'Уведомление об отклонении платформы')
+    send_email_via_mailru.delay(platform.partner.email,f"Платформа {platform.name} была отклонена модератором по причине: {reason}", 'Уведомление об отклонении платформы')
     PartnerActivity.objects.create(
         partner=platform.partner.partner_profile,
         activity_type='reject',

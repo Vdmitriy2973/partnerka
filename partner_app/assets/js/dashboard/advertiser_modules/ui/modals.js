@@ -36,7 +36,7 @@ export function setupAdvertiserModals() {
 
             // Настраиваем форму на правильный URL
             const form = document.getElementById('deleteProjectForm');
-            form.action = `/del_project/${projectId}`;
+            form.action = `/advertiser/del_project/${projectId}`;
 
             // Открываем модальное окно
             deleteProjectModal.showModal();
@@ -80,7 +80,7 @@ export function setupAdvertiserModals() {
             document.getElementById('costPerActionInput').min = reducedPrice;
             // Настраиваем форму
             const form = document.getElementById('editProjectForm');
-            form.action = `/edit_project/${projectData.id}`;
+            form.action = `/advertiser/edit_project/${projectData.id}`;
 
             // Открываем модальное окно
             modal.showModal();
@@ -95,7 +95,7 @@ export function setupAdvertiserModals() {
         stopPartnershipBtns.forEach(btn => {
             btn.addEventListener('click', function () {
                 const dataset = this.dataset;
-                stopPartnershipForm.action = `/stop_partnership_with_partner/${dataset.partnerId}`
+                stopPartnershipForm.action = `/advertiser/stop_partnership_with_partner/${dataset.partnerId}`
                 stopPartnershipModal.showModal();
             })
         })

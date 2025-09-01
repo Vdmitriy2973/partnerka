@@ -1,0 +1,75 @@
+<dialog id="invoice_modal" class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box max-w-md">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+
+        <h3 class="font-bold text-lg mb-6">📋 Выставление счёта</h3>
+
+        <form id="invoiceForm" class="space-y-4">
+            {% csrf_token %}
+            <input id="advertiser_transaction_id" name="transaction_id" hidden>
+            <!-- Информация о человеке -->
+            <div class="grid grid-cols-1 gap-3">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">ФИО получателя:</span>
+                    </label>
+                    <span class="label-text" id="advertiser_transaction_fio">Иван Иванов Иванович</span>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Реквизиты:</span>
+                    </label>
+                    <span class="label-text" id="advertiser_transaction_requisites">Реквизиты</span>
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Email получателя:</span>
+                    </label>
+                    <span class="label-text" id="advertiser_transaction_email">ivanov@example.com</span>
+                </div>
+            </div>
+
+            <!-- Сумма счёта -->
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Сумма платежа:</span>
+                </label>
+                <span class="label-text" id="advertiser_transaction_amount">300₽</span>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Сумма пополнения с учётом комиссии:</span>
+                </label>
+                <span class="label-text" id="advertiser_transaction_amount_with_commission">300₽</span>
+            </div>
+
+            <!-- Загрузка файла -->
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Файл счёта</span>
+                    <span class="label-text-alt">.pdf, .doc или .docx</span>
+                </label>
+
+                <input type="file" name="invoiceFile" class="file-input file-input-bordered w-full"
+                    accept=".pdf,.doc,.docx" required>
+            </div>
+
+            <!-- Кнопки отправки -->
+            <div class="modal-action">
+                <button type="button" class="btn btn-ghost" onclick="invoice_modal.close()">Отмена</button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="loading loading-spinner loading-sm hidden"></span>
+                    📤 Отправить счёт
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Фон модального окна -->
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>

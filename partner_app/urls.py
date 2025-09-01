@@ -5,7 +5,6 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('logout', views.logout_view, name='logout'),
     path('dashboard',views.dashboard,name='dashboard'),
-    path('update_api_settings',views.update_api_settings,name='update_api_settings'),
     path('update_notifications_settings', views.update_notifications_settings, name='update_notifications_settings'),
 
     # Партнёр
@@ -22,10 +21,20 @@ urlpatterns = [
     path('create_payout_request',views.create_payout_request,name='create_payout_request'),
     
     # Рекламодатель
-    path('add_project',views.add_project,name='add_project'),
-    path('del_project/<int:project_id>',views.delete_project,name='del_project'),
-    path('edit_project/<int:project_id>',views.edit_project,name='edit_project'),
-    path('stop_partnership_with_partner/<int:partner_id>',views.stop_partnership_with_partner,name="stop_partnership_with_partner"),
+    path('advertiser/add_project',views.add_project,name='add_project'),
+    path('advertiser/del_project/<int:project_id>',views.delete_project,name='del_project'),
+    path('advertiser/edit_project/<int:project_id>',views.edit_project,name='edit_project'),
+    path('advertiser/stop_partnership_with_partner/<int:partner_id>',views.stop_partnership_with_partner,name="stop_partnership_with_partner"),
+    path('advertiser/top_up_balance',views.top_up_balance,name='top_up_balance'),
+    path('advertiser/update_api_settings',views.update_api_settings,name='update_api_settings'),
+    path('advertiser/update_requisites',views.update_requisites_settings,name='update_requisites_settings'),
+    
+    path('advertiser/dashboard',views.advertiser_dashboard,name='advertiser_dashboard'),
+    path('advertiser/partners',views.advertiser_partners,name='partners'),
+    path('advertiser/sales',views.advertiser_sales,name='sales'),
+    path('advertiser/projects',views.advertiser_projects,name='projects'),
+    path('advertiser/settings',views.advertiser_requisites,name='advertiser_settings'),
+    path('advertiser/requisites',views.advertiser_requisites,name='requisites'),
     
     # Модератор
     ## Действия с платформами партнёров
@@ -39,23 +48,29 @@ urlpatterns = [
     ## Действия с транзакциями партнёров
     path('approve_transaction/<int:transaction_id>/<int:partner_id>',views.approve_transaction,name='approve_transaction'),
     path('reject_transaction/<int:transaction_id>/<int:partner_id>',views.reject_transaction,name='reject_transaction'),
-
+    
+    ## Действия с транзакциями рекламодателей
+    path('manager/proccess_adv_transaction/<int:transaction_id>',views.proccess_adv_transaction,name='proccess_adv_transaction'),
+    path('manager/approve_adv_transaction/<int:transaction_id>',views.approve_adv_transaction,name='approve_adv_transaction'),
+    path('manager/reject_adv_transaction/<int:transaction_id>',views.reject_adv_transaction,name='reject_adv_transaction'),
+    
+    # Блокировка / разблокировка пользователей
+    path("block_user/<int:user_id>",views.block_user,name='block_user'),
+    path("unblock_user/<int:user_id>",views.unblock_user,name='unblock_user'),
+    
     # Просмотр информации о пользователях
     path('partner/<int:partner_id>', views.partner_detail, name='partner'),
     path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser'),
+    path('advertiser_requisites/<int:advertiser_id>',views.advertiser_requisites,name='advertiser_requisites'),
     
-    # Просмотр информации о площадках/проектах
+    # Просмотр информации о проектах
     path('project/<int:project_id>',views.project_detail,name='project'),
     
-    # Просмотр информации о площадках/проектах
+    # Api документация
     path('api/docs',views.api_docs,name='api_docs'),
     
-    # Редирект партнёрской ссылки
+    # REST API 
     path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
     path("api/clicks",views.ClickAPIView.as_view(),name="api_click"),
-
-    path("block_user/<int:user_id>",views.block_user,name='block_user'),
-    path("unblock_user/<int:user_id>",views.unblock_user,name='unblock_user')
-
 ]

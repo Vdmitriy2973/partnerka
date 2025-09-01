@@ -28,24 +28,35 @@
   {% include "partner_app/dashboard/manager/users.html" %}
 
   <!-- Transactions Page -->
-  {% include "partner_app/dashboard/manager/transactions.html" %}
+  {% include "partner_app/dashboard/manager/partner_transactions.html" %}
+
+  <!-- Transactions Page -->
+  {% include "partner_app/dashboard/manager/advertiser_transactions.html" %}
 </div>
 
 <!-- Модальное окно деталей -->
 {% include "partner_app/dashboard/manager/modals/details.html" %}
 
 <!-- Модальное окно для деталей выплаты -->
-{% include "partner_app/dashboard/manager/modals/transactions.html" %}
+{% include "partner_app/dashboard/manager/modals/partner_transactions.html" %}
 
 <!-- Модальное окно блокировки пользователя -->
 {% include "partner_app/dashboard/manager/modals/block_user.html" %}
 
 <!-- Модальное окно блокировки пользователя -->
 {% include "partner_app/dashboard/manager/modals/unblock_user.html" %}
+
+<!-- Модальное окно отправки реквизитов для пополнения баланса партнёра -->
+{% include "partner_app/dashboard/manager/modals/invoice_advertiser.html" %}
+
+<!-- Модальное окно обработки пополнения баланса партнёра -->
+{% include "partner_app/dashboard/manager/modals/adv_transactions.html" %}
+
 <script>
   const msg = document.querySelectorAll('.alert-message').forEach(element => {
     setTimeout(function () {
-      element.remove()
+      element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
+      setTimeout(() => element.remove(), 300);
     }, 5000)
   });
 </script>

@@ -25,16 +25,10 @@
                 <div class="flex flex-col md:flex-row gap-6 items-center">
                     
                     <div class="flex-1">
-                        <h1 class="card-title text-3xl mb-2">
-                            <div class="badge badge-primary badge-lg ml-2">Рекламодатель</div>
-                        </h1>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-user text-primary"></i>
-                                <span class="font-semibold">Контактное лицо:</span>
-                                <span>{{ advertiser.get_full_name|default:"Не указано" }}</span>
-                            </div>
-                        </div>
+                        <h2 class="card-title text-2xl mb-2">
+                            <div class="badge badge-primary badge-lg ml-2 animate-pulse">Рекламодатель</div>
+                                {{ advertiser.username }}
+                        </h2>
                         <p class="text-base-content/60">Присоединился {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
                     </div>
                 </div>
@@ -66,7 +60,7 @@
                         
                         <h4 class="card-title">Описание</h4>
                         <p class="text-base-content/80 mb-3 w-full break-words overflow-wrap-break-word whitespace-normal">
-                            {{ project.description|truncatechars:100 }}
+                            {{ project.description }}
                         </p>
                     </div>
                 </div>

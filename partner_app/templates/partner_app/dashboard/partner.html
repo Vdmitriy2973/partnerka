@@ -77,7 +77,8 @@
 <script>
   const msg = document.querySelectorAll('.alert-message').forEach(element => {
     setTimeout(function () {
-      element.remove()
+      element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
+      setTimeout(() => element.remove(), 300);
     }, 5000)
   });
 </script>

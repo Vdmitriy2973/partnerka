@@ -1,4 +1,4 @@
-<div id="transactions" class="page-section max-w-7xl mx-auto">
+<div id="partner_transactions" class="page-section max-w-7xl mx-auto">
     <div class="mb-8">
         <h1 class="text-3xl font-bold">Выплаты партнёрам</h1>
         <p class="text-base-content/60">Модерация запросов на вывод средств</p>
@@ -43,6 +43,11 @@
                                 <span class="text-sm text-gray-500 truncate max-w-[180px]">
                                     {{ transaction.partner.payout_settings.card_number|truncatechars:6 }}
                                 </span>
+                            {% elif transaction.payment_method == "bank_transfer" %}
+                                <span class="font-medium">Банковская карта</span>
+                                <span class="text-sm text-gray-500 truncate max-w-[180px]">
+                                    {{ transaction.partner.payout_settings.bank_account_number|truncatechars:6 }}
+                                </span>
                             {% endif %}
                         </div>
                     </td>
@@ -64,9 +69,13 @@
                                 data-transaction-amount="{{ transaction.amount }}"
                                 data-transaction-method="{{ transaction.payment_method }}"
                                 {% if transaction.payment_method == 'card' %}
-                                data-transaction-card-number ="{{ transaction.partner.payout_settings.card_number|truncatechars:6 }}"
+                                data-transaction-card-number ="{{ transaction.partner.payout_settings.card_number}}"
                                 data-transaction-card-owner ="{{ transaction.partner.payout_settings.cardholder_name }}"
                                 data-transaction-bank-name ="{{ transaction.partner.payout_settings.bank_name }}"
+                                {% elif transaction.payment_method == "bank_transfer" %}
+                                data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_number }}"
+                                data-transaction-bank-account-holder-name="{{ transaction.partner.payout_settings.bank_account_holder_name }}"
+                                data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_bic }}"
                                 {% endif %}
                                 data-transaction-date="{{ transaction.date|date:'d.m.Y H:i' }}"
                                 data-transaction-status="{{ transaction.status }}">
@@ -80,9 +89,10 @@
                                 data-transaction-amount="{{ transaction.amount }}"
                                 data-transaction-method="{{ transaction.payment_method }}"
                                 {% if transaction.payment_method == 'card' %}
-                                data-transaction-card-number ="{{ transaction.partner.payout_settings.card_number|truncatechars:6 }}"
+                                data-transaction-card-number ="{{ transaction.partner.payout_settings.card_number }}"
                                 data-transaction-card-owner ="{{ transaction.partner.payout_settings.cardholder_name }}"
                                 data-transaction-bank-name ="{{ transaction.partner.payout_settings.bank_name }}"
+                                {% elif transaction.payment_method == "bank_transfer" %}
                                 {% endif %}
                                 data-transaction-date="{{ transaction.date|date:'d.m.Y H:i' }}"
                                 data-transaction-status="{{ transaction.status }}">
@@ -113,7 +123,7 @@
         {% if not pending_transactions %}
             <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
                 <div class="text-gray-300 text-5xl mb-4">
-                    <i class="fas fa-link"></i>
+                    <i class="fas fa-sad-cry"></i>
                 </div>
                 <h3 class="text-lg font-medium text-gray-500 mb-2">Нет транзакций на выплаты</h3>
                 <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться транзакции партнёров</p>

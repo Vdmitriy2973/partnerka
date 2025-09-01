@@ -8,6 +8,7 @@
     </div>
     <div class="card bg-base-100 shadow-sm sm:shadow-lg">
         <div class="card-body p-2 sm:p-4 md:p-6">
+
             <div class="mb-6">
                 <form method="get" action="" class="flex flex-col sm:flex-row gap-2 w-full">
                     <!-- Поле поиска - занимает всю доступную ширину -->
@@ -33,6 +34,7 @@
                     </div>
                 </form>
             </div>
+
 
             <!-- Уведомления -->
             {% if messages %}
@@ -62,9 +64,8 @@
                             <div class="flex items-center gap-2">
                                 <div class="overflow-hidden">
                                     <div class="font-bold text-sm sm:text-base truncate">
-                                        <a href="{% url 'partner' partner.id %}">{{ partner.get_full_name|default:partner.username }}</a>
+                                        <a href="{% url 'partner' partner.id %}">{{ partner.username }}</a>
                                     </div>
-                                    <div class="text-xs opacity-50 truncate">{{ partner.email }}</div>
                                 </div>
                             </div>
                         </div>
@@ -114,10 +115,6 @@
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="text-center py-8 text-gray-400">
-                    Партнёры не найдены
-                </div>
                 {% endfor %}
             </div>
 
@@ -140,10 +137,7 @@
                                     <div class="flex items-center gap-2 sm:gap-3">
                                         <div>
                                             <div class="font-bold text-sm sm:text-base">
-                                                <a href="{% url 'partner' partner.id %}">{{ partner.get_full_name|default:partner.username }}</a>
-                                            </div>
-                                            <div class="text-xs sm:text-sm opacity-50">
-                                                {{ partner.email }}
+                                                <a href="{% url 'partner' partner.id %}">{{ partner.username }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -179,15 +173,19 @@
                                     </div>
                                 </td>
                             </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="6" class="text-center py-6">
-                                    <div class="text-gray-400">Партнёры не найдены</div>
-                                </td>
-                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    {% if not partners %}
+                    <div class="col-span-full text-center py-10">
+                        <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16" id="sales-empty-state">
+                            <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
+                                <i class="fas fa-sad-cry"></i>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент нет партнёров, которые с вами сотрудничают.</h3>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 

@@ -75,7 +75,9 @@ def approve_transaction(request, transaction_id,partner_id):
         title='Выплата средств одобрена',
         details=f'Модератор одобрил транзакцию №{transaction_id}.'
     )
-    send_email_via_mailru(user.email,f"Модератор одобрил транзакцию №{transaction_id} на сумму {transaction.amount}","Одобрена выплата средств")
+    user.partner_profile.balance-=transaction.amount
+    user.partner_profile.save()
+    send_email_via_mailru.delay(user.email,f"Модератор одобрил транзакцию №{transaction_id} на сумму {transaction.amount}","Одобрена выплата средств")
     return redirect('dashboard')
     
     
@@ -89,6 +91,7 @@ def reject_transaction(request, transaction_id, partner_id):
     transaction = get_object_or_404(PartnerTransaction,id=transaction_id)
     
     transaction.status = PartnerTransaction.STATUS_CHOICES.REJECTED
+    transaction.rejection_reason = rejection_reason if not None else ""
     transaction.save()
     user = get_object_or_404(User,id=partner_id)
     user.partner_profile.balance += transaction.amount
@@ -99,5 +102,5 @@ def reject_transaction(request, transaction_id, partner_id):
         title='Выплата средств отклонена',
         details=f"Причина: {rejection_reason}"
     )
-    send_email_via_mailru(user.email,f"Модератор отклонил транзакцию №{transaction_id}.\nПричина: {rejection_reason}","Отклонена выплата средств")
+    send_email_via_mailru.delay(user.email,f"Модератор отклонил транзакцию №{transaction_id}.\nПричина: {rejection_reason}","Отклонена выплата средств")
     return redirect('dashboard')

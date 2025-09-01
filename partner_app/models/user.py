@@ -14,6 +14,14 @@ class User(AbstractUser):
         ('manager', 'Менеджер')
     )
 
+    middle_name = models.CharField(
+        'Отчество',
+        max_length=100,
+        default=None,
+        blank=True,
+        null=True 
+    )
+
     email = models.EmailField('email address', unique=True)
     user_type = models.CharField(
         'Тип пользователя',
@@ -77,6 +85,14 @@ class User(AbstractUser):
             return False
         return True
     
+    def get_ifo(self):
+        """Получить имя, фамилию, отчество"""
+        return f"{self.first_name} {self.last_name} {self.middle_name}"
+    
+    def get_fio(self):
+        """Получить ФИО"""
+        return f"{self.last_name} {self.first_name} {self.middle_name}"
+    
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
@@ -103,11 +119,6 @@ class PartnerProfile(models.Model):
         related_name='partner_profile',
         verbose_name='Пользователь'
     )
-    traffic_source = models.CharField(
-        'Источник трафика',
-        max_length=100,
-        blank=True
-    )
     balance = models.DecimalField(
         verbose_name="Баланс",
         decimal_places=2,
@@ -125,10 +136,6 @@ class PartnerProfile(models.Model):
 
 class AdvertiserProfile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE)
-
-    position = models.CharField(max_length=255)
-    company_name = models.CharField(max_length=255)
-    industry = models.CharField(max_length=100)
     api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None)
     balance = models.DecimalField (
         verbose_name="Мин. выплата",

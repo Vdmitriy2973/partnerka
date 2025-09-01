@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 import warnings
-
+import platform
 
 load_dotenv()
 
@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_celery_results',
     'corsheaders',
     "django_vite",
     'partner_app',
@@ -179,6 +180,21 @@ PARTNER_PAYOUT_SETTINGS = {
     ]
 }
 
+IS_WINDOWS = platform.system().lower() == 'windows'
+IS_LINUX = platform.system().lower() == 'linux'
+
+# Celery settings
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL')
+CELERY_ACCEPT_CONTENT = [os.getenv('CELERY_ACCEPT_CONTENT')]
+CELERY_TASK_SERIALIZER = os.getenv('CELERY_ACCEPT_CONTENT')
+CELERY_RESULT_SERIALIZER = os.getenv('CELERY_ACCEPT_CONTENT')
+CELERY_TIMEZONE = os.getenv('CELERY_TIMEZONE')
+
+
+if IS_WINDOWS:
+    CELERY_WORKER_POOL = 'eventlet'
+CELERY_WORKER_CONCURRENCY = 4
 
 # Email settings
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')

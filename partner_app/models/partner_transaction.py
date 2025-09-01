@@ -32,7 +32,7 @@ class PartnerTransaction(models.Model):
     amount = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        validators=[MinValueValidator(0.01)],
+        validators=[MinValueValidator(300)],
         verbose_name='Сумма'
     )
     payment_method = models.CharField(

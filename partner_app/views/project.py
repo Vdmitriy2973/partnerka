@@ -117,7 +117,6 @@ def edit_project(request,project_id):
         
         project.save()
     except Exception as e:
-        print(e)
         for error in e.messages:
             messages.error(request, f"Ошибка редактирования проекта: {str(error)}",extra_tags="project_edit_error")
         return redirect("dashboard")
@@ -135,7 +134,7 @@ def approve_project(request, project_id):
     project.status = 'Подтверждено'
     project.save()
     
-    send_email_via_mailru(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
+    send_email_via_mailru.delay(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
     
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,
@@ -155,7 +154,7 @@ def reject_project(request, project_id):
     project.is_active = False
     project.save()
     reason = request.POST.get('moderation_rejection_reason')
-    send_email_via_mailru(project.advertiser.email,f"Проект {project.name} был отклонен модератором по причине: {reason}", 'Уведомление об отклонении проекта')
+    send_email_via_mailru.delay(project.advertiser.email,f"Проект {project.name} был отклонен модератором по причине: {reason}", 'Уведомление об отклонении проекта')
     
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,

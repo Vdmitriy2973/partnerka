@@ -15,6 +15,6 @@ def unblock_user(request, user_id):
     message = f"""Здравствуйте, {user.get_full_name()}.\n    
 Рады сообщить, что ваш аккаунт был успешно разблокирован.
 Теперь вы снова можете пользоваться всеми возможностями сервиса."""
-    send_email_via_mailru(user.email,message,'Ваш аккаунт разблокирован')
+    send_email_via_mailru.delay(user.email,message,'Ваш аккаунт разблокирован')
     messages.success(request,message=f'Пользователь {user.get_full_name()} (ID: {user.id}) был разблокирован',extra_tags="unblock_user_success")
     return redirect('dashboard')

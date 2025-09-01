@@ -6,7 +6,7 @@ admin.site.register(User)
 
 @admin.register(PartnerProfile)
 class PartnerProfileAdmin(admin.ModelAdmin):
-    list_display = ('user_id','traffic_source','balance')
+    list_display = ('user_id','balance')
 
 @admin.register(AdvertiserProfile)
 class AdvertiserProfileAdmin(admin.ModelAdmin):

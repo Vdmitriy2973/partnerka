@@ -47,6 +47,11 @@
                     </a>
                 </li>
                 <li>
+                    <a class="nav-item text-lg w-full" data-page="requisites">
+                        <i class="fas fa-landmark"></i> Реквизиты
+                    </a>
+                </li>
+                <li>
                     <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
                         {% csrf_token %}
                         <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-full cursor-pointer">

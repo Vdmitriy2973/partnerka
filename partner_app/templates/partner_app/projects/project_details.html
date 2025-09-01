@@ -133,11 +133,8 @@
                                             <div class="font-bold">
                                                 <a href="{% url 'partner' partnership.partner.id %}"
                                                     class="link link-hover">
-                                                    {{ partnership.partner.get_full_name }}
+                                                    {{ partnership.partner.username }}
                                                 </a>
-                                            </div>
-                                            <div class="text-xs text-gray-500 truncate max-w-[120px] sm:max-w-none">
-                                                {{ partnership.partner.email|default:"Отсутствует" }}
                                             </div>
                                         </div>
                                     </div>

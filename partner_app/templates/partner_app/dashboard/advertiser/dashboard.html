@@ -1,7 +1,7 @@
 {% load static %}
 {% load tz %}
 
-<div id="dashboard" class="page-section active">
+<div id="dashboard" class="page-section">
     <div class="mb-8">
         {% if request.user.first_name %}
         <h1 class="text-3xl font-bold">Добро пожаловать, {{ request.user.first_name }}!</h1>
@@ -11,6 +11,9 @@
         <p class="text-base-content/60">Рекламодатель с {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
     </div>
 
+    <div id="dashboard_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]">
+
+    </div>
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="card bg-gradient-to-r from-primary to-secondary text-white">
@@ -107,6 +110,11 @@
                                         class="w-10 h-10 bg-error text-white rounded-full flex items-center justify-center mr-3">
                                         <i class="fa fa-ban text-sm"></i>
                                     </div>
+                                {% elif activity.activity_type == 'topup' %}
+                                    <div
+                                        class="w-10 h-10 bg-info text-info-content rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-suitcase text-sm"></i>
+                                    </div>  
                                 {% endif %}
 
                                 <div class="flex-1">
@@ -118,7 +126,7 @@
                         {% empty %}
                             <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
                                 <div class="text-gray-300 text-5xl mb-4">
-                                    <i class="fas fa-link"></i>
+                                    <i class="fas fa-sad-cry"></i>
                                 </div>
                                 <h3 class="text-lg font-medium text-gray-500 mb-2">Нет последних активностей</h3>
                                 <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться последние уведомления</p>

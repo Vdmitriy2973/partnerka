@@ -8,6 +8,7 @@ from .common import is_valid_russian_text
 def _handle_profile_update(request, user):
     """Обновление профиля с выводом ВСЕХ ошибок"""
     new_first_name = request.POST.get('first_name', '')
+    new_middle_name = request.POST.get('middle_name','')
     new_last_name = request.POST.get('last_name', '')
     new_email = request.POST.get('email', '').strip()
     new_phone = request.POST.get('phone', '').strip()
@@ -16,11 +17,12 @@ def _handle_profile_update(request, user):
     # Все ли значения введены верно
     is_correct = (
         new_first_name.isalpha() and 
-        new_last_name.isalpha()
+        new_last_name.isalpha() and 
+        new_middle_name.isalpha()
     )
 
     if not is_correct:
-        return messages.error(request,message="Имя и фамилия должны содержать только буквы", extra_tags="profile_update_error")
+        return messages.error(request,message="ФИО должны содержать только буквы", extra_tags="profile_update_error")
         
     
     is_russian_text = (
@@ -29,11 +31,12 @@ def _handle_profile_update(request, user):
     )
     
     if not is_russian_text:
-        return messages.error(request,message="Имя и фамилия должны быть на русском языке", extra_tags="profile_update_error")
+        return messages.error(request,message="ФИО должны быть на русском языке", extra_tags="profile_update_error")
 
     # Проверяем, есть ли изменения
     has_changes = (
         user.first_name != new_first_name or
+        user.middle_name != new_middle_name or
         user.last_name != new_last_name or
         user.email != new_email or
         user.phone != new_phone or
@@ -47,6 +50,7 @@ def _handle_profile_update(request, user):
     try:
         # Получаем данные из запроса
         user.first_name = new_first_name
+        user.middle_name = new_middle_name
         user.last_name = new_last_name
         user.email = new_email
         user.phone = new_phone

@@ -2,6 +2,7 @@ export function setupTransactions() {
     const modal = document.getElementById('payout-details-modal');
 
     // Обработчики для кнопок действий
+    // Одобрить транзакцию
     document.querySelectorAll('.approve-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             let dataset = this.dataset;
@@ -43,6 +44,7 @@ export function setupTransactions() {
         });
     });
 
+    // Отклонить транзакцию
     document.querySelectorAll('.reject-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             let dataset = this.dataset;

@@ -111,6 +111,9 @@
                                         <li><a href="{% url user.user_type user.id %}"><i class="fas fa-eye mr-2"></i>
                                                 Просмотр</a></li>
                                         <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
+                                        {% if user.advertiserprofile %}
+                                        <li><a href="{% url 'advertiser_requisites' user.id %}"><i class="fa-solid fa-file mr-2"></i>Реквизиты</a></li>
+                                        {% endif %}
                                         {% if not user.is_blocked %}
                                             <li class="block_user" data-user-id="{{ user.id }}" data-user-email="{{ user.email }}" data-user-full-name="{{ user.get_full_name }}">
                                                 <a class="text-error">
@@ -134,6 +137,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                {% empty %}
+                <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                    <div class="text-gray-300 text-5xl mb-4">
+                        <i class="fas fa-sad-cry"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-500 mb-2">Нет пользователей</h3>
+                    <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться партнёры и рекламодатели</p>
                 </div>
                 {% endfor %}
             </div>
