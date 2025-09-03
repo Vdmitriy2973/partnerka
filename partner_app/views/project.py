@@ -111,10 +111,13 @@ def edit_project(request,project_id):
         project.description = request.POST.get('description', project.description)
         
         new_price = Decimal(request.POST.get('costPerAction',project.cost_per_action))
-        if project.cost_per_action != new_price:
+        if project.cost_per_action > new_price and project.cost_per_action < new_price * 2:
+            print(project.cost_per_action, new_price)
             project.new_cost_per_action = new_price
             project.status = project.StatusType.PENDING
             messages.success(request,message=f"Проект {project.name} отправлен на модерацию из-за изменения цены",extra_tags="project_edit_success")
+        else:
+            project.cost_per_action = new_price
         if request.POST.get('is_active',None):
             project.is_active = True
         else:
@@ -139,6 +142,18 @@ def approve_project(request, project_id):
     project.status = 'Подтверждено'
     if project.new_cost_per_action and project.new_cost_per_action != project.cost_per_action:
         project.cost_per_action = project.new_cost_per_action
+        project.save()
+        AdvertiserActivity.objects.create(
+        advertiser=project.advertiser.advertiserprofile,
+        activity_type='approve',
+        title='Изменение цены было одобрено',
+        details=f'Цена за действие в {project.name} была изменена.'
+    )
+        send_email_via_mailru.delay(project.advertiser.email,f"Цена за действие в проекте {project.name} была изменена",
+                                    'Уведомление об одобрении в изменении цены за действие в проекте')
+        messages.success(request,message=f"Цена за действие в проекте {project.name} была измена",extra_tags="approve_success")
+        return redirect("dashboard")
+    
     project.save()
     send_email_via_mailru.delay(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
     
@@ -156,10 +171,25 @@ def approve_project(request, project_id):
 @require_POST
 def reject_project(request, project_id):
     project = get_object_or_404(Project,id=project_id)
+    reason = request.POST.get('moderation_rejection_reason')
+    if project.new_cost_per_action and project.new_cost_per_action != project.cost_per_action:
+        project.status = 'Подтверждено'
+        project.new_cost_per_action = project.cost_per_action
+        project.save()
+        AdvertiserActivity.objects.create(
+        advertiser=project.advertiser.advertiserprofile,
+        activity_type='reject',
+        title='Изменение цены было отклонено',
+        details=f'Цена за действие в проекте {project.name} установлена прежней. Причина: {reason}'
+    )
+        send_email_via_mailru.delay(project.advertiser.email,f"Цена за действие в проекте {project.name} установлена прежней по причине: {reason}",
+                                    'Уведомление об отклонении в изменении цены за действие в проекте')
+        messages.success(request,message=f"Цена за действие у проекта {project.name} была установлена прежней",extra_tags="reject_success")
+        return redirect("dashboard")
+        
     project.status = 'Отклонено'
     project.is_active = False
     project.save()
-    reason = request.POST.get('moderation_rejection_reason')
     send_email_via_mailru.delay(project.advertiser.email,f"Проект {project.name} был отклонен модератором по причине: {reason}", 'Уведомление об отклонении проекта')
     
     AdvertiserActivity.objects.create(
