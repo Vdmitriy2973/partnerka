@@ -16,32 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# from django.http import Http404
-# from django.utils.decorators import method_decorator
-# from django.contrib.auth.decorators import login_required
 
-# class CustomAdminSite(admin.AdminSite):
-#     @method_decorator(login_required)
-#     def admin_view(self, view, cacheable=False):
-#         # Получаем стандартно обработанное view от родительского класса
-#         admin_view = super().admin_view(view, cacheable)
-        
-#         # Создаем новую обертку с дополнительными проверками
-#         def wrapped_view(request, *args, **kwargs):
-#             if not (request.user.is_active and request.user.is_staff):
-#                 raise Http404("Page not found")
-#             return admin_view(request, *args, **kwargs)
-            
-#         return wrapped_view
-
-#     def has_permission(self, request):
-#         return (
-#             request.user.is_active and 
-#             request.user.is_authenticated and 
-#             request.user.is_staff
-#         )
-
-# admin_site = CustomAdminSite(name='custom_admin')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

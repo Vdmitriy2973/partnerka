@@ -75,7 +75,7 @@ def handle_partner_dashboard(request):
             is_active=True
     ).order_by('-score').first()
     
-    transactions = PartnerTransaction.objects.filter(partner=request.user)
+    transactions = PartnerTransaction.objects.filter(partner=request.user).order_by('-date')
     total_paid = PartnerTransaction.objects.filter(
         status=PartnerTransaction.STATUS_CHOICES.COMPLETED
     ).aggregate(
@@ -98,11 +98,10 @@ def handle_partner_dashboard(request):
     # Пагинация
     platform_page = _paginate(request, platforms, 5, 'platforms_page')
     available_projects_page = _paginate(request, available_projects, 6, 'projects_page')
-    connected_projects_page = _paginate(request, connected_projects, 6, 'connected_projects_page')
-    transactions_page = _paginate(request,transactions,5,'trasactions_page')
-
+    connected_projects_page = _paginate(request, connected_projects, 5, 'connected_projects_page')
+    transactions_page = _paginate(request,transactions,5,'transactions_page')
+    
     context = {
-        
             "user": request.user,  
             "int_balance":int(request.user.partner_profile.balance),
             'platformForm': PlatformForm(),

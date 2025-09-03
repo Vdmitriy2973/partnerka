@@ -44,8 +44,8 @@ def edit_platform(request,platform_id):
         messages.success(request,message=f"Платформа {platform.name} успешно отредактирована",extra_tags="platform_edit_success")
         return redirect("dashboard")
     except Exception as e:
-        print("error:", e)
-        messages.error(request, "Ошибка редактирования платформы.",extra_tags="platform_edit_error")
+        for num,(field,error) in enumerate(e.message_dict.items()):
+            messages.error(request, f"{num+1}. {field} : {error[0]}",extra_tags="platform_edit_error")
     return redirect("dashboard")
 
 @login_required
@@ -56,7 +56,7 @@ def delete_platform(request, platform_id):
         platform.delete()
         messages.success(request,message=f"Платформа {platform.name} успешно удалена",extra_tags="platform_delete_success")
     except Exception as e:
-        messages.error(request, message="Ошибка удаления платформы.",extra_tags="platform_delete_error")
+        messages.error(request, message=f"Ошибка удаления платформы: {e}",extra_tags="platform_delete_error")
     return redirect("dashboard")
 
 

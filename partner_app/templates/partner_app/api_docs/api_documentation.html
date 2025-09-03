@@ -161,17 +161,6 @@
               </h2>
               
               <div class="mockup-code bg-gray-900 text-gray-100 mt-4">
-                <!-- <pre><code>// JavaScript код для отслеживания кликов</code></pre>
-                <pre><code>document.querySelectorAll('a').forEach(link => {</code></pre>
-                <pre><code>  link.addEventListener('click', () => {</code></pre>
-                <pre><code>    fetch('/track/click', {</code></pre>
-                <pre><code>      method: 'POST',</code></pre>
-                <pre><code>      headers: {</code></pre>
-                <pre><code>        'Authorization': 'Bearer your_api_key'</code></pre>
-                <pre><code>      }</code></pre>
-                <pre><code>    });</code></pre>
-                <pre><code>  });</code></pre>
-                <pre><code>});</code></pre> -->
                 <pre><code>curl -X POST https://linkoffer.ru/api/clicks </code></pre>
                 <pre><code>-H "Authorization: Bearer your_api_key" </code></pre>
                 <pre><code>-H "Content-Type: application/json"</code></pre> 
@@ -203,6 +192,7 @@
                 <pre><code>  "project": "1", // ID проекта (Можно получить при просмотре проекта, нажав на проекте кнопку "Просмотр")</code></pre>
                 <pre><code>  "partner": "1", // ID партнёра (Указывается автоматически при генерации партнёрской ссылки)</code></pre>
                 <pre><code>  "referrer": "1", // ID платформы партнёра (Откуда пришёл пользователь)</code></pre>
+                <pre><code>  "amount": "1", // Цена конверсии (Опциональный параметр, должен быть не менее 85% от установленной цены)</code></pre>
                 <pre><code>  "details": "Конверсия" // Информация о конверсии. Пример: покупка, подписка и т.д. (Опциональный параметр)</code></pre>
                 <pre><code>}'</code></pre>
               </div>

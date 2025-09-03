@@ -120,19 +120,6 @@
                             data-description="{{ item.description }}">
                                 <i class="fas fa-times mr-2"></i> Отклонить
                         </button>
-                        <!-- <form method="post" action="{% url 'approve_platform' item.id %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-check mr-2"></i> Одобрить
-                            </button>
-                        </form>
-
-                        <form method="post" action="{% url 'reject_platform' item.id %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-error">
-                                <i class="fas fa-times mr-2"></i> Отклонить
-                            </button>
-                        </form> -->
 
                         <button class="show_project_details btn btn-outline" 
                             data-details="platform" 
@@ -178,7 +165,7 @@
                             <p class="line-clamp-2">{{ item.description|default:'Отсутсвует'|truncatechars:50 }}</p>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid  {% if not item.new_cost_per_action or item.new_cost_per_action == item.cost_per_action %}grid-cols-2{% else %}grid-cols-3{% endif %} gap-2">
                             <div>
                                 <p class="text-sm text-gray-500">URL:</p>
                                 <a href="{{ item.url }}" target="_blank" class="link link-primary truncate block">
@@ -186,10 +173,21 @@
                                 </a>
                             </div>
 
-                            <div>
-                                <p class="text-sm text-gray-500">Цена за целевое действие:</p>
-                                <p>{{ item.cost_per_action }} ₽</p>
-                            </div>
+                            {% if not item.new_cost_per_action  or item.new_cost_per_action == item.cost_per_action %}
+                                <div>
+                                    <p class="text-sm text-gray-500">Цена за целевое действие:</p>
+                                    <p>{{ item.cost_per_action }} ₽</p>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <p class="text-sm text-gray-500">Новая цена за целевое действие:</p>
+                                    <p>{{ item.new_cost_per_action }} ₽</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Старая цена за целевое действие:</p>
+                                    <p>{{ item.cost_per_action }} ₽</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="card-actions justify-end">
@@ -217,19 +215,7 @@
                             data-description="{{ item.description }}">
                                 <i class="fas fa-times mr-2"></i> Отклонить
                         </button>
-                        <!-- <form method="post" action="{% url 'approve_project' item.id %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-check mr-2"></i> Одобрить
-                            </button>
-                        </form>
-
-                        <form method="post" action="{% url 'reject_project' item.id %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-error">
-                                <i class="fas fa-times mr-2"></i> Отклонить
-                            </button>
-                        </form> -->
+                        
                         <button class="show_project_details btn btn-outline" 
                             data-details="project" 
                             data-id="{{ item.id }}"

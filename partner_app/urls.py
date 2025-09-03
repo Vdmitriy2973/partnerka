@@ -20,6 +20,15 @@ urlpatterns = [
     path('update_payout_settings',views.payout_settings_view,name='update_payout_settings'),
     path('create_payout_request',views.create_payout_request,name='create_payout_request'),
     
+    ## Страницы личного кабинета партнёра
+    # path('partner/dashboard',views.partner_dashboard,name='partner_dashboard'),
+    # path()
+    # path()
+    # path()
+    # path()
+    # path()
+    # path()
+    
     # Рекламодатель
     path('advertiser/add_project',views.add_project,name='add_project'),
     path('advertiser/del_project/<int:project_id>',views.delete_project,name='del_project'),
@@ -29,12 +38,13 @@ urlpatterns = [
     path('advertiser/update_api_settings',views.update_api_settings,name='update_api_settings'),
     path('advertiser/update_requisites',views.update_requisites_settings,name='update_requisites_settings'),
     
+    ## Страницы личного кабинета рекламодателя
     path('advertiser/dashboard',views.advertiser_dashboard,name='advertiser_dashboard'),
-    path('advertiser/partners',views.advertiser_partners,name='partners'),
-    path('advertiser/sales',views.advertiser_sales,name='sales'),
-    path('advertiser/projects',views.advertiser_projects,name='projects'),
-    path('advertiser/settings',views.advertiser_requisites,name='advertiser_settings'),
-    path('advertiser/requisites',views.advertiser_requisites,name='requisites'),
+    path('advertiser/partners',views.advertiser_partners,name='advertiser_partners'),
+    path('advertiser/sales',views.advertiser_sales,name='advertiser_sales'),
+    path('advertiser/projects',views.advertiser_projects,name='advertiser_projects'),
+    path('advertiser/settings',views.advertiser_settings,name='advertiser_settings'),
+    path('advertiser/requisites',views.advertiser_requisites,name='advertiser_requisites'),
     
     # Модератор
     ## Действия с платформами партнёров
@@ -61,7 +71,7 @@ urlpatterns = [
     # Просмотр информации о пользователях
     path('partner/<int:partner_id>', views.partner_detail, name='partner'),
     path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser'),
-    path('advertiser_requisites/<int:advertiser_id>',views.advertiser_requisites,name='advertiser_requisites'),
+    path('advertiser_requisites/<int:advertiser_id>',views.advertiser_legal_details,name='advertiser_legal_details'),
     
     # Просмотр информации о проектах
     path('project/<int:project_id>',views.project_detail,name='project'),

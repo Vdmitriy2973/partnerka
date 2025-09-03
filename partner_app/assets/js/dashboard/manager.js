@@ -6,8 +6,6 @@ import { setupUserUnblockModals } from "./manager_modules/users/unblock_user.js"
 import { setupAdvertiserTransactions } from "./manager_modules/moderation/adv_transactions.js";
 
 
-import "tailwindcss"
-import 'vite/modulepreload-polyfill'
 import '@fortawesome/fontawesome-free/js/all'
 import '/partner_app/assets/css/dashboard/manager.css'
 

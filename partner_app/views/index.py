@@ -7,10 +7,6 @@ from .index_utils.reg import handle_registration
 
 
 def index(request):
-    login_form = LoginForm()
-    partner_form = PartnerRegistrationForm()
-    advertiser_form = AdvertiserRegistrationForm()
-
     if request.method == "POST":
         if "reg_type" in request.POST:
             reg_type = request.POST["reg_type"]
@@ -23,7 +19,7 @@ def index(request):
                 return response
 
     return render(request, "partner_app/main/index.html", {
-        'partner_form': partner_form,
-        'advertiser_form': advertiser_form,
-        'login_form': login_form
+        'partner_form': PartnerRegistrationForm(),
+        'advertiser_form': AdvertiserRegistrationForm(),
+        'login_form': LoginForm()
     })

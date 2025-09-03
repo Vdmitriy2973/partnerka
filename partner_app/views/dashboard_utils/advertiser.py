@@ -6,9 +6,11 @@ from django.shortcuts import render
 from django.db.models.functions import Coalesce
 from django.conf import settings
 
+
 from partner_app.models import Project, Conversion,User, AdvertiserActivity, ClickEvent
 from partner_app.forms import ProjectForm, ApiSettingsForm, ProjectParamForm
 from .common import _paginate, _apply_search
+
 
 def handle_advertiser_dashboard(request):
     """Оптимизированный обработчик личного кабинета рекламодателя"""    

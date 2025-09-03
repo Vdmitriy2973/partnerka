@@ -7,8 +7,6 @@ import { setupInfoMessages } from './advertiser_modules/ui/info_messages.js';
 import { setupTopUpBalance } from './advertiser_modules/utils/top_up_balance.js'
 
 
-import "tailwindcss"
-import 'vite/modulepreload-polyfill'
 import '@fortawesome/fontawesome-free/js/all'
 import '/partner_app/assets/css/dashboard/advertiser.css'
 

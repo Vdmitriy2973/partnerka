@@ -6,7 +6,6 @@ export function setupTransactions() {
     document.querySelectorAll('.approve-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             let dataset = this.dataset;
-            console.log(dataset)
             document.getElementById('TransactionID').textContent = dataset.transactionId;
 
             const transactionStatus = document.getElementById('TransactionStatus');
@@ -34,7 +33,19 @@ export function setupTransactions() {
                     requisitesContainer.append(requisites);
                 }
             }
-
+            else if (dataset.transactionMethod == "bank_transfer")
+            {
+                document.getElementById('TransactionPaymentMethod').textContent = "Банковский перевод";
+                const requisitesContainer = document.getElementById('TransactionRequisites');
+                if(!requisitesContainer.querySelector('.transaction_requisites_data')){
+                    const requisites = document.createElement('div');
+                    requisites.classList.add('transaction_requisites_data','font-mono', 'text-sm', 'bg-base-200', 'p-2', 'rounded');
+                    requisites.innerHTML=`Владелец счёта: ${dataset.transactionBankAccountHolderName}<br>
+                                Номер счёта: ${dataset.transactionBankAccountNumber}<br>
+                                БИК банка: ${dataset.transactionBankBic}`;
+                    requisitesContainer.append(requisites);
+                }
+            }
             const approveForm = document.getElementById('approve-form');
             approveForm.action = `/approve_transaction/${dataset.transactionId}/${dataset.transactionPartnerId}`
             approveForm.classList.remove('hidden');
@@ -48,7 +59,6 @@ export function setupTransactions() {
     document.querySelectorAll('.reject-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             let dataset = this.dataset;
-            console.log(dataset)
             document.getElementById('TransactionID').textContent = dataset.transactionId;
 
             const transactionStatus = document.getElementById('TransactionStatus');
@@ -73,6 +83,19 @@ export function setupTransactions() {
                     requisites.innerHTML=`Карта: ${dataset.transactionCardNumber}<br>
                                 Банк: ${dataset.transactionBankName}<br>
                                 Получатель: ${dataset.transactionCardOwner}`;
+                    requisitesContainer.append(requisites);
+                }
+            }
+            else if (dataset.transactionMethod == "bank_transfer")
+            {
+                document.getElementById('TransactionPaymentMethod').textContent = "Банковский перевод";
+                const requisitesContainer = document.getElementById('TransactionRequisites');
+                if(!requisitesContainer.querySelector('.transaction_requisites_data')){
+                    const requisites = document.createElement('div');
+                    requisites.classList.add('transaction_requisites_data','font-mono', 'text-sm', 'bg-base-200', 'p-2', 'rounded');
+                    requisites.innerHTML=`Владелец счёта: ${dataset.transactionBankAccountHolderName}<br>
+                                Номер счёта: ${dataset.transactionBankAccountNumber}<br>
+                                БИК банка: ${dataset.transactionBankBic}`;
                     requisitesContainer.append(requisites);
                 }
             }
@@ -89,7 +112,6 @@ export function setupTransactions() {
     document.querySelectorAll('.details-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             let dataset = this.dataset;
-            console.log(dataset)
             document.getElementById('TransactionID').textContent = dataset.transactionId;
 
             const transactionStatus = document.getElementById('TransactionStatus');
@@ -114,6 +136,19 @@ export function setupTransactions() {
                     requisites.innerHTML=`Карта: ${dataset.transactionCardNumber}<br>
                                 Банк: ${dataset.transactionBankName}<br>
                                 Получатель: ${dataset.transactionCardOwner}`;
+                    requisitesContainer.append(requisites);
+                }
+            }
+            else if (dataset.transactionMethod == "bank_transfer")
+            {
+                document.getElementById('TransactionPaymentMethod').textContent = "Банковский перевод";
+                const requisitesContainer = document.getElementById('TransactionRequisites');
+                if(!requisitesContainer.querySelector('.transaction_requisites_data')){
+                    const requisites = document.createElement('div');
+                    requisites.classList.add('transaction_requisites_data','font-mono', 'text-sm', 'bg-base-200', 'p-2', 'rounded');
+                    requisites.innerHTML=`Владелец счёта: ${dataset.transactionBankAccountHolderName}<br>
+                                Номер счёта: ${dataset.transactionBankAccountNumber}<br>
+                                БИК банка: ${dataset.transactionBankBic}`;
                     requisitesContainer.append(requisites);
                 }
             }

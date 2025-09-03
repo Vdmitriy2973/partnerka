@@ -112,7 +112,7 @@
                                                 Просмотр</a></li>
                                         <li><a><i class="fas fa-edit mr-2"></i> Редактировать</a></li>
                                         {% if user.advertiserprofile %}
-                                        <li><a href="{% url 'advertiser_requisites' user.id %}"><i class="fa-solid fa-file mr-2"></i>Реквизиты</a></li>
+                                        <li><a href="{% url 'advertiser_legal_details' user.id %}"><i class="fa-solid fa-file mr-2"></i>Реквизиты</a></li>
                                         {% endif %}
                                         {% if not user.is_blocked %}
                                             <li class="block_user" data-user-id="{{ user.id }}" data-user-email="{{ user.email }}" data-user-full-name="{{ user.get_full_name }}">

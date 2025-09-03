@@ -44,7 +44,7 @@
                                     {{ transaction.partner.payout_settings.card_number|truncatechars:6 }}
                                 </span>
                             {% elif transaction.payment_method == "bank_transfer" %}
-                                <span class="font-medium">Банковская карта</span>
+                                <span class="font-medium">Банковский перевод</span>
                                 <span class="text-sm text-gray-500 truncate max-w-[180px]">
                                     {{ transaction.partner.payout_settings.bank_account_number|truncatechars:6 }}
                                 </span>
@@ -75,7 +75,7 @@
                                 {% elif transaction.payment_method == "bank_transfer" %}
                                 data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_number }}"
                                 data-transaction-bank-account-holder-name="{{ transaction.partner.payout_settings.bank_account_holder_name }}"
-                                data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_bic }}"
+                                data-transaction-bank-bic="{{ transaction.partner.payout_settings.bank_account_bic }}"
                                 {% endif %}
                                 data-transaction-date="{{ transaction.date|date:'d.m.Y H:i' }}"
                                 data-transaction-status="{{ transaction.status }}">

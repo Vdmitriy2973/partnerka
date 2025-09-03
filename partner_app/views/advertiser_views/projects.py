@@ -7,6 +7,7 @@ from partner_app.forms import ProjectForm,ProjectParamForm
 
 @login_required
 def advertiser_projects(request):
+    """Страница с проектами рекламодателя"""
     projects = Project.objects.filter(
         advertiser=request.user
     ).select_related('advertiser').order_by('-created_at')
@@ -30,4 +31,4 @@ def advertiser_projects(request):
         "clicks_count":clicks_count,
         "conversion_percent":conversion_percent,
     }
-    return render(request, 'partner_app/dashboard/advertiser/projects.html',context=context)
+    return render(request, 'partner_app/dashboard/new_advertiser/projects/projects.html',context=context)

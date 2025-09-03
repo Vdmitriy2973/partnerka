@@ -1,11 +1,13 @@
+from decimal import Decimal
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+
 from partner_app.models import ProjectPartner, PartnerActivity, AdvertiserActivity, User, PartnerProfile,AdvertiserProfile, Platform,Project
 from partner_app.serializers import ConversionSerializer
 
-from decimal import Decimal
 
 class ConversionAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -27,13 +29,14 @@ class ConversionAPIView(APIView):
             )
         referrer_id = request.data.get('referrer')
         if referrer_id:
-            platform = Platform.objects.get(
-                id=referrer_id
-            )
-            platform_id = referrer_id
-            referrer = platform.url_or_id
+            try:
+                platform = Platform.objects.get(
+                    id=referrer_id
+                )
+                platform_id = platform.id
+            except Platform.DoesNotExist:
+                platform_id = None
         else:
-            referrer = None
             platform_id = None
             
         try:
@@ -79,11 +82,16 @@ class ConversionAPIView(APIView):
             ip = ip.split(',')[0]
         else:
             ip = request.META.get("REMOTE_ADDR")
+            
+        amount = project.cost_per_action
+        if 'amount' in request.data:
+            if float(request.data['amount']) >= project.get_reduced_price():
+                amount = request.data['amount']
         data = {
             "project":request.data["project"],
             "partner":partnerprofile.id,
             "advertiser":adv_profile.id,
-            "amount":project.cost_per_action,
+            "amount":amount,
             "details":details,
             "partner_link":partnership.partner_links.first().id,
             "partnership":partnership.id,

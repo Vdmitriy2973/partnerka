@@ -139,5 +139,4 @@ class AdvertiserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
             AdvertiserProfile.objects.create(user=user)
-            AdvertiserRequisites.objects.create(user=user)
         return user

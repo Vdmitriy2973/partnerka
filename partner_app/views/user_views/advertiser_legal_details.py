@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from partner_app.models import User
 
 @login_required
-def advertiser_requisites(request, advertiser_id):
+def advertiser_legal_details(request, advertiser_id):
     if not hasattr(request.user,'managerprofile'):
         return redirect('dashboard')
     advertiser = get_object_or_404(

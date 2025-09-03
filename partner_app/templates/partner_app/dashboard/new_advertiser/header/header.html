@@ -1,0 +1,61 @@
+{% load static %}
+
+<div class="navbar bg-white shadow-lg sticky top-0 z-50" id="navbar">
+    <div class="navbar-start">
+        <div class="dropdown lg:hidden">
+            <div tabindex="0" role="button" class="btn btn-ghost">
+                <i class="fas fa-bars text-lg"></i>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a href="{% url 'advertiser_dashboard' %}" class="nav-item"><i class="fas fa-chart-line mr-2"></i>Дашборд</a></li>
+                <li><a href="{% url 'advertiser_sales' %}" class="nav-item"><i class="fas fa-shopping-cart"></i>Продажи</a></li>
+                <li><a href="{% url 'advertiser_projects' %}" class="nav-item"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+                <li><a href="{% url 'advertiser_partners' %}" class="nav-item"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+            </ul>
+        </div>
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost border-none text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-handshake text-blue-600 mr-2"></i>
+            <span>LinkOffer</span>
+        </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+            <li><a href="{% url 'advertiser_dashboard' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center"><i class="fas fa-chart-line mr-2"></i> Дашборд</a></li>
+            <li><a href="{% url 'advertiser_sales' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center"><i class="fas fa-shopping-cart"></i>Продажи</a></li>
+            <li><a href="{% url 'advertiser_projects' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center"><i class="fas fa-boxes mr-2"></i> Проекты</a></li>
+            <li><a href="{% url 'advertiser_partners' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center"><i class="fas fa-handshake mr-2"></i> Партнеры</a></li>
+        </ul>
+    </div>
+    <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <div class="avatar avatar-placeholder">
+                    <div class="bg-neutral text-neutral-content w-10 rounded-full">
+                        <i class="fas fa-user text-white text-lg"></i>
+                    </div>
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li>
+                    <a href="{% url 'advertiser_settings' %}" class="nav-item text-lg w-full">
+                        <i class="fas fa-cog"></i> Настройки
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'advertiser_requisites' %}" class="nav-item text-lg w-full">
+                        <i class="fas fa-landmark"></i> Реквизиты
+                    </a>
+                </li>
+                <li>
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-full cursor-pointer">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Выход
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

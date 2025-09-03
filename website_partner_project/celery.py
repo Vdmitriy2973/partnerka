@@ -2,8 +2,6 @@ import os
 import platform
 from celery import Celery
 
-# Определяем ОС
-IS_WINDOWS = platform.system().lower() == 'windows'
 
 # Установите переменную окружения Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website_partner_project.settings')

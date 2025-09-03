@@ -10,6 +10,7 @@ from django.contrib import messages
 
 @require_POST
 def top_up_balance(request):
+    """Пополнение баланса у рекламодателя"""
     try:
         if hasattr(request.user,'advertiserprofile'):
             if float(request.POST.get("amount")) < float(settings.PARTNER_PAYOUT_SETTINGS["min_amount"]):

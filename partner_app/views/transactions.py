@@ -13,6 +13,7 @@ from partner_app.utils import send_email_via_mailru
 @login_required
 @require_POST
 def create_payout_request(request):
+    """Создать заявку на вывод средств партнёра"""
     user = request.user
     if not hasattr(user, 'partner_profile'):
         messages.error(request, message='Доступ запрещён.',extra_tags='create_payout_error')
@@ -32,10 +33,12 @@ def create_payout_request(request):
 
     # Проверяем, что сумма не превышает баланс партнёра
     balance = user.partner_profile.balance
-    if amount > balance:
+    
+    if amount < float(settings.PARTNER_PAYOUT_SETTINGS["min_amount"]):
         messages.error(request, message='Сумма превышает доступный баланс.',extra_tags='create_payout_error')
         return redirect('dashboard')
-    if amount < float(settings.PARTNER_PAYOUT_SETTINGS["min_amount"]):
+    
+    if amount > balance:
         messages.error(request, message='Сумма превышает доступный баланс.',extra_tags='create_payout_error')
         return redirect('dashboard')
     
@@ -64,6 +67,7 @@ def create_payout_request(request):
 @login_required
 @require_POST
 def approve_transaction(request, transaction_id,partner_id):
+    """Одобрить вывод средств партнёра"""
     transaction = get_object_or_404(PartnerTransaction,id=transaction_id)
     transaction.status = PartnerTransaction.STATUS_CHOICES.COMPLETED
     transaction.save()
@@ -84,6 +88,7 @@ def approve_transaction(request, transaction_id,partner_id):
 @login_required
 @require_POST
 def reject_transaction(request, transaction_id, partner_id):
+    """Отклонить вывод средств партнёра"""
     rejection_reason = request.POST.get('rejection_reason',None)
     
     if rejection_reason is None:

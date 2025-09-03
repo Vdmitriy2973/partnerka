@@ -21,12 +21,12 @@ from .update_requisites import update_requisites_settings
 
 from .update_notifications import update_notifications_settings
 
-from .partner_detail import partner_detail
-from .advertiser_detail import advertiser_detail
-from .advertiser_requisites import advertiser_requisites
+from .user_views.partner_detail import partner_detail
+from .user_views.advertiser_detail import advertiser_detail
+from .user_views.advertiser_legal_details import advertiser_legal_details
 
 from .partnership import stop_partnership_with_project,stop_partnership_with_partner, suspend_partnership, resume_partnership
-from .project_detail import project_detail
+from .user_views.project_detail import project_detail
 from .generate_partner_link import generate_link
 from .delete_partner_link import delete_partner_link
 

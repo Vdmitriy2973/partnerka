@@ -109,7 +109,12 @@ def edit_project(request,project_id):
         project.name = request.POST.get('name', project.name)
         project.url = request.POST.get('url', project.url)
         project.description = request.POST.get('description', project.description)
-        project.cost_per_action = Decimal(request.POST.get('costPerAction',project.cost_per_action))
+        
+        new_price = Decimal(request.POST.get('costPerAction',project.cost_per_action))
+        if project.cost_per_action != new_price:
+            project.new_cost_per_action = new_price
+            project.status = project.StatusType.PENDING
+            messages.success(request,message=f"Проект {project.name} отправлен на модерацию из-за изменения цены",extra_tags="project_edit_success")
         if request.POST.get('is_active',None):
             project.is_active = True
         else:
@@ -132,8 +137,9 @@ def edit_project(request,project_id):
 def approve_project(request, project_id):
     project = get_object_or_404(Project,id=project_id)
     project.status = 'Подтверждено'
+    if project.new_cost_per_action and project.new_cost_per_action != project.cost_per_action:
+        project.cost_per_action = project.new_cost_per_action
     project.save()
-    
     send_email_via_mailru.delay(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
     
     AdvertiserActivity.objects.create(

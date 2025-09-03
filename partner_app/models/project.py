@@ -16,7 +16,9 @@ class Project(models.Model):
         on_delete=models.CASCADE,
         related_name='managed_projects',
         verbose_name='Рекламодатель',
-        limit_choices_to={'user_type': 'advertiser'}
+        limit_choices_to={'user_type': 'advertiser'},
+        null=False,
+        blank=False
     )
     
     partners = models.ManyToManyField(
@@ -50,6 +52,16 @@ class Project(models.Model):
         default=''
     )
 
+    new_cost_per_action = models.DecimalField(
+        verbose_name="Цена за действие",
+        default=None,
+        blank=True,
+        null=True,
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(5)]
+    )
+    
     cost_per_action = models.DecimalField(
         verbose_name="Цена за действие",
         default=5,
@@ -115,18 +127,14 @@ class Project(models.Model):
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
         ordering = ['-created_at']
-        constraints = [
-            models.UniqueConstraint(
-                fields=['advertiser', 'url'],
-                name='unique_advertiser_project'
-            )
-        ]
+
 
     def __str__(self):
         return f"Проект #{self.id} Рекламодатель: {self.advertiser.first_name} {self.advertiser.last_name}"
     
     def clean(self):
         super().clean()
+                
         if self.first_price is None:
             self.first_price = self.cost_per_action
         if Decimal(self.cost_per_action) < self.get_reduced_price:
@@ -140,6 +148,17 @@ class Project(models.Model):
         
     def save(self,*args,**kwargs):
         self.full_clean()
+        
+        if self.url and self.is_active:
+            existing_projects = Project.objects.filter(
+                url=self.url
+            ).exclude(id=self.id).exclude(advertiser_id=self.advertiser.id)
+            if existing_projects.exists():
+                raise ValidationError(
+                    f'URL "{self.url}" уже используется проектом. '
+                    f'URL должен быть уникальным для разных рекламодателей.'
+                )
+                
         super().save(*args,**kwargs)
     
 

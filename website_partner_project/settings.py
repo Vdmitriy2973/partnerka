@@ -181,7 +181,6 @@ PARTNER_PAYOUT_SETTINGS = {
 }
 
 IS_WINDOWS = platform.system().lower() == 'windows'
-IS_LINUX = platform.system().lower() == 'linux'
 
 # Celery settings
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')

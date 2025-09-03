@@ -14,7 +14,7 @@
                     <!-- Поле поиска - занимает всю доступную ширину -->
                     <div class="flex-grow">
                         <input name="partners_search" class="input input-bordered w-full"
-                            placeholder="Поиск партнёров по email..." value="{{ partners_search_query }}">
+                            placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
                     </div>
 
                     <!-- Группа кнопок - выравнивание по правому краю на десктопе -->
@@ -105,7 +105,8 @@
                                             <span>Администрирование</span>
                                         </li>
                                         <li>
-                                            <a class="text-xs sm:text-sm text-error">
+                                            <a class="stop_partnership_with_partner text-xs sm:text-sm text-error"
+                                                data-partner-id="{{ partner.id }}">
                                                 <i class="fas fa-trash-alt mr-1 sm:mr-2"></i>Удалить
                                             </a>
                                         </li>
@@ -113,6 +114,15 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full text-center py-10">
+                    <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16" id="sales-empty-state">
+                        <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
+                            <i class="fas fa-sad-cry"></i>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент нет партнёров, которые с вами сотрудничают.</h3>
                     </div>
                 </div>
                 {% endfor %}

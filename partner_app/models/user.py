@@ -98,7 +98,7 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return self.username or self.email
+        return self.username
     
     def clean(self):
         super().clean()
@@ -128,15 +128,15 @@ class PartnerProfile(models.Model):
     )
     
     class Meta:
-        verbose_name = 'Профиль партнёра'
-        verbose_name_plural = 'Профили партнёров'
+        verbose_name = 'Партнёр'
+        verbose_name_plural = 'Партнёры'
 
     def __str__(self):
         return f"Профиль: {self.user.username}" if self.user else "Непривязанный профиль"
 
 class AdvertiserProfile(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE)
-    api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None)
+    api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None,verbose_name="API-ключ")
     balance = models.DecimalField (
         verbose_name="Мин. выплата",
         decimal_places=2,
