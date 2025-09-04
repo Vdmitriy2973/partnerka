@@ -30,7 +30,7 @@ def add_project(request):
         full_error_message = ". ".join(error_messages)
         messages.error(request, f"Ошибка: {full_error_message}", extra_tags="project_add_error")
         
-        return redirect("dashboard")
+        return redirect("advertiser_projects")
     
     try:
         project = form.save(commit=False)
@@ -85,7 +85,7 @@ def add_project(request):
         for error in e.messages:
             messages.error(request, message=f"Произошла непредвиденная ошибка: {str(error)}", extra_tags="project_add_error")
         
-    return redirect("dashboard")
+    return redirect("advertiser_projects")
 
 
 
@@ -98,7 +98,7 @@ def delete_project(request, project_id):
         messages.success(request, message="Проект успешно удалён",extra_tags="project_delete_success")
     except Exception as e:
         messages.error(request, message=f"Произошла ошибка при удалении проекта: {e}",extra_tags="project_delete_error")
-    return redirect("dashboard")
+    return redirect("advertiser_projects")
 
 
 @login_required
@@ -111,8 +111,7 @@ def edit_project(request,project_id):
         project.description = request.POST.get('description', project.description)
         
         new_price = Decimal(request.POST.get('costPerAction',project.cost_per_action))
-        if project.cost_per_action > new_price and project.cost_per_action < new_price * 2:
-            print(project.cost_per_action, new_price)
+        if project.cost_per_action > new_price or project.cost_per_action * 2 < new_price:
             project.new_cost_per_action = new_price
             project.status = project.StatusType.PENDING
             messages.success(request,message=f"Проект {project.name} отправлен на модерацию из-за изменения цены",extra_tags="project_edit_success")
@@ -127,11 +126,11 @@ def edit_project(request,project_id):
     except Exception as e:
         for error in e.messages:
             messages.error(request, f"Ошибка редактирования проекта: {str(error)}",extra_tags="project_edit_error")
-        return redirect("dashboard")
+        return redirect("advertiser_projects")
     
     
     messages.success(request,message=f"Проект {project.name} успешно отредактирован",extra_tags="project_edit_success")
-    return redirect("dashboard")
+    return redirect("advertiser_projects")
 
 
 # Для модераторов

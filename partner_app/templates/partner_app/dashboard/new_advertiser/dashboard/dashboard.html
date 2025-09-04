@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/advertiser.js' %}
+    {% vite_asset 'partner_app/assets/js/dashboard/advertiser/dashboard/dashboard.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Панель управления{% endblock title %}
@@ -203,6 +203,6 @@
     </div>
 </div>
 
-{% include "partner_app/dashboard/new_advertiser/modals/top_up_balance.html" %}
+{% include "partner_app/dashboard/new_advertiser/dashboard/modals/top_up_balance.html" %}
 
 {% endblock %}

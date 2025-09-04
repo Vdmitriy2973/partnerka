@@ -21,7 +21,7 @@ def stop_partnership_with_partner(request,partner_id):
     
     if not partnership.exists():
         messages.error(request, "Сотрудничество с данным партнёром не найдено.",extra_tags="stop_partnership_error")
-        return redirect('dashboard')
+        return redirect('advertiser_partners')
     
     user = User.objects.get(id=partner_id)
     partnership.delete()
@@ -36,7 +36,7 @@ def stop_partnership_with_partner(request,partner_id):
 С уважением,\nКоманда поддержки"""
     send_email_via_mailru.delay(user.email,message,title)
     messages.success(request,message="Сотрудничество с партнёром успешно остановлено!",extra_tags="stop_partnership_success")
-    return redirect('dashboard')
+    return redirect('advertiser_partners')
 
 @login_required
 @require_POST

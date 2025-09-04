@@ -9,4 +9,6 @@ def update_notifications_settings(request):
     request.user.email_notifications = 'email_notifications' in request.POST
     request.user.save()
     messages.success(request, message='Настройки уведомлений успешно обновлёны!',extra_tags="update_notifications_success")
+    if hasattr(request.user,'advertiserprofile'):
+        return redirect('advertiser_settings')    
     return redirect('dashboard')

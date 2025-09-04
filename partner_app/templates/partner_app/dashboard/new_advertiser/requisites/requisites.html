@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/advertiser/dashboard/dashboard.js' %}
+{% vite_asset 'partner_app/assets/js/dashboard/advertiser/requisites/requisites.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Юр. данные{% endblock title %}
@@ -25,44 +25,45 @@
         </div>
 
         {% if messages %}
-            {% for message in messages %}
-                {% if "update_requisites_success" in message.extra_tags %}
-                <div class="alert-message alert alert-success mb-4">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "update_requisites_error" in message.extra_tags %}
-                <div class="alert-message alert alert-error mb-4">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% endif %}
-            {% endfor %}
+        {% for message in messages %}
+        {% if "update_requisites_success" in message.extra_tags %}
+        <div class="alert-message alert alert-success mb-4">
+            <i class="fas fa-check-circle mr-2"></i>
+            <b>{{ message }}</b>
+        </div>
+        {% elif "update_requisites_error" in message.extra_tags %}
+        <div class="alert-message alert alert-error mb-4">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <b>{{ message }}</b>
+        </div>
+        {% endif %}
+        {% endfor %}
         {% endif %}
 
         <div class="bg-info/20 border-l-4 border-info rounded-box p-5 mb-8 highlight-box">
-                <div class="flex items-start">
-                    <div class="mr-4 mt-1 text-info">
-                        <i class="fas fa-exclamation-circle text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg text-info mb-1">Важная информация!</h3>
-                        <p class="text-base-content">
-                            <strong>Юридические данные в вашем профиле должны полностью совпадать с данными, указанными на всех ваших проектах.</strong>
-                        </p>
-                        <ul class="mt-3 list-disc list-inside space-y-1 text-base-content/80">
-                            <li>Это необходимо для успешного прохождения проверок и аудитов</li>
-                            <li>Несовпадение данных может привести к задержкам выплат</li>
-                            <li>Убедитесь, что реквизиты одинаковы во всех документах</li>
-                            <li>При изменении данных обновите их во всех проектах</li>
-                        </ul>
-                    </div>
+            <div class="flex items-start">
+                <div class="mr-4 mt-1 text-info">
+                    <i class="fas fa-exclamation-circle text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-info mb-1">Важная информация!</h3>
+                    <p class="text-base-content">
+                        <strong>Юридические данные в вашем профиле должны полностью совпадать с данными, указанными на
+                            всех ваших проектах.</strong>
+                    </p>
+                    <ul class="mt-3 list-disc list-inside space-y-1 text-base-content/80">
+                        <li>Это необходимо для успешного прохождения проверок и аудитов</li>
+                        <li>Несовпадение данных может привести к задержкам выплат</li>
+                        <li>Убедитесь, что реквизиты одинаковы во всех документах</li>
+                        <li>При изменении данных обновите их во всех проектах</li>
+                    </ul>
                 </div>
             </div>
+        </div>
 
         <form method="POST" id="legal_settings_form" action="{% url 'update_requisites_settings' %}" class="space-y-6">
             {% csrf_token %}
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Основные данные -->
                 <div class="card bg-base-100 shadow-lg">
@@ -77,7 +78,8 @@
                             <label class="label">
                                 <span class="label-text">ФИО ответственного лица</span>
                             </label>
-                            <input name="responsible_person" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.responsible_person }}" required />
+                            <input name="responsible_person" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.responsible_person }}" required />
                         </div>
 
                         <!-- Полное наименование -->
@@ -85,7 +87,8 @@
                             <label class="label">
                                 <span class="label-text">Полное наименование организации</span>
                             </label>
-                            <input name="full_name" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.organization_name }}" required />
+                            <input name="full_name" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.organization_name }}" required />
                         </div>
 
                         <!-- Юр. адрес -->
@@ -106,13 +109,15 @@
                                 <label class="label">
                                     <span class="label-text">Телефон</span>
                                 </label>
-                                <input name="phone" type="tel" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.phone|default:'' }}" required />
+                                <input name="phone" type="tel" class="input input-bordered w-full"
+                                    value="{{ request.user.advertiserrequisites.phone|default:'' }}" required />
                             </div>
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Email</span>
                                 </label>
-                                <input name="email" type="email" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.email|default:'' }}" required />
+                                <input name="email" type="email" class="input input-bordered w-full"
+                                    value="{{ request.user.advertiserrequisites.email|default:'' }}" required />
                             </div>
                         </div>
                     </div>
@@ -131,7 +136,8 @@
                             <label class="label">
                                 <span class="label-text">ОГРН / ОГРНИП</span>
                             </label>
-                            <input name="ogrn" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.ogrn }}" required />
+                            <input name="ogrn" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.ogrn }}" required />
                         </div>
 
                         <!-- ИНН -->
@@ -139,7 +145,8 @@
                             <label class="label">
                                 <span class="label-text">ИНН</span>
                             </label>
-                            <input name="inn" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.inn }}" required />
+                            <input name="inn" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.inn }}" required />
                         </div>
 
                         <!-- Банковские реквизиты -->
@@ -147,21 +154,24 @@
                             <label class="label">
                                 <span class="label-text">Расчётный счёт</span>
                             </label>
-                            <input name="account_number" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.checking_account }}" required />
+                            <input name="account_number" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.checking_account }}" required />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text">Корреспондентский счёт</span>
                             </label>
-                            <input name="corr_account" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.correspondent_account }}" required />
+                            <input name="corr_account" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.correspondent_account }}" required />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text">БИК банка</span>
                             </label>
-                            <input name="bik" type="text" class="input input-bordered w-full" value="{{ request.user.advertiserrequisites.bik }}" required />
+                            <input name="bik" type="text" class="input input-bordered w-full"
+                                value="{{ request.user.advertiserrequisites.bik }}" required />
                         </div>
                     </div>
                 </div>
@@ -177,4 +187,63 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Добавляем кастомные стили для анимации
+        const style = document.createElement('style');
+        style.textContent = `
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            70% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-100%);
+                max-height: 0;
+                margin-bottom: 0;
+                padding: 0;
+                border: none;
+            }
+        }
+        
+        .animate-slide-out-left {
+            animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: none;
+        }
+    `;
+        document.head.appendChild(style);
+
+        // Обрабатываем все сообщения
+        const alertMessages = document.querySelectorAll('.alert-message');
+
+        alertMessages.forEach((element, index) => {
+            // Добавляем небольшую задержку для каждого следующего сообщения
+            const delay = 5000 + (index * 200);
+
+            setTimeout(() => {
+                // Добавляем классы для анимации ухода влево
+                element.classList.add(
+                    'animate-slide-out-left',
+                    'transform-gpu', // Аппаратное ускорение
+                    'transition-all',
+                    'duration-800',
+                    'ease-in-out'
+                );
+
+                // Удаляем элемент после завершения анимации
+                setTimeout(() => {
+                    if (element.parentNode) {
+                        element.remove();
+                    }
+                }, 800); // Время анимации
+            }, delay);
+        });
+    });
+</script>
 {% endblock %}

@@ -25,18 +25,18 @@ def update_requisites_settings(request):
         
     if len(request.POST.get('responsible_person').split(' ')) != 3:
         messages.error(request, "Поле 'ФИО' неверно заполнено","update_requisites_error")
-        return redirect('dashboard')
+        return redirect('advertiser_requisites')
     for word in request.POST.get('responsible_person').split(' '):
         if not word.isalpha():
             messages.error(request, "Поле 'ФИО' должно содержать только буквы","update_requisites_error")
-            return redirect('dashboard')
+            return redirect('advertiser_requisites')
     
-    t = request.POST.get('legal_address')
-    print(t)
+    legal_address = request.POST.get('legal_address')
+    
     try:
         requisites.responsible_person = request.POST.get('responsible_person')
         requisites.organization_name = request.POST.get('full_name')
-        requisites.legal_address = t
+        requisites.legal_address = legal_address
         requisites.phone = request.POST.get('phone')
         requisites.email = request.POST.get('email')
         requisites.ogrn = request.POST.get('ogrn')
@@ -46,11 +46,9 @@ def update_requisites_settings(request):
         requisites.bik = request.POST.get('bik')
         requisites.save()
     except ValidationError as e: 
-        print(e)
-        print(dir(e))
         for error_list in e.messages:
             messages.error(request, error_list,"update_requisites_error")
-        return redirect('dashboard')
+        return redirect('advertiser_requisites')
     messages.error(request, "Юр. данные были успешно изменены!","update_requisites_success")
         
-    return redirect('dashboard')
+    return redirect('advertiser_requisites')

@@ -18,8 +18,12 @@ def dashboard(request):
     if request.method == "POST":
         if "profile_submit" in request.POST:
             _handle_profile_update(request, user)
+            if hasattr(user,"advertiserprofile"):
+                return redirect('advertiser_settings')
         elif "password_submit" in request.POST:
             _handle_password_update(request, user)
+            if hasattr(user,"advertiserprofile"):
+                return redirect('advertiser_settings')
     
     
     if user.is_authenticated and user.is_currently_blocked():

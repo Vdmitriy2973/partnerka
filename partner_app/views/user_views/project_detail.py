@@ -2,17 +2,17 @@ from decimal import Decimal
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Sum, Value, Q,Count
+from django.db.models import Sum, Value, Q,Count,OuterRef,Subquery
 from django.db.models.functions import Coalesce
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from partner_app.models import ProjectPartner,Project
-from partner_app.views.dashboard_utils.common import _paginate
+from partner_app.models import ProjectPartner,Project, Conversion
 
 @login_required
 def project_detail(request, project_id):
-    # Основная информация о проекте
+    """Информация о проекте"""
+    
     try:
         # Проект
         project = get_object_or_404(Project,id=project_id)
@@ -44,11 +44,7 @@ def project_detail(request, project_id):
         partners_search_q = request.GET.get('partners_search','').strip()
         if partners_search_q:
             partnership_stats = partnership_stats.filter(
-            Q(partner__username__icontains=partners_search_q) |
-            Q(partner__first_name__icontains=partners_search_q) |
-            Q(partner__last_name__icontains=partners_search_q) |
-            Q(partner__email__icontains=partners_search_q) | 
-            Q(partner__phone__icontains=partners_search_q) 
+            Q(partner__username__icontains=partners_search_q)
         )
         # Пагинация
         paginator = Paginator(partnership_stats, 5)

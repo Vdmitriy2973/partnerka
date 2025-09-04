@@ -4,7 +4,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/advertiser.js' %}
+{% vite_asset 'partner_app/assets/js/dashboard/advertiser/partners/partners.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Партнёры{% endblock title %}
@@ -17,164 +17,95 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-6 max-w-7xl">
-<div id="partners">
-    <div class="mb-6 sm:mb-8">
-        <h1 class="text-2xl sm:text-3xl font-bold text-base-content">Партнеры</h1>
-        <p class="text-sm sm:text-base text-base-content/60">Управление партнерами вашей программы</p>
-    </div>
-    <div class="card bg-base-100 shadow-sm sm:shadow-lg">
-        <div class="card-body p-2 sm:p-4 md:p-6">
+    <div id="partners">
+        <div class="mb-6 sm:mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-base-content">Партнеры</h1>
+            <p class="text-sm sm:text-base text-base-content/60">Управление партнерами вашей программы</p>
+        </div>
+        <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+            <div class="card-body p-2 sm:p-4 md:p-6">
 
-            <div class="mb-6">
-                <form method="get" action="" class="flex flex-col sm:flex-row gap-2 w-full">
-                    <!-- Поле поиска - занимает всю доступную ширину -->
-                    <div class="flex-grow">
-                        <input name="partners_search" class="input input-bordered w-full"
-                            placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
-                    </div>
+                <div class="mb-6">
+                    <form method="get" action="" class="flex flex-col sm:flex-row gap-2 w-full">
+                        <!-- Поле поиска - занимает всю доступную ширину -->
+                        <div class="flex-grow">
+                            <input name="partners_search" class="input input-bordered w-full"
+                                placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
+                        </div>
 
-                    <!-- Группа кнопок - выравнивание по правому краю на десктопе -->
-                    <div class="flex gap-2 justify-end sm:justify-start">
-                        <!-- Кнопка поиска с адаптивным текстом -->
-                        <button type="submit" class="btn btn-primary flex items-center">
-                            <i class="fas fa-search sm:mr-2"></i>
-                            <span class="hidden sm:inline">Найти</span>
-                        </button>
+                        <!-- Группа кнопок - выравнивание по правому краю на десктопе -->
+                        <div class="flex gap-2 justify-end sm:justify-start">
+                            <!-- Кнопка поиска с адаптивным текстом -->
+                            <button type="submit" class="btn btn-primary flex items-center">
+                                <i class="fas fa-search sm:mr-2"></i>
+                                <span class="hidden sm:inline">Найти</span>
+                            </button>
 
-                        <!-- Кнопка сброса с адаптивным текстом -->
-                        <button type="reset" class="btn flex items-center"
-                            onclick="window.location.href='{{ request.path }}'">
-                            <i class="fas fa-times sm:mr-2"></i>
-                            <span class="hidden sm:inline">Сбросить</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                            <!-- Кнопка сброса с адаптивным текстом -->
+                            <button type="reset" class="btn flex items-center"
+                                onclick="window.location.href='{{ request.path }}'">
+                                <i class="fas fa-times sm:mr-2"></i>
+                                <span class="hidden sm:inline">Сбросить</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
 
-            <!-- Уведомления -->
-            {% if messages %}
+                <!-- Уведомления -->
+                {% if messages %}
                 <div class="mt-4">
                     {% for message in messages %}
-                        {% if "stop_partnership_success" in message.extra_tags %}
-                        <div class="alert-message alert alert-success mb-4">
-                            <i class="fas fa-check-circle mr-2"></i>
-                            <b>{{ message }}</b>
-                        </div>
-                        {% elif "stop_partnership_error" in message.extra_tags %}
-                        <div class="alert-message alert alert-success mb-4">
-                            <i class="fas fa-check-circle mr-2"></i>
-                            <b>{{ message }}</b>
-                        </div>
-                        {% endif %}
+                    {% if "stop_partnership_success" in message.extra_tags %}
+                    <div class="alert-message alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "stop_partnership_error" in message.extra_tags %}
+                    <div class="alert-message alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
-            {% endif %}
+                {% endif %}
 
-            <!-- Мобильный вид (карточки) -->
-            <div class="space-y-2 xs:space-y-3 sm:hidden">
-                {% for partner in partners %}
-                <div class="card bg-base-100 shadow-xs">
-                    <div class="card-body p-2 sm:p-3">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <div class="overflow-hidden">
-                                    <div class="font-bold text-sm sm:text-base truncate">
-                                        <a href="{% url 'partner' partner.id %}">{{ partner.username }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="divider my-1 sm:my-2"></div>
-                        <div class="grid grid-cols-2 gap-1 sm:gap-2">
-                            <div>
-                                <div class="text-xs text-base-content/60">Тип</div>
-                                <div class="text-sm sm:text-base">
-                                    {{ partner.partnerprofile.traffic_source|default:"Не указан" }}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-xs text-base-content/60">Продажи</div>
-                                <div class="text-sm sm:text-base">
-                                    {{ partner.get_conversions_count|default:"0" }}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-xs text-base-content/60">Доход</div>
-                                <div class="font-bold text-sm sm:text-base">
-                                    ₽{{ partner.get_total_income|default:"0" }}
-                                </div>
-                            </div>
-                            <div class="flex items-end justify-end">
-                                <div class="dropdown dropdown-end">
-                                    <button tabindex="0" class="btn btn-ghost btn-xs sm:btn-sm">
-                                        <i class="fas fa-eye text-xs sm:text-sm"></i>
-                                    </button>
-                                    <ul tabindex="0"
-                                        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48 sm:w-52">
-                                        <li>
-                                            <a href="{% url 'partner' partner.id %}" target="_blank" class="text-xs sm:text-sm">
-                                                <i class="fa-solid fa-circle-user"></i>Просмотр
-                                            </a>
-                                        </li>
-                                        <li class="menu-title mt-1 sm:mt-2 text-xs sm:text-sm">
-                                            <span>Администрирование</span>
-                                        </li>
-                                        <li>
-                                            <a class="stop_partnership_with_partner text-xs sm:text-sm text-error"
-                                                data-partner-id="{{ partner.id }}">
-                                                <i class="fas fa-trash-alt mr-1 sm:mr-2"></i>Удалить
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="col-span-full text-center py-10">
-                    <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16" id="sales-empty-state">
-                        <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
-                            <i class="fas fa-sad-cry"></i>
-                        </div>
-                        <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент нет партнёров, которые с вами сотрудничают.</h3>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Десктопный вид (таблица) -->
-            <div class="hidden sm:block">
-                <div class="overflow-visible">
-                    <table class="table table-sm md:table-md">
-                        <thead>
-                            <tr>
-                                <th class="py-1 sm:py-2">Партнер</th>
-                                <th class="py-1 sm:py-2">Продажи</th>
-                                <th class="py-1 sm:py-2">Доход</th>
-                                <th class="py-1 sm:py-2">Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for partner in partners %}
-                            <tr>
-                                <td>
-                                    <div class="flex items-center gap-2 sm:gap-3">
-                                        <div>
-                                            <div class="font-bold text-sm sm:text-base">
-                                                <a href="{% url 'partner' partner.id %}">{{ partner.username }}</a>
-                                            </div>
+                <!-- Мобильный вид (карточки) -->
+                <div class="space-y-2 xs:space-y-3 sm:hidden">
+                    {% for partner in partners %}
+                    <div class="card bg-base-100 shadow-xs">
+                        <div class="card-body p-2 sm:p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="overflow-hidden">
+                                        <div class="font-bold text-sm sm:text-base truncate">
+                                            <a href="{% url 'partner' partner.id %}">{{ partner.username }}</a>
                                         </div>
                                     </div>
-                                </td>
-                                <td class="text-sm sm:text-base">
-                                    {{ partner.conversions_count }}
-                                </td>
-                                <td class="text-sm sm:text-base">
-                                    ₽{{ partner.conversions_total }}
-                                </td>
-                                <td>
+                                </div>
+                            </div>
+                            <div class="divider my-1 sm:my-2"></div>
+                            <div class="grid grid-cols-2 gap-1 sm:gap-2">
+                                <div>
+                                    <div class="text-xs text-base-content/60">Тип</div>
+                                    <div class="text-sm sm:text-base">
+                                        {{ partner.partnerprofile.traffic_source|default:"Не указан" }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-base-content/60">Продажи</div>
+                                    <div class="text-sm sm:text-base">
+                                        {{ partner.get_conversions_count|default:"0" }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-base-content/60">Доход</div>
+                                    <div class="font-bold text-sm sm:text-base">
+                                        ₽{{ partner.get_total_income|default:"0" }}
+                                    </div>
+                                </div>
+                                <div class="flex items-end justify-end">
                                     <div class="dropdown dropdown-end">
                                         <button tabindex="0" class="btn btn-ghost btn-xs sm:btn-sm">
                                             <i class="fas fa-eye text-xs sm:text-sm"></i>
@@ -182,7 +113,8 @@
                                         <ul tabindex="0"
                                             class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48 sm:w-52">
                                             <li>
-                                                <a href="{% url 'partner' partner.id %}" class="text-xs sm:text-sm">
+                                                <a href="{% url 'partner' partner.id %}" target="_blank"
+                                                    class="text-xs sm:text-sm">
                                                     <i class="fa-solid fa-circle-user"></i>Просмотр
                                                 </a>
                                             </li>
@@ -197,62 +129,198 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% if not partners %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
                     <div class="col-span-full text-center py-10">
-                        <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16" id="sales-empty-state">
+                        <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16"
+                            id="sales-empty-state">
                             <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
                                 <i class="fas fa-sad-cry"></i>
                             </div>
-                            <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент нет партнёров, которые с вами сотрудничают.</h3>
+                            <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент нет
+                                партнёров, которые с вами сотрудничают.</h3>
                         </div>
                     </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Десктопный вид (таблица) -->
+                <div class="hidden sm:block">
+                    <div class="overflow-visible">
+                        <table class="table table-sm md:table-md">
+                            <thead>
+                                <tr>
+                                    <th class="py-1 sm:py-2">Партнер</th>
+                                    <th class="py-1 sm:py-2">Продажи</th>
+                                    <th class="py-1 sm:py-2">Доход</th>
+                                    <th class="py-1 sm:py-2">Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for partner in partners %}
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-2 sm:gap-3">
+                                            <div>
+                                                <div class="font-bold text-sm sm:text-base">
+                                                    <a href="{% url 'partner' partner.id %}">{{ partner.username }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-sm sm:text-base">
+                                        {{ partner.conversions_count }}
+                                    </td>
+                                    <td class="text-sm sm:text-base">
+                                        ₽{{ partner.conversions_total }}
+                                    </td>
+                                    <td>
+                                        <div class="dropdown dropdown-end">
+                                            <button tabindex="0" class="btn btn-ghost btn-xs sm:btn-sm">
+                                                <i class="fas fa-eye text-xs sm:text-sm"></i>
+                                            </button>
+                                            <ul tabindex="0"
+                                                class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48 sm:w-52">
+                                                <li>
+                                                    <a href="{% url 'partner' partner.id %}" class="text-xs sm:text-sm">
+                                                        <i class="fa-solid fa-circle-user"></i>Просмотр
+                                                    </a>
+                                                </li>
+                                                <li class="menu-title mt-1 sm:mt-2 text-xs sm:text-sm">
+                                                    <span>Администрирование</span>
+                                                </li>
+                                                <li>
+                                                    <a class="stop_partnership_with_partner text-xs sm:text-sm text-error"
+                                                        data-partner-id="{{ partner.id }}">
+                                                        <i class="fas fa-trash-alt mr-1 sm:mr-2"></i>Удалить
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% if not partners %}
+                        <div class="col-span-full text-center py-10">
+                            <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16"
+                                id="sales-empty-state">
+                                <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
+                                    <i class="fas fa-sad-cry"></i>
+                                </div>
+                                <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент
+                                    нет партнёров, которые с вами сотрудничают.</h3>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Пагинация Партнёры -->
+                <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+                    {% if partners.has_previous %}
+                    <a href="?partners_page=1"
+                        class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                        aria-label="Первая страница">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                    <a href="?partners_page={{ partners.previous_page_number }}"
+                        class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                        <span class="hidden sm:inline">Предыдущая</span>
+                        <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                    </a>
+                    {% endif %}
+
+                    <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                        <span class="hidden sm:inline">Страница</span>
+                        <input type="number" min="1" max="{{ partners.paginator.num_pages }}"
+                            value="{{ partners.number }}"
+                            class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                            onchange="window.location.href = '?partners_page=' + this.value"
+                            aria-label="Номер страницы">
+                        <span>из {{ partners.paginator.num_pages }}</span>
+                    </div>
+
+                    {% if partners.has_next %}
+                    <a href="?partners_page={{ partners.next_page_number }}"
+                        class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                        <span class="hidden sm:inline">Следующая</span>
+                        <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                    </a>
+                    <a href="?partners_page={{ partners.paginator.num_pages }}"
+                        class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                        aria-label="Последняя страница">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
                     {% endif %}
                 </div>
-            </div>
-
-            <!-- Пагинация Партнёры -->
-            <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
-                {% if partners.has_previous %}
-                <a href="?partners_page=1"
-                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                    aria-label="Первая страница">
-                    <i class="fas fa-angle-double-left"></i>
-                </a>
-                <a href="?partners_page={{ partners.previous_page_number }}"
-                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
-                    <span class="hidden sm:inline">Предыдущая</span>
-                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
-                </a>
-                {% endif %}
-
-                <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
-                    <span class="hidden sm:inline">Страница</span>
-                    <input type="number" min="1" max="{{ partners.paginator.num_pages }}" value="{{ partners.number }}"
-                        class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                        onchange="window.location.href = '?partners_page=' + this.value" aria-label="Номер страницы">
-                    <span>из {{ partners.paginator.num_pages }}</span>
-                </div>
-
-                {% if partners.has_next %}
-                <a href="?partners_page={{ partners.next_page_number }}"
-                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
-                    <span class="hidden sm:inline">Следующая</span>
-                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
-                </a>
-                <a href="?partners_page={{ partners.paginator.num_pages }}"
-                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                    aria-label="Последняя страница">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
-</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Добавляем кастомные стили для анимации
+        const style = document.createElement('style');
+        style.textContent = `
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            70% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-100%);
+                max-height: 0;
+                margin-bottom: 0;
+                padding: 0;
+                border: none;
+            }
+        }
+        
+        .animate-slide-out-left {
+            animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: none;
+        }
+    `;
+        document.head.appendChild(style);
+
+        // Обрабатываем все сообщения
+        const alertMessages = document.querySelectorAll('.alert-message');
+
+        alertMessages.forEach((element, index) => {
+            // Добавляем небольшую задержку для каждого следующего сообщения
+            const delay = 5000 + (index * 200);
+
+            setTimeout(() => {
+                // Добавляем классы для анимации ухода влево
+                element.classList.add(
+                    'animate-slide-out-left',
+                    'transform-gpu', // Аппаратное ускорение
+                    'transition-all',
+                    'duration-800',
+                    'ease-in-out'
+                );
+
+                // Удаляем элемент после завершения анимации
+                setTimeout(() => {
+                    if (element.parentNode) {
+                        element.remove();
+                    }
+                }, 800); // Время анимации
+            }, delay);
+        });
+    });
+</script>
+{% include "partner_app/dashboard/new_advertiser/partners/modals/stop_partnership_with_partner.html" %}
+
 {% endblock %}

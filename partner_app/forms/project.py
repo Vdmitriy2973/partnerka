@@ -28,6 +28,7 @@ class ProjectForm(forms.ModelForm):
                 'max':200
             }),
             'url': forms.URLInput(attrs={
+                'id':'CreateProjectUrl',
                 'class': 'input input-bordered w-full',
                 'placeholder': 'https://example.com',
                 'required':'required',

@@ -11,10 +11,12 @@ def advertiser_projects(request):
     projects = Project.objects.filter(
         advertiser=request.user
     ).select_related('advertiser').order_by('-created_at')
-    projects_search_q = request.GET.get('projects_search', '').strip()
     
+    projects_search_q = request.GET.get('projects_search', '').strip()
+
     if projects_search_q:
         projects = _apply_search(projects, projects_search_q,['name'])
+        
     projects_page = _paginate(request, projects, 6, 'projects_page')
     
     clicks_count = ClickEvent.objects.filter(advertiser=request.user.advertiserprofile).count()
@@ -30,5 +32,6 @@ def advertiser_projects(request):
         "projects": projects_page,
         "clicks_count":clicks_count,
         "conversion_percent":conversion_percent,
+        "projects_search_query":projects_search_q,
     }
     return render(request, 'partner_app/dashboard/new_advertiser/projects/projects.html',context=context)

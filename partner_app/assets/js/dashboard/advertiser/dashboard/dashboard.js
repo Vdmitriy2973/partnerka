@@ -1,4 +1,8 @@
-import "tailwindcss"
-import 'vite/modulepreload-polyfill'
 import '@fortawesome/fontawesome-free/js/all'
 import '/partner_app/assets/css/dashboard/advertiser.css'
+
+import { setupTopUpBalance } from './dashboard_top_up_balance.js'
+
+document.addEventListener('DOMContentLoaded',function(){
+    setupTopUpBalance()
+})

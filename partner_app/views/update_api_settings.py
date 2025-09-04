@@ -13,7 +13,7 @@ def update_api_settings(request):
         request.user.advertiserprofile.api_key = form.cleaned_data['api_key']
         request.user.advertiserprofile.save()
         messages.success(request, message='API ключ успешно обновлён!',extra_tags="update_api_success")
-        return redirect('dashboard')
+        return redirect('advertiser_settings')
     else:
         messages.error(request, message="Ошибка: " + str(form.errors), extra_tags="update_api_error")
-    return redirect('dashboard')
+    return redirect('advertiser_settings')

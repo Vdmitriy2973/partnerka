@@ -15,7 +15,7 @@ function generateApiKey() {
   return key;
 }
 
-export function setupApiKeyHandlers() {
+export function setupApiKeySettings() {
   const btnGenerate = document.getElementById('generate_api_key');
   const btnCopy = document.getElementById('copy_api_key');
 
@@ -114,13 +114,16 @@ export function setupApiKeyHandlers() {
       }, 2000);
     }
   }
-
-  // Функция для отображения уведомлений
   function showAlert(message, type = 'info') {
     const alert = document.createElement('div');
-    alert.className = `alert alert ${type} fixed top-4 left-1/2 transform -translate-x-1/2 max-w-md px-4 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 text-white`;
-    const iconClass = level === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
-    alert.innerHTML = `<i class="fas ${iconClass} mr-2"></i><span class="font-medium text-white">${message}</span>`;
+    alert.className = `alert alert-${type} fixed top-4 flex justify-center max-w-xs z-50 text-white p-4 mb-6 transition-all duration-300 ease-out shadow-lg animate-fade-in`;
+    const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+    alert.innerHTML = `<i class="fas ${iconClass} mr-2"></i>${message}`;
     document.body.appendChild(alert);
+
+    setTimeout(() => {
+      alert.classList.add('opacity-0', 'translate-y-[-20px]');
+      setTimeout(() => alert.remove(), 500);
+    }, 5000);
   }
 }

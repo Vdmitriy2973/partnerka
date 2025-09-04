@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/advertiser/dashboard/dashboard.js' %}
+{% vite_asset 'partner_app/assets/js/dashboard/advertiser/projects/projects.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Проекты{% endblock title %}
@@ -47,8 +47,8 @@
                 <form method="get" action="" class="flex flex-col sm:flex-row gap-2 w-full">
                     <!-- Поле поиска -->
                     <div class="flex-grow">
-                        <input name="projects_search" class="input input-bordered w-full" placeholder="Поиск проектов..."
-                            value="{{ projects_search_query }}">
+                        <input name="projects_search" class="input input-bordered w-full"
+                            placeholder="Поиск проектов..." value="{{ projects_search_query }}">
                     </div>
 
                     <!-- Группа кнопок формы -->
@@ -80,41 +80,41 @@
 
         <!-- Уведомления -->
         {% if messages %}
-            <div class="mt-4">
-                {% for message in messages %}
-                {% if "project_add_success" in message.extra_tags %}
-                <div class="alert-message alert alert-success mb-4">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "project_add_error" in message.extra_tags %}
-                <div class="alert-message alert alert-error mb-4">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "project_edit_error" in message.extra_tags %}
-                <div class="alert-message alert alert-error mb-4">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "project_edit_success" in message.extra_tags %}
-                <div class="alert-message alert alert-success mb-4">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "project_delete_error" in message.extra_tags %}
-                <div class="alert-message alert alert-error mb-4">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "project_delete_success" in message.extra_tags %}
-                <div class="alert-message alert alert-success mb-4">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% endif %}
-                {% endfor %}
+        <div class="mt-4">
+            {% for message in messages %}
+            {% if "project_add_success" in message.extra_tags %}
+            <div class="alert-message alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
             </div>
+            {% elif "project_add_error" in message.extra_tags %}
+            <div class="alert-message alert alert-error mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_edit_error" in message.extra_tags %}
+            <div class="alert-message alert alert-error mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_edit_success" in message.extra_tags %}
+            <div class="alert-message alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_delete_error" in message.extra_tags %}
+            <div class="alert-message alert alert-error mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "project_delete_success" in message.extra_tags %}
+            <div class="alert-message alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
         {% endif %}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for project in projects %}
@@ -122,12 +122,13 @@
                 <div class="card-body pt-4">
                     <div class="flex justify-between items-start mb-4">
                         <h2 class="card-title text-lg font-bold"><a href="{% url 'project' project.id %}">{{ project.name }}</a></h2>
-                        <div class="badge {% if project.is_active %}badge-success{% else %}badge-error{% endif %} gap-2">
+                        <div
+                            class="badge {% if project.is_active %}badge-success{% else %}badge-error{% endif %} gap-2">
                             <i class="fas {% if project.is_active %}fa-check{% else %}fa-times{% endif %}"></i>
                             {% if project.is_active %}Активен{% else %}Неактивен{% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="space-y-3 mb-4">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">Статус:</span>
@@ -137,12 +138,13 @@
                                 {{ project.status }}
                             </span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">URL проекта:</span>
                             <span>
                                 {% if "http" in project.url %}
-                                <a href="{{ project.url }}" class="text-blue-600 hover:underline" target="_blank">перейти</a>
+                                <a href="{{ project.url }}" class="text-blue-600 hover:underline"
+                                    target="_blank">перейти</a>
                                 {% else %}
                                 <span class="text-blue-600">{{ project.url }}</span>
                                 {% endif %}
@@ -156,18 +158,18 @@
                             <span class="text-gray-600">Оплата за действие:</span>
                             <span class="font-bold">{{ project.cost_per_action }} ₽</span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">Партнеров:</span>
                             <span>{{ project.partners.count }}</span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">Время добавления:</span>
                             <span>{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
                         </div>
                     </div>
-                    
+
                     <div class="absolute dropdown dropdown-end flex justify-end relative z-50">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-sm z-50">
                             <i class="fas fa-ellipsis-v"></i>
@@ -175,7 +177,8 @@
                         <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 
                     absolute z-[999] mt-1 transform-none">
                             <li class="showProjectDetailsModal" data-project-id="{{ project.id }}"
-                                data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
+                                data-project-name="{{ project.name }}"
+                                data-project-description="{{ project.description }}"
                                 data-project-url="{{ project.url }}" data-project-status="{{ project.status }}"
                                 data-project-is-active="{{ project.is_active|yesno:'true,false' }}"
                                 data-project-cost="{{ project.cost_per_action }}"
@@ -186,20 +189,22 @@
                                 data-project-conversion-count="{{ project.conversions_count }}">
                                 <a><i class="fas fa-eye mr-1"></i> Просмотр</a>
                             </li>
-                            <li><a href="{% url 'project' project.id %}"><i class="fas fa-info mr-3"></i>Подробнее</a></li>
+                            <li><a href="{% url 'project' project.id %}"><i class="fas fa-info mr-3"></i>Подробнее</a>
+                            </li>
                             {% if project.status == 'Подтверждено' %}
-                                <li class="editProjectModal" data-project-id="{{ project.id }}"
-                                    data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
-                                    data-project-description="{{ project.description }}" data-project-status="{{ project.status }}"
-                                    data-project-cost="{{ project.cost_per_action }}"
-                                    data-project-reduced-price="{{ project.get_reduced_price }}"
-                                    data-project-is-active="{{ project.is_active|yesno:'true,false' }}">
-                                    <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
-                                </li>
+                            <li class="editProjectModal" data-project-id="{{ project.id }}"
+                                data-project-name="{{ project.name }}" data-project-url="{{ project.url }}"
+                                data-project-description="{{ project.description }}"
+                                data-project-status="{{ project.status }}"
+                                data-project-cost="{{ project.cost_per_action }}"
+                                data-project-reduced-price="{{ project.get_reduced_price }}"
+                                data-project-is-active="{{ project.is_active|yesno:'true,false' }}">
+                                <a><i class="fas fa-edit mr-1"></i> Редактировать</a>
+                            </li>
                             {% elif project.status == 'На модерации' %}
-                                <li onclick="alert('Недоступно, пока проект на модерации')">
-                                    <a class="text-red-500"><i class="fas fa-edit mr-1"></i> Редактировать</a>
-                                </li>
+                            <li onclick="alert('Недоступно, пока проект на модерации')">
+                                <a class="text-red-500"><i class="fas fa-edit mr-1"></i> Редактировать</a>
+                            </li>
                             {% endif %}
                             <li class="delProjectModal" data-project-id="{{ project.id }}"
                                 data-project-name="{{ project.name }}">
@@ -215,8 +220,10 @@
                     <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
                         <i class="fas fa-sad-cry"></i>
                     </div>
-                    <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент у вас нет подключенных проектов</h3>
-                    <p class="text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 max-w-md">Рекомендуем подключить проекты для их продвижения!</p>
+                    <h3 class="text-lg sm:text-xl font-medium text-gray-500 mb-2 sm:mb-3">На данный момент у вас нет
+                        подключенных проектов</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 max-w-md">Рекомендуем подключить проекты для
+                        их продвижения!</p>
                 </div>
             </div>
             {% endfor %}
@@ -260,4 +267,72 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Добавляем кастомные стили для анимации
+        const style = document.createElement('style');
+        style.textContent = `
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            70% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-100%);
+                max-height: 0;
+                margin-bottom: 0;
+                padding: 0;
+                border: none;
+            }
+        }
+        
+        .animate-slide-out-left {
+            animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: none;
+        }
+    `;
+        document.head.appendChild(style);
+
+        // Обрабатываем все сообщения
+        const alertMessages = document.querySelectorAll('.alert-message');
+
+        alertMessages.forEach((element, index) => {
+            // Добавляем небольшую задержку для каждого следующего сообщения
+            const delay = 5000 + (index * 200);
+
+            setTimeout(() => {
+                // Добавляем классы для анимации ухода влево
+                element.classList.add(
+                    'animate-slide-out-left',
+                    'transform-gpu', // Аппаратное ускорение
+                    'transition-all',
+                    'duration-800',
+                    'ease-in-out'
+                );
+
+                // Удаляем элемент после завершения анимации
+                setTimeout(() => {
+                    if (element.parentNode) {
+                        element.remove();
+                    }
+                }, 800); // Время анимации
+            }, delay);
+        });
+    });
+</script>
+
+{% include "partner_app/dashboard/new_advertiser/projects/modals/project_details.html" %}
+
+{% include "partner_app/dashboard/new_advertiser/projects/modals/project_edit.html" %}
+
+{% include "partner_app/dashboard/new_advertiser/projects/modals/project_delete.html" %}
+
+{% include "partner_app/dashboard/new_advertiser/projects/modals/project_create.html" %}
+
 {% endblock %}
