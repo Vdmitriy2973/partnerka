@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from .dashboard_utils import (
     handle_partner_dashboard,
-    handle_advertiser_dashboard,
     handle_manager_dashboard
 )
 from .dashboard_utils.handlers import (
@@ -31,7 +30,6 @@ def dashboard(request):
     # Обработчики личного кабинета
     handlers = {
         "partner": handle_partner_dashboard,
-        "advertiser": handle_advertiser_dashboard,
         "manager": handle_manager_dashboard
     }
     

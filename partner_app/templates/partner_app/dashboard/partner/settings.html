@@ -74,7 +74,7 @@
                                 <label class="label">
                                     <span class="label-text">Имя</span>
                                 </label>
-                                <input name="first_name" type="text" value="{{ request.user.first_name }}"
+                                <input name="first_name" type="text" value="{{ request.user.first_name|default:'' }}"
                                     class="input input-bordered w-full" required />
                             </div>
 
@@ -83,7 +83,7 @@
                                 <label class="label">
                                     <span class="label-text">Фамилия</span>
                                 </label>
-                                <input name="last_name" type="text" value="{{ request.user.last_name }}"
+                                <input name="last_name" type="text" value="{{ request.user.last_name|default:'' }}"
                                     class="input input-bordered w-full" required />
                             </div>
 
@@ -92,7 +92,7 @@
                                 <label class="label">
                                     <span class="label-text">Отчество</span>
                                 </label>
-                                <input name="middle_name" type="text" value="{{ request.user.middle_name }}"
+                                <input name="middle_name" type="text" value="{{ request.user.middle_name|default:'' }}"
                                     class="input input-bordered w-full" required />
                             </div>
 
@@ -101,7 +101,7 @@
                                 <label class="label">
                                     <span class="label-text">Email</span>
                                 </label>
-                                <input name="email" type="email" value="{{ request.user.email }}"
+                                <input name="email" type="email" value="{{ request.user.email|default:'' }}"
                                     class="input input-bordered w-full" required />
                             </div>
 
@@ -129,7 +129,7 @@
                             <div class="relative group">
                                 <textarea name="description" class="textarea w-full"
                                     placeholder="Расскажите о своих интересах, опыте и целях..."
-                                    data-min-length="20">{{ request.user.description }}</textarea>
+                                    data-min-length="20">{{ request.user.description|default:'' }}</textarea>
                             </div>
                         </div>
 

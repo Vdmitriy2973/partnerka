@@ -8,7 +8,11 @@
         <div class="text-sm breadcrumbs mb-6">
             <ul>
                 <li><a href="/">Главная</a></li>
-                <li><a href="{% url 'dashboard' %}">Личный кабинет</a></li>
+                {% if request.user.advertiserprofile %}
+                    <li><a href="{% url 'advertiser_dashboard' %}">Личный кабинет</a></li>
+                {% else %}
+                    <li><a href="{% url 'dashboard' %}">Личный кабинет</a></li>
+                {% endif %}
                 <li class="font-semibold">Реквизиты</li>
             </ul>
         </div>

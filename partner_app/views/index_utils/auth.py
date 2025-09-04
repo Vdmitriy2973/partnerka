@@ -11,6 +11,8 @@ def handle_login(request):
         if remember_me:
             request.session.set_expiry(1209600)
         login(request, user)
+        if hasattr(request.user,"advertiserprofile"):
+            return redirect("advertiser_dashboard")
         return redirect("dashboard")
     else:
         messages.error(request, message="Неверный email или пароль.",extra_tags="login_error")
