@@ -22,6 +22,18 @@ export default defineConfig((mode) => {
           partner: join(INPUT_DIR, "/js/dashboard/partner.js"),
           advertiser: join(INPUT_DIR, "/js/dashboard/advertiser.js"),
           manager: join(INPUT_DIR, "/js/dashboard/manager.js"),
+
+          // Рекламодатель
+          adv_dashboard: join(INPUT_DIR, "/js/dashboard/advertiser/dashboard/dashboard.js"),
+          adv_partners: join(INPUT_DIR, "/js/dashboard/advertiser/dashboard/dashboard.js"),
+          adv_projects: join(INPUT_DIR, "/js/dashboard/advertiser/projects/projects.js"),
+          adv_requisites: join(INPUT_DIR, "/js/dashboard/advertiser/requisites/requisites.js"),
+          adv_sales: join(INPUT_DIR, "/js/dashboard/advertiser/sales/sales.js"),
+          adv_settings: join(INPUT_DIR, "/js/dashboard/advertiser/settings/settings.js"),
+
+          // Партнёр
+
+          // Менеджер
         },
       },
     },
