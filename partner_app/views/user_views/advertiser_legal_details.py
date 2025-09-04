@@ -14,6 +14,8 @@ def advertiser_legal_details(request, advertiser_id):
     # Проверка прав доступа
     if not hasattr(advertiser, 'advertiserprofile'): 
         messages.error(request, message="Этот пользователь не является рекламодателем")
+        if hasattr(request.user, 'advertiserprofile'): 
+            return redirect('advertiser_dashboard')
         return redirect('dashboard')
 
     context = {

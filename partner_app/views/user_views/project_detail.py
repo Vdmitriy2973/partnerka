@@ -64,7 +64,7 @@ def project_detail(request, project_id):
         })
 
     except Exception as e:
-        # Логирование ошибки (можно настроить логирование)
-        print(f"Error in project_detail: {e}")
         messages.error(request, message="Произошла ошибка при загрузке страницы проекта")
-        return redirect('dashboard')  # Перенаправление на главную
+        if hasattr(request.user, 'advertiserprofile'): 
+            return redirect('advertiser_dashboard')
+        return redirect('dashboard')

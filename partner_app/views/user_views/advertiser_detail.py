@@ -13,6 +13,8 @@ def advertiser_detail(request, advertiser_id):
     # Проверка прав доступа
     if not hasattr(advertiser, 'advertiserprofile'): 
         messages.error(request, message="Этот пользователь не является рекламодателем")
+        if hasattr(request.user, 'advertiserprofile'): 
+            return redirect('advertiser_dashboard')
         return redirect('dashboard')
     count = 6
     projects = advertiser.managed_projects.all()

@@ -11,10 +11,11 @@ def partner_detail(request, partner_id):
         # Получаем пользователя или 404
         partner = get_object_or_404(User, id=partner_id)
         # Проверяем, является ли пользователь партнером
-        if not hasattr(partner, 'partner_profile'):  # Или другая проверка на партнера
-            print("not partner")
+        if not hasattr(partner, 'partner_profile'):
             messages.error(request, message="Этот пользователь не является партнером")
-            return redirect('dashboard')  # Или другая подходящая страница
+            if hasattr(request.user, 'advertiserprofile'): 
+                return redirect('advertiser_dashboard')
+            return redirect('dashboard')
         
         platforms = partner.owned_platforms.all()
         platforms_paginator = Paginator(platforms, 10)
@@ -33,4 +34,6 @@ def partner_detail(request, partner_id):
         # Логирование ошибки (можно настроить логирование)
         print(f"Error in partner_detail: {e}")
         messages.error(request, message="Произошла ошибка при загрузке профиля партнера")
-        return redirect('dashboard')  # Перенаправление на главную
+        if hasattr(request.user, 'advertiserprofile'): 
+            return redirect('advertiser_dashboard')
+        return redirect('dashboard')
