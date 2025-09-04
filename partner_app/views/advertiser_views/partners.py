@@ -43,4 +43,4 @@ def advertiser_partners(request):
         "partners":partners_page,
         'partners_search_query':partners_search_q,
     }
-    return render(request, 'partner_app/dashboard/new_advertiser/partners/partners.html',context=context)
+    return render(request, 'partner_app/dashboard/advertiser/partners/partners.html',context=context)

@@ -3,4 +3,4 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def advertiser_requisites(request):
-    return render(request, 'partner_app/dashboard/new_advertiser/requisites/requisites.html')
+    return render(request, 'partner_app/dashboard/advertiser/requisites/requisites.html')

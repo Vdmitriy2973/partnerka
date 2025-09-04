@@ -39,4 +39,4 @@ def advertiser_sales(request):
         "conversions_json": json.dumps(chart_data),
         
     }
-    return render(request, 'partner_app/dashboard/new_advertiser/sales/sales.html',context=context)
+    return render(request, 'partner_app/dashboard/advertiser/sales/sales.html',context=context)

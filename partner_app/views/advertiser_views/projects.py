@@ -34,4 +34,4 @@ def advertiser_projects(request):
         "conversion_percent":conversion_percent,
         "projects_search_query":projects_search_q,
     }
-    return render(request, 'partner_app/dashboard/new_advertiser/projects/projects.html',context=context)
+    return render(request, 'partner_app/dashboard/advertiser/projects/projects.html',context=context)

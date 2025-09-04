@@ -11,7 +11,7 @@
 {% block title %}Юр. данные{% endblock title %}
 
 {% block header %}
-{% include "partner_app/dashboard/new_advertiser/header/header.html" %}
+{% include "partner_app/dashboard/advertiser/header/header.html" %}
 {% endblock %}
 
 {% block main_class %}bg-base-200 min-h-screen{% endblock %}
@@ -97,7 +97,7 @@
                                 <span class="label-text">Юридический адрес</span>
                             </label>
                             <textarea name="legal_address" class="textarea textarea-bordered w-full"
-                                placeholder="Почтовый индекс, город, улица, дом">{{ request.user.advertiserrequisites.legal_address }}</textarea>
+                                placeholder="Почтовый индекс, город, улица, дом">{{ request.user.advertiserrequisites.legal_address|default:'' }}</textarea>
                             <label class="label">
                                 <span class="label-text-alt">Обязательно для ООО, АО</span>
                             </label>

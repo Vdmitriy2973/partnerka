@@ -24,7 +24,7 @@ export default defineConfig((mode) => {
 
           // Рекламодатель
           adv_dashboard: join(INPUT_DIR, "/js/dashboard/advertiser/dashboard/dashboard.js"),
-          adv_partners: join(INPUT_DIR, "/js/dashboard/advertiser/dashboard/partners.js"),
+          adv_partners: join(INPUT_DIR, "/js/dashboard/advertiser/partners/partners.js"),
           adv_projects: join(INPUT_DIR, "/js/dashboard/advertiser/projects/projects.js"),
           adv_requisites: join(INPUT_DIR, "/js/dashboard/advertiser/requisites/requisites.js"),
           adv_sales: join(INPUT_DIR, "/js/dashboard/advertiser/sales/sales.js"),

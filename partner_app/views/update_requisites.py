@@ -13,16 +13,9 @@ def update_requisites_settings(request):
     if not hasattr(user, 'advertiserprofile'):
         messages.error(request, "Доступ запрещён.","update_requisites_error")
         return redirect('dashboard')
-    
-    try:
-        requisites = AdvertiserRequisites.objects.get(
-            user=user
-        )
-    except AdvertiserRequisites.DoesNotExist:
-        requisites = AdvertiserRequisites.objects.create(
-            user=user
-        )
-        
+    print(request.POST)
+    requisites, created = AdvertiserRequisites.objects.get_or_create(user=user)
+    print(dir(requisites))
     if len(request.POST.get('responsible_person').split(' ')) != 3:
         messages.error(request, "Поле 'ФИО' неверно заполнено","update_requisites_error")
         return redirect('advertiser_requisites')
@@ -30,13 +23,10 @@ def update_requisites_settings(request):
         if not word.isalpha():
             messages.error(request, "Поле 'ФИО' должно содержать только буквы","update_requisites_error")
             return redirect('advertiser_requisites')
-    
-    legal_address = request.POST.get('legal_address')
-    
     try:
         requisites.responsible_person = request.POST.get('responsible_person')
         requisites.organization_name = request.POST.get('full_name')
-        requisites.legal_address = legal_address
+        requisites.legal_address = request.POST.get('legal_address')
         requisites.phone = request.POST.get('phone')
         requisites.email = request.POST.get('email')
         requisites.ogrn = request.POST.get('ogrn')
@@ -49,6 +39,6 @@ def update_requisites_settings(request):
         for error_list in e.messages:
             messages.error(request, error_list,"update_requisites_error")
         return redirect('advertiser_requisites')
-    messages.error(request, "Юр. данные были успешно изменены!","update_requisites_success")
+    messages.success(request, "Юр. данные были успешно изменены!","update_requisites_success")
         
     return redirect('advertiser_requisites')

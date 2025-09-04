@@ -29,4 +29,4 @@ def advertiser_dashboard(request):
         "fee_percent": settings.PARTNER_PAYOUT_SETTINGS["fee_percent"],
         
     }
-    return render(request, 'partner_app/dashboard/new_advertiser/dashboard/dashboard.html',context=context)
+    return render(request, 'partner_app/dashboard/advertiser/dashboard/dashboard.html',context=context)

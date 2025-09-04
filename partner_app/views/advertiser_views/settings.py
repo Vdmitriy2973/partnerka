@@ -8,4 +8,4 @@ def advertiser_settings(request):
     context = {
         "apiSettingsForm": ApiSettingsForm(request=request)
     }
-    return render(request, 'partner_app/dashboard/new_advertiser/settings/settings.html',context=context)
+    return render(request, 'partner_app/dashboard/advertiser/settings/settings.html',context=context)
