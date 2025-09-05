@@ -176,7 +176,7 @@
                         {% for conversion in conversions %}
                         <tr class="hover:bg-base-200 transition-colors duration-150">
                             <td class="text-xs sm:text-sm">#{{ conversion.id }}</td>
-                            <td><a href="{% url 'partner' conversion.partner.id %}">
+                            <td><a href="{% url 'partner' conversion.partner.user.id %}">
                                     <div class="font-bold text-xs sm:text-sm"> {{ conversion.partner.user.username }} </div>
                                 </a></td>
                             <td>

@@ -13,12 +13,24 @@ class ConversionAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        if not "partner" in request.data or not "project" in request.data:
+        partner_id = request.data.get("partner")
+        if partner_id is None:
             return Response(
-                {"detail": "Параметры partner и project необходимы для выполнения запроса!"},
+                {"detail": "Параметр 'partner' обязателен для зачисления конверсии. Пожалуйста, укажите ID партнера."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        partner = User.objects.get(id=int(request.data["partner"]))
+        project_id = request.data.get("project")
+        if project_id is None:
+            return Response(
+                {"detail": "Параметр 'project' обязателен для зачисления конверсии. Пожалуйста, укажите ID проекта."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            partner = User.objects.get(id=int(partner_id))
+        except User.DoesNotExist:
+            return Response({
+                "error": "Партнёр с указанным ID не найден. Пожалуйста, проверьте правильность введенного ID."
+            }, status=status.HTTP_404_NOT_FOUND)
         partnerprofile = PartnerProfile.objects.get(
             user=int(partner.id)
         )

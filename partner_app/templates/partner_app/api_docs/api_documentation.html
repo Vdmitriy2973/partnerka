@@ -139,7 +139,7 @@
             <!-- Actions -->
             {% if request.user.advertiserprofile %}
               <div class="flex flex-wrap gap-2 mt-4">
-                <a href="{% url 'dashboard' %}" onclick="localStorage.setItem('activePage','settings')" class="btn btn-primary">
+                <a href="{% url 'advertiser_settings' %}" class="btn btn-primary">
                   <i class="fas fa-key mr-2"></i> Получить API ключ
                 </a>
               </div>
