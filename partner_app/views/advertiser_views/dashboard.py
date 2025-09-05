@@ -4,12 +4,14 @@ from django.conf import settings
 
 from partner_app.models import User, Conversion,Project,AdvertiserActivity
 
-
-@login_required
-def advertiser_dashboard(request):
+def advertiser_dashboard(request):  
     """Информационная панель рекламодателя"""
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/?show_modal=auth')
     if not hasattr(request.user,"advertiserprofile"):
         return redirect('index')
+    
     partners = User.objects.filter(
         project_memberships__project__advertiser=request.user
     ).distinct().count()

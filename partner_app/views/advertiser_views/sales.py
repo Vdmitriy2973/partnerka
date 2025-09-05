@@ -1,18 +1,24 @@
 import json 
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.db.models import Sum, Avg
 
 from partner_app.utils import _paginate
 from partner_app.models import Conversion
 
-@login_required
 def advertiser_sales(request):
+    """Страница со статистикой о продажах рекламодателя"""
+    
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/?show_modal=auth')   
+    if not hasattr(request.user,"advertiserprofile"):
+        return redirect('index') 
     
     conversions = Conversion.objects.filter(advertiser=request.user.advertiserprofile).select_related("project","partner").order_by("-created_at")
     conversions_count = conversions.count()
     
+    chart_data = None
     if conversions:
         chart_data = [
         {
@@ -36,7 +42,7 @@ def advertiser_sales(request):
         "conversions_count":conversions_count,
         "conversions_average":conversions_average,
         "conversions_total":conversions_total,
-        "conversions_json": json.dumps(chart_data),
+        "conversions_json": json.dumps(chart_data) if chart_data else None,
         
     }
     return render(request, 'partner_app/dashboard/advertiser/sales/sales.html',context=context)

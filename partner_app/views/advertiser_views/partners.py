@@ -1,15 +1,19 @@
 from decimal import Decimal
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.db.models.functions import Coalesce
 from django.db.models import Sum, Count, OuterRef, Subquery,Value
 
 from partner_app.models import User,Conversion
 from partner_app.views.utils import _paginate,_apply_search
 
-@login_required
 def advertiser_partners(request):
+    """Страница с подключенными партнёрами рекламодателя"""
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/?show_modal=auth')
+    if not hasattr(request.user,"advertiserprofile"):
+        return redirect('index')
     
     conversions_total_subquery = Subquery(
         Conversion.objects.filter(partner=OuterRef('id'))

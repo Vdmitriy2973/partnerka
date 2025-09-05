@@ -23,6 +23,8 @@
             <h1 class="text-3xl font-bold text-base-content mb-2">Настройки</h1>
             <p class="text-base-content/60">Управление аккаунтом и настройки профиля</p>
         </div>
+
+        <div id="settings_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
         {% if messages %}
             <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
                 {% for message in messages %}

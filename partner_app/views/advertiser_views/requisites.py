@@ -1,6 +1,12 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 
-@login_required
+
 def advertiser_requisites(request):
+    """Страница с настройками юр. данных рекламодателя"""
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/?show_modal=auth')
+    if not hasattr(request.user,"advertiserprofile"):
+        return redirect('index')
+    
     return render(request, 'partner_app/dashboard/advertiser/requisites/requisites.html')

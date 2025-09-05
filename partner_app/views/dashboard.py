@@ -19,10 +19,12 @@ def dashboard(request):
             _handle_profile_update(request, user)
             if hasattr(user,"advertiserprofile"):
                 return redirect('advertiser_settings')
+            return redirect('dashboard')
         elif "password_submit" in request.POST:
             _handle_password_update(request, user)
             if hasattr(user,"advertiserprofile"):
                 return redirect('advertiser_settings')
+            return redirect('dashboard')
     
     
     if user.is_authenticated and user.is_currently_blocked():
@@ -30,7 +32,8 @@ def dashboard(request):
     # Обработчики личного кабинета
     handlers = {
         "partner": handle_partner_dashboard,
-        "manager": handle_manager_dashboard
+        "manager": handle_manager_dashboard,
     }
-    
+    if handlers.get(user.user_type, None) is None:
+        return redirect('advertiser_dashboard')
     return handlers.get(user.user_type, lambda r: None)(request)

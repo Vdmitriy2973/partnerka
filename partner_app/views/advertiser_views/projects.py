@@ -1,13 +1,19 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 
 from partner_app.utils import _paginate,_apply_search
 from partner_app.models import Project,ClickEvent,Conversion
 from partner_app.forms import ProjectForm,ProjectParamForm
 
-@login_required
+
 def advertiser_projects(request):
     """Страница с проектами рекламодателя"""
+    
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/?show_modal=auth')
+    if not hasattr(request.user,"advertiserprofile"):
+        return redirect('index')
+    
     projects = Project.objects.filter(
         advertiser=request.user
     ).select_related('advertiser').order_by('-created_at')

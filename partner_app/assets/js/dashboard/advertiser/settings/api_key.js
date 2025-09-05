@@ -39,6 +39,7 @@ export function setupApiKeySettings() {
 
   if (btnCopy) {
     btnCopy.addEventListener('click', async () => {
+      addAlertStyles();
       const apiKeyElement = document.getElementById('api_key');
 
       if (!apiKeyElement) {
@@ -116,14 +117,46 @@ export function setupApiKeySettings() {
   }
   function showAlert(message, type = 'info') {
     const alert = document.createElement('div');
-    alert.className = `alert alert-${type} fixed top-4 flex justify-center max-w-xs z-50 text-white p-4 mb-6 transition-all duration-300 ease-out shadow-lg animate-fade-in`;
+    const alertClass = `alert-${type}`;
     const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+
+    alert.className = `alert-message alert ${alertClass} text-white p-4 mr-6 mb-6 transition-all duration-300 ease-out shadow-lg animate-fade-in`;
     alert.innerHTML = `<i class="fas ${iconClass} mr-2"></i>${message}`;
-    document.body.appendChild(alert);
+    document.getElementById('settings_messages__container').appendChild(alert);
 
     setTimeout(() => {
-      alert.classList.add('opacity-0', 'translate-y-[-20px]');
+      alert.classList.add('animate-slide-out-left','transform-gpu','transition-all','duration-800','ease-in-out');
       setTimeout(() => alert.remove(), 500);
     }, 5000);
   }
 }
+
+const addAlertStyles = () => {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slide-out-left {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            70% {
+                opacity: 0;
+                transform: translateX(+100%);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(+100%);
+                max-height: 0;
+                margin-bottom: 0;
+                padding: 0;
+                border: none;
+            }
+        }
+        
+        .animate-slide-out-left {
+            animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: none;
+        }
+    `;
+    document.head.appendChild(style);
+};

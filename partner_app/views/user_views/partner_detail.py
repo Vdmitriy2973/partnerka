@@ -12,6 +12,7 @@ def partner_detail(request, partner_id):
         partner = get_object_or_404(User, id=partner_id)
         # Проверяем, является ли пользователь партнером
         if not hasattr(partner, 'partner_profile'):
+            print('not partner')
             messages.error(request, message="Этот пользователь не является партнером")
             if hasattr(request.user, 'advertiserprofile'): 
                 return redirect('advertiser_dashboard')
