@@ -1,0 +1,96 @@
+{% load static %}
+
+<!-- Navigation -->
+<div class="navbar bg-white shadow-lg sticky top-0 z-50 px-2 sm:px-4" id="navbar">
+    <!-- Логотип и мобильное меню -->
+    <div class="navbar-start flex items-center">
+        <!-- Мобильное меню (бургер) -->
+        <div class="dropdown lg:hidden mr-2">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <i class="fas fa-bars text-lg"></i>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a href="{% url 'partner_dashboard' %}" class="nav-item"><i class="fas fa-chart-pie"></i>Дашборд</a></li>
+                <li><a href="{% url 'partner_offers' %}" class="nav-item"><i class="fas fa-boxes"></i>Предложения</a></li>
+                <li><a href="{% url 'partner_connections' %}" class="nav-item"><i class="fas fa-laptop-code"></i>Программы</a></li>
+                <li><a href="{% url 'partner_platforms' %}" class="nav-item"><i class="fas fa-globe"></i>Площадки</a></li>
+                <li><a href="{% url 'partner_links' %}" class="nav-item"><i class="fas fa-link"></i>Ссылки</a></li>
+            </ul>
+        </div>
+
+        <!-- Логотип -->
+        <a href="{% url 'index' %}"
+            class="btn btn-ghost p-0 sm:p-2 text-xl font-bold text-blue-600 hover:scale-105 transition-transform">
+            <i class="fas fa-handshake text-blue-600 mr-1 sm:mr-2"></i>
+            <span>LinkOffer</span>
+        </a>
+    </div>
+
+    <!-- Десктопное меню (скрыто на мобильных) -->
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1 gap-0.5 xl:gap-0.1">
+            <li>
+            <a href="{% url 'partner_dashboard' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
+                <i class="fas fa-chart-pie"></i>
+                <span class="hidden sm:inline">Дашборд</span>
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'partner_offers' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
+                <i class="fas fa-boxes"></i>
+                <span class="hidden sm:inline">Предложения</span>
+            </a>    
+            </li>
+            <li>
+            <a href="{% url 'partner_connections' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
+                <i class="fas fa-laptop-code"></i>
+                <span class="hidden sm:inline">Программы</span>
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'partner_platforms' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
+                <i class="fas fa-globe"></i>
+                <span class="hidden sm:inline">Площадки</span>
+            </a>
+            </li>
+            <li>
+            <a href="{% url 'partner_links' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
+                <i class="fas fa-link"></i>
+                <span class="hidden sm:inline">Ссылки</span>
+            </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <div class="avatar avatar-placeholder">
+                    <div class="bg-neutral text-neutral-content w-10 rounded-full">
+                        <i class="fas fa-user text-white text-lg"></i>
+                    </div>
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
+                <li>
+                    <a href="{% url 'partner_payments' %}" class="nav-item text-lg w-full" data-page="payments">
+                        <i class="fas fa-money-bill-wave"></i>Выплаты
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'partner_settings' %}" class="nav-item text-lg w-full" data-page="settings">
+                        <i class="fas fa-cog"></i> Настройки
+                    </a>
+                </li>
+                <li>
+                    <form action="{% url 'logout' %}" class="flex justify-between w-full cursor-pointer" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:bg-gray-200 text-lg flex justify-start w-full cursor-pointer">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Выход
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

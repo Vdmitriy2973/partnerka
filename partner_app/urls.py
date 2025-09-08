@@ -8,26 +8,26 @@ urlpatterns = [
     path('update_notifications_settings', views.update_notifications_settings, name='update_notifications_settings'),
 
     # Партнёр
-    path('add_platform',views.add_platform,name='add_platform'),
-    path('del_platform/<int:platform_id>',views.delete_platform,name='del_platform'),
-    path('edit_platform/<int:platform_id>',views.edit_platform, name='edit_platform'),
-    path('connect_project/<int:project_id>',views.connect_project,name="connect_project"),
-    path('stop_partnership_with_project/<int:project_id>',views.stop_partnership_with_project,name="stop_partnership_with_project"),
-    path('suspend_partnership/<int:project_id>',views.suspend_partnership,name='suspend_partnership'),
-    path('resume_partnership/<int:project_id>',views.resume_partnership,name='resume_partnership'),
-    path('generate_partner_link/<int:partnership_id>',views.generate_link,name='generate_link'),
-    path('delete_partner_link/<int:link_id>',views.delete_partner_link,name='delete_partner_link'),
-    path('update_payout_settings',views.payout_settings_view,name='update_payout_settings'),
-    path('create_payout_request',views.create_payout_request,name='create_payout_request'),
+    path('partner/add_platform',views.add_platform,name='add_platform'),
+    path('partner/del_platform/<int:platform_id>',views.delete_platform,name='del_platform'),
+    path('partner/edit_platform/<int:platform_id>',views.edit_platform, name='edit_platform'),
+    path('partner/connect_project/<int:project_id>',views.connect_project,name="connect_project"),
+    path('partner/stop_partnership_with_project/<int:project_id>',views.stop_partnership_with_project,name="stop_partnership_with_project"),
+    path('partner/suspend_partnership/<int:project_id>',views.suspend_partnership,name='suspend_partnership'),
+    path('partner/resume_partnership/<int:project_id>',views.resume_partnership,name='resume_partnership'),
+    path('partner/generate_partner_link/<int:partnership_id>',views.generate_link,name='generate_link'),
+    path('partner/delete_partner_link/<int:link_id>',views.delete_partner_link,name='delete_partner_link'),
+    path('partner/update_payout_settings',views.payout_settings_view,name='update_payout_settings'),
+    path('partner/create_payout_request',views.create_payout_request,name='create_payout_request'),
     
     ## Страницы личного кабинета партнёра
-    # path('partner/dashboard',views.partner_dashboard,name='partner_dashboard'),
-    # path()
-    # path()
-    # path()
-    # path()
-    # path()
-    # path()
+    path('partner/dashboard',views.partner_dashboard,name='partner_dashboard'),
+    path('partner/offers',views.partner_offers,name='partner_offers'),
+    path('partner/connections',views.partner_connections,name='partner_connections'),
+    path('partner/platforms',views.partner_platforms,name='partner_platforms'),
+    path('partner/links',views.partner_links,name='partner_links'),
+    path('partner/payments',views.partner_payments,name='partner_payments'),
+    path('partner/settings',views.partner_settings,name='partner_settings'),
     
     # Рекламодатель
     path('advertiser/add_project',views.add_project,name='add_project'),

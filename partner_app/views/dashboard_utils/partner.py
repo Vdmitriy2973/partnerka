@@ -1,8 +1,9 @@
 from decimal import Decimal
+import json
 
 from django.conf import settings
 from django.shortcuts import render
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value, Prefetch
+from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value, Prefetch, DecimalField,Q
 from django.db.models.functions import Coalesce
 
 from partner_app.models import Platform, Project, PartnerLink, PartnerActivity, PartnerTransaction,ProjectPartner
@@ -12,6 +13,7 @@ from .common import _apply_search, _paginate
 def handle_partner_dashboard(request):
     """Обработчик личного кабинета партнера"""
     
+    user = request.user
     # Платформы
     platforms = Platform.objects.filter(
             partner=request.user).annotate(
@@ -34,13 +36,12 @@ def handle_partner_dashboard(request):
     # Применение поиска
     available_projects = _get_available_projects(request)        
     connected_projects = _get_connected_projects(request)
+    for project in connected_projects:
+        project.has_link = project.has_partner_link(user)
+        project.params_json = json.dumps(list(
+            project.params.all().values('name', 'description', 'param_type', 'example_value')
+        ))
     
-    if platforms_search_q:
-        platforms = _apply_search(platforms, platforms_search_q, ['name'])
-    if projects_search_q:
-        available_projects = _apply_search(available_projects, projects_search_q, ['name'])
-    if connection_search_q:
-        connected_projects = _apply_search(connected_projects, connection_search_q, ['name'])
         
     # Получаем агрегированные данные
     total_platforms = platforms.count()
@@ -48,6 +49,13 @@ def handle_partner_dashboard(request):
     pending_platforms = platforms.filter(status='На модерации').count()
     rejected_platforms = platforms.filter(status='Отклонено').count()
     total_projects = available_projects.count()
+    
+    if platforms_search_q:
+        platforms = _apply_search(platforms, platforms_search_q, ['name'])
+    if projects_search_q:
+        available_projects = _apply_search(available_projects, projects_search_q, ['name'])
+    if connection_search_q:
+        connected_projects = _apply_search(connected_projects, connection_search_q, ['name'])
     
     approved_platforms = platforms.filter(status='Подтверждено')
     
@@ -64,7 +72,7 @@ def handle_partner_dashboard(request):
         is_active=True
     ).count()
     
-    best_link = PartnerLink.objects.annotate(
+    best_link = PartnerLink.objects.filter(partner=request.user).annotate(
         clicks_count=Count('clicks'),
         conversions_count=Count('conversions'),
             score=ExpressionWrapper(
@@ -155,12 +163,22 @@ def _get_available_projects(request):
     
 def _get_connected_projects(request):
     """Получение подключенных проектов у партнёра"""
-    return Project.objects.prefetch_related('params', Prefetch(
+    user_memberships_prefetch = Prefetch(
         'partner_memberships',
         queryset=ProjectPartner.objects.filter(partner=request.user),
         to_attr='user_memberships'
-    ),'partner_memberships','project_links',"conversions").filter(
+    )
+    
+    return Project.objects.filter(
         partner_memberships__partner=request.user
+    ).prefetch_related(
+        'params',
+        user_memberships_prefetch,
+        'project_links',
+        'conversions'
     ).annotate(
-        conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0)))
-    ).order_by('-partner_memberships__joined_at').distinct()
+        conversions_total=Coalesce(
+            Sum('conversions__amount',filter=Q(conversions__partner=request.user.partner_profile), output_field=DecimalField(max_digits=10, decimal_places=2)),
+            Value(Decimal('0.00'))
+        )
+    ).order_by('-partner_memberships__joined_at')

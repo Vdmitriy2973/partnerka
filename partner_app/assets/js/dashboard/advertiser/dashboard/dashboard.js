@@ -1,7 +1,7 @@
 import '@fortawesome/fontawesome-free/js/all'
 import '/partner_app/assets/css/dashboard/advertiser.css'
 
-import { setupTopUpBalance } from './dashboard_top_up_balance.js'
+import { setupTopUpBalance } from './top_up_balance.js'
 
 document.addEventListener('DOMContentLoaded',function(){
     setupTopUpBalance()

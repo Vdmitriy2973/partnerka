@@ -1,0 +1,76 @@
+<dialog id="partnerLinkModal" class="modal">
+    <!-- Модальное окно -->
+    <div class="modal-box max-w-4xl">
+        <form method="post" id="generate_partner_link_form">
+            {% csrf_token %}
+            <!-- Заголовок -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    Получение партнёрской ссылки
+                </h3>
+                <div  onclick="document.getElementById('partnerLinkModal').close()" class="btn btn-sm btn-circle btn-ghost">
+                    ✕
+                </div>
+            </div>
+
+            <!-- Результат генерации -->
+            <div id="generatedLinkContainer" class="mt-6 hidden">
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Ваша партнёрская ссылка</span>
+                    </label>
+                    <div class="relative">
+                        <input name="generated_link" type="text" id="generatedLink" class="input input-bordered w-full pr-16" readonly />
+                        <button id="copyLinkBtn" class="btn btn-primary absolute right-0 top-0 rounded-l-none" title="Копировать в буфер">
+                            <i class="fas fa-copy mr-2"></i> Копировать
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Фиксированный параметр pid -->
+            <div class="mt-6 bg-base-200 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">Обязательный параметр</h4>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 bg-base-100 rounded-lg">
+                    <label class="flex-1">
+                        <span class="font-medium">pid (Partner ID)</span>
+                        <span class="text-sm opacity-70 block">Идентификатор партнёра</span>
+                    </label>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <input type="text" id="fixedPidInput" class="input input-bordered input-sm flex-1" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Управление параметрами -->
+            <div class="mt-4 bg-base-200 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold mb-3">Дополнительные параметры</h4>
+                <div id="paramsControls" class="space-y-3">
+                    <!-- Параметры будут добавляться сюда динамически -->
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="modal-action">
+                <div onclick="document.getElementById('partnerLinkModal').close()" class="btn btn-ghost">
+                    Закрыть
+                </div>
+                <button id="generateLinkBtn" type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    Сгенерировать ссылку
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Фон модального окна -->
+    <form method="dialog" class="modal-backdrop backdrop-blur-sm">
+        <button>close</button>
+    </form>
+</dialog>

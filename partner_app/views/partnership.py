@@ -32,7 +32,7 @@ def stop_partnership_with_partner(request,partner_id):
     
     
     
-Рекламодатель {request.user.get_full_name()} прекратил сотрудничество с вами {date_str}.\n\n\n
+Рекламодатель {request.user.email} прекратил сотрудничество с вами {date_str}.\n\n\n
 С уважением,\nКоманда поддержки"""
     send_email_via_mailru.delay(user.email,message,title)
     messages.success(request,message="Сотрудничество с партнёром успешно остановлено!",extra_tags="stop_partnership_success")
@@ -48,7 +48,7 @@ def stop_partnership_with_project(request,project_id):
     
     title = '❌ Остановка сотрудничества'
     message = f"""Уважаемый рекламодатель,
-сообщаем вам, что партнёр {partnership.partner.get_full_name()} {partnership.partner.email} прекратил сотрудничество по проекту «{partnership.project.name}»\n
+сообщаем вам, что партнёр {partnership.partner.email} {partnership.partner.email} прекратил сотрудничество по проекту «{partnership.project.name}»\n
 Причина: {request.POST.get('suspension_reason', "Не указана")}\n
 Комментарий: {request.POST.get('suspension_comment', "Не указан")}
 **Что это значит:**  
@@ -59,7 +59,7 @@ def stop_partnership_with_project(request,project_id):
 
     send_email_via_mailru.delay(partnership.advertiser.email,message,title)
     messages.success(request,message="Сотрудничество с рекламодателем успешно остановлено!",extra_tags="stop_partnership_success")
-    return redirect('dashboard')
+    return redirect('partner_connections')
 
 @login_required
 @require_POST
@@ -73,7 +73,7 @@ def suspend_partnership(request,project_id):
     
     title = '❌ Приостановление сотрудничества'
     message = f"""Уважаемый рекламодатель,
-Сообщаем вам, что партнёр {partnership.partner.get_full_name()} {partnership.partner.email} временно прекратил сотрудничество по проекту «{partnership.project.name}» временно приостановлено.
+Сообщаем вам, что партнёр {partnership.partner.email} {partnership.partner.email} временно прекратил сотрудничество по проекту «{partnership.project.name}» временно приостановлено.
 Причина: {request.POST.get('suspension_reason',"Не указана")}
 Комментарий: {request.POST.get('suspension_comment',"Не указан")}
 
@@ -85,7 +85,7 @@ def suspend_partnership(request,project_id):
     
     send_email_via_mailru.delay(partnership.advertiser.email,message,title)
     messages.success(request,message="Сотрудничество с рекламодателем успешно приостановлено!",extra_tags="suspend_partnership_success")
-    return redirect('dashboard')
+    return redirect('partner_connections')
 
 
 @login_required
@@ -99,10 +99,10 @@ def resume_partnership(request,project_id):
     partnership.save()
     
     title = f'✅ Возобновление сотрудничества'
-    message = f"""Партнёр {partnership.partner.get_full_name()} снова продвигает ваш проект «{partnership.project.name}».  
+    message = f"""Партнёр {partnership.partner.email} снова продвигает ваш проект «{partnership.project.name}».  
 
 После возобновления сотрудничества у вас будут учитываться конверсии/переходы.
 Это письмо отправлено автоматически."""
     send_email_via_mailru.delay(partnership.advertiser.email,message,title)
     messages.success(request,message="Сотрудничество с рекламодателем успешно возобновлено!",extra_tags="resume_partnership_success")
-    return redirect('dashboard')
+    return redirect('partner_connections')

@@ -19,11 +19,15 @@ def dashboard(request):
             _handle_profile_update(request, user)
             if hasattr(user,"advertiserprofile"):
                 return redirect('advertiser_settings')
+            elif hasattr(user,"partner_profile"):
+                return redirect('partner_settings')
             return redirect('dashboard')
         elif "password_submit" in request.POST:
             _handle_password_update(request, user)
             if hasattr(user,"advertiserprofile"):
                 return redirect('advertiser_settings')
+            elif hasattr(user,"partner_profile"):
+                return redirect('partner_settings')
             return redirect('dashboard')
     
     
@@ -31,9 +35,10 @@ def dashboard(request):
         return render(request, 'account_blocked/block_info.html')
     # Обработчики личного кабинета
     handlers = {
-        "partner": handle_partner_dashboard,
         "manager": handle_manager_dashboard,
     }
-    if handlers.get(user.user_type, None) is None:
+    if user.user_type == "advertiser":
         return redirect('advertiser_dashboard')
+    elif user.user_type == "partner":
+        return redirect('partner_dashboard')
     return handlers.get(user.user_type, lambda r: None)(request)

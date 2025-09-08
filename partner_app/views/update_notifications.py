@@ -11,4 +11,6 @@ def update_notifications_settings(request):
     messages.success(request, message='Настройки уведомлений успешно обновлёны!',extra_tags="update_notifications_success")
     if hasattr(request.user,'advertiserprofile'):
         return redirect('advertiser_settings')    
+    elif hasattr(request.user,'partner_profile'):
+        return redirect('partner_settings')
     return redirect('dashboard')

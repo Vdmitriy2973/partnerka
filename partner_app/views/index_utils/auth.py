@@ -10,9 +10,13 @@ def handle_login(request):
         remember_me = form.cleaned_data.get("remember_me")
         if remember_me:
             request.session.set_expiry(1209600)
+        else:
+            request.session.set_expiry(0)
         login(request, user)
         if hasattr(request.user,"advertiserprofile"):
             return redirect("advertiser_dashboard")
+        elif hasattr(request.user,"partner_profile"):
+            return redirect("partner_dashboard")
         return redirect("dashboard")
     else:
         messages.error(request, message="Неверный email или пароль.",extra_tags="login_error")

@@ -1,0 +1,168 @@
+{% extends "partner_app/dashboard/base_lk.html" %}
+{% load static %}
+{% load tz %}
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+    {% vite_asset 'partner_app/assets/js/dashboard/partner/offers/offers.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %}Доступные предложения{% endblock title %}
+
+{% block header %}
+{% include "partner_app/dashboard/partner/header/header.html" %}
+{% endblock %}
+
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 max-w-7xl">
+    <div id="offers">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-base-content mb-2">Доступные предложения</h1>
+            <p class="text-gray-500 mt-1">Доступно программ для подключения: {{ total_projects }}</p>
+            <p class="text-base-content/60">Выберите проект для продвижения и начните зарабатывать</p>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <form method="get" action="" class="join w-full">
+                <div>
+                    <div>
+                        <input name="offers_search" class="input input-bordered join-item"
+                            placeholder="Поиск предложений..." value="{{ offers_search_query }}">
+                    </div>
+                </div>
+                <div class="indicator">
+                    <button type="submit" class="btn join-item btn-primary">
+                        <i class="fas fa-search mr-2"></i> Найти
+                    </button>
+                </div>
+                <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
+                    <i class="fas fa-times mr-2"></i> Сбросить
+                </button>
+            </form>
+        </div>
+
+        {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                    {% if "connect_project_success" in message.extra_tags %}
+                    <div class="alert-message alert alert-success mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% elif "already_connected_project" in message.extra_tags %}
+                    <div class="alert-message alert alert-error mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <b>{{ message }}</b>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {% for project in projects %}
+            <div class="card bg-base-100 shadow-md offer-card">
+                <div class="card-body pt-4">
+                    <div class="flex justify-between items-start">
+                        <h2 class="card-title"><a href="{% url 'project' project.id %}">{{ project.name }} </a></h2>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">URL проекта:</span>
+                            <span><a href="{{ project.url }}" class="text-blue-600" target="_blank">перейти</a></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Цена за целевое действие:</span>
+                            <span class="font-bold">{{ project.cost_per_action }} ₽</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Рекламодатель:</span>
+                            <a href="{% url 'advertiser' project.advertiser.id %}" class="font-bold">{{ project.advertiser }}</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Партнеров:</span>
+                            <span>{{ project.partners.count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Время добавления:</span>
+                            <span>{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions mt-6">
+                        <button class="btn btn-primary btn-block ConnectProjectModal" data-project-id="{{ project.id }}"
+                            data-project-name="{{ project.name }}" data-project-description="{{ project.description }}"
+                            data-project-advertiser="{{ project.advertiser.username }}"
+                            data-project-cost="{{ project.cost_per_action }}"
+                            data-project-partners-count="{{ project.partners.count }}"
+                            data-project-created-at='{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}'
+                            data-project-url="{{ project.url }}">
+                            <i class="fas fa-link mr-2"></i> Подключиться
+                        </button>
+                    </div>
+                </div>
+            </div>        
+            {% endfor %}
+        </div>
+        {% if not projects %}
+            <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                <div class="text-gray-300 text-5xl mb-4">
+                    <i class="fas fa-sad-cry"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-500 mb-2">Новые предложения не найдены</h3>
+                <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться доступные проекты</p>
+            </div>
+        {% endif %}
+        <!-- Пагинация -->
+
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if projects.has_previous %}
+            <a href="?projects_page=1"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?projects_page={{ projects.previous_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+            {% endif %}
+
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ projects.paginator.num_pages }}" value="{{ projects.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
+                <span>из {{ projects.paginator.num_pages }}</span>
+            </div>
+
+            {% if projects.has_next %}
+            <a href="?projects_page={{ projects.next_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?projects_page={{ projects.paginator.num_pages }}"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+  const msg = document.querySelectorAll('.alert-message').forEach(element => {
+    setTimeout(function () {
+      element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
+      setTimeout(() => element.remove(), 300);
+    }, 5000)
+  });
+</script>
+{% include "partner_app/dashboard/partner/offers/modals/connect_project.html" %}
+{% endblock %}

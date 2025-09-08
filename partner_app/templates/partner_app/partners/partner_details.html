@@ -12,6 +12,8 @@
                 <li><a href="/">Главная</a></li>
                 {% if request.user.advertiserprofile %}
                     <li><a href="{% url 'advertiser_dashboard' %}">Личный кабинет</a></li>
+                {% elif request.user.partner_profile %}
+                    <li><a href="{% url 'partner_dashboard' %}">Личный кабинет</a></li>
                 {% else %}
                     <li><a href="{% url 'dashboard' %}">Личный кабинет</a></li>
                 {% endif %}
@@ -34,7 +36,7 @@
                             <div class="badge badge-primary badge-lg ml-2 animate-pulse">Партнер</div>
                                 {{ partner.username }}
                         </h2>
-                        <p class="text-base-content/60">Присоединился {{ request.user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+                        <p class="text-base-content/60">Присоединился {{ partner.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
                     </div>
                 </div>
             </div>

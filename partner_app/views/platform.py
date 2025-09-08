@@ -16,13 +16,13 @@ def add_platform(request):
         platform.partner = request.user
         platform.save()
         messages.success(request,message=f"Платформа {platform.name} успешно добавлена",extra_tags="platform_add_success")
-        return redirect("dashboard")
+        return redirect("partner_platforms")
     except Exception as e:
         if "description" in form.errors:
             messages.error(request, message="Описание должно содержать минимум 15 символов.",extra_tags="platform_add_error")
         else:
             messages.error(request, message="Уже существует площадка с таким  URL или названием.",extra_tags="platform_add_error")
-    return redirect("dashboard")
+    return redirect("partner_platforms")
 
 @login_required
 @require_POST
@@ -42,11 +42,11 @@ def edit_platform(request,platform_id):
         platform.full_clean()
         platform.save()
         messages.success(request,message=f"Платформа {platform.name} успешно отредактирована",extra_tags="platform_edit_success")
-        return redirect("dashboard")
+        return redirect("partner_platforms")
     except Exception as e:
         for num,(field,error) in enumerate(e.message_dict.items()):
             messages.error(request, f"{num+1}. {field} : {error[0]}",extra_tags="platform_edit_error")
-    return redirect("dashboard")
+    return redirect("partner_platforms")
 
 @login_required
 @require_POST
@@ -57,7 +57,7 @@ def delete_platform(request, platform_id):
         messages.success(request,message=f"Платформа {platform.name} успешно удалена",extra_tags="platform_delete_success")
     except Exception as e:
         messages.error(request, message=f"Ошибка удаления платформы: {e}",extra_tags="platform_delete_error")
-    return redirect("dashboard")
+    return redirect("partner_platforms")
 
 
 # Для модераторов

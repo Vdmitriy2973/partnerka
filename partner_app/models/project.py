@@ -130,7 +130,7 @@ class Project(models.Model):
 
 
     def __str__(self):
-        return f"Проект #{self.id} Рекламодатель: {self.advertiser.first_name} {self.advertiser.last_name}"
+        return f"Проект #{self.id} Рекламодатель: {self.username}"
     
     def clean(self):
         super().clean()
@@ -160,6 +160,24 @@ class Project(models.Model):
                 )
                 
         super().save(*args,**kwargs)
+    
+    
+    def get_partner_conversion(self,partner):
+        return self.clicks.filter(partner=partner.partner_profile).count()
+    
+    def get_partner_conversion_percent(self,partner):
+        if self.conversions.filter(partner=partner.partner_profile).count() == 0:
+            return 0.0
+        return f"{(self.conversions.filter(partner=partner.partner_profile).count() / self.clicks.filter(partner=partner.partner_profile).count()) * 100:.2f}"
+    
+    def get_partner_clicks(self,partner):
+        return self.clicks.filter(partner=partner.partner_profile).count()
+    
+    def has_partner_link(self, partner):
+        """
+        Проверяет, есть ли у партнёра сгенерированная ссылка для этого проекта
+        """
+        return self.project_links.filter(partner=partner, is_active=True).exists()
     
 
 class ProjectParam(models.Model):

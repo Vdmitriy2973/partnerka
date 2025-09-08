@@ -91,6 +91,15 @@
                                 data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
                                     <i class="fas fa-check mr-1"></i> Отправить реквизиты
                                 </button>
+                                <button class="reject_adv_transaction btn btn-sm btn-error reject-adv-tr-btn" 
+                                data-adv-transaction-id="{{ transaction.id }}"
+                                data-adv-id="{{ transaction.advertiser.user.id }}"
+                                data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                data-adv-transaction-amount="{{ transaction.amount }}"
+                                data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                    <i class="fas fa-times mr-1"></i> Отклонить
+                                </button>
                             {% endif %}
                         </div>
                     </td>

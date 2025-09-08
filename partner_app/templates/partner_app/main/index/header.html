@@ -54,6 +54,9 @@
                 {% if request.user.advertiserprofile %}
                     <li><a href="{% url 'advertiser_dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a>
                     </li>
+                {% elif request.user.partner_profile %}
+                    <li><a href="{% url 'partner_dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a>
+                    </li>
                 {% else %}
                     <li><a href="{% url 'dashboard' %}" class="text-lg w-full"><i class="fas fa-user mr-1"></i> Профиль</a>
                     </li>
