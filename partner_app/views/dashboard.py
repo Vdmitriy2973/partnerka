@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .dashboard_utils import (
-    handle_partner_dashboard,
     handle_manager_dashboard
 )
 from .dashboard_utils.handlers import (

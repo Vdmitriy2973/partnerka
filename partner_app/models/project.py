@@ -166,7 +166,7 @@ class Project(models.Model):
         return self.clicks.filter(partner=partner.partner_profile).count()
     
     def get_partner_conversion_percent(self,partner):
-        if self.conversions.filter(partner=partner.partner_profile).count() == 0:
+        if self.conversions.filter(partner=partner.partner_profile).count() == 0 or self.clicks.filter(partner=partner.partner_profile).count() == 0:
             return 0.0
         return f"{(self.conversions.filter(partner=partner.partner_profile).count() / self.clicks.filter(partner=partner.partner_profile).count()) * 100:.2f}"
     

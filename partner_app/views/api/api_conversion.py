@@ -43,7 +43,8 @@ class ConversionAPIView(APIView):
         if referrer_id:
             try:
                 platform = Platform.objects.get(
-                    id=referrer_id
+                    id=referrer_id,
+                    is_active=True
                 )
                 platform_id = platform.id
             except Platform.DoesNotExist:

@@ -2,12 +2,12 @@ from decimal import Decimal
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Sum, Value, Q,Count,OuterRef,Subquery
+from django.db.models import Sum, Value, Q,Count,OuterRef,DecimalField,IntegerField,Subquery
 from django.db.models.functions import Coalesce
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from partner_app.models import ProjectPartner,Project, Conversion
+from partner_app.models import ProjectPartner,Project,Conversion
 
 @login_required
 def project_detail(request, project_id):
@@ -18,24 +18,28 @@ def project_detail(request, project_id):
         project = get_object_or_404(Project,id=project_id)
 
         # Получаем статистику по партнёрам проекта
+        conversion_stats = Conversion.objects.filter(
+            partnership=OuterRef('pk'),
+            project_id=project.id
+        ).values('partnership').annotate(
+            total_amount=Sum('amount'),
+            count=Count('id')
+        ).values('total_amount', 'count')
+
         partnership_stats = (
             ProjectPartner.objects
             .filter(project=project)
             .select_related('partner')
             .annotate(
                 conversions_total=Coalesce(
-                    Sum(
-                        'conversions__amount',
-                        filter=Q(conversions__project_id=project.id)
-                    ),
-                    Value(Decimal('0.00'))
+                    Subquery(conversion_stats.values('total_amount')[:1]),
+                    Value(Decimal('0.00')),
+                    output_field=DecimalField(max_digits=10, decimal_places=2)
                 ),
                 conversions_count=Coalesce(
-                    Count(
-                        'conversions',
-                        filter=Q(conversions__project_id=project.id)
-                    ),
-                    Value(0)
+                    Subquery(conversion_stats.values('count')[:1]),
+                    Value(0),
+                    output_field=IntegerField()
                 )
             )
             .order_by('-joined_at')

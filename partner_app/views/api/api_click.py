@@ -41,15 +41,19 @@ class ClickAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
             
+        if len(partnership.partner_links.all()) < 1:
+            return Response({"detail":"Конверсия не может быть засчитана, т.к. не сгенерирована партнёрская ссылка!"},status=status.HTTP_400_BAD_REQUEST)
         referrer_id = request.data.get('referrer')
         if referrer_id:
-            platform = Platform.objects.get(
-                id=referrer_id
-            )
-            platform_id = referrer_id
-            referrer = platform.url_or_id
+            try:
+                platform = Platform.objects.get(
+                    id=referrer_id,
+                    is_active=True
+                )
+                platform_id = platform.id
+            except Exception:
+                platform_id = None
         else:
-            referrer = None
             platform_id = None
         
         ip = request.META.get('HTTP_X_FORWARDED_FOR',None)

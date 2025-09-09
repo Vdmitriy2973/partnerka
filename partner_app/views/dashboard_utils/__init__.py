@@ -1,2 +1,1 @@
-from .partner import handle_partner_dashboard
 from .manager import handle_manager_dashboard
