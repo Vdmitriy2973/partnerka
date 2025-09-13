@@ -67,7 +67,8 @@ def approve_platform(request, platform_id):
     platform = get_object_or_404(Platform,id=platform_id)
     platform.status = 'Подтверждено'
     platform.save()
-    send_email_via_mailru.delay(platform.partner.email,f"Платформа {platform.name} была одобрена модератором", 'Уведомление о подтверждении платформы')
+    if platform.partner.email_notifications:
+        send_email_via_mailru.delay(platform.partner.email,f"Платформа {platform.name} была одобрена модератором", 'Уведомление о подтверждении платформы')
     PartnerActivity.objects.create(
         partner=platform.partner.partner_profile,
         activity_type='approve',
@@ -85,7 +86,8 @@ def reject_platform(request, platform_id):
     platform.is_active = False
     platform.save()
     reason = request.POST.get('moderation_rejection_reason')
-    send_email_via_mailru.delay(platform.partner.email,f"Платформа {platform.name} была отклонена модератором по причине: {reason}", 'Уведомление об отклонении платформы')
+    if platform.partner.email_notifications:
+        send_email_via_mailru.delay(platform.partner.email,f"Платформа {platform.name} была отклонена модератором по причине: {reason}", 'Уведомление об отклонении платформы')
     PartnerActivity.objects.create(
         partner=platform.partner.partner_profile,
         activity_type='reject',

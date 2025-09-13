@@ -6,6 +6,7 @@ from django.db.models.functions import Coalesce
 
 
 from partner_app.models import PartnerLink
+from partner_app.utils import _paginate
 
 def partner_links(request):  
     """подключенные проекты партнёра"""
@@ -42,12 +43,14 @@ def partner_links(request):
         conversions_total=Coalesce(Sum('conversions__amount'), Value(Decimal(0.0)))
     ).order_by('-created_at')
     
+    partner_links_page = _paginate(request, partner_links, 6, 'partner_links_page')
+    
     context = {
         "clicks_count": clicks_count,
         "active_links":active_links,
         "conversion":conversion,
         "best_link":best_link,
-        "partner_links":partner_links
+        "partner_links":partner_links_page
     }
     
     return render(request, 'partner_app/dashboard/partner/links/links.html',context=context)

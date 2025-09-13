@@ -91,10 +91,18 @@
             <!-- Recent Activity -->
             <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
-                    <h2 class="card-title mb-4">
-                        <i class="fas fa-clock text-primary mr-2"></i>
-                        Последняя активность
-                    </h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="card-title">
+                            <i class="fas fa-clock text-primary mr-2"></i>
+                            Последняя активность
+                        </h2>
+                        {% if last_activity %}
+                        <button class="btn btn-outline btn-primary transition-transform transform hover:scale-105 hover:bg-primary hover:text-white">
+                            <i class="fas fa-check-double mr-2"></i>
+                            Прочитать уведомления
+                        </button>
+                        {% endif %}
+                    </div>
                     <div class="space-y-4">
                         {% for activity in last_activity %}
                             <div class="flex items-center p-3 bg-success/10 rounded-lg">
@@ -182,13 +190,11 @@
                         Быстрые действия
                     </h2>
                     <div class="space-y-2">
-                        <button id="add_platform_quick" class="btn btn-outline btn-block justify-start nav-item">
-                            <a href="{% url 'partner_platforms' %}">
-                                <i class="fas fa-globe text-indigo-600 mr-2"></i>
-                                Добавить площадку
-                            </a>
-                        </button>
-                        <button id="make_payout_quick" onclick="document.getElementById('withdrawModal').show()" class="btn btn-outline btn-block justify-start nav-item" {% if not is_payout_available %}disabled{% endif %}>
+                       <a href="{% url 'partner_platforms' %}" class="btn btn-outline btn-block justify-start">
+                            <i class="fas fa-globe text-indigo-600 mr-2"></i>
+                            Добавить площадку
+                        </a>
+                        <button id="make_payout_quick" onclick="document.getElementById('withdrawModal').show()" class="btn btn-outline btn-block justify-start" {% if not is_payout_available %}disabled{% endif %}>
                             <i class="fas fa-credit-card text-green-700 mr-2"></i>
                             Запросить выплату
                         </button>

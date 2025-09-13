@@ -148,13 +148,15 @@ def approve_project(request, project_id):
         title='Изменение цены было одобрено',
         details=f'Цена за действие в {project.name} была изменена.'
     )
-        send_email_via_mailru.delay(project.advertiser.email,f"Цена за действие в проекте {project.name} была изменена",
-                                    'Уведомление об одобрении в изменении цены за действие в проекте')
+        if project.advertiser.email_notifications:
+            send_email_via_mailru.delay(project.advertiser.email,f"Цена за действие в проекте {project.name} была изменена",
+                                        'Уведомление об одобрении в изменении цены за действие в проекте')
         messages.success(request,message=f"Цена за действие в проекте {project.name} была измена",extra_tags="approve_success")
         return redirect("dashboard")
     
     project.save()
-    send_email_via_mailru.delay(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
+    if project.advertiser.email_notifications:
+        send_email_via_mailru.delay(project.advertiser.email,f"Поздравляем, проект {project.name} был одобрен модератором.",'Уведомление о подтвеждении проекта')
     
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,
@@ -181,15 +183,17 @@ def reject_project(request, project_id):
         title='Изменение цены было отклонено',
         details=f'Цена за действие в проекте {project.name} установлена прежней. Причина: {reason}'
     )
-        send_email_via_mailru.delay(project.advertiser.email,f"Цена за действие в проекте {project.name} установлена прежней по причине: {reason}",
-                                    'Уведомление об отклонении в изменении цены за действие в проекте')
+        if project.advertiser.email_notifications:
+            send_email_via_mailru.delay(project.advertiser.email,f"Цена за действие в проекте {project.name} установлена прежней по причине: {reason}",
+                                       'Уведомление об отклонении в изменении цены за действие в проекте')
         messages.success(request,message=f"Цена за действие у проекта {project.name} была установлена прежней",extra_tags="reject_success")
         return redirect("dashboard")
         
     project.status = 'Отклонено'
     project.is_active = False
     project.save()
-    send_email_via_mailru.delay(project.advertiser.email,f"Проект {project.name} был отклонен модератором по причине: {reason}", 'Уведомление об отклонении проекта')
+    if project.advertiser.email_notifications:
+        send_email_via_mailru.delay(project.advertiser.email,f"Проект {project.name} был отклонен модератором по причине: {reason}", 'Уведомление об отклонении проекта')
     
     AdvertiserActivity.objects.create(
         advertiser=project.advertiser.advertiserprofile,

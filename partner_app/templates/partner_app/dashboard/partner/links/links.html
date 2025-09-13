@@ -24,7 +24,7 @@
             <p class="text-sm sm:text-base text-base-content/60">Управляйте своими партнерскими ссылками и отслеживайте
                 их эффективность</p>
         </div>
-
+        <div id="links_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
         <!-- Карточки статистики - теперь в 2 колонки на мобильных -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
             <div class="card bg-base-100 shadow-sm sm:shadow-lg">
@@ -116,7 +116,8 @@
                                             <div>
                                                 <span
                                                     class="badge badge-{%if link.is_active %}success{% else %}error{% endif %} mr-2">
-                                                    {% if link.is_active %}Активна{% else %} Неактивна {% endif %} </span>
+                                                    {% if link.is_active %}Активна{% else %} Неактивна {% endif %}
+                                                </span>
                                                 <span>Клики: {{ link.clicks.all|length }}</span>
                                                 <span>Конверсии: {{ link.conversions.all|length }}</span>
                                             </div>
@@ -142,7 +143,8 @@
                                             <ul tabindex="0"
                                                 class="dropdown-content z-[9999] menu p-2 shadow bg-base-100 rounded-box w-52">
                                                 <li class="copy_generated_link" data-clipboard-text="{{ link.url }}">
-                                                    <a><i class="fas fa-copy mr-2"></i>Копировать</a></li>
+                                                    <a><i class="fas fa-copy mr-2"></i>Копировать</a>
+                                                </li>
                                                 <li class="delete_generated_link" data-link-id="{{ link.id }}"><a
                                                         class="text-red-500"><i
                                                             class="fas fa-trash-alt mr-2"></i>Удалить</a></li>
@@ -166,9 +168,58 @@
                     {% endif %}
                 </div>
             </div>
+            <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+                {% if partner_links.has_previous %}
+                <a href="?projects_page=1"
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Первая страница">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a href="?partner_links_page={{ partner_links.previous_page_number }}"
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    <span class="hidden sm:inline">Предыдущая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                </a>
+                {% endif %}
+
+                <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                    <span class="hidden sm:inline">Страница</span>
+                    <input type="number" min="1" max="{{ partner_links.paginator.num_pages }}" value="{{ partner_links.number }}"
+                        class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                        onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
+                    <span>из {{ partner_links.paginator.num_pages }}</span>
+                </div>
+
+                {% if partner_links.has_next %}
+                <a href="?partner_links_page={{ partner_links.next_page_number }}"
+                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    <span class="hidden sm:inline">Следующая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                </a>
+                <a href="?partner_links_page={{ partner_links.paginator.num_pages }}"
+                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                    aria-label="Последняя страница">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+                {% endif %}
+            </div>
         </div>
     </div>
     <script>
+        function showAlert(message, type = 'info') {
+            const alert = document.createElement('div');
+            const alertClass = `alert-${type}`;
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+
+            alert.className = `alert-message alert ${alertClass} text-white p-4 mr-6 mb-6 transition-all duration-300 ease-out shadow-lg animate-fade-in`;
+            alert.innerHTML = `<i class="fas ${iconClass} mr-2"></i>${message}`;
+            document.getElementById('links_messages__container').appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.add('animate-slide-out-left', 'transform-gpu', 'transition-all', 'duration-800', 'ease-in-out');
+                setTimeout(() => alert.remove(), 500);
+            }, 5000);
+        }
 
         document.addEventListener('DOMContentLoaded', function () {
             // Добавляем кастомные стили для анимации
@@ -181,11 +232,11 @@
                         }
                         70% {
                             opacity: 0;
-                            transform: translateX(-100%);
+                            transform: translateX(100%);
                         }
                         100% {
                             opacity: 0;
-                            transform: translateX(-100%);
+                            transform: translateX(100%);
                             max-height: 0;
                             margin-bottom: 0;
                             padding: 0;
@@ -234,11 +285,9 @@
 
                 try {
                     await navigator.clipboard.writeText(url);
-                    // Опционально: показать уведомление
-                    alert('Ссылка скопирована: ' + url);
+                    showAlert(`Партнёрская ссылка успешно скопирована!`, 'success');
                 } catch (err) {
-                    console.error('Ошибка копирования: ', err);
-                    alert('Не удалось скопировать ссылку');
+                    showAlert(`Ошибка копирования: ${err}`, 'error');
                 }
             });
         });

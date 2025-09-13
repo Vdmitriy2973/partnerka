@@ -83,4 +83,7 @@ urlpatterns = [
     path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
     path("api/clicks",views.ClickAPIView.as_view(),name="api_click"),
+
+    # SEO
+    path("robots.txt",views.robots_txt,name="robots.txt")
 ]
