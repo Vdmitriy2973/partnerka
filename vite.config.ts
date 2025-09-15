@@ -19,7 +19,7 @@ export default defineConfig((mode) => {
         input: {
 
           // index.html
-          home: join(INPUT_DIR, "/js/index.js"),
+          home: join(INPUT_DIR, "/js/main/index.js"),
 
           // Рекламодатель
           adv_dashboard: join(INPUT_DIR, "/js/dashboard/advertiser/dashboard/dashboard.js"),

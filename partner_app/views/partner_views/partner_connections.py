@@ -4,6 +4,7 @@ from django.shortcuts import render,redirect
 
 from .common import _get_connected_projects
 from partner_app.utils import _apply_search, _paginate
+from partner_app.models import PartnerActivity
 
 def partner_connections(request):  
     """подключенные проекты"""
@@ -12,6 +13,10 @@ def partner_connections(request):
         return redirect('/?show_modal=auth')
     if not hasattr(request.user,"partner_profile"):
         return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
+    
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
     
     connection_search_q = request.GET.get('connections_search', '').strip()
     connected_projects = _get_connected_projects(request)
@@ -36,11 +41,12 @@ def partner_connections(request):
     
     connected_projects_page = _paginate(request, connected_projects, 5, 'connected_projects_page')
     context = {
+        'notifications_count':notifications_count,
+        
         'connected_projects': connected_projects_page,
         'total_connected_projects':total_connected_projects,
         'active_connected_projects':active_connected_projects,
         'suspended_connected_projects':suspended_connected_projects
-        
     }
     
     return render(request, 'partner_app/dashboard/partner/connections/connections.html',context=context)

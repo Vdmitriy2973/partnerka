@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Sum, Avg
 
 from partner_app.utils import _paginate
-from partner_app.models import Conversion
+from partner_app.models import Conversion,AdvertiserActivity
 
 def advertiser_sales(request):
     """Страница со статистикой о продажах рекламодателя"""
@@ -14,9 +14,13 @@ def advertiser_sales(request):
         return redirect('/?show_modal=auth')   
     if not hasattr(request.user,"advertiserprofile"):
         return redirect('index') 
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
     
     conversions = Conversion.objects.filter(advertiser=request.user.advertiserprofile).select_related("project","partner").order_by("-created_at")
     conversions_count = conversions.count()
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
+    
     
     chart_data = None
     if conversions:
@@ -38,6 +42,8 @@ def advertiser_sales(request):
     conversions_page = _paginate(request,conversions,6,'conversions_page')
     
     context = {
+        "notifications_count":notifications_count,
+        
         "conversions":conversions_page,
         "conversions_count":conversions_count,
         "conversions_average":conversions_average,

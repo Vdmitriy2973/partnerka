@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.db.models.functions import Coalesce
 from django.db.models import Sum, Count, Value,DecimalField, Q
 
-from partner_app.models import User
+from partner_app.models import User, AdvertiserActivity
 from partner_app.views.utils import _paginate,_apply_search
 
 def advertiser_partners(request):
@@ -14,6 +14,10 @@ def advertiser_partners(request):
         return redirect('/?show_modal=auth')
     if not hasattr(request.user,"advertiserprofile"):
         return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
+    
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
     
     partners = User.objects.filter(
         project_memberships__project__advertiser=request.user
@@ -38,6 +42,8 @@ def advertiser_partners(request):
     partners_page = _paginate(request, partners, 6, 'partners_page')
     
     context = {
+        "notifications_count":notifications_count,
+        
         "partners":partners_page,
         'partners_search_query':partners_search_q,
     }

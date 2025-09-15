@@ -1,11 +1,11 @@
 from decimal import Decimal
 
 from django.shortcuts import render,redirect
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value, Prefetch, DecimalField,Q
+from django.db.models import Count, F, FloatField, ExpressionWrapper, Sum,Value
 from django.db.models.functions import Coalesce
 
 
-from partner_app.models import PartnerLink
+from partner_app.models import PartnerLink,PartnerActivity
 from partner_app.utils import _paginate
 
 def partner_links(request):  
@@ -15,6 +15,8 @@ def partner_links(request):
         return redirect('/?show_modal=auth')
     if not hasattr(request.user,"partner_profile"):
         return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
     
     active_links = PartnerLink.objects.filter(
         partner=request.user,
@@ -27,6 +29,8 @@ def partner_links(request):
         conversion = 0
     else:
         conversion =  f"{(request.user.partner_profile.conversions.count() / request.user.partner_profile.clicks.count()) * 100:.2f}"
+    
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
     
     best_link = PartnerLink.objects.filter(partner=request.user).annotate(
         clicks_count=Count('clicks'),
@@ -46,6 +50,8 @@ def partner_links(request):
     partner_links_page = _paginate(request, partner_links, 6, 'partner_links_page')
     
     context = {
+        'notifications_count':notifications_count,
+        
         "clicks_count": clicks_count,
         "active_links":active_links,
         "conversion":conversion,

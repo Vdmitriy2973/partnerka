@@ -1,5 +1,5 @@
 import './base.js'
-import '../css/index.css'
+import '../../css/index.css'
 
 
 // Hero section

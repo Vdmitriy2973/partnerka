@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from partner_app.models import ProjectPartner, Platform,User,PartnerProfile,AdvertiserProfile
+from partner_app.models import ProjectPartner, Platform,User,PartnerProfile,AdvertiserProfile,Project
 from partner_app.serializers import ClickSerializer
 
 class ClickAPIView(APIView):
@@ -19,6 +19,9 @@ class ClickAPIView(APIView):
                 partner=request.data["partner"],
                 project=request.data["project"]
             )
+            project = Project.objects.get(
+                id=request.data['project']
+            )
         except ProjectPartner.DoesNotExist:
             return Response(
                 {"detail": "Нет такого проекта или партнёр не сотрудничает с ним!"},
@@ -29,8 +32,16 @@ class ClickAPIView(APIView):
                 {"detail": "Сотрудничество с данным партнёром приостановлено, т.к. аккаунт партнёра заблокирован!"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-            
-            
+        if not project.is_active:
+            return Response(
+                {"detail": "На данный момент проект неактивен!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if partnership.status != partnership.StatusType.ACTIVE:
+            return Response(
+                {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено!"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         advertiser = User.objects.get(id=partnership.project.advertiser.id)
         adv_profile = AdvertiserProfile.objects.get(
             user=int(advertiser.id)
@@ -42,7 +53,7 @@ class ClickAPIView(APIView):
             )
             
         if len(partnership.partner_links.all()) < 1:
-            return Response({"detail":"Конверсия не может быть засчитана, т.к. не сгенерирована партнёрская ссылка!"},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail":"Переход не может быть засчитан, т.к. не сгенерирована партнёрская ссылка!"},status=status.HTTP_400_BAD_REQUEST)
         referrer_id = request.data.get('referrer')
         if referrer_id:
             try:

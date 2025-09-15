@@ -5,7 +5,7 @@ from django.db.models import Count, Sum,Value
 from django.db.models.functions import Coalesce
 
 from partner_app.forms import PlatformForm
-from partner_app.models import Platform
+from partner_app.models import Platform,PartnerActivity
 from partner_app.utils import _paginate, _apply_search
 
 def partner_platforms(request):  
@@ -15,6 +15,10 @@ def partner_platforms(request):
         return redirect('/?show_modal=auth')
     if not hasattr(request.user,"partner_profile"):
         return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
+    
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
     
     platforms_search_q = request.GET.get('platforms_search', '').strip()
     
@@ -35,6 +39,8 @@ def partner_platforms(request):
     platform_page = _paginate(request, platforms, 5, 'platforms_page')
     
     context = {
+        'notifications_count':notifications_count,
+        
         'platformForm': PlatformForm(),
         
         "platforms":platform_page,

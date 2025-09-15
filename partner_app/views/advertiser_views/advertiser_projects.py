@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from partner_app.utils import _paginate,_apply_search
-from partner_app.models import Project,ClickEvent,Conversion
+from partner_app.models import Project,ClickEvent,Conversion,AdvertiserActivity
 from partner_app.forms import ProjectForm,ProjectParamForm
 
 
@@ -13,6 +13,10 @@ def advertiser_projects(request):
         return redirect('/?show_modal=auth')
     if not hasattr(request.user,"advertiserprofile"):
         return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
+    
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
     
     projects = Project.objects.filter(
         advertiser=request.user
@@ -33,6 +37,8 @@ def advertiser_projects(request):
         conversion_percent =  f"{(conversions_count / clicks_count) * 100:.2f}"
     
     context = {
+        "notifications_count":notifications_count,
+        
         "projectForm": ProjectForm(),
         'projectParamForm':ProjectParamForm(),
         "projects": projects_page,

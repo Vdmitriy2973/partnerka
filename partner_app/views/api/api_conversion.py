@@ -98,7 +98,7 @@ class ConversionAPIView(APIView):
             
         amount = project.cost_per_action
         if 'amount' in request.data:
-            if float(request.data['amount']) >= project.get_reduced_price():
+            if float(request.data['amount']) >= project.get_reduced_price:
                 amount = request.data['amount']
         data = {
             "project":request.data["project"],
@@ -138,7 +138,7 @@ class ConversionAPIView(APIView):
                 advertiser=adv_profile,
                 activity_type='sale',
                 title=title,
-                details=f'Комиссия: {project.cost_per_action} ₽. Партнёр: {partner.get_full_name()}'
+                details=f'Комиссия: {project.cost_per_action} ₽. Партнёр: {partner.username}'
             )
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"status": "error", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

@@ -19,6 +19,7 @@ urlpatterns = [
     path('partner/delete_partner_link/<int:link_id>',views.delete_partner_link,name='delete_partner_link'),
     path('partner/update_payout_settings',views.payout_settings_view,name='update_payout_settings'),
     path('partner/create_payout_request',views.create_payout_request,name='create_payout_request'),
+    path('partner/read_notifications',views.read_partner_notifications,name='read_partner_notifications'),
     
     ## Страницы личного кабинета партнёра
     path('partner/dashboard',views.partner_dashboard,name='partner_dashboard'),
@@ -37,6 +38,7 @@ urlpatterns = [
     path('advertiser/top_up_balance',views.top_up_balance,name='top_up_balance'),
     path('advertiser/update_api_settings',views.update_api_settings,name='update_api_settings'),
     path('advertiser/update_requisites',views.update_requisites_settings,name='update_requisites_settings'),
+    path('advertiser/read_notifications',views.read_advertiser_notifications,name='read_advertiser_notifications'),
     
     ## Страницы личного кабинета рекламодателя
     path('advertiser/dashboard',views.advertiser_dashboard,name='advertiser_dashboard'),

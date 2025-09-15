@@ -10,6 +10,8 @@ def advertiser_dashboard(request):
         return redirect('/?show_modal=auth')
     if not hasattr(request.user,"advertiserprofile"):
         return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
     
     partners = User.objects.filter(
         project_memberships__project__advertiser=request.user
@@ -19,6 +21,9 @@ def advertiser_dashboard(request):
     ).filter(status='Подтверждено').count()
     conversions = Conversion.objects.filter(advertiser=request.user.advertiserprofile).count()
     last_activity = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).order_by('-created_at')[:5]
+    
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
+    
     context = {
         "user": request.user,
         "partners_count": partners,
@@ -26,6 +31,7 @@ def advertiser_dashboard(request):
         "conversions_count":conversions,
         
         "last_activity":last_activity,
+        "notifications_count":notifications_count,
         "min_payout": settings.PARTNER_PAYOUT_SETTINGS["min_amount"],
         "fee_percent": settings.PARTNER_PAYOUT_SETTINGS["fee_percent"],
         

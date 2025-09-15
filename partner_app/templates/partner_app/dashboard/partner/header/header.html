@@ -6,11 +6,22 @@
     <div class="navbar-start flex items-center">
         <!-- Мобильное меню (бургер) -->
         <div class="dropdown lg:hidden mr-2">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <div tabindex="0" role="button" class="btn btn-ghost indicator btn-circle">
                 <i class="fas fa-bars text-lg"></i>
+                <span class="indicator-item badge badge-soft">
+                        {{ notifications_count }}
+                    </span>
             </div>
             <ul tabindex="0" class="menu dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-60 border-none animate-fade-in">
-                <li><a href="{% url 'partner_dashboard' %}" class="nav-item"><i class="fas fa-chart-pie"></i>Дашборд</a></li>
+                <li><a href="{% url 'partner_dashboard' %}" class="nav-item indicator">
+                    {% if notifications_count != 0 %}
+                        <span class="indicator-item badge badge-sm badge-soft">
+                            {{ notifications_count }}
+                        </span>
+                    {% endif %}
+                    <i class="fas fa-chart-line"></i>
+                    </i>Дашборд</a>
+                </li>
                 <li><a href="{% url 'partner_offers' %}" class="nav-item"><i class="fas fa-boxes"></i>Предложения</a></li>
                 <li><a href="{% url 'partner_connections' %}" class="nav-item"><i class="fas fa-laptop-code"></i>Программы</a></li>
                 <li><a href="{% url 'partner_platforms' %}" class="nav-item"><i class="fas fa-globe"></i>Площадки</a></li>
@@ -28,12 +39,17 @@
 
     <!-- Десктопное меню (скрыто на мобильных) -->
     <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1 gap-0.5 xl:gap-0.1">
+        <ul class="menu menu-horizontal px-1 gap-0.5 xl:gap-4">
             <li>
-            <a href="{% url 'partner_dashboard' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
-                <i class="fas fa-chart-pie"></i>
-                <span class="hidden sm:inline">Дашборд</span>
-            </a>
+                <a href="{% url 'partner_dashboard' %}" class="nav-item btn-xs text-xs indicator xl:text-sm flex items-center">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="hidden sm:inline">Дашборд</span>
+                    {% if notifications_count != 0 %}
+                        <span class="indicator-item badge badge-sm badge-soft">
+                            {{ notifications_count }}
+                        </span>
+                    {% endif %}
+                </a>
             </li>
             <li>
             <a href="{% url 'partner_offers' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">

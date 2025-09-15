@@ -26,7 +26,7 @@
         {% else %}
         <h1 class="text-3xl font-bold">Добро пожаловать!</h1>
         {% endif %}
-        <p class="text-base-content/60">Партнёр с {{ user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+        <p class="text-base-content/60">Партнёр с {{ user.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}. Ваш ID: {{ user.id }}</p>
     </div>
 
     <div id="dashboard_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]">
@@ -97,10 +97,13 @@
                             Последняя активность
                         </h2>
                         {% if last_activity %}
-                        <button class="btn btn-outline btn-primary transition-transform transform hover:scale-105 hover:bg-primary hover:text-white">
-                            <i class="fas fa-check-double mr-2"></i>
-                            Прочитать уведомления
-                        </button>
+                        <form method="POST" action="{% url 'read_partner_notifications' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline btn-primary transition-transform transform hover:scale-105 hover:bg-primary hover:text-white">
+                                <i class="fas fa-check-double mr-2"></i>
+                                Прочитать уведомления
+                            </button>
+                        </form>
                         {% endif %}
                     </div>
                     <div class="space-y-4">
