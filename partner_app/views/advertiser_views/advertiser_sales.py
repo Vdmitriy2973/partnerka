@@ -19,7 +19,7 @@ def advertiser_sales(request):
     
     conversions = Conversion.objects.filter(advertiser=request.user.advertiserprofile).select_related("project","partner").order_by("-created_at")
     conversions_count = conversions.count()
-    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile,is_read=False).count()
     
     
     chart_data = None

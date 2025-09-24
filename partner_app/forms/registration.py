@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth.forms import UserCreationForm
-from partner_app.models import PartnerProfile, AdvertiserProfile,AdvertiserRequisites, User
+from partner_app.models import PartnerProfile, AdvertiserProfile,User
 
 
 class PartnerRegistrationForm(UserCreationForm):

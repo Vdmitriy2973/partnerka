@@ -39,8 +39,12 @@ export default defineConfig((mode) => {
           partner_settings: join(INPUT_DIR, "/js/dashboard/partner/settings/settings.js"),
 
           // Менеджер
-          manager: join(INPUT_DIR, "/js/dashboard/manager.js"),
-
+          manager_dashboard: join(INPUT_DIR, "/js/dashboard/manager/dashboard/dashboard.js"),
+          manager_projects: join(INPUT_DIR, "/js/dashboard/manager/projects/projects.js"),
+          manager_platforms: join(INPUT_DIR, "/js/dashboard/manager/platforms/platforms.js"),
+          manager_users: join(INPUT_DIR, "/js/dashboard/manager/users/users.js"),
+          manager_partners: join(INPUT_DIR, "/js/dashboard/manager/partners/partners.js"),
+          manager_advertisers: join(INPUT_DIR, "/js/dashboard/manager/advertisers/advertisers.js")
         },
       },
     },

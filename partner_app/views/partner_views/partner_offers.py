@@ -16,7 +16,7 @@ def partner_offers(request):
     
     projects_search_q = request.GET.get('offers_search', '').strip()
     
-    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     available_projects = _get_available_projects(request)     
     total_projects = available_projects.count()
     

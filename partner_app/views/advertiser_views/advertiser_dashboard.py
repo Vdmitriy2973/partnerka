@@ -20,9 +20,9 @@ def advertiser_dashboard(request):
         advertiser=request.user
     ).filter(status='Подтверждено').count()
     conversions = Conversion.objects.filter(advertiser=request.user.advertiserprofile).count()
-    last_activity = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).order_by('-created_at')[:5]
+    last_activity = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile,is_read=False).order_by('-created_at')
     
-    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile,is_read=False).count()
     
     context = {
         "user": request.user,

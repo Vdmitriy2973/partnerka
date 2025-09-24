@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_celery_results',
+    'django.contrib.humanize',
     'corsheaders',
     "django_vite",
     'partner_app',
@@ -159,6 +160,7 @@ TIME_ZONE = 'Europe/Moscow'
 
 USE_TZ = True
 
+CSRF_COOKIE_HTTPONLY = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

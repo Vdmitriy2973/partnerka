@@ -1,1 +1,0 @@
-from .manager import handle_manager_dashboard

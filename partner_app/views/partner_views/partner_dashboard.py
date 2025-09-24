@@ -14,8 +14,8 @@ def partner_dashboard(request):
     if user.is_authenticated and user.is_currently_blocked():
         return render(request, 'account_blocked/block_info.html')
     
-    last_activity = PartnerActivity.objects.filter(partner=request.user.partner_profile).order_by('-created_at')[:5]
-    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
+    last_activity = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).order_by('-created_at')
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     available_projects = _get_available_projects(request)     
     connected_projects = _get_connected_projects(request)  
     active_connected_projects = connected_projects.filter(

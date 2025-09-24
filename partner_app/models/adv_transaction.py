@@ -4,6 +4,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from django.conf import settings 
+from django.utils.translation import gettext_lazy as _
 
 class AdvertiserTransaction(models.Model):
     # Варианты для способа выплаты
@@ -56,6 +57,11 @@ class AdvertiserTransaction(models.Model):
         null=True,
         verbose_name='Причина отклонения',
         help_text='Укажите причину, если транзакция отклонена'
+    )
+    
+    is_read = models.BooleanField(
+        default=False,
+        verbose_name=_('Прочитано')
     )
     
     def get_amount_with_commission(self):

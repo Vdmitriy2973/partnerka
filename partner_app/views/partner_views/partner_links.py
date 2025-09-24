@@ -30,7 +30,7 @@ def partner_links(request):
     else:
         conversion =  f"{(request.user.partner_profile.conversions.count() / request.user.partner_profile.clicks.count()) * 100:.2f}"
     
-    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     
     best_link = PartnerLink.objects.filter(partner=request.user).annotate(
         clicks_count=Count('clicks'),

@@ -82,7 +82,7 @@
                         Профиль
                     </h2>
 
-                    <form method="POST" action="{% url 'dashboard' %}" id="profile_settings_form" class="space-y-4">
+                    <form method="POST" action="{% url 'update_profile' %}" id="profile_settings_form" class="space-y-4">
                         {% csrf_token %}
                         <input name="profile_submit" type="hidden" value="1" />
 
@@ -172,7 +172,7 @@
                         </span>
                     </h2>
 
-                    <form id="change_password_form" action="{% url 'dashboard' %}" class="space-y-6" method="POST">
+                    <form id="change_password_form" action="{% url 'update_password' %}" class="space-y-6" method="POST">
                         {% csrf_token %}
                         <input name="password_submit" value="1" class="hidden">
 
@@ -239,7 +239,7 @@
                         <i class="fas fa-bell text-primary mr-2"></i>
                         Уведомления
                     </h2>
-                    <form class="space-y-4" method="post" action="{% url 'update_notifications_settings' %}">
+                    <form class="space-y-4" method="post" action="{% url 'update_email_notifications' %}">
                         {% csrf_token %}
                         <div class="form-control">
                             <label class="label cursor-pointer flex justify-between">
@@ -288,13 +288,13 @@
                                 <label class="label"><span class="label-text">Номер карты</span></label>
                                 <input type="text" name="card_number" maxlength="19" pattern="\d{16,19}"
                                     placeholder="0000 0000 0000 0000" class="input input-bordered w-full"
-                                    value = '{{ request.user.payout_settings.card_number }}'
+                                    value = '{{ request.user.payout_settings.card_number|default:"" }}'
                                     autocomplete="cc-number" />
                             </div>
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Имя владельца карты</span></label>
                                 <input type="text" name="cardholder_name" maxlength="100" placeholder="Иван Иванов"
-                                    value = '{{ request.user.payout_settings.cardholder_name }}'
+                                    value = '{{ request.user.payout_settings.cardholder_name|default:"" }}'
                                     class="input input-bordered w-full" autocomplete="cc-name" />
                             </div>
                         </div>
@@ -304,17 +304,17 @@
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Номер счёта</span></label>
                                 <input type="text" name="bank_account_number" maxlength="30"
-                                    placeholder="40817810099910004312" class="input input-bordered w-full" value="{{ request.user.payout_settings.bank_account_number }}"/>
+                                    placeholder="40817810099910004312" class="input input-bordered w-full" value="{{ request.user.payout_settings.bank_account_number|default:'' }}"/>
                             </div>
                             <div class="form-control">
                                 <label class="label"><span class="label-text">Владелец счёта</span></label>
                                 <input type="text" name="bank_account_holder_name" maxlength="100"
-                                    placeholder="Иван Иванов" class="input input-bordered w-full" value="{{ request.user.payout_settings.bank_account_holder_name }}"/>
+                                    placeholder="Иван Иванов" class="input input-bordered w-full" value="{{ request.user.payout_settings.bank_account_holder_name|default:'' }}"/>
                             </div>
                             <div class="form-control">
                                 <label class="label"><span class="label-text">БИК банка</span></label>
                                 <input type="text" name="bank_bic_transfer" maxlength="9" pattern="\d{9}"
-                                    placeholder="044525225" class="input input-bordered w-full" value="{{ request.user.payout_settings.bank_account_bic }}"/>
+                                    placeholder="044525225" class="input input-bordered w-full" value="{{ request.user.payout_settings.bank_account_bic|default:'' }}"/>
                             </div>
                         </div>
 
@@ -363,7 +363,6 @@
     function hideAllFields() {
         Object.values(fieldsMap).forEach(div => {
             div.classList.add('hidden');
-            // очищаем значения всех inputs чтобы не отправлять лишнее
             div.querySelectorAll('input').forEach(input => {
                 input.disabled = true;
             });
@@ -384,63 +383,7 @@
         showFields(e.target.value);
     });
 
-    // При загрузке страницы, если выбран метод, показываем поля
     document.addEventListener('DOMContentLoaded', () => {
-
-        const style = document.createElement('style');
-        style.textContent = `
-        @keyframes slide-out-left {
-            0% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            70% {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(-100%);
-                max-height: 0;
-                margin-bottom: 0;
-                padding: 0;
-                border: none;
-            }
-        }
-        
-        .animate-slide-out-left {
-            animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            pointer-events: none;
-        }
-    `;
-        document.head.appendChild(style);
-
-        // Обрабатываем все сообщения
-        const alertMessages = document.querySelectorAll('.alert-message');
-
-        alertMessages.forEach((element, index) => {
-            // Добавляем небольшую задержку для каждого следующего сообщения
-            const delay = 5000 + (index * 200);
-
-            setTimeout(() => {
-                // Добавляем классы для анимации ухода влево
-                element.classList.add(
-                    'animate-slide-out-left',
-                    'transform-gpu', // Аппаратное ускорение
-                    'transition-all',
-                    'duration-800',
-                    'ease-in-out'
-                );
-
-                // Удаляем элемент после завершения анимации
-                setTimeout(() => {
-                    if (element.parentNode) {
-                        element.remove();
-                    }
-                }, 800); // Время анимации
-            }, delay);
-        });
-
         if (payoutMethodSelect.value) {
             showFields(payoutMethodSelect.value);
         } else {

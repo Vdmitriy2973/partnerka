@@ -1,0 +1,80 @@
+{% load static %}
+
+<dialog id="detailsModal" class="modal backdrop-blur-sm">
+  <div class="modal-box max-w-4xl">
+    <h3 id="modalTitle" class="font-bold text-2xl mb-4"></h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Основная информация -->
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-gray-500">Тип:</p>
+          <p id="modalType" class="font-medium"></p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Статус:</p>
+          <p id="modalStatus" class="badge badge-lg"></p>
+        </div>
+
+        <div id="modalAdvertiserContainer">
+          <p class="text-sm text-gray-500">Рекламодатель:</p>
+          <p id="modalAdvertiser" class="font-medium"></p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500">Описание:</p>
+          <p id="modalDescription" class="mt-1 text-justify break-all"></p>
+        </div>
+      </div>
+
+      <!-- Детали -->
+      <div class="space-y-4">
+        <div id="modalProjectDetails">
+          <h4 class="font-bold text-lg mb-2">Детали проекта</h4>
+          <div class="space-y-2">
+            <p><strong>Цена за действие:</strong> <span id="modalCost"></span></p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-lg mb-2">Контакты</h4>
+          <div class="space-y-1">
+            <p><strong>Email:</strong> <span id="modalContactEmail"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-action">
+      <form id="approve-moderation-form" method="POST" class="hidden">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-check mr-2"></i> Подтвердить одобрение
+        </button>
+      </form>
+      <form id="reject-moderation-form" method="POST" class="hidden">
+        {% csrf_token %}
+        <div class="form-control mb-4">
+          <div class="flex gap-2">
+            <input type="text" id="moderation_rejection_reason" name="moderation_rejection_reason" class="input input-bordered"
+              placeholder="Причина отклонения" required />
+            <button type="submit" class="btn btn-error">
+              <i class="fas fa-times mr-2"></i> Подтвердить отклонение
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-action mt-6">
+      <form method="dialog">
+        <button class="btn btn-primary">Закрыть</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Фон модального окна -->
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

@@ -11,6 +11,8 @@ def read_advertiser_notifications(request):
     advertiser = request.user
     if not hasattr(advertiser,"advertiserprofile"):
         return redirect('index')
-    AdvertiserActivity.objects.filter(advertiser=advertiser.advertiserprofile).delete()
+    AdvertiserActivity.objects.filter(advertiser=advertiser.advertiserprofile,
+        is_read=False
+    ).update(is_read=True)
    
     return redirect("advertiser_dashboard")

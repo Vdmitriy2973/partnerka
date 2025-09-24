@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import User, PartnerProfile, AdvertiserProfile, ManagerProfile,Platform,Project,ProjectPartner,Conversion,ClickEvent
+from partner_app.models import User, PartnerProfile, AdvertiserProfile, ManagerProfile,Platform,Project,ProjectPartner,Conversion,ClickEvent, PartnerActivity, AdvertiserActivity, PartnerTransaction,AdvertiserTransaction,AdvertiserRequisites,PartnerPayoutSettings
+
 
 admin.site.register(User)
 
@@ -22,3 +23,9 @@ admin.site.register(Project)
 admin.site.register(ProjectPartner)
 admin.site.register(Conversion)
 admin.site.register(ClickEvent)
+admin.site.register(PartnerActivity)
+admin.site.register(AdvertiserActivity)
+admin.site.register(PartnerTransaction)
+admin.site.register(AdvertiserTransaction)
+admin.site.register(AdvertiserRequisites)
+admin.site.register(PartnerPayoutSettings)

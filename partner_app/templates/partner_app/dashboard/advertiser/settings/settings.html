@@ -94,7 +94,7 @@
                             Профиль
                         </h2>
 
-                        <form method="POST" action="{% url 'dashboard' %}" id="profile_settings_form" class="space-y-4">
+                        <form method="POST" action="{% url 'update_profile' %}" id="profile_settings_form" class="space-y-4">
                             {% csrf_token %}
                             <input name="profile_submit" type="hidden" value="1" />
 
@@ -183,7 +183,7 @@
                             </span>
                         </h2>
 
-                        <form id="change_password_form" action="{% url 'dashboard' %}" class="space-y-6" method="POST">
+                        <form id="change_password_form" action="{% url 'update_password' %}" class="space-y-6" method="POST">
                             {% csrf_token %}
                             <input name="password_submit" value="1" class="hidden">
 
@@ -250,7 +250,7 @@
                             <i class="fas fa-bell text-primary mr-2"></i>
                             Уведомления
                         </h2>
-                        <form class="space-y-4" method="post" action="{% url 'update_notifications_settings' %}">
+                        <form class="space-y-4" method="post" action="{% url 'update_email_notifications' %}">
                             {% csrf_token %}
                             <div class="form-control">
                                 <label class="label cursor-pointer flex justify-between">

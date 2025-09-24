@@ -15,7 +15,7 @@ def partner_payments(request):
     if user.is_authenticated and user.is_currently_blocked():
         return render(request, 'account_blocked/block_info.html')
     
-    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     
     total_proccessing_payments = PartnerTransaction.objects.filter(
         status=PartnerTransaction.STATUS_CHOICES.PENDING

@@ -22,7 +22,7 @@ class PlatformForm(forms.ModelForm):
                 'required':'required'
             }),
             'url_or_id': forms.URLInput(attrs={
-                'placeholder': 'Введите полный URL или ID площадки',
+                'placeholder': 'Введите полный URL площадки',
                 'class':'input input-bordered w-full hover:outline-none',
                 'required': 'required'}),
         }

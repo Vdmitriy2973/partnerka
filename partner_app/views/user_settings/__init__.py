@@ -1,0 +1,3 @@
+from .update_password import update_password
+from .update_notifications import update_email_notifications
+from .update_profile import update_profile

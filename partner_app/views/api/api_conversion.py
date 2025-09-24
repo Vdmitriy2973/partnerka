@@ -118,8 +118,8 @@ class ConversionAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             
-            partnership.project.advertiser.advertiserprofile.balance -= Decimal(project.cost_per_action)
-            partnership.partner.partner_profile.balance += Decimal(project.cost_per_action)
+            partnership.project.advertiser.advertiserprofile.balance -= Decimal(amount)
+            partnership.partner.partner_profile.balance += Decimal(amount)
             partnership.project.advertiser.advertiserprofile.save()
             partnership.partner.partner_profile.save()
             
@@ -132,13 +132,13 @@ class ConversionAPIView(APIView):
                 partner=partnerprofile,
                 activity_type='sale',
                 title=title,
-                details=f'Комиссия: {project.cost_per_action} ₽'
+                details=f'Комиссия: {amount} ₽'
             )
             AdvertiserActivity.objects.create(
                 advertiser=adv_profile,
                 activity_type='sale',
                 title=title,
-                details=f'Комиссия: {project.cost_per_action} ₽. Партнёр: {partner.username}'
+                details=f'Комиссия: {amount} ₽. Партнёр: {partner.username}'
             )
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"status": "error", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

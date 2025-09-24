@@ -1,9 +1,9 @@
-# authentication.py
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed, NotAuthenticated
 from rest_framework import status
-from django.utils import timezone
+
 from partner_app.models import AdvertiserProfile
+
 
 class AdvertiserAPIKeyAuthentication(BaseAuthentication):
     keyword = 'Bearer'

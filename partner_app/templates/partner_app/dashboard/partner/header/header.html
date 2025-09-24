@@ -8,9 +8,11 @@
         <div class="dropdown lg:hidden mr-2">
             <div tabindex="0" role="button" class="btn btn-ghost indicator btn-circle">
                 <i class="fas fa-bars text-lg"></i>
-                <span class="indicator-item badge badge-soft">
+                {% if notifications_count != 0 %}
+                    <span class="indicator-item badge badge-sm badge-soft">
                         {{ notifications_count }}
                     </span>
+                {% endif %}
             </div>
             <ul tabindex="0" class="menu dropdown-content mt-3 z-50 p-2 shadow-lg bg-white rounded-2xl w-60 border-none animate-fade-in">
                 <li><a href="{% url 'partner_dashboard' %}" class="nav-item indicator">
@@ -23,7 +25,7 @@
                     </i>Дашборд</a>
                 </li>
                 <li><a href="{% url 'partner_offers' %}" class="nav-item"><i class="fas fa-boxes"></i>Предложения</a></li>
-                <li><a href="{% url 'partner_connections' %}" class="nav-item"><i class="fas fa-laptop-code"></i>Программы</a></li>
+                <li><a href="{% url 'partner_connections' %}" class="nav-item"><i class="fas fa-laptop-code"></i>Проекты</a></li>
                 <li><a href="{% url 'partner_platforms' %}" class="nav-item"><i class="fas fa-globe"></i>Площадки</a></li>
                 <li><a href="{% url 'partner_links' %}" class="nav-item"><i class="fas fa-link"></i>Ссылки</a></li>
             </ul>
@@ -41,11 +43,11 @@
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1 gap-0.5 xl:gap-4">
             <li>
-                <a href="{% url 'partner_dashboard' %}" class="nav-item btn-xs text-xs indicator xl:text-sm flex items-center">
+                <a href="{% url 'partner_dashboard' %}" class="nav-item btn-xs text-xs indicator xl:text-sm flex items-center" id="dashboard-link">
                     <i class="fas fa-chart-line"></i>
                     <span class="hidden sm:inline">Дашборд</span>
                     {% if notifications_count != 0 %}
-                        <span class="indicator-item badge badge-sm badge-soft">
+                        <span class="indicator-item badge badge-sm badge-soft" id="notifications-count">
                             {{ notifications_count }}
                         </span>
                     {% endif %}
@@ -60,7 +62,7 @@
             <li>
             <a href="{% url 'partner_connections' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
                 <i class="fas fa-laptop-code"></i>
-                <span class="hidden sm:inline">Программы</span>
+                <span class="hidden sm:inline">Проекты</span>
             </a>
             </li>
             <li>
@@ -89,12 +91,17 @@
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box">
                 <li>
-                    <a href="{% url 'partner_payments' %}" class="nav-item text-lg w-full" data-page="payments">
+                    <a href="{% url 'partner_payments' %}" class="nav-item text-lg w-full">
                         <i class="fas fa-money-bill-wave"></i>Выплаты
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'partner_settings' %}" class="nav-item text-lg w-full" data-page="settings">
+                    <a href="{% url 'partner_notifications' %}" class="nav-item text-lg w-full">
+                        <i class="fas fa-bell"></i> Уведомления
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'partner_settings' %}" class="nav-item text-lg w-full">
                         <i class="fas fa-cog"></i> Настройки
                     </a>
                 </li>

@@ -12,7 +12,7 @@ def partner_settings(request):
     if user.is_authenticated and user.is_currently_blocked():
         return render(request, 'account_blocked/block_info.html')
     
-    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     
     context = {
         'notifications_count':notifications_count

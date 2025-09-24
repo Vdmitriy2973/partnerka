@@ -3,11 +3,23 @@ from . import views
 
 urlpatterns = [
     path('',views.index,name='index'),
-    path('logout', views.logout_view, name='logout'),
+    
+    # Auth
+    path('auth/login',views.handle_login,name='login'),
+    path('auth/register',views.handle_registration,name='register'),
+    path('auth/logout', views.handle_logout, name='logout'),
+    
+    
+    # Главный обработчик личного кабинета
     path('dashboard',views.dashboard,name='dashboard'),
-    path('update_notifications_settings', views.update_notifications_settings, name='update_notifications_settings'),
-
+    
+    # Обновить общие настройки у пользователей
+    path('settings/update_profile',views.update_profile,name='update_profile'),
+    path('settings/update_password',views.update_password,name='update_password'),
+    path('settings/update_email_notifications', views.update_email_notifications, name='update_email_notifications'),
+    
     # Партнёр
+    # Функции партнёра
     path('partner/add_platform',views.add_platform,name='add_platform'),
     path('partner/del_platform/<int:platform_id>',views.delete_platform,name='del_platform'),
     path('partner/edit_platform/<int:platform_id>',views.edit_platform, name='edit_platform'),
@@ -29,8 +41,13 @@ urlpatterns = [
     path('partner/links',views.partner_links,name='partner_links'),
     path('partner/payments',views.partner_payments,name='partner_payments'),
     path('partner/settings',views.partner_settings,name='partner_settings'),
+    path('partner/notifications',views.partner_notifications,name='partner_notifications'),
+    path('partner/notifications/json',views.partner_notifications_json,name='partner_notifications_json'),
+    path('partner/notifications/mark/<int:notification_id>', views.mark_notification_read, name='mark_notification_read'),
+    path('partner/notifications/mark-all', views.mark_all_notifications_read, name='mark_all_notifications_read'),
     
     # Рекламодатель
+    # Функции рекламодателя
     path('advertiser/add_project',views.add_project,name='add_project'),
     path('advertiser/del_project/<int:project_id>',views.delete_project,name='del_project'),
     path('advertiser/edit_project/<int:project_id>',views.edit_project,name='edit_project'),
@@ -49,26 +66,26 @@ urlpatterns = [
     path('advertiser/requisites',views.advertiser_requisites,name='advertiser_requisites'),
     
     # Модератор
-    ## Действия с платформами партнёров
-    path('approve_platform/<int:platform_id>',views.approve_platform,name='approve_platform'),
-    path('reject_platform/<int:platform_id>',views.reject_platform,name='reject_platform'),
-
-    ## Действия с проектами рекламодателей
-    path('approve_project/<int:project_id>',views.approve_project,name='approve_project'),
-    path('reject_project/<int:project_id>',views.reject_project,name='reject_project'),
-
-    ## Действия с транзакциями партнёров
-    path('approve_transaction/<int:transaction_id>/<int:partner_id>',views.approve_transaction,name='approve_transaction'),
-    path('reject_transaction/<int:transaction_id>/<int:partner_id>',views.reject_transaction,name='reject_transaction'),
-    
-    ## Действия с транзакциями рекламодателей
+    # Функции модератора
+    path('manager/approve_platform/<int:platform_id>',views.approve_platform,name='approve_platform'),
+    path('manager/reject_platform/<int:platform_id>',views.reject_platform,name='reject_platform'),
+    path('manager/approve_project/<int:project_id>',views.approve_project,name='approve_project'),
+    path('manager/reject_project/<int:project_id>',views.reject_project,name='reject_project'),
+    path('manager/approve_transaction/<int:transaction_id>/<int:partner_id>',views.approve_transaction,name='approve_transaction'),
+    path('manager/reject_transaction/<int:transaction_id>/<int:partner_id>',views.reject_transaction,name='reject_transaction'),
     path('manager/proccess_adv_transaction/<int:transaction_id>',views.proccess_adv_transaction,name='proccess_adv_transaction'),
     path('manager/approve_adv_transaction/<int:transaction_id>',views.approve_adv_transaction,name='approve_adv_transaction'),
     path('manager/reject_adv_transaction/<int:transaction_id>',views.reject_adv_transaction,name='reject_adv_transaction'),
+    path("manager/block_user/<int:user_id>",views.block_user,name='block_user'),
+    path("manager/unblock_user/<int:user_id>",views.unblock_user,name='unblock_user'),
     
-    # Блокировка / разблокировка пользователей
-    path("block_user/<int:user_id>",views.block_user,name='block_user'),
-    path("unblock_user/<int:user_id>",views.unblock_user,name='unblock_user'),
+    ## Страницы личного кабинета менеджера
+    path('manager/dashboard',views.manager_dashboard,name='manager_dashboard'),
+    path('manager/projects',views.manager_projects,name="manager_projects"),
+    path('manager/platforms',views.manager_platforms,name="manager_platforms"),
+    path('manager/users',views.manager_users,name="manager_users"),
+    path('manager/partners',views.manager_partners,name="manager_partners"),
+    path('manager/advertisers',views.manager_advertisers,name="manager_advertisers"),
     
     # Просмотр информации о пользователях
     path('partner/<int:partner_id>', views.partner_detail, name='partner'),
@@ -78,14 +95,16 @@ urlpatterns = [
     # Просмотр информации о проектах
     path('project/<int:project_id>',views.project_detail,name='project'),
     
-    # Api документация
+    # Документация
     path('api/docs',views.api_docs,name='api_docs'),
+    path('faq',views.faq,name='faq'),
     
     # REST API 
-    path("api/test",views.ProtectedAPIView.as_view(),name="api_test"),
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
     path("api/clicks",views.ClickAPIView.as_view(),name="api_click"),
 
     # SEO
     path("robots.txt",views.robots_txt,name="robots.txt")
+    
+    
 ]

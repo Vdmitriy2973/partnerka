@@ -18,7 +18,7 @@ def partner_platforms(request):
     if user.is_authenticated and user.is_currently_blocked():
         return render(request, 'account_blocked/block_info.html')
     
-    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile).count()
+    notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     
     platforms_search_q = request.GET.get('platforms_search', '').strip()
     

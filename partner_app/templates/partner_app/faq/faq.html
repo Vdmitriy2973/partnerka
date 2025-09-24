@@ -1,0 +1,378 @@
+{% extends 'partner_app/base.html' %}
+{% load static %}
+{% load tz %}
+{% load django_vite %}
+
+{% block title %}Часто задаваемые вопросы | LinkOffer{% endblock %}
+
+{% block header %}
+{% include "partner_app/faq/components/header.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="drawer lg:drawer-open">
+  <input id="faq-drawer" type="checkbox" class="drawer-toggle" />
+  
+  <!-- Mobile Toggle -->
+  <div class="drawer-content lg:hidden fixed top-4 left-4 z-50">
+    <label for="faq-drawer" class="btn btn-ghost btn-circle shadow-md bg-white">
+      <i class="fas fa-bars text-xl"></i>
+    </label>
+  </div>
+  
+  <!-- Sidebar -->
+  <div class="drawer-side z-40">
+    <label for="faq-drawer" class="drawer-overlay"></label> 
+    <div class="menu p-4 w-80 h-full bg-white text-base-content border-r border-gray-200">
+      <div class="mb-6 flex items-center">
+        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+          <i class="fas fa-question-circle text-white text-lg"></i>
+        </div>
+        <div class="text-xl font-bold text-gray-800">Частые вопросы</div>
+      </div>
+      
+      <div class="flex-1 overflow-y-auto">
+        <ul class="space-y-1">
+          <li class="menu-title"><span>Основные разделы</span></li>
+          <li><a href="#general" class="active:bg-purple-50"><i class="fas fa-info-circle text-purple-500"></i>Общая информация</a></li>
+          <li><a href="#for-partners" class="active:bg-purple-50"><i class="fas fa-handshake text-blue-500"></i>Для партнёров</a></li>
+          <li><a href="#for-advertisers" class="active:bg-purple-50"><i class="fas fa-bullhorn text-green-500"></i>Для рекламодателей</a></li>
+          
+          <li class="menu-title mt-6"><span>Интеграция</span></li>
+          <li><a href="#connection" class="active:bg-purple-50"><i class="fas fa-plug text-yellow-500"></i>Подключение</a></li>
+          
+          <li class="menu-title mt-6"><span>Помощь</span></li>
+          <li><a href="#support" class="active:bg-purple-50"><i class="fas fa-headset text-indigo-500"></i>Тех. поддержка</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="drawer-content overflow-x-hidden">
+    <div class="container mx-auto px-4 py-6">
+      <!-- Page Header -->
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold">Часто задаваемые вопросы</h1>
+        <p class="text-gray-500">Всё, что нужно знать о работе с партнёрской программой</p>
+      </div>
+      
+      <!-- General Questions -->
+      <section id="general" class="card bg-white shadow-xl mb-6">
+        <div class="card-body">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+              <i class="fas fa-info-circle text-white text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">Общая информация</h2>
+          </div>
+          
+          <div class="space-y-4">
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Что такое партнёрская программа LinkOffer?
+              </div>
+              <div class="collapse-content">
+                <p>LinkOffer — это платформа для управления партнёрским маркетингом, которая соединяет рекламодателей и партнёров. Мы предоставляем инструменты для отслеживания кликов, конверсий и выплат.</p>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как работает партнёрский маркетинг?
+              </div>
+              <div class="collapse-content">
+                <p>Партнёрский маркетинг — это модель, в которой рекламодатели платят партнёрам за совершение целевых действий. Партнёры размещают рекламные материалы, а система отслеживает эффективность каждого партнёра.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- For Partners -->
+      <section id="for-partners" class="card bg-base-100 shadow-lg mb-8">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">
+            <i class="fas fa-handshake text-blue-500 mr-2"></i>
+            Для партнёров
+          </h2>
+
+          <div class="space-y-4">
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как подключиться к проекту в качестве партнёра?
+              </div>
+              <div class="collapse-content">
+                <ol class="list-decimal pl-5 space-y-2">
+                  <li>Зарегистрируйтесь в партнёрской программе как партнёр</li>
+                  <li>В разделе <b>Предложения</b> выберите подходящее предложение</li>
+                  <li>Подключитесь к проекту рекламодателя</li>
+                  <li>После подключения к проекту рекламодателя получите партнёрскую ссылку в разделе <b>Проекты</b></li>
+                  <li>Размещайте ссылку на своих площадках и начинайте зарабатывать</li>
+                </ol>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как получить партнёрскую ссылку?
+              </div>
+              <div class="collapse-content">
+                <p>После подключения к проекту рекламодателя, в личном кабинете в разделе <b>Проекты</b> вы найдёте подключенный проект. Эту ссылку необходимо сгенерировать, заполнив данные и использовать её для продвижения товара или услуги.</p>
+                <!-- <div class="bg-blue-50 p-4 rounded-lg mt-3">
+                  <p class="text-blue-800 font-semibold">Совет:</p>
+                  <p>Используйте UTM-метки для дополнительного анализа эффективности разных площадок и рекламных форматов.</p>
+                </div> -->
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как отслеживать статистику и выплаты?
+              </div>
+              <div class="collapse-content">
+                <p>В личном кабинете доступен подробный отчет по каждому проекту:</p>
+                <ul class="list-disc pl-5 space-y-1 mt-2">
+                  <li>Количество кликов</li>
+                  <li>Количество конверсий</li>
+                  <li>CR (Conversion Rate -  Конверсионная ставка)</li>
+                  <li>Общий заработок</li>
+                  <!-- <li>CTR (Click-Through Rate)</li>
+                  <li>EPC (Earnings Per Click)</li> 
+                  <li>Статус выплат и история транзакций</li> -->
+                </ul>
+                <!-- <p class="mt-3">Данные обновляются в реальном времени с задержкой не более 15 минут.</p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- For Advertisers -->
+      <section id="for-advertisers" class="card bg-base-100 shadow-lg mb-8">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">
+            <i class="fas fa-bullhorn text-green-500 mr-2"></i>
+            Для рекламодателей
+          </h2>
+
+          <div class="space-y-4">
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как подключить проект к партнёрской программе?
+              </div>
+              <div class="collapse-content">
+                <ol class="list-decimal pl-5 space-y-2">
+                  <li>Зарегистрируйтесь в партнёрской программе как рекламодатель</li>
+                  <li>Заполните юр. данные в личном кабинете в разделе <b>Реквизиты</b> </li>
+                  <li>В разделе <b>Проекты</b> создайте новый проект</li>
+                  <li>Заполните информацию о проекте: название, URL, описание, шаблон партнёрской ссылки, параметры (опционально), цена за целевое действие</li>
+                  <li>Опубликуйте проект, получите одобрение от модераторов</li>
+                  <li>Сотрудничайте с партнёрами</li>
+                </ol>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как настроить отслеживание кликов и конверсий?
+              </div>
+              <div class="collapse-content">
+                <p>Отслеживание кликов и конверсий подробно описано на странице <a href="{% url 'api_docs' %}"><b>API документация</b></a></p>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как привлекать качественных партнёров?
+              </div>
+              <div class="collapse-content">
+                <p>Для привлечения лучших партнёров рекомендуем:</p>
+                <ul class="list-disc pl-5 space-y-1 mt-2">
+                  <li>Создать подробное название проекта</li>
+                  <li>Создать подробное описание проекта</li>
+                  <li>Установить конкурентные ставки вознаграждения</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Connection -->
+      <section id="connection" class="card bg-base-100 shadow-lg mb-8">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">
+            <i class="fas fa-plug text-yellow-500 mr-2"></i>
+            Подключение и интеграция
+          </h2>
+
+          <div class="space-y-4">
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Какие способы интеграции доступны?
+              </div>
+              <div class="collapse-content">
+                <p>Мы предлагаем несколько вариантов интеграции:</p>
+                
+                <div class="overflow-x-auto mt-3">
+                  <table class="table table-zebra table-sm">
+                    <thead>
+                      <tr>
+                        <th>Метод</th>
+                        <th>Сложность</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>API интеграция</td>
+                        <td>Средняя</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как подключить площадку партнёра?
+              </div>
+              <div class="collapse-content">
+                <p>Для подключения вашей площадки:</p>
+                <ol class="list-decimal pl-5 space-y-2">
+                  <li>В личном кабинете перейдите в раздел <b>Мои площадки</b></li>
+                  <li>Нажмите <b>Добавить площадку</b></li>
+                  <li>Заполните информацию о площадке: название, тип площадки, описание, URL</li>
+                  <li>После модерации площадка будет активирована</li>
+                </ol>
+                
+                <div class="bg-yellow-50 p-4 rounded-lg mt-3">
+                  <p class="text-yellow-800 font-semibold">Важно:</p>
+                  <p>Указание точной информации о площадке увеличивает шансы на одобрение заявок рекламодателями.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support -->
+      <section id="support" class="card bg-base-100 shadow-lg mb-8">
+        <div class="card-body">
+          <h2 class="card-title text-2xl font-bold">
+            <i class="fas fa-headset text-indigo-500 mr-2"></i>
+            Техническая поддержка
+          </h2>
+
+          <div class="space-y-4">
+            <!-- FAQ Item -->
+            <div class="collapse collapse-arrow border border-base-300 bg-base-100">
+              <input type="checkbox" class="peer" />
+              <div class="collapse-title text-lg font-medium">
+                Как связаться с технической поддержкой?
+              </div>
+              <div class="collapse-content">
+                <p>Доступные способы связи:</p>
+                <ul class="list-disc pl-5 space-y-1 mt-2">
+                  <li>Электронная почта: <a href="mailto:support@linkoffer.ru" class="text-primary">support@linkoffer.ru</a></li>
+                  <li>Телеграм: <a href="https://t.me/linkoffer_support" class="text-primary" target="_blank">@linkoffer_support</a></li>
+                  <li>Встроенный чат в личном кабинете (доступен с 9:00 до 18:00 по МСК)</li>
+                  <li>Форма обратной связи в разделе "Помощь"</li>
+                </ul>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg mt-3">
+                  <p class="text-indigo-800 font-semibold">Подсказка:</p>
+                  <p>При обращении укажите ваш ID аккаунта и подробное описание проблемы — это ускорит решение вопроса.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Support Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div class="card bg-blue-50 border border-blue-200">
+              <div class="card-body items-center text-center">
+                <i class="fas fa-envelope text-blue-500 text-2xl"></i>
+                <h3 class="card-title">Email</h3>
+                <p>support@linkoffer.ru</p>
+                <p>Ответ в течение 24 часов</p>
+              </div>
+            </div>
+            
+            <div class="card bg-green-50 border border-green-200">
+              <div class="card-body items-center text-center">
+                <i class="fab fa-telegram text-green-500 text-2xl"></i>
+                <h3 class="card-title">Телеграм</h3>
+                <p>@linkoffer_support</p>
+                <p>Ответ в течение 2 часов</p>
+              </div>
+            </div>
+            
+            <div class="card bg-purple-50 border border-purple-200">
+              <div class="card-body items-center text-center">
+                <i class="fas fa-comments text-purple-500 text-2xl"></i>
+                <h3 class="card-title">Онлайн-чат</h3>
+                <p>В личном кабинете</p>
+                <p>С 9:00 до 18:00 (МСК)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Still have questions -->
+      <div class="card bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-10 mb-8">
+        <div class="card-body">
+          <h2 class="card-title justify-center text-2xl mb-4">Остались вопросы?</h2>
+          <p class="mb-6">Наша команда поддержки готова помочь вам с любыми вопросами</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Анимация появления элементов
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.card').forEach((card, i) => {
+      card.classList.add('opacity-0', 'translate-y-5');
+      setTimeout(() => {
+        card.classList.add('transition-all', 'duration-300', 'ease-out');
+        card.classList.remove('opacity-0', 'translate-y-5');
+      }, 100 * i);
+    });
+    
+    // Плавная прокрутка
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  });
+</script>
+
+{% endblock %}

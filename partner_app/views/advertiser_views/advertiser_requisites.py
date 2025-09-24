@@ -13,7 +13,7 @@ def advertiser_requisites(request):
     if user.is_authenticated and user.is_currently_blocked():
         return render(request, 'account_blocked/block_info.html')
     
-    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile).count()
+    notifications_count = AdvertiserActivity.objects.filter(advertiser=request.user.advertiserprofile,is_read=False).count()
     
     context = {
         "notifications_count":notifications_count

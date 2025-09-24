@@ -11,6 +11,8 @@ def read_partner_notifications(request):
     partner = request.user
     if not hasattr(partner,"partner_profile"):
         return redirect('index')
-    PartnerActivity.objects.filter(partner=partner.partner_profile).delete()
+    PartnerActivity.objects.filter(partner=partner.partner_profile,
+        is_read=False
+    ).update(is_read=True)
     
     return redirect("partner_dashboard")

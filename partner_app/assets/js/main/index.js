@@ -1,114 +1,233 @@
-import './base.js'
-import '../../css/index.css'
+import '@fortawesome/fontawesome-free/js/all'
+import '/partner_app/assets/css/main/index.css'
 
-
-// Hero section
-// Tab switching functionality
-const adv_tab = document.getElementById("advertiser-tab");
-adv_tab?.addEventListener("click", () => {
-  switchTab("advertiser");
-})
-
-const partner_tab = document.getElementById("partner-tab");
-partner_tab?.addEventListener("click", () => {
-  switchTab("partner");
-})
-
-function switchTab(tabType) {
-  // Remove active class from all tabs and content
-  document.querySelectorAll(".tab").forEach((tab) => {
-    tab.classList.remove("tab-active");
-  });
-  document.querySelectorAll(".tab-content").forEach((content) => {
-    content.classList.remove("active");
-  });
-
-  // Add active class to selected tab and content
-  document.getElementById(tabType + "-tab").classList.add("tab-active");
-  document.getElementById(tabType + "-content").classList.add("active");
-}
-
-const urlParams = new URLSearchParams(window.location.search);
-
-function openModalReg(type = 'partner') {
-  const tabs = {
-    partner: document.getElementById("tab-partner"),
-    advertiser: document.getElementById("tab-advertiser"),
-  };
-
-  const forms = {
-    partner: document.getElementById("form-partner"),
-    advertiser: document.getElementById("form-advertiser"),
-  };
-
-  Object.keys(tabs).forEach((key) => {
-    const isActive = key === type;
-
-    tabs[key].classList.toggle("tab-active", isActive);
-    forms[key].classList.toggle("hidden", !isActive);
-    forms[key].classList.toggle("active_reg-form", isActive);
-  });
-
-  // Обновление UI под тип пользователя
-  const regHeader = document.getElementById("reg-header");
-  const old_icon = document.getElementById("reg-icon");
-
-  old_icon.parentNode.removeChild(old_icon);
-
-  const icon = document.createElement("i");
-
-  const title = document.getElementById("reg-title");
-  const subtitle = document.getElementById("reg-subtitle");
-
-  const config = {
+// ==================== КОНФИГУРАЦИЯ И КОНСТАНТЫ ====================
+const MODAL_CONFIG = {
     partner: {
-      icon: "fas fa-user-plus text-4xl text-blue-600 mb-4",
-      title: "Регистрация партнёра",
-      subtitle: "Начните зарабатывать с нами",
-      width: 40
+        icon: "fas fa-user-plus text-4xl text-blue-600 mb-4",
+        title: "Регистрация партнёра",
+        subtitle: "Начните зарабатывать с нами"
     },
     advertiser: {
-      icon: "fas fa-bullhorn text-4xl text-green-500 mb-4",
-      title: "Регистрация рекламодателя",
-      subtitle: "Привлекайте новых клиентов"
+        icon: "fas fa-bullhorn text-4xl text-green-500 mb-4",
+        title: "Регистрация рекламодателя", 
+        subtitle: "Привлекайте новых клиентов"
+    }
+};
+
+// ==================== УТИЛИТЫ ====================
+const DOMUtils = {
+    get: (id) => document.getElementById(id),
+    getAll: (selector) => document.querySelectorAll(selector),
+    create: (tag) => document.createElement(tag)
+};
+
+const UIHelpers = {
+    // Плавная прокрутка
+    initSmoothScrolling: () => {
+        DOMUtils.getAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", (e) => {
+                e.preventDefault();
+                const targetElement = DOMUtils.get(anchor.getAttribute("href").substring(1));
+                targetElement?.scrollIntoView({ behavior: "smooth" });
+            });
+        });
     },
-  }[type];
 
+    // Эффект навигационной панели при прокрутке
+    initNavbarScrollEffect: () => {
+        window.addEventListener("scroll", () => {
+            const navbar = DOMUtils.get("navbar");
+            navbar?.classList.toggle("scrolled", window.scrollY > 50);
+        });
+    }
+};
 
-  icon.setAttribute("class", config.icon);
-  icon.id = "reg-icon";
-  regHeader.prepend(icon);
+// ==================== УПРАВЛЕНИЕ МОДАЛЬНЫМИ ОКНАМИ ====================
+const ModalManager = {
+    currentType: "partner",
+    
+    // Инициализация всех обработчиков модальных окон
+    init: () => {
+        ModalManager.setupAuthModal();
+        ModalManager.setupRegistrationModals();
+        ModalManager.setupTabSwitching();
+        ModalManager.setupModalLinks();
+    },
+    
+    // Модальное окно авторизации
+    setupAuthModal: () => {
+        const authBtn = DOMUtils.get("authModal");
+        authBtn?.addEventListener("click", () => ModalManager.openModal("auth"));
+    },
+    
+    // Модальные окна регистрации
+    setupRegistrationModals: () => {
+        const buttons = {
+            reg_partner: DOMUtils.get("reg_partner-btn"),
+            reg_advertiser: DOMUtils.get("reg_advertiser-btn"),
+            become_partner: DOMUtils.get("become_partner"),
+            become_advertiser: DOMUtils.get("become_advertiser")
+        };
+        
+        buttons.reg_partner?.addEventListener("click", () => ModalManager.openModal('register', 'partner'));
+        buttons.reg_advertiser?.addEventListener("click", () => ModalManager.openModal('register', 'advertiser'));
+        buttons.become_partner?.addEventListener("click", () => ModalManager.openModal('register', 'partner'));
+        buttons.become_advertiser?.addEventListener("click", () => ModalManager.openModal('register', 'advertiser'));
+    },
+    
+    // Переключение вкладок
+    setupTabSwitching: () => {
+        const tabs = {
+            partner: DOMUtils.get("tab-partner"),
+            advertiser: DOMUtils.get("tab-advertiser"),
+            partner_tab: DOMUtils.get("partner-tab"),
+            advertiser_tab: DOMUtils.get("advertiser-tab")
+        };
+        
+        tabs.partner?.addEventListener("click", () => ModalManager.openModal('register', 'partner'));
+        tabs.advertiser?.addEventListener("click", () => ModalManager.openModal('register', 'advertiser'));
+        tabs.partner_tab?.addEventListener("click", () => TabManager.switchTab("partner"));
+        tabs.advertiser_tab?.addEventListener("click", () => TabManager.switchTab("advertiser"));
+    },
+    
+    // Ссылки между модальными окнами
+    setupModalLinks: () => {
+        const registrationLink = DOMUtils.get("registration-link");
+        const authorizationLink = DOMUtils.get("authorization-Link");
+        
+        registrationLink?.addEventListener("click", () => {
+            ModalManager.closeModal('auth');
+            ModalManager.openModal('register', 'partner');
+        });
+        
+        authorizationLink?.addEventListener("click", () => {
+            ModalManager.closeModal('register');
+            ModalManager.openModal('auth');
+        });
+    },
+    
+    // Открытие модального окна
+    openModal: (type, userType = "partner") => {
+        if (type === "register") {
+            ModalManager.currentType = userType;
+            ModalManager.switchModalTab(userType);
+        }
+        DOMUtils.get(`${type}_modal`)?.showModal();
+    },
+    
+    // Закрытие модального окна
+    closeModal: (type) => {
+        DOMUtils.get(`${type}_modal`)?.close();
+    },
+    
+    // Переключение вкладок в модальном окне
+    switchModalTab: (type) => {
+        const tabs = {
+            partner: DOMUtils.get("tab-partner"),
+            advertiser: DOMUtils.get("tab-advertiser")
+        };
 
-  icon.style.margin = "0 auto";
-  title.textContent = config.title;
-  subtitle.textContent = config.subtitle;
+        const forms = {
+            partner: DOMUtils.get("form-partner"),
+            advertiser: DOMUtils.get("form-advertiser")
+        };
 
-  setTimeout(() => {
-    document.getElementById('register_modal').showModal();
-  }, 505)
-}
+        // Управление классами вкладок и форм
+        Object.keys(tabs).forEach((key) => {
+            const isActive = key === type;
+            tabs[key]?.classList.toggle("tab-active", isActive);
+            forms[key]?.classList.toggle("hidden", !isActive);
+            forms[key]?.classList.toggle("active_reg-form", isActive);
+        });
 
-let type = urlParams.get('show_modal');
+        // Обновление UI
+        ModalManager.updateModalUI(type);
+    },
+    
+    // Обновление интерфейса модального окна
+    updateModalUI: (type) => {
+        const regHeader = DOMUtils.get("reg-header");
+        const oldIcon = DOMUtils.get("reg-icon");
+        const title = DOMUtils.get("reg-title");
+        const subtitle = DOMUtils.get("reg-subtitle");
+        
+        if (!regHeader || !title || !subtitle) return;
+        
+        // Удаляем старую иконку
+        oldIcon?.remove();
+        
+        // Создаем новую иконку
+        const icon = DOMUtils.create("i");
+        const config = MODAL_CONFIG[type];
+        
+        icon.className = config.icon;
+        icon.id = "reg-icon";
+        icon.style.margin = "0 auto";
+        
+        regHeader.prepend(icon);
+        title.textContent = config.title;
+        subtitle.textContent = config.subtitle;
+    }
+};
 
-if (type == "auth") {
-  window.addEventListener("DOMContentLoaded", function () {
-    setTimeout(() => {
-      document.getElementById(`auth_modal`).showModal();
-    }, 505)
-  });
-}
-else if(type == "partner" || type == "advertiser")
-{
-  openModalReg(type);
-}
+// ==================== УПРАВЛЕНИЕ ВКЛАДКАМИ ====================
+const TabManager = {
+    // Переключение вкладок
+    switchTab: (tabType) => {
+        // Удаляем активные классы
+        DOMUtils.getAll(".tab").forEach((tab) => tab.classList.remove("tab-active"));
+        DOMUtils.getAll(".tab-content").forEach((content) => content.classList.remove("active"));
+        
+        // Добавляем активные классы
+        DOMUtils.get(`${tabType}-tab`)?.classList.add("tab-active");
+        DOMUtils.get(`${tabType}-content`)?.classList.add("active");
+    }
+};
 
+// ==================== ОБРАБОТКА URL ПАРАМЕТРОВ ====================
+const URLParamsHandler = {
+    // Обработка параметров URL
+    handleURLParams: () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const modalType = urlParams.get('show_modal');
+        
+        if (modalType === "auth") {
+            URLParamsHandler.openAuthModal();
+        } else if (modalType === "partner" || modalType === "advertiser") {
+            URLParamsHandler.openRegistrationModal(modalType);
+        }
+    },
+    
+    // Открытие модального окна авторизации
+    openAuthModal: () => {
+        window.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => DOMUtils.get("auth_modal")?.showModal(), 505);
+        });
+    },
+    
+    // Открытие модального окна регистрации
+    openRegistrationModal: (type) => {
+        ModalManager.switchModalTab(type);
+        setTimeout(() => DOMUtils.get('register_modal')?.showModal(), 505);
+    }
+};
 
-const becomePartnerBtn = document.getElementById("become_partner");
-becomePartnerBtn?.addEventListener("click",()=>{
-  openModalReg("partner");
-})
+// ==================== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ====================
+const App = {
+    // Инициализация приложения
+    init: () => {
+        // Инициализация утилит
+        UIHelpers.initSmoothScrolling();
+        UIHelpers.initNavbarScrollEffect();
+        
+        // Инициализация модальных окон
+        ModalManager.init();
+        
+        // Обработка параметров URL
+        URLParamsHandler.handleURLParams();
+    }
+};
 
-const becomeAdvertiserBtn = document.getElementById("become_advertiser");
-becomeAdvertiserBtn?.addEventListener("click",()=>{
-  openModalReg("advertiser");
-})
+// Запуск приложения после загрузки DOM
+document.addEventListener("DOMContentLoaded", App.init);

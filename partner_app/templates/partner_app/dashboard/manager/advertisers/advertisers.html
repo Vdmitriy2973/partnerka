@@ -1,0 +1,196 @@
+{% extends "partner_app/dashboard/base_lk.html" %}
+{% load static %}
+{% load tz %}
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+    {% vite_asset 'partner_app/assets/js/dashboard/manager/advertisers/advertisers.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %}Пополнения{% endblock title %}
+
+{% block header %}
+{% include "partner_app/dashboard/manager/header/header.html" %}
+{% endblock %}
+
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 max-w-7xl">
+<div id="advertiser_transactions">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold">Пополнение баланса у рекламодателей</h1>
+        <p class="text-base-content/60">Модерация запросов на пополнение</p>
+    </div>
+
+    <div id="adv_transactions_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]">
+
+    </div>    
+
+    <!-- Таблица выплат -->
+    <div class="overflow-x-auto bg-base-100 rounded-box shadow">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Рекламодатель</th>
+                    <th>Сумма</th>
+                    <th>Способ пополнения</th>
+                    <th>Дата запроса</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Пример строки с выплатой в ожидании -->
+                {% for transaction in transactions %}
+                <tr class="hover:bg-base-200 transition-colors">
+                    <td>{{ transaction.id }}</td>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div>
+                                <div class="font-bold"><a href="{% url 'advertiser' transaction.advertiser.user.id %}">{{ transaction.advertiser.user.get_ifo }}</a></div>
+                                <div class="adv_transaction_email text-sm opacity-50">{{ transaction.advertiser.user.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="adv_transaction_amount font-bold text-lg">{{ transaction.amount }} ₽</span>
+                    </td>
+                    <td>
+                        <div class="flex flex-col">
+                            
+                            {% if transaction.payment_method == 'sbp' %}
+                            <span class="font-medium">СБП</span>
+                            {% elif transaction.payment_method == 'card' %}
+                            <span class="font-medium">Банковская карта</span>
+                            {% elif transaction.payment_method == 'wallet' %}
+                            <span class="font-medium">Эл. кошелек</span>
+                            {% elif transaction.payment_method == 'bank_transfer' %}
+                            <span class="font-medium">Оплата счёта</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        {{ transaction.date|date:"d.m.Y H:i" }} 
+                    </td>
+                    <td>
+                        <span class="badge badge-{% if transaction.status == 'В обработке' %}warning{% elif transaction.status == 'Обработано'%}info{% else %}success{% endif %}">
+                            {{ transaction.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex gap-2">
+                            {% if transaction.status == 'Обработано' %}
+                                <button class="approve_adv_transaction btn btn-sm btn-success approve-adv-tr-btn"
+                                data-adv-transaction-id="{{ transaction.id }}"
+                                data-adv-id="{{ transaction.advertiser.user.id }}"
+                                data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                data-adv-transaction-amount="{{ transaction.amount }}"
+                                data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                    <i class="fas fa-check mr-1"></i> Одобрить
+                                </button>
+                                <button class="reject_adv_transaction btn btn-sm btn-error reject-adv-tr-btn" 
+                                data-adv-transaction-id="{{ transaction.id }}"
+                                data-adv-id="{{ transaction.advertiser.user.id }}"
+                                data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                data-adv-transaction-amount="{{ transaction.amount }}"
+                                data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                    <i class="fas fa-times mr-1"></i> Отклонить
+                                </button>
+                            {% elif transaction.status == 'В обработке' %}
+                                <button class="btn btn-sm btn-success send_adv_details"
+                                data-adv-transaction-id="{{ transaction.id }}"
+                                data-adv-id="{{ transaction.advertiser.user.id }}"
+                                data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                data-adv-transaction-amount="{{ transaction.amount }}"
+                                data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                    <i class="fas fa-check mr-1"></i> Отправить реквизиты
+                                </button>
+                                <button class="reject_adv_transaction btn btn-sm btn-error reject-adv-tr-btn" 
+                                data-adv-transaction-id="{{ transaction.id }}"
+                                data-adv-id="{{ transaction.advertiser.user.id }}"
+                                data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                data-adv-transaction-amount="{{ transaction.amount }}"
+                                data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                    <i class="fas fa-times mr-1"></i> Отклонить
+                                </button>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if not transactions %}
+            <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                <div class="text-gray-300 text-5xl mb-4">
+                    <i class="fas fa-sad-cry"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-500 mb-2">Нет заявок на пополнение</h3>
+                <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться транзакции рекламодателей</p>
+            </div>
+        {% endif %}
+
+        <!-- Пагинация -->
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if transactions.has_previous %}
+            <a href="?transactions_page=1"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?transactions_page={{ transactions.previous_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+            {% endif %}
+
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ transactions.paginator.num_pages }}"
+                    value="{{ transactions.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?connected_projects_page=' + this.value" aria-label="Номер страницы">
+                <span>из {{ transactions.paginator.num_pages }}</span>
+            </div>
+
+            {% if transactions.has_next %}
+            <a href="?transactions_page={{ transactions.next_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?transactions_page={{ transactions.paginator.num_pages }}"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+{% include "partner_app/dashboard/manager/advertisers/modals/adv_transactions.html" %}
+{% include "partner_app/dashboard/manager/advertisers/modals/invoice_advertiser.html" %}
+
+<script>
+  const msg = document.querySelectorAll('.alert-message').forEach(element => {
+    setTimeout(function () {
+      element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
+      setTimeout(() => element.remove(), 300);
+    }, 5000)
+  });
+</script>
+
+
+{% endblock %}

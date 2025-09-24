@@ -66,7 +66,6 @@ export function setupTopUpBalance() {
                 return;
             }
             const data = await response.json();
-            console.log('Success:', data);
 
             modal.close();
             showMessages(data.messages || []);
