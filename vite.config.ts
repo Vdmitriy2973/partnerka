@@ -33,6 +33,7 @@ export default defineConfig((mode) => {
           partner_dashboard: join(INPUT_DIR, "/js/dashboard/partner/dashboard/dashboard.js"),
           partner_offers: join(INPUT_DIR, "/js/dashboard/partner/offers/offers.js"),
           partner_connections: join(INPUT_DIR, "/js/dashboard/partner/connections/connections.js"),
+          partner_notifications: join(INPUT_DIR,"/js/dashboard/partner/notifications/notifications.js"),
           partner_platforms: join(INPUT_DIR, "/js/dashboard/partner/platforms/platforms.js"),
           partner_links: join(INPUT_DIR, "/js/dashboard/partner/links/links.js"),
           partner_payments: join(INPUT_DIR, "/js/dashboard/partner/payments/payments.js"),
