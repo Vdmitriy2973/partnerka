@@ -45,7 +45,10 @@ export default defineConfig((mode) => {
           manager_platforms: join(INPUT_DIR, "/js/dashboard/manager/platforms/platforms.js"),
           manager_users: join(INPUT_DIR, "/js/dashboard/manager/users/users.js"),
           manager_partners: join(INPUT_DIR, "/js/dashboard/manager/partners/partners.js"),
-          manager_advertisers: join(INPUT_DIR, "/js/dashboard/manager/advertisers/advertisers.js")
+          manager_advertisers: join(INPUT_DIR, "/js/dashboard/manager/advertisers/advertisers.js"),
+
+          // Статические страницы
+          static_page: join(INPUT_DIR, "/js/static-pages/static_page.js"),
         },
       },
     },
