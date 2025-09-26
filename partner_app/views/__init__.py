@@ -2,7 +2,12 @@
 from .dashboard import dashboard
 
 # Главная страница
-from .index import index
+from .index_views import *
+from .index_views.index_operations import *
+
+# Страница отзывов
+from .reviews_views.reviews_operations import *
+from .reviews_views import *
 
 # Документация
 from .docs_views.faq_view import faq

@@ -55,21 +55,22 @@
             <div class="card bg-base-100 shadow-xl">
                 <div class="card-body">
                     <h3 class="card-title mb-4">Отправить сообщение</h3>
-                    <form class="space-y-4">
+                    <form id="feedback-form" class="space-y-4" method="POST">
+                        {% csrf_token %}
                         <div>
-                            <input type="text" placeholder="Ваше имя" class="input input-bordered w-full" />
+                            <input required name="name" type="text" placeholder="Ваше имя" class="input input-bordered w-full" />
                         </div>
                         <div>
-                            <input type="email" placeholder="Email" class="input input-bordered w-full" />
+                            <input required name="mail" type="email" placeholder="example@mail.ru" class="input input-bordered w-full" />
                         </div>
                         <div>
-                            <input type="tel" placeholder="Телефон" class="input input-bordered w-full" />
+                            <input type="tel" name="phone" placeholder="Телефон" class="input input-bordered w-full" />
                         </div>
                         <div>
-                            <textarea class="textarea textarea-bordered w-full h-32"
+                            <textarea name="review" required name="review" class="textarea textarea-bordered w-full h-32"
                                 placeholder="Ваше сообщение"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary w-full">
+                        <button id="feedback_form__btn_submit" type="submit" class="btn btn-primary w-full">
                             <i class="fas fa-paper-plane mr-2"></i>
                             Отправить
                         </button>

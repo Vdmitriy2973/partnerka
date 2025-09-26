@@ -32,11 +32,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Third-party apps
     'rest_framework',
     'django_celery_results',
     'django.contrib.humanize',
     'corsheaders',
     "django_vite",
+    
+    # My apps
     'partner_app',
 ]
 
@@ -93,6 +97,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    # My middlewares
+    'partner_app.middleware.AdminAccessMiddleware'
 ]
 
 ROOT_URLCONF = 'website_partner_project.urls'

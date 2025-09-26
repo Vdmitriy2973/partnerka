@@ -2,7 +2,15 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    
+    # Главная страница
     path('',views.index,name='index'),
+    
+    # Действия на главной странице
+    path('reviews',views.reviews,name='reviews'),
+    path('make_review',views.make_review,name='make_review'),
+    
+    path('feedback',views.feedback,name='feedback'),
     
     # Auth
     path('auth/login',views.handle_login,name='login'),

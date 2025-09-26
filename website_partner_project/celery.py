@@ -1,5 +1,4 @@
 import os
-import platform
 from celery import Celery
 
 

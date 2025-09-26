@@ -1,5 +1,13 @@
 {% extends 'partner_app/base.html' %}
+{% load static %}
 {% load tz %}
+
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+    {% vite_asset 'partner_app/assets/js/static-pages/static_page.js' %}
+{% endblock head_js_scripts %}
 
 {% block title %} Проект - {{ project.name }} {% endblock %}
 {% block content %}

@@ -22,7 +22,7 @@
   {% vite_hmr_client %}
 
   {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/main/index.js' %}
+  
   {% endblock head_js_scripts %}
   {% block styles %}{% endblock styles %}
   <title>{% block title %}{% endblock title %}</title>
@@ -76,10 +76,6 @@
                   class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Возможности</a>
               </li>
               <li>
-                <a href="#programs"
-                  class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Программы</a>
-              </li>
-              <li>
                 <a href="#stats"
                   class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Статистика</a>
               </li>
@@ -94,14 +90,12 @@
                     страница</a>
               </li>
             {% endif %}
-            {% if request.path != '/dashboard' %}
               {% if request.user.is_authenticated %}
                 <li>
                   <a href="{% url 'dashboard' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Личный
                     кабинет</a>
                 </li>
               {% endif %}
-            {% endif %}
           </ul>
         </div>
 
@@ -175,12 +169,8 @@
                 {% if request.path == '/' %}
                   <a href="#features"
                     class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Возможности</a>
-                  <a href="#programs"
-                    class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Программы</a>
                   <a href="#stats"
                     class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Статистика</a>
-                  <a href="#testimonials"
-                    class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Отзывы</a>
                   <a href="#testimonials"
                     class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Отзывы</a>
                 {% endif %}
@@ -189,11 +179,7 @@
                     страница</a>
                 {% endif %}
                   {% if request.user.is_authenticated %}
-                    {% if request.user.advertiserprofile %}
-                      <a href="{% url 'advertiser_dashboard' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Личный кабинет</a>
-                    {% else %}
                       <a href="{% url 'dashboard' %}" class="text-base-content/70 hover:text-primary transition-colors text-sm block py-1">Личный кабинет</a>
-                    {% endif %}
                   {% endif %}
               </div>
             </div>
