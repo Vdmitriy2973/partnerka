@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django_vite",
     
     # My apps
+    'apps.core',
     'partner_app',
 ]
 
@@ -99,7 +100,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
     # My middlewares
-    'partner_app.middleware.AdminAccessMiddleware'
+    'apps.core.middleware.AdminAccessMiddleware'
 ]
 
 ROOT_URLCONF = 'website_partner_project.urls'

@@ -1,23 +1,7 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [
-    
-    # Главная страница
-    path('',views.index,name='index'),
-    
-    # Действия на главной странице
-    path('reviews',views.reviews,name='reviews'),
-    path('make_review',views.make_review,name='make_review'),
-    
-    path('feedback',views.feedback,name='feedback'),
-    
-    # Auth
-    path('auth/login',views.handle_login,name='login'),
-    path('auth/register',views.handle_registration,name='register'),
-    path('auth/logout', views.handle_logout, name='logout'),
-    
-    
+urlpatterns = [    
     # Главный обработчик личного кабинета
     path('dashboard',views.dashboard,name='dashboard'),
     
@@ -95,24 +79,16 @@ urlpatterns = [
     path('manager/partners',views.manager_partners,name="manager_partners"),
     path('manager/advertisers',views.manager_advertisers,name="manager_advertisers"),
     
-    # Просмотр информации о пользователях
+    # Публичные просмотры
     path('partner/<int:partner_id>', views.partner_detail, name='partner'),
     path('advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser'),
-    path('advertiser_requisites/<int:advertiser_id>',views.advertiser_legal_details,name='advertiser_legal_details'),
-    
-    # Просмотр информации о проектах
     path('project/<int:project_id>',views.project_detail,name='project'),
+    # Добавить страницу для площадки партнёра
     
-    # Документация
-    path('api/docs',views.api_docs,name='api_docs'),
-    path('faq',views.faq,name='faq'),
+    # Просмотры для менеджера
+    path('advertiser_requisites/<int:advertiser_id>',views.advertiser_legal_details,name='advertiser_legal_details'),
     
     # REST API 
     path("api/conversions", views.ConversionAPIView.as_view(), name="api_conversion"),
     path("api/clicks",views.ClickAPIView.as_view(),name="api_click"),
-
-    # SEO
-    path("robots.txt",views.robots_txt,name="robots.txt")
-    
-    
 ]

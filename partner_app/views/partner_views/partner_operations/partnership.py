@@ -3,9 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.views.decorators.http import require_POST
-from partner_app.models import ProjectPartner,User
-from partner_app.utils import send_email_via_mailru
-from django.utils.timezone import now
+from partner_app.models import ProjectPartner
+from utils import send_email_via_mailru
 
 @login_required
 @require_POST

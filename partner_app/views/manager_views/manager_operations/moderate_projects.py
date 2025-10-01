@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 
 from partner_app.models import Project, AdvertiserActivity
-from partner_app.utils import send_email_via_mailru
+from utils import send_email_via_mailru
 
 
 

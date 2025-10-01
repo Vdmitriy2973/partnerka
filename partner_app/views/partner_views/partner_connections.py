@@ -3,7 +3,7 @@ import json
 from django.shortcuts import render,redirect
 
 from .common import _get_connected_projects
-from partner_app.utils import _apply_search, _paginate
+from utils import _apply_search, _paginate
 from partner_app.models import PartnerActivity
 
 def partner_connections(request):  

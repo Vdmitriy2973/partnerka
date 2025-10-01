@@ -5,7 +5,7 @@ from django.contrib import messages
 
 
 from partner_app.models import Platform, PartnerActivity
-from partner_app.utils import send_email_via_mailru
+from utils import send_email_via_mailru
 
 @login_required
 @require_POST

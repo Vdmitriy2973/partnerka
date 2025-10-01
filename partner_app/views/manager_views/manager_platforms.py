@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.db.models import Q
 
 from partner_app.models import Platform
-from partner_app.utils import _paginate
+from utils import _paginate
 
 def manager_platforms(request):  
     """Модерация проектов"""

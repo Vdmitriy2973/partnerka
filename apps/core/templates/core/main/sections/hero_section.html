@@ -1,0 +1,126 @@
+{% load static %}
+
+<div class="hero min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 hero-pattern relative">
+    <div class="hero-content text-center max-w-6xl mx-auto px-4">
+        <div class="fade-in-up">
+            <h1 class="hero-title text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-gray-900">
+                Монетизируйте трафик<br>
+                <span class="text-blue-600">эффективно</span>
+            </h1>
+            <p class="hero-subtitle text-xl md:text-2xl mb-10 text-gray-600 max-w-3xl mx-auto">
+                Присоединяйтесь к крупнейшей партнёрской сети. Более 50,000 партнёров уже зарабатывают с нами
+            </p>
+
+            <!-- Registration Tabs -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="tabs tabs-boxed rounded-lg bg-white shadow-lg p-2 mb-6">
+                    <a id="partner-tab" class="tab rounded-lg w-1/2 tab-active">
+                        <i class="fas fa-users mr-2"></i>
+                        <p class="hidden sm:block">Для партнёров</p>
+                        <p class="block sm:hidden">Партнёры</p>
+                    </a>
+                    <a id="advertiser-tab" class="tab rounded-lg w-1/2">
+                        <i class="fas fa-building mr-2"></i>
+                        <p class="hidden sm:block">Для рекламодателей</p>
+                        <p class="block sm:hidden">Реклама</p>
+                    </a>
+                </div>
+
+                <!-- Partner Registration -->
+                <div id="partner-content" class="tab-content active">
+                    <div class="glass-card rounded-3xl p-8 text-left">
+                        <div class="text-center mb-6">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-rocket text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">Стать партнёром</h3>
+                            <p class="text-gray-600 text-lg mt-2">Зарабатывайте с каждой привлечённой продажи</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-check-circle text-green-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Высокие комиссии</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-check-circle text-blue-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Выплаты каждые 2 недели</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-check-circle text-purple-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Детальная аналитика</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+                                <i class="fas fa-check-circle text-orange-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Поддержка 24/7</span>
+                            </div>
+                        </div>
+
+                        <button id="become_partner"
+                            class="btn w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white border-0 hover:from-blue-700 hover:to-blue-800 btn-shine text-lg py-4 h-auto">
+                            <i class="fas fa-rocket mr-2"></i>
+                            Стать партнёром бесплатно
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advertiser Registration -->
+                <div id="advertiser-content" class="tab-content">
+                    <div class="glass-card rounded-3xl p-8 text-left">
+                        <div class="text-center mb-6">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-chart-line text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">Рекламодателям</h3>
+                            <p class="text-gray-600 text-lg mt-2">Привлекайте клиентов через сеть из 50,000+ партнёров
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-check-circle text-green-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Качественный трафик</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
+                                <i class="fas fa-check-circle text-red-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Защита от фрода</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-check-circle text-blue-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Прозрачная отчётность</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-check-circle text-purple-500 text-lg"></i>
+                                <span class="font-medium text-gray-700">Персональный менеджер</span>
+                            </div>
+                        </div>
+
+                        <button id="become_advertiser"
+                            class="btn w-full bg-gradient-to-r from-green-600 to-green-700 text-white border-0 hover:from-green-700 hover:to-green-800 btn-shine text-lg py-4 h-auto">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            Стать рекламодателем
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 gap-8 max-w-lg mx-auto mt-16">
+                <div class="text-center">
+                    <div
+                        class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                        50K+</div>
+                    <div class="text-sm text-gray-600 font-medium">Партнёров</div>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+                        24/7</div>
+                    <div class="text-sm text-gray-600 font-medium">Поддержка</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

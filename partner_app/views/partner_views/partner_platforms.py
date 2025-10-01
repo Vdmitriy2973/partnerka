@@ -6,7 +6,7 @@ from django.db.models.functions import Coalesce
 
 from partner_app.forms import PlatformForm
 from partner_app.models import Platform,PartnerActivity
-from partner_app.utils import _paginate, _apply_search
+from utils import _paginate, _apply_search
 
 def partner_platforms(request):  
     """Площадки партнёра"""

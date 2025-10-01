@@ -4,8 +4,7 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 
 from partner_app.forms import PlatformForm
-from partner_app.models import Platform, PartnerActivity
-from partner_app.utils import send_email_via_mailru
+from partner_app.models import Platform
 
 @login_required
 @require_POST

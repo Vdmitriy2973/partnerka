@@ -33,3 +33,4 @@ staticfiles
 # Config files
 .env
 *.env
+.vscode

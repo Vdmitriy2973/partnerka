@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings 
 
 from partner_app.models import AdvertiserTransaction,AdvertiserActivity
-from partner_app.utils import send_email_via_mailru,send_email_via_mailru_with_attachment
+from utils import send_email_via_mailru,send_email_via_mailru_with_attachment
 
 @require_POST
 def proccess_adv_transaction(request,transaction_id):

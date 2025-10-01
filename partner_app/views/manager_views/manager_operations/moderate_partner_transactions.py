@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
 from partner_app.models import PartnerTransaction, PartnerActivity,User
-from partner_app.utils import send_email_via_mailru
+from utils import send_email_via_mailru
 
 @login_required
 @require_POST

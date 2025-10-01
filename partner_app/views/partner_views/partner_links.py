@@ -6,7 +6,7 @@ from django.db.models.functions import Coalesce
 
 
 from partner_app.models import PartnerLink,PartnerActivity
-from partner_app.utils import _paginate
+from utils import _paginate
 
 def partner_links(request):  
     """подключенные проекты партнёра"""

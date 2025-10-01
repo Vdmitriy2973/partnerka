@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from partner_app.utils import _paginate,_apply_search
+from utils import _paginate,_apply_search
 from partner_app.models import Project,ClickEvent,Conversion,AdvertiserActivity
 from partner_app.forms import ProjectForm,ProjectParamForm
 

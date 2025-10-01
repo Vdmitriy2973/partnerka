@@ -9,6 +9,8 @@ from django.core.validators import MinValueValidator
 from django.http import JsonResponse
 
 from partner_app.models import PartnerTransaction
+
+
 @login_required
 @require_POST
 def create_payout_request(request):

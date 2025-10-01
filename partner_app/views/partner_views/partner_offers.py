@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 
 from .common import _get_available_projects
-from partner_app.utils import _paginate
+from utils import _paginate
 from partner_app.models import PartnerActivity
 
 def partner_offers(request):  

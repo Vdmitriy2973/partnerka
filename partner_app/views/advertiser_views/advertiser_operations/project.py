@@ -8,8 +8,7 @@ from django.db.utils import IntegrityError
 from django.contrib import messages
 
 from partner_app.forms import ProjectForm
-from partner_app.models import Project, ProjectParam, AdvertiserActivity
-from partner_app.utils import send_email_via_mailru
+from partner_app.models import Project, ProjectParam
 
 
 @login_required

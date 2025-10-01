@@ -3,7 +3,7 @@ import json
 from django.shortcuts import render, redirect
 from django.db.models import Sum, Avg
 
-from partner_app.utils import _paginate
+from utils import _paginate
 from partner_app.models import Conversion,AdvertiserActivity
 
 def advertiser_sales(request):

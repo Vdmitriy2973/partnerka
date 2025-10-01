@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
-from partner_app.utils import _paginate
+from utils import _paginate
 
 def manager_users(request):  
     """Модерация пользователей"""

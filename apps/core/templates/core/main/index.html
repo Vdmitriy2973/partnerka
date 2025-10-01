@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+{% vite_asset 'apps/core/assets/js/main/index.js' %}
+{% endblock head_js_scripts %}
+
+{% block meta %}
+<meta name="description"
+    content="Партнёрская программа: заработок на привлечении клиентов. Статистика, уникальные ссылки. Для рекламодателей - качественный трафик." />
+<meta name="keywords"
+    content="партнёрская программа, партнёрка, партнерка для России с выплатами, партнёрская программа, linkoffer, партнерка с выводом от 300 рублей, партнерка с быстрыми выплатами, партнерка с низким порогом вывода">
+{% endblock meta %}
+{% block title %}LinkOffer - Партнёрская программа{% endblock title %}
+
+{% block header %}
+{% include "core/main/sections/header.html" %}
+{% endblock header %}
+
+{% block content %}
+<div id="index_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
+<!-- Hero Section -->
+{% include "core/main/sections/hero_section.html" %}
+
+<!-- Stats Section -->
+{% include "core/main/sections/stats_section.html" %}
+
+<!-- Features Section -->
+{% include "core/main/sections/features_section.html" %}
+
+<!-- Testimonials Section -->
+{% include "core/main/sections/testimonials_section.html" %}
+
+<!-- Contact Section -->
+{% include "core/main/sections/contact_section.html" %}
+
+{% endblock content %}

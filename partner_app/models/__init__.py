@@ -16,5 +16,3 @@ from .adv_transaction import AdvertiserTransaction
 from .advertiser_requisites import AdvertiserRequisites
 
 from .partner_payout_settings import PartnerPayoutSettings
-
-from .user_review import UserReview

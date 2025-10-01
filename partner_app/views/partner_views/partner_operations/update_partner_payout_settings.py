@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.db import transaction
 
 from partner_app.models import PartnerPayoutSettings
-from partner_app.utils import fetch_bank_data
+from utils import fetch_bank_data
 
 @login_required
 @require_POST

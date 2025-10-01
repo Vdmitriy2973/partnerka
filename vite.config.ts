@@ -6,6 +6,7 @@ export default defineConfig((mode) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   const INPUT_DIR = "./partner_app/assets";
+  const CORE_INPUT_DIR = "./apps/core/assets";
   const OUTPUT_DIR = "./static";
 
   return {
@@ -19,7 +20,7 @@ export default defineConfig((mode) => {
         input: {
 
           // index.html
-          home: join(INPUT_DIR, "/js/main/index.js"),
+          home: join(CORE_INPUT_DIR, "/js/main/index.js"),
 
           // Рекламодатель
           adv_dashboard: join(INPUT_DIR, "/js/dashboard/advertiser/dashboard/dashboard.js"),
@@ -33,7 +34,7 @@ export default defineConfig((mode) => {
           partner_dashboard: join(INPUT_DIR, "/js/dashboard/partner/dashboard/dashboard.js"),
           partner_offers: join(INPUT_DIR, "/js/dashboard/partner/offers/offers.js"),
           partner_connections: join(INPUT_DIR, "/js/dashboard/partner/connections/connections.js"),
-          partner_notifications: join(INPUT_DIR,"/js/dashboard/partner/notifications/notifications.js"),
+          partner_notifications: join(INPUT_DIR, "/js/dashboard/partner/notifications/notifications.js"),
           partner_platforms: join(INPUT_DIR, "/js/dashboard/partner/platforms/platforms.js"),
           partner_links: join(INPUT_DIR, "/js/dashboard/partner/links/links.js"),
           partner_payments: join(INPUT_DIR, "/js/dashboard/partner/payments/payments.js"),
