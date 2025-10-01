@@ -49,7 +49,8 @@ export default defineConfig((mode) => {
           manager_advertisers: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/advertisers/advertisers.js"),
 
           // Статические страницы
-          static_page: join(CORE_APP_INPUT_DIR, "/js/static-pages/static_page.js"),
+          static_page_core_app: join(CORE_APP_INPUT_DIR, "/js/static-pages/static_page.js"),
+          static_page_partner_app: join(PARTNER_APP_INPUT_DIR, "/js/static-pages/static_page.js"),
         },
       },
     },
