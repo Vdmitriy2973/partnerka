@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.db import models
 from django.core.validators import MinLengthValidator,MinValueValidator
 from django.core.exceptions import ValidationError
@@ -12,9 +13,9 @@ class Project(models.Model):
         BLOCKED = 'Заблокировано'
         
     advertiser = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='managed_projects',
+        related_name='+',
         verbose_name='Рекламодатель',
         limit_choices_to={'user_type': 'advertiser'},
         null=False,
@@ -22,10 +23,10 @@ class Project(models.Model):
     )
     
     partners = models.ManyToManyField(
-        'User',
+        settings.AUTH_USER_MODEL,
         through='ProjectPartner', 
         through_fields=('project', 'partner'),
-        related_name='participating_projects', 
+        related_name='+', 
         verbose_name="Партнёры проекта",
         limit_choices_to={'user_type': 'partner'},
         blank=True

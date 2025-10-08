@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 class ProjectPartner(models.Model):
@@ -8,16 +9,16 @@ class ProjectPartner(models.Model):
         BLOCKED = 'Заблокировано', 'Заблокировано'
 
     partner = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='project_memberships',
+        related_name='+',
         verbose_name='Партнёр'
     )
     
     advertiser = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="project_owner",
+        related_name="+",
         null=True,
         blank=True,
         verbose_name='Рекламодатель'

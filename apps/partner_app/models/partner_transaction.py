@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
@@ -17,8 +18,8 @@ class PartnerTransaction(models.Model):
         REJECTED = 'Отменено'
 
     partner = models.ForeignKey(
-        'User',
-        related_name='transactions',
+        settings.AUTH_USER_MODEL,
+        related_name='+',
         verbose_name='Получатель',
         limit_choices_to={'user_type': 'partner'},
         on_delete=models.CASCADE

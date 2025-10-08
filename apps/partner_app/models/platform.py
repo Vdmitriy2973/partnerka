@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import MinLengthValidator
 
@@ -17,9 +18,9 @@ class Platform(models.Model):
         BLOCKED = 'Заблокировано'
 
     partner = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='owned_platforms',
+        related_name='+',
         verbose_name='Партнёр',
         limit_choices_to={'user_type': 'partner'},
     )

@@ -1,6 +1,7 @@
 from datetime import timedelta
 import re 
 
+from django.conf import settings
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -131,9 +132,9 @@ class User(AbstractUser):
 
 class PartnerProfile(models.Model):
     user = models.OneToOneField(
-        'User', 
+        settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE,
-        related_name='partner_profile',
+        related_name='+',
         verbose_name='Пользователь'
     )
     balance = models.DecimalField(
@@ -152,7 +153,7 @@ class PartnerProfile(models.Model):
         return f"Профиль: {self.user.username}" if self.user else "Непривязанный профиль"
 
 class AdvertiserProfile(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='+')
     api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None,verbose_name="API-ключ")
     balance = models.DecimalField (
         verbose_name="Мин. выплата",
@@ -173,7 +174,7 @@ class AdvertiserProfile(models.Model):
 
 
 class ManagerProfile(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='+')
     
     class Meta:
         verbose_name = 'Менеджер'

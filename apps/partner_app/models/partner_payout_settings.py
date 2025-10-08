@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 class PartnerPayoutSettings(models.Model):
@@ -9,9 +10,9 @@ class PartnerPayoutSettings(models.Model):
     ]
 
     partner = models.OneToOneField(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='payout_settings',
+        related_name='+',
         limit_choices_to={'user_type': 'partner'},
         verbose_name='Партнёр'
     )

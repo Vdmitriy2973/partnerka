@@ -44,7 +44,6 @@ INSTALLED_APPS += ['rest_framework',
     
 # My apps
 INSTALLED_APPS += [
-    'apps.partner_app',
     'apps.core',
     'apps.users',
     'apps.partners',
@@ -52,6 +51,7 @@ INSTALLED_APPS += [
     'apps.managers',
     'apps.partnerships',
     'apps.tracking',
+    'apps.partner_app',
 ]
 
 REST_FRAMEWORK = {

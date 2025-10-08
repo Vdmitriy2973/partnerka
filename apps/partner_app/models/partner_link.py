@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import URLValidator
 
@@ -9,9 +10,9 @@ class PartnerLink(models.Model):
 
     # Основные поля
     partner = models.ForeignKey(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='partner_links',
+        related_name='+',
         verbose_name='Партнёр'
     )
     project = models.ForeignKey(
