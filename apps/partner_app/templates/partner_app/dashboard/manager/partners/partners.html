@@ -105,11 +105,11 @@
                                         data-transaction-partner-email="{{ transaction.partner.email }}"
                                         data-transaction-amount="{{ transaction.amount }}"
                                         data-transaction-method="{{ transaction.payment_method }}"
-                                        {% if transaction.payment_method=='card' %}
+                                        {% if transaction.payment_method == 'card' %}
                                         data-transaction-card-number="{{ transaction.partner.payout_settings.card_number}}"
                                         data-transaction-card-owner="{{ transaction.partner.payout_settings.cardholder_name }}"
                                         data-transaction-bank-name="{{ transaction.partner.payout_settings.bank_name }}"
-                                        {% elif transaction.payment_method=="bank_transfer" %}
+                                        {% elif transaction.payment_method == "bank_transfer" %}
                                         data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_number }}"
                                         data-transaction-bank-account-holder-name="{{ transaction.partner.payout_settings.bank_account_holder_name }}"
                                         data-transaction-bank-bic="{{ transaction.partner.payout_settings.bank_account_bic }}"
@@ -125,11 +125,11 @@
                                         data-transaction-partner-email="{{ transaction.partner.email }}"
                                         data-transaction-amount="{{ transaction.amount }}"
                                         data-transaction-method="{{ transaction.payment_method }}"
-                                        {% if transaction.payment_method=='card' %}
+                                        {% if transaction.payment_method == 'card' %}
                                         data-transaction-card-number="{{ transaction.partner.payout_settings.card_number }}"
                                         data-transaction-card-owner="{{ transaction.partner.payout_settings.cardholder_name }}"
                                         data-transaction-bank-name="{{ transaction.partner.payout_settings.bank_name }}"
-                                        {% elif transaction.payment_method=="bank_transfer" %}
+                                        {% elif transaction.payment_method == "bank_transfer" %}
                                         data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_number }}"
                                         data-transaction-bank-account-holder-name="{{ transaction.partner.payout_settings.bank_account_holder_name }}"
                                         data-transaction-bank-bic="{{ transaction.partner.payout_settings.bank_account_bic }}"
@@ -145,11 +145,11 @@
                                         data-transaction-partner-email="{{ transaction.partner.email }}"
                                         data-transaction-amount="{{ transaction.amount }}"
                                         data-transaction-method="{{ transaction.payment_method }}"
-                                        {% if transaction.payment_method=='card' %}
+                                        {% if transaction.payment_method == 'card' %}
                                         data-transaction-card-number="{{ transaction.partner.payout_settings.card_number|truncatechars:6 }}"
                                         data-transaction-card-owner="{{ transaction.partner.payout_settings.cardholder_name }}"
                                         data-transaction-bank-name="{{ transaction.partner.payout_settings.bank_name }}"
-                                        {% elif transaction.payment_method=="bank_transfer" %}
+                                        {% elif transaction.payment_method == "bank_transfer" %}
                                         data-transaction-bank-account-number="{{ transaction.partner.payout_settings.bank_account_number }}"
                                         data-transaction-bank-account-holder-name="{{ transaction.partner.payout_settings.bank_account_holder_name }}"
                                         data-transaction-bank-bic="{{ transaction.partner.payout_settings.bank_account_bic }}"
