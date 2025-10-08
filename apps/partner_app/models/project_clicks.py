@@ -3,7 +3,7 @@ from django.utils import timezone
 
 class ClickEvent(models.Model):
     project = models.ForeignKey(
-        'Project',
+        'partner_app.Project',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -11,7 +11,7 @@ class ClickEvent(models.Model):
         related_name='clicks'
     )
     partner = models.ForeignKey(
-        'PartnerProfile',
+        'partner_app.PartnerProfile',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -20,7 +20,7 @@ class ClickEvent(models.Model):
         help_text="Необязательно, если клик не от партнёра"
     )
     advertiser = models.ForeignKey(
-        'AdvertiserProfile',
+        'partner_app.AdvertiserProfile',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -28,7 +28,7 @@ class ClickEvent(models.Model):
         related_name='clicks'
     )
     platform =  models.ForeignKey(
-        'Platform',
+        'partner_app.Platform',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -37,7 +37,7 @@ class ClickEvent(models.Model):
         help_text="Необязательно, если клик не с площадки"
     )
     partner_link = models.ForeignKey(
-        'PartnerLink',
+        'partner_app.PartnerLink',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -45,7 +45,7 @@ class ClickEvent(models.Model):
         verbose_name="партнёрская ссылка",
     )
     partnership = models.ForeignKey(
-        'ProjectPartner',
+        'partner_app.ProjectPartner',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

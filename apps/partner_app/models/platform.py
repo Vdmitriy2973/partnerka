@@ -18,7 +18,7 @@ class Platform(models.Model):
         BLOCKED = 'Заблокировано'
 
     partner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        'partner_app.User',
         on_delete=models.CASCADE,
         related_name='+',
         verbose_name='Партнёр',

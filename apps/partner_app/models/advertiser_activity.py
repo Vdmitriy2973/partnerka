@@ -11,7 +11,7 @@ class AdvertiserActivity(models.Model):
         SYSTEM = 'system', _('Системное уведомление')
 
     advertiser = models.ForeignKey(
-        'advertisers.AdvertiserProfile',
+        'partner_app.AdvertiserProfile',
         on_delete=models.CASCADE,
         related_name='+',
         verbose_name=_('Партнёр')

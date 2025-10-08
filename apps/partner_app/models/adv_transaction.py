@@ -22,7 +22,7 @@ class AdvertiserTransaction(models.Model):
         REJECTED = 'Отменено'
 
     advertiser = models.ForeignKey(
-        'advertisers.AdvertiserProfile',
+        'partner_app.AdvertiserProfile',
         related_name='+',
         verbose_name='Получатель',
         on_delete=models.CASCADE

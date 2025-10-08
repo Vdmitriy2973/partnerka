@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-{% vite_asset 'partner_app/assets/js/dashboard/advertiser/requisites/requisites.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/advertiser/requisites/requisites.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Юр. данные{% endblock title %}
@@ -79,7 +79,7 @@
                                 <span class="label-text">ФИО ответственного лица</span>
                             </label>
                             <input name="responsible_person" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.responsible_person }}" required />
+                                   value="{{ request.user.advertiserrequisites.responsible_person }}" required />
                         </div>
 
                         <!-- Полное наименование -->
@@ -88,7 +88,7 @@
                                 <span class="label-text">Полное наименование организации</span>
                             </label>
                             <input name="full_name" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.organization_name }}" required />
+                                   value="{{ request.user.advertiserrequisites.organization_name }}" required />
                         </div>
 
                         <!-- Юр. адрес -->
@@ -97,7 +97,7 @@
                                 <span class="label-text">Юридический адрес</span>
                             </label>
                             <textarea name="legal_address" class="textarea textarea-bordered w-full"
-                                placeholder="Почтовый индекс, город, улица, дом">{{ request.user.advertiserrequisites.legal_address|default:'' }}</textarea>
+                                      placeholder="Почтовый индекс, город, улица, дом">{{ request.user.advertiserrequisites.legal_address|default:'' }}</textarea>
                             <label class="label">
                                 <span class="label-text-alt">Обязательно для ООО, АО</span>
                             </label>
@@ -110,14 +110,14 @@
                                     <span class="label-text">Телефон</span>
                                 </label>
                                 <input name="phone" type="tel" class="input input-bordered w-full"
-                                    value="{{ request.user.advertiserrequisites.phone|default:'' }}" required />
+                                       value="{{ request.user.advertiserrequisites.phone|default:'' }}" required />
                             </div>
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Email</span>
                                 </label>
                                 <input name="email" type="email" class="input input-bordered w-full"
-                                    value="{{ request.user.advertiserrequisites.email|default:'' }}" required />
+                                       value="{{ request.user.advertiserrequisites.email|default:'' }}" required />
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                                 <span class="label-text">ОГРН / ОГРНИП</span>
                             </label>
                             <input name="ogrn" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.ogrn }}" required />
+                                   value="{{ request.user.advertiserrequisites.ogrn }}" required />
                         </div>
 
                         <!-- ИНН -->
@@ -146,7 +146,7 @@
                                 <span class="label-text">ИНН</span>
                             </label>
                             <input name="inn" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.inn }}" required />
+                                   value="{{ request.user.advertiserrequisites.inn }}" required />
                         </div>
 
                         <!-- Банковские реквизиты -->
@@ -155,7 +155,7 @@
                                 <span class="label-text">Расчётный счёт</span>
                             </label>
                             <input name="account_number" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.checking_account }}" required />
+                                   value="{{ request.user.advertiserrequisites.checking_account }}" required />
                         </div>
 
                         <div class="form-control">
@@ -163,7 +163,7 @@
                                 <span class="label-text">Корреспондентский счёт</span>
                             </label>
                             <input name="corr_account" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.correspondent_account }}" required />
+                                   value="{{ request.user.advertiserrequisites.correspondent_account }}" required />
                         </div>
 
                         <div class="form-control">
@@ -171,7 +171,7 @@
                                 <span class="label-text">БИК банка</span>
                             </label>
                             <input name="bik" type="text" class="input input-bordered w-full"
-                                value="{{ request.user.advertiserrequisites.bik }}" required />
+                                   value="{{ request.user.advertiserrequisites.bik }}" required />
                         </div>
                     </div>
                 </div>

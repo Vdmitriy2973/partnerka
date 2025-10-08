@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-{% vite_asset 'partner_app/assets/js/dashboard/advertiser/projects/projects.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/advertiser/projects/projects.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Проекты{% endblock title %}
@@ -48,7 +48,7 @@
                     <!-- Поле поиска -->
                     <div class="flex-grow">
                         <input name="projects_search" class="input input-bordered w-full"
-                            placeholder="Поиск проектов..." value="{{ projects_search_query }}">
+                               placeholder="Поиск проектов..." value="{{ projects_search_query }}">
                     </div>
 
                     <!-- Группа кнопок формы -->
@@ -61,7 +61,7 @@
 
                         <!-- Кнопка сброса -->
                         <button type="reset" class="btn flex-1 sm:flex-none min-w-[100px]"
-                            onclick="window.location.href='{{ request.path }}'">
+                                onclick="window.location.href='{{ request.path }}'">
                             <i class="fas fa-times sm:mr-2"></i>
                             <span class="hidden sm:inline">Сбросить</span>
                         </button>
@@ -123,7 +123,7 @@
                     <div class="flex justify-between items-start mb-4">
                         <h2 class="card-title text-lg font-bold"><a href="{% url 'project' project.id %}">{{ project.name }}</a></h2>
                         <div
-                            class="badge {% if project.is_active %}badge-success{% else %}badge-error{% endif %} gap-2">
+                             class="badge {% if project.is_active %}badge-success{% else %}badge-error{% endif %} gap-2">
                             <i class="fas {% if project.is_active %}fa-check{% else %}fa-times{% endif %}"></i>
                             {% if project.is_active %}Активен{% else %}Неактивен{% endif %}
                         </div>
@@ -144,7 +144,7 @@
                             <span>
                                 {% if "http" in project.url %}
                                 <a href="{{ project.url }}" class="text-blue-600 hover:underline"
-                                    target="_blank">перейти</a>
+                                   target="_blank">перейти</a>
                                 {% else %}
                                 <span class="text-blue-600">{{ project.url }}</span>
                                 {% endif %}
@@ -233,12 +233,12 @@
         <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
             {% if projects.has_previous %}
             <a href="?projects_page=1"
-                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                aria-label="Первая страница">
+               class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+               aria-label="Первая страница">
                 <i class="fas fa-angle-double-left"></i>
             </a>
             <a href="?projects_page={{ projects.previous_page_number }}"
-                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+               class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                 <span class="hidden sm:inline">Предыдущая</span>
                 <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
             </a>
@@ -247,20 +247,20 @@
             <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
                 <span class="hidden sm:inline">Страница</span>
                 <input type="number" min="1" max="{{ projects.paginator.num_pages }}" value="{{ projects.number }}"
-                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                    onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
+                       class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                       onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
                 <span>из {{ projects.paginator.num_pages }}</span>
             </div>
 
             {% if projects.has_next %}
             <a href="?projects_page={{ projects.next_page_number }}"
-                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+               class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                 <span class="hidden sm:inline">Следующая</span>
                 <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
             </a>
             <a href="?projects_page={{ projects.paginator.num_pages }}"
-                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                aria-label="Последняя страница">
+               class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+               aria-label="Последняя страница">
                 <i class="fas fa-angle-double-right"></i>
             </a>
             {% endif %}

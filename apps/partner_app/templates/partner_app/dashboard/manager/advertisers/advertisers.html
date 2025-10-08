@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-{% vite_asset 'partner_app/assets/js/dashboard/manager/advertisers/advertisers.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/manager/advertisers/advertisers.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Пополнения{% endblock title %}
@@ -51,7 +51,7 @@
                             <div class="flex items-center gap-3">
                                 <div>
                                     <div class="font-bold"><a
-                                            href="{% url 'advertiser' transaction.advertiser.user.id %}">{{
+                                           href="{% url 'advertiser' transaction.advertiser.user.id %}">{{
                                             transaction.advertiser.user.get_ifo }}</a></div>
                                     <div class="adv_transaction_email text-sm opacity-50">{{
                                         transaction.advertiser.user.email }}</div>
@@ -80,7 +80,7 @@
                         </td>
                         <td>
                             <span
-                                class="badge badge-{% if transaction.status == 'В обработке' %}warning{% elif transaction.status == 'Обработано'%}info{% else %}success{% endif %}">
+                                  class="badge badge-{% if transaction.status == 'В обработке' %}warning{% elif transaction.status == 'Обработано'%}info{% else %}success{% endif %}">
                                 {{ transaction.status }}
                             </span>
                         </td>
@@ -88,40 +88,40 @@
                             <div class="flex gap-2">
                                 {% if transaction.status == 'Обработано' %}
                                 <button class="approve_adv_transaction btn btn-sm btn-success approve-adv-tr-btn"
-                                    data-adv-transaction-id="{{ transaction.id }}"
-                                    data-adv-id="{{ transaction.advertiser.user.id }}"
-                                    data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
-                                    data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
-                                    data-adv-transaction-amount="{{ transaction.amount }}"
-                                    data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                        data-adv-transaction-id="{{ transaction.id }}"
+                                        data-adv-id="{{ transaction.advertiser.user.id }}"
+                                        data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                        data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                        data-adv-transaction-amount="{{ transaction.amount }}"
+                                        data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
                                     <i class="fas fa-check mr-1"></i> Одобрить
                                 </button>
                                 <button class="reject_adv_transaction btn btn-sm btn-error reject-adv-tr-btn"
-                                    data-adv-transaction-id="{{ transaction.id }}"
-                                    data-adv-id="{{ transaction.advertiser.user.id }}"
-                                    data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
-                                    data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
-                                    data-adv-transaction-amount="{{ transaction.amount }}"
-                                    data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                        data-adv-transaction-id="{{ transaction.id }}"
+                                        data-adv-id="{{ transaction.advertiser.user.id }}"
+                                        data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                        data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                        data-adv-transaction-amount="{{ transaction.amount }}"
+                                        data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
                                     <i class="fas fa-times mr-1"></i> Отклонить
                                 </button>
                                 {% elif transaction.status == 'В обработке' %}
                                 <button class="btn btn-sm btn-success send_adv_details"
-                                    data-adv-transaction-id="{{ transaction.id }}"
-                                    data-adv-id="{{ transaction.advertiser.user.id }}"
-                                    data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
-                                    data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
-                                    data-adv-transaction-amount="{{ transaction.amount }}"
-                                    data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                        data-adv-transaction-id="{{ transaction.id }}"
+                                        data-adv-id="{{ transaction.advertiser.user.id }}"
+                                        data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                        data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                        data-adv-transaction-amount="{{ transaction.amount }}"
+                                        data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
                                     <i class="fas fa-check mr-1"></i> Отправить реквизиты
                                 </button>
                                 <button class="reject_adv_transaction btn btn-sm btn-error reject-adv-tr-btn"
-                                    data-adv-transaction-id="{{ transaction.id }}"
-                                    data-adv-id="{{ transaction.advertiser.user.id }}"
-                                    data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
-                                    data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
-                                    data-adv-transaction-amount="{{ transaction.amount }}"
-                                    data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
+                                        data-adv-transaction-id="{{ transaction.id }}"
+                                        data-adv-id="{{ transaction.advertiser.user.id }}"
+                                        data-adv-transaction-ifo="{{ transaction.advertiser.user.get_ifo }}"
+                                        data-adv-transaction-email="{{ transaction.advertiser.user.email }}"
+                                        data-adv-transaction-amount="{{ transaction.amount }}"
+                                        data-adv-transaction-amount-with-commission="{{ transaction.get_amount_with_commission }}">
                                     <i class="fas fa-times mr-1"></i> Отклонить
                                 </button>
                                 {% endif %}
@@ -145,12 +145,12 @@
             <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
                 {% if transactions.has_previous %}
                 <a href="?transactions_page=1"
-                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                    aria-label="Первая страница">
+                   class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                   aria-label="Первая страница">
                     <i class="fas fa-angle-double-left"></i>
                 </a>
                 <a href="?transactions_page={{ transactions.previous_page_number }}"
-                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                   class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                     <span class="hidden sm:inline">Предыдущая</span>
                     <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
                 </a>
@@ -159,22 +159,22 @@
                 <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
                     <span class="hidden sm:inline">Страница</span>
                     <input type="number" min="1" max="{{ transactions.paginator.num_pages }}"
-                        value="{{ transactions.number }}"
-                        class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                        onchange="window.location.href = '?connected_projects_page=' + this.value"
-                        aria-label="Номер страницы">
+                           value="{{ transactions.number }}"
+                           class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                           onchange="window.location.href = '?connected_projects_page=' + this.value"
+                           aria-label="Номер страницы">
                     <span>из {{ transactions.paginator.num_pages }}</span>
                 </div>
 
                 {% if transactions.has_next %}
                 <a href="?transactions_page={{ transactions.next_page_number }}"
-                    class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                   class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                     <span class="hidden sm:inline">Следующая</span>
                     <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
                 </a>
                 <a href="?transactions_page={{ transactions.paginator.num_pages }}"
-                    class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                    aria-label="Последняя страница">
+                   class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                   aria-label="Последняя страница">
                     <i class="fas fa-angle-double-right"></i>
                 </a>
                 {% endif %}

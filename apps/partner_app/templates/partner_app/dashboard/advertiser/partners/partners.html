@@ -4,7 +4,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-{% vite_asset 'partner_app/assets/js/dashboard/advertiser/partners/partners.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/advertiser/partners/partners.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Партнёры{% endblock title %}
@@ -30,7 +30,7 @@
                         <!-- Поле поиска - занимает всю доступную ширину -->
                         <div class="flex-grow">
                             <input name="partners_search" class="input input-bordered w-full"
-                                placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
+                                   placeholder="Поиск партнёров..." value="{{ partners_search_query }}">
                         </div>
 
                         <!-- Группа кнопок - выравнивание по правому краю на десктопе -->
@@ -43,7 +43,7 @@
 
                             <!-- Кнопка сброса с адаптивным текстом -->
                             <button type="reset" class="btn flex items-center"
-                                onclick="window.location.href='{{ request.path }}'">
+                                    onclick="window.location.href='{{ request.path }}'">
                                 <i class="fas fa-times sm:mr-2"></i>
                                 <span class="hidden sm:inline">Сбросить</span>
                             </button>
@@ -114,7 +114,7 @@
                                             class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-48 sm:w-52">
                                             <li>
                                                 <a href="{% url 'partner' partner.id %}" target="_blank"
-                                                    class="text-xs sm:text-sm">
+                                                   class="text-xs sm:text-sm">
                                                     <i class="fa-solid fa-circle-user"></i>Просмотр
                                                 </a>
                                             </li>
@@ -123,7 +123,7 @@
                                             </li>
                                             <li>
                                                 <a class="stop_partnership_with_partner text-xs sm:text-sm text-error"
-                                                    data-partner-id="{{ partner.id }}">
+                                                   data-partner-id="{{ partner.id }}">
                                                     <i class="fas fa-trash-alt mr-1 sm:mr-2"></i>Удалить
                                                 </a>
                                             </li>
@@ -136,7 +136,7 @@
                     {% empty %}
                     <div class="col-span-full text-center py-10">
                         <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16"
-                            id="sales-empty-state">
+                             id="sales-empty-state">
                             <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
                                 <i class="fas fa-sad-cry"></i>
                             </div>
@@ -194,7 +194,7 @@
                                                 </li>
                                                 <li>
                                                     <a class="stop_partnership_with_partner text-xs sm:text-sm text-error"
-                                                        data-partner-id="{{ partner.id }}">
+                                                       data-partner-id="{{ partner.id }}">
                                                         <i class="fas fa-trash-alt mr-1 sm:mr-2"></i>Удалить
                                                     </a>
                                                 </li>
@@ -208,7 +208,7 @@
                         {% if not partners %}
                         <div class="col-span-full text-center py-10">
                             <div class="flex flex-col justify-center items-center text-center py-8 sm:py-16"
-                                id="sales-empty-state">
+                                 id="sales-empty-state">
                                 <div class="text-gray-300 text-4xl sm:text-6xl mb-4 sm:mb-6">
                                     <i class="fas fa-sad-cry"></i>
                                 </div>
@@ -224,12 +224,12 @@
                 <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
                     {% if partners.has_previous %}
                     <a href="?partners_page=1"
-                        class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                        aria-label="Первая страница">
+                       class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                       aria-label="Первая страница">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
                     <a href="?partners_page={{ partners.previous_page_number }}"
-                        class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                       class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                         <span class="hidden sm:inline">Предыдущая</span>
                         <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
                     </a>
@@ -238,22 +238,22 @@
                     <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
                         <span class="hidden sm:inline">Страница</span>
                         <input type="number" min="1" max="{{ partners.paginator.num_pages }}"
-                            value="{{ partners.number }}"
-                            class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                            onchange="window.location.href = '?partners_page=' + this.value"
-                            aria-label="Номер страницы">
+                               value="{{ partners.number }}"
+                               class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                               onchange="window.location.href = '?partners_page=' + this.value"
+                               aria-label="Номер страницы">
                         <span>из {{ partners.paginator.num_pages }}</span>
                     </div>
 
                     {% if partners.has_next %}
                     <a href="?partners_page={{ partners.next_page_number }}"
-                        class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                       class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                         <span class="hidden sm:inline">Следующая</span>
                         <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
                     </a>
                     <a href="?partners_page={{ partners.paginator.num_pages }}"
-                        class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                        aria-label="Последняя страница">
+                       class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                       aria-label="Последняя страница">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                     {% endif %}

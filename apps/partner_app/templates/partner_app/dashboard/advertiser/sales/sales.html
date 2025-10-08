@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/advertiser/sales/sales.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/advertiser/sales/sales.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Продажи{% endblock title %}
@@ -30,9 +30,9 @@
                     <div class="stat p-3 sm:p-4">
                         <div class="stat-figure text-primary hidden sm:block">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                class="inline-block w-6 h-6 sm:w-8 sm:h-8 stroke-current">
+                                 class="inline-block w-6 h-6 sm:w-8 sm:h-8 stroke-current">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                             </svg>
                         </div>
                         <div class="stat-title text-xs sm:text-sm">Всего конверсий</div>
@@ -113,7 +113,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <!-- График конверсий -->
             <div
-                class="lg:col-span-2 bg-base-100 p-4 sm:p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
+                 class="lg:col-span-2 bg-base-100 p-4 sm:p-6 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
                     <h2 class="text-lg sm:text-xl font-semibold">Динамика конверсий</h2>
                     <!-- <div class="tabs tabs-boxed tabs-sm sm:tabs-md">
@@ -128,7 +128,7 @@
                     <canvas id="conversionsChart"></canvas>
                     {% else %}
                     <div
-                        class="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center text-gray-400 text-sm sm:text-base">
+                         class="w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg flex items-center justify-center text-gray-400 text-sm sm:text-base">
                         <p>График конверсий</p>
                     </div>
                     {% endif %}
@@ -158,7 +158,7 @@
 
         <!-- Таблица продаж - Адаптивная версия -->
         <div
-            class="bg-base-100 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md mb-6 sm:mb-8">
+             class="bg-base-100 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md mb-6 sm:mb-8">
             <!-- Десктопная версия таблицы -->
             <div class="hidden sm:block overflow-x-auto">
                 <table class="table">
@@ -217,7 +217,7 @@
                             <div>
                                 <h3 class="card-title text-sm font-bold">#{{ conversion.id }}</h3>
                                 <a {% if conversion.project %}href="{% url 'project' conversion.project.id %}" {% endif %}>
-                                <p class="text-xs font-bold">{% if conversion.project %}{{ conversion.project.name }}{% else %}Удалён{% endif %}</p>
+                                    <p class="text-xs font-bold">{% if conversion.project %}{{ conversion.project.name }}{% else %}Удалён{% endif %}</p>
                                 </a>
                             </div>
                         </div>
@@ -242,12 +242,12 @@
         <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
             {% if conversions.has_previous %}
             <a href="?conversions_page=1"
-                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                aria-label="Первая страница">
+               class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+               aria-label="Первая страница">
                 <i class="fas fa-angle-double-left"></i>
             </a>
             <a href="?projects_page={{ conversions.previous_page_number }}"
-                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+               class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                 <span class="hidden sm:inline">Предыдущая</span>
                 <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
             </a>
@@ -256,20 +256,20 @@
             <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
                 <span class="hidden sm:inline">Страница</span>
                 <input type="number" min="1" max="{{ conversions.paginator.num_pages }}" value="{{ conversions.number }}"
-                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                    onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
+                       class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                       onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
                 <span>из {{ conversions.paginator.num_pages }}</span>
             </div>
 
             {% if conversions.has_next %}
             <a href="?conversions_page={{ conversions.next_page_number }}"
-                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+               class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                 <span class="hidden sm:inline">Следующая</span>
                 <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
             </a>
             <a href="?conversions_page={{ conversions.paginator.num_pages }}"
-                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-                aria-label="Последняя страница">
+               class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+               aria-label="Последняя страница">
                 <i class="fas fa-angle-double-right"></i>
             </a>
             {% endif %}
@@ -278,7 +278,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Добавляем кастомные стили для анимации
         const style = document.createElement('style');
         style.textContent = `
@@ -310,11 +310,11 @@
 
         // Обрабатываем все сообщения
         const alertMessages = document.querySelectorAll('.alert-message');
-        
+
         alertMessages.forEach((element, index) => {
             // Добавляем небольшую задержку для каждого следующего сообщения
             const delay = 5000 + (index * 200);
-            
+
             setTimeout(() => {
                 // Добавляем классы для анимации ухода влево
                 element.classList.add(
@@ -324,7 +324,7 @@
                     'duration-800',
                     'ease-in-out'
                 );
-                
+
                 // Удаляем элемент после завершения анимации
                 setTimeout(() => {
                     if (element.parentNode) {

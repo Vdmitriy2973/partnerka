@@ -10,7 +10,7 @@ class PartnerPayoutSettings(models.Model):
     ]
 
     partner = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        'partner_app.User',
         on_delete=models.CASCADE,
         related_name='+',
         limit_choices_to={'user_type': 'partner'},

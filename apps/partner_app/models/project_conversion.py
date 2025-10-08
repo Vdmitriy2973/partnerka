@@ -2,35 +2,35 @@ from django.db import models
 
 class Conversion(models.Model):
     project = models.ForeignKey(
-        'Project',
+        'partner_app.Project',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='conversions'
     )
     advertiser = models.ForeignKey(
-        'AdvertiserProfile',
+        'partner_app.AdvertiserProfile',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='conversions'
     )
     partner = models.ForeignKey(
-        'PartnerProfile',
+        'partner_app.PartnerProfile',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='conversions'
     )
     partner_link = models.ForeignKey(
-        'PartnerLink',
+        'partner_app.PartnerLink',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='conversions'
     )
     platform = models.ForeignKey(
-        'Platform',
+        'partner_app.Platform',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -38,7 +38,7 @@ class Conversion(models.Model):
     )
     
     partnership = models.ForeignKey(
-        'ProjectPartner',
+        'partner_app.ProjectPartner',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

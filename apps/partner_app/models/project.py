@@ -13,7 +13,7 @@ class Project(models.Model):
         BLOCKED = 'Заблокировано'
         
     advertiser = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        'partner_app.User',
         on_delete=models.CASCADE,
         related_name='+',
         verbose_name='Рекламодатель',
@@ -23,7 +23,7 @@ class Project(models.Model):
     )
     
     partners = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        'partner_app.User',
         through='ProjectPartner', 
         through_fields=('project', 'partner'),
         related_name='+', 

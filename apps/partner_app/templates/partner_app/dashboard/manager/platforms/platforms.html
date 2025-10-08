@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/manager/platforms/platforms.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/manager/platforms/platforms.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Платформы партнёров{% endblock title %}
@@ -18,54 +18,54 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-6 max-w-7xl">
-<div id="platforms">
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold">Модерация</h1>
-        <p class="text-base-content/60">Модерация площадок</p>
-    </div>
+    <div id="platforms">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">Модерация</h1>
+            <p class="text-base-content/60">Модерация площадок</p>
+        </div>
 
-    <div class="flex justify-between items-center mb-6">
-        <form method="get" action="" class="join w-full">
-            <div>
+        <div class="flex justify-between items-center mb-6">
+            <form method="get" action="" class="join w-full">
                 <div>
-                    <input name="platforms_search" class="input input-bordered join-item"
-                        placeholder="Поиск платформ..." value="{{ platforms_search_q }}">
+                    <div>
+                        <input name="platforms_search" class="input input-bordered join-item"
+                               placeholder="Поиск платформ..." value="{{ platforms_search_q }}">
+                    </div>
                 </div>
-            </div>
-            <div class="indicator">
-                <button type="submit" class="btn join-item btn-primary">
-                    <i class="fas fa-search mr-2"></i> Найти
+                <div class="indicator">
+                    <button type="submit" class="btn join-item btn-primary">
+                        <i class="fas fa-search mr-2"></i> Найти
+                    </button>
+                </div>
+                <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
+                    <i class="fas fa-times mr-2"></i> Сбросить
                 </button>
-            </div>
-            <button type="reset" class="btn join-item" onclick="window.location.href='{{ request.path }}'">
-                <i class="fas fa-times mr-2"></i> Сбросить
-            </button>
-        </form>
-    </div>
+            </form>
+        </div>
 
-    <!-- Уведомления -->
-    {% if messages %}
+        <!-- Уведомления -->
+        {% if messages %}
         <div class="mt-4">
             {% for message in messages %}
-                {% if "approve_success" in message.extra_tags %}
-                <div class="alert-message alert alert-success mb-4">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% elif "reject_success" in message.extra_tags %}
-                <div class="alert-message alert alert-success mb-4">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <b>{{ message }}</b>
-                </div>
-                {% endif %}
+            {% if "approve_success" in message.extra_tags %}
+            <div class="alert-message alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% elif "reject_success" in message.extra_tags %}
+            <div class="alert-message alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% endif %}
             {% endfor %}
         </div>
-    {% endif %}
+        {% endif %}
 
-    <div class="grid grid-cols-1 gap-6">
-        {% for platform in platforms %}
+        <div class="grid grid-cols-1 gap-6">
+            {% for platform in platforms %}
             <div
-                class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                 class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div class="card-body">
                     <div class="flex justify-between items-center gap-2 mb-2">
                         <div>
@@ -107,102 +107,102 @@
                     </div>
                     <div class="card-actions justify-end">
                         <button type="submit" class="approve_platform btn btn-success"
-                            data-details="platform" 
-                            data-action-type="approve"
-                            data-id="{{ platform.id }}"
-                            data-name="{{ platform.name }}" 
-                            data-status="{{ platform.status }}"
-                            data-owner="{{ platform.partner.get_full_name }}"
-                            data-platform-type="{{ platform.get_platform_type_display }}"
-                            data-email="{{ platform.partner.email }} "
-                            data-description="{{ platform.description }}">
-                                <i class="fas fa-check mr-2"></i> Одобрить
+                                data-details="platform"
+                                data-action-type="approve"
+                                data-id="{{ platform.id }}"
+                                data-name="{{ platform.name }}"
+                                data-status="{{ platform.status }}"
+                                data-owner="{{ platform.partner.get_full_name }}"
+                                data-platform-type="{{ platform.get_platform_type_display }}"
+                                data-email="{{ platform.partner.email }} "
+                                data-description="{{ platform.description }}">
+                            <i class="fas fa-check mr-2"></i> Одобрить
                         </button>
                         <button type="submit" class="reject_platform btn btn-error"
-                            data-details="platform" 
-                            data-action-type="reject"
-                            data-id="{{ platform.id }}"
-                            data-name="{{ platform.name }}" 
-                            data-status="{{ platform.status }}"
-                            data-owner="{{ platform.partner.get_full_name }}"
-                            data-platform-type="{{ platform.get_platform_type_display }}"
-                            data-email="{{ platform.partner.email }} "
-                            data-description="{{ platform.description }}">
-                                <i class="fas fa-times mr-2"></i> Отклонить
+                                data-details="platform"
+                                data-action-type="reject"
+                                data-id="{{ platform.id }}"
+                                data-name="{{ platform.name }}"
+                                data-status="{{ platform.status }}"
+                                data-owner="{{ platform.partner.get_full_name }}"
+                                data-platform-type="{{ platform.get_platform_type_display }}"
+                                data-email="{{ platform.partner.email }} "
+                                data-description="{{ platform.description }}">
+                            <i class="fas fa-times mr-2"></i> Отклонить
                         </button>
 
-                        <button class="show_platform_details btn btn-outline" 
-                            data-details="platform" 
-                            data-id="{{ platform.id }}"
-                            data-name="{{ platform.name }}" 
-                            data-status="{{ platform.status }}"
-                            data-owner="{{ platform.partner.get_full_name }}"
-                            data-platform-type="{{ platform.get_platform_type_display }}"
-                            data-email="{{ platform.partner.email }} "
-                            data-description="{{ platform.description }}">
+                        <button class="show_platform_details btn btn-outline"
+                                data-details="platform"
+                                data-id="{{ platform.id }}"
+                                data-name="{{ platform.name }}"
+                                data-status="{{ platform.status }}"
+                                data-owner="{{ platform.partner.get_full_name }}"
+                                data-platform-type="{{ platform.get_platform_type_display }}"
+                                data-email="{{ platform.partner.email }} "
+                                data-description="{{ platform.description }}">
                             <i class="fas fa-eye mr-2"></i> Подробнее
                         </button>
                     </div>
                 </div>
             </div>
-        {% empty %}
-        <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+            {% empty %}
+            <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
                 <div class="text-gray-300 text-5xl mb-4">
                     <i class="fas fa-sad-cry"></i>
                 </div>
                 <h3 class="text-lg font-medium text-gray-500 mb-2">Площадки не найдены</h3>
                 <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться площадки партнёров</p>
             </div>
-        {% endfor %}
-    </div>
-    <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
-        {% if platforms.has_previous %}
-        <a href="?platforms_page=1"
-            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-            aria-label="Первая страница">
-            <i class="fas fa-angle-double-left"></i>
-        </a>
-        <a href="?platforms_page={{ platforms.previous_page_number }}"
-            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
-            <span class="hidden sm:inline">Предыдущая</span>
-            <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
-        </a>
-        {% endif %}
-
-        <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
-            <span class="hidden sm:inline">Страница</span>
-            <input type="number" min="1" max="{{ platforms.paginator.num_pages }}"
-                value="{{ platforms.number }}"
-                class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                onchange="window.location.href = '?platforms_page=' + this.value" aria-label="Номер страницы">
-            <span>из {{ platforms.paginator.num_pages }}</span>
+            {% endfor %}
         </div>
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if platforms.has_previous %}
+            <a href="?platforms_page=1"
+               class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+               aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?platforms_page={{ platforms.previous_page_number }}"
+               class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+            {% endif %}
 
-        {% if platforms.has_next %}
-        <a href="?platforms_page={{ platforms.next_page_number }}"
-            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
-            <span class="hidden sm:inline">Следующая</span>
-            <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
-        </a>
-        <a href="?platforms_page={{ platforms.paginator.num_pages }}"
-            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
-            aria-label="Последняя страница">
-            <i class="fas fa-angle-double-right"></i>
-        </a>
-        {% endif %}
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ platforms.paginator.num_pages }}"
+                       value="{{ platforms.number }}"
+                       class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                       onchange="window.location.href = '?platforms_page=' + this.value" aria-label="Номер страницы">
+                <span>из {{ platforms.paginator.num_pages }}</span>
+            </div>
+
+            {% if platforms.has_next %}
+            <a href="?platforms_page={{ platforms.next_page_number }}"
+               class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?platforms_page={{ platforms.paginator.num_pages }}"
+               class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+               aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </div>
     </div>
-</div>
 </div>
 
 {% include "partner_app/dashboard/manager/platforms/modals/details.html" %}
 
 <script>
-  const msg = document.querySelectorAll('.alert-message').forEach(element => {
-    setTimeout(function () {
-      element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
-      setTimeout(() => element.remove(), 300);
-    }, 5000)
-  });
+    const msg = document.querySelectorAll('.alert-message').forEach(element => {
+        setTimeout(function () {
+            element.classList.add('opacity-0', 'scale-90', '-translate-y-2');
+            setTimeout(() => element.remove(), 300);
+        }, 5000)
+    });
 </script>
 
 {% endblock %}

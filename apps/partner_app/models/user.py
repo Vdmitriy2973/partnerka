@@ -132,7 +132,7 @@ class User(AbstractUser):
 
 class PartnerProfile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, 
+        'partner_app.User', 
         on_delete=models.CASCADE,
         related_name='+',
         verbose_name='Пользователь'
@@ -153,7 +153,7 @@ class PartnerProfile(models.Model):
         return f"Профиль: {self.user.username}" if self.user else "Непривязанный профиль"
 
 class AdvertiserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='+')
+    user = models.OneToOneField('partner_app.User', on_delete=models.CASCADE,related_name='+')
     api_key = models.CharField(max_length=50,unique=True,blank=True,null=True, default=None,verbose_name="API-ключ")
     balance = models.DecimalField (
         verbose_name="Мин. выплата",

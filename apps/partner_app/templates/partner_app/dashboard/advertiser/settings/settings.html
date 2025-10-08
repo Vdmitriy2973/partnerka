@@ -5,7 +5,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-    {% vite_asset 'partner_app/assets/js/dashboard/advertiser/settings/settings.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/advertiser/settings/settings.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Настройки{% endblock title %}
@@ -26,61 +26,61 @@
 
         <div id="settings_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
         {% if messages %}
-            <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
-                {% for message in messages %}
-                    {% if "profile_update_error" in message.tags %}
-                        <div class="alert-message alert alert-error">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            <span>{{ message }}</span>
-                        </div>
-                    {% endif %}
-                    {% if "profile_update_success" in message.tags %}
-                        <div class="alert-message alert alert-success">
-                            <i class="fas fa-check-circle mr-2"></i>
-                            <span>{{ message }}</span>
-                        </div>
-                    {% endif %}
-
-                    {% if "password_update_error" in message.tags %}
-                        <div class="alert-message alert alert-error shadow-lg">
-                            <div>
-                                <i class="fas fa-exclamation-triangle mr-2"></i>
-                                <span>{{ message }}</span>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if "password_update_success" in message.tags %}
-                        <div class="alert-message alert alert-success shadow-lg">
-                            <div>
-                                <i class="fas fa-check-circle mr-2"></i>
-                                <span>{{ message }}</span>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if "update_notifications_success" in message.tags %}
-                        <div class="alert-message alert alert-success">
-                            <i class="fas fa-check-circle mr-2"></i>
-                            <span>{{ message }}</span>
-                        </div>
-                    {% endif %}
-                    {% if "update_api_error" in message.tags %}
-                        <div class="alert-message alert alert-error shadow-lg">
-                            <div>
-                                <i class="fas fa-exclamation-triangle mr-2"></i>
-                                <span>{{ message }}</span>
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if "update_api_success" in message.tags %}
-                        <div class="alert-message alert alert-success shadow-lg">
-                        <div>
-                            <i class="fas fa-check-circle mr-2"></i>
-                            <span>{{ message }}</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endfor %}
+        <div id="settings_messages" class="mt-4 mb-4 space-y-2 transition-all duration-500 transform">
+            {% for message in messages %}
+            {% if "profile_update_error" in message.tags %}
+            <div class="alert-message alert alert-error">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span>{{ message }}</span>
             </div>
+            {% endif %}
+            {% if "profile_update_success" in message.tags %}
+            <div class="alert-message alert alert-success">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span>{{ message }}</span>
+            </div>
+            {% endif %}
+
+            {% if "password_update_error" in message.tags %}
+            <div class="alert-message alert alert-error shadow-lg">
+                <div>
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if "password_update_success" in message.tags %}
+            <div class="alert-message alert alert-success shadow-lg">
+                <div>
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if "update_notifications_success" in message.tags %}
+            <div class="alert-message alert alert-success">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span>{{ message }}</span>
+            </div>
+            {% endif %}
+            {% if "update_api_error" in message.tags %}
+            <div class="alert-message alert alert-error shadow-lg">
+                <div>
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if "update_api_success" in message.tags %}
+            <div class="alert-message alert alert-success shadow-lg">
+                <div>
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
         {% endif %}
 
 
@@ -105,7 +105,7 @@
                                         <span class="label-text">Имя</span>
                                     </label>
                                     <input name="first_name" type="text" value="{{ request.user.first_name|default:'' }}"
-                                        class="input input-bordered w-full" required />
+                                           class="input input-bordered w-full" required />
                                 </div>
 
                                 <!-- Фамилия -->
@@ -114,7 +114,7 @@
                                         <span class="label-text">Фамилия</span>
                                     </label>
                                     <input name="last_name" type="text" value="{{ request.user.last_name|default:'' }}"
-                                        class="input input-bordered w-full" required />
+                                           class="input input-bordered w-full" required />
                                 </div>
 
                                 <!-- Отчество -->
@@ -123,7 +123,7 @@
                                         <span class="label-text">Отчество</span>
                                     </label>
                                     <input name="middle_name" type="text" value="{{ request.user.middle_name|default:'' }}"
-                                        class="input input-bordered w-full" required />
+                                           class="input input-bordered w-full" required />
                                 </div>
 
                                 <!-- Email -->
@@ -132,7 +132,7 @@
                                         <span class="label-text">Email</span>
                                     </label>
                                     <input name="email" type="email" value="{{ request.user.email }}"
-                                        class="input input-bordered w-full" required />
+                                           class="input input-bordered w-full" required />
                                 </div>
 
                                 <!-- Телефон -->
@@ -141,7 +141,7 @@
                                         <span class="label-text">Телефон</span>
                                     </label>
                                     <input name="phone" type="tel" value="{{ request.user.phone|default:'' }}"
-                                        class="input input-bordered w-full" required />
+                                           class="input input-bordered w-full" required />
                                     <label class="label">
                                         <span class="label-text-alt">Формат: +7 (XXX) XXX-XX-XX</span>
                                     </label>
@@ -158,8 +158,8 @@
 
                                 <div class="relative group">
                                     <textarea name="description" class="textarea w-full"
-                                        placeholder="Расскажите о своих интересах, опыте и целях..."
-                                        data-min-length="20">{{ request.user.description|default:'' }}</textarea>
+                                              placeholder="Расскажите о своих интересах, опыте и целях..."
+                                              data-min-length="20">{{ request.user.description|default:'' }}</textarea>
                                 </div>
                             </div>
 
@@ -196,7 +196,7 @@
                                 </label>
                                 <div class="relative">
                                     <input name="old_password" type="password" class="input input-bordered w-full"
-                                        placeholder="••••••••" required />
+                                           placeholder="••••••••" required />
                                 </div>
                             </div>
 
@@ -209,7 +209,7 @@
                                 </label>
                                 <div class="relative">
                                     <input name="password1" type="password" class="input input-bordered w-full"
-                                        placeholder="Придумайте надежный пароль" data-min-length="8" required />
+                                           placeholder="Придумайте надежный пароль" data-min-length="8" required />
                                 </div>
                             </div>
 
@@ -222,7 +222,7 @@
                                 </label>
                                 <div class="relative">
                                     <input name="password2" type="password" class="input input-bordered w-full"
-                                        placeholder="Повторите новый пароль" required />
+                                           placeholder="Повторите новый пароль" required />
                                 </div>
                                 <div class="password-match mt-1 hidden text-sm">
                                     <i class="fas fa-check-circle text-success mr-1"></i>
@@ -317,10 +317,10 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Добавляем кастомные стили для анимации
-    const style = document.createElement('style');
-    style.textContent = `
+    document.addEventListener('DOMContentLoaded', function () {
+        // Добавляем кастомные стили для анимации
+        const style = document.createElement('style');
+        style.textContent = `
         @keyframes slide-out-left {
             0% {
                 opacity: 1;
@@ -345,33 +345,33 @@ document.addEventListener('DOMContentLoaded', function() {
             pointer-events: none;
         }
     `;
-    document.head.appendChild(style);
+        document.head.appendChild(style);
 
-    // Обрабатываем все сообщения
-    const alertMessages = document.querySelectorAll('.alert-message');
-    
-    alertMessages.forEach((element, index) => {
-        // Добавляем небольшую задержку для каждого следующего сообщения
-        const delay = 5000 + (index * 200);
-        
-        setTimeout(() => {
-            // Добавляем классы для анимации ухода влево
-            element.classList.add(
-                'animate-slide-out-left',
-                'transform-gpu', // Аппаратное ускорение
-                'transition-all',
-                'duration-800',
-                'ease-in-out'
-            );
-            
-            // Удаляем элемент после завершения анимации
+        // Обрабатываем все сообщения
+        const alertMessages = document.querySelectorAll('.alert-message');
+
+        alertMessages.forEach((element, index) => {
+            // Добавляем небольшую задержку для каждого следующего сообщения
+            const delay = 5000 + (index * 200);
+
             setTimeout(() => {
-                if (element.parentNode) {
-                    element.remove();
-                }
-            }, 800); // Время анимации
-        }, delay);
+                // Добавляем классы для анимации ухода влево
+                element.classList.add(
+                    'animate-slide-out-left',
+                    'transform-gpu', // Аппаратное ускорение
+                    'transition-all',
+                    'duration-800',
+                    'ease-in-out'
+                );
+
+                // Удаляем элемент после завершения анимации
+                setTimeout(() => {
+                    if (element.parentNode) {
+                        element.remove();
+                    }
+                }, 800); // Время анимации
+            }, delay);
+        });
     });
-});
 </script>
 {% endblock %}

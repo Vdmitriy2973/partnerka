@@ -6,7 +6,7 @@
 {% vite_hmr_client %}
 
 {% block head_js_scripts %}
-{% vite_asset 'partner_app/assets/js/dashboard/partner/notifications/notifications.js' %}
+{% vite_asset 'apps/partner_app/assets/js/dashboard/partner/notifications/notifications.js' %}
 {% endblock head_js_scripts %}
 
 {% block title %}Уведомления{% endblock %}
@@ -85,7 +85,7 @@
         <div class="divide-y divide-gray-100" id="notifications-list">
             {% for notification in notifications %}
             <div class="notification-item group transition-all duration-200 hover:bg-blue-50 {% if not notification.is_read%}un{% endif%}read animate-notification-item"
-                data-type="{{ notification.activity_type }}" data-id="{{ notification.id }}">
+                 data-type="{{ notification.activity_type }}" data-id="{{ notification.id }}">
                 <div class="p-4 flex items-start">
                     <div class="flex-shrink-0">
                         {% if notification.activity_type == 'sale'%}
@@ -135,7 +135,7 @@
                     </div>
                     {% if not notification.is_read %}
                     <form class="mark-as-read opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex-shrink-0"
-                        method="POST">
+                          method="POST">
                         {% csrf_token %}
                         <input value="{{ notification.id }}" name="notification_id" class="hidden">
                         <button type="submit" class="btn btn-ghost btn-xs mark-read">
@@ -159,19 +159,19 @@
             <div class="join">
                 <div class="join-item pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
                     <button id="previous_page_number"
-                        class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
 
                     </button>
 
                     <div class="join-item flex items-center mx-1 md:mx-3 text-sm md:text-base">
                         <button id="current_page_number" data-max="{{ notifications.paginator.num_pages }}" disabled
-                            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
-                            aria-label="Номер страницы">
+                                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                                aria-label="Номер страницы">
                         </button>
                     </div>
 
                     <button id="next_page_number"
-                        class="join-item btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                            class="join-item btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
                     </button>
 
                 </div>

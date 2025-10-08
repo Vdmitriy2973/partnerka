@@ -18,7 +18,7 @@ class PartnerTransaction(models.Model):
         REJECTED = 'Отменено'
 
     partner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        'partner_app.User',
         related_name='+',
         verbose_name='Получатель',
         limit_choices_to={'user_type': 'partner'},

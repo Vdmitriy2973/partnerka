@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 class AdvertiserRequisites(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='+')
+    user = models.OneToOneField('partner_app.User', on_delete=models.CASCADE,related_name='+')
     responsible_person = models.CharField(
         max_length=200, 
         verbose_name='ФИО ответственного лица',

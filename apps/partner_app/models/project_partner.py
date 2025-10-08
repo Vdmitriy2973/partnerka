@@ -9,14 +9,14 @@ class ProjectPartner(models.Model):
         BLOCKED = 'Заблокировано', 'Заблокировано'
 
     partner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        'partner_app.User',
         on_delete=models.CASCADE,
         related_name='+',
         verbose_name='Партнёр'
     )
     
     advertiser = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        'partner_app.user',
         on_delete=models.CASCADE,
         related_name="+",
         null=True,
@@ -25,7 +25,7 @@ class ProjectPartner(models.Model):
     )
     
     project = models.ForeignKey(
-        'Project',
+        'partner_app.Project',
         on_delete=models.CASCADE,
         related_name='partner_memberships',
         verbose_name='Проект'
