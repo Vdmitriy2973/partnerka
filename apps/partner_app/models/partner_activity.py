@@ -10,9 +10,9 @@ class PartnerActivity(models.Model):
         SYSTEM = 'system', _('Системное уведомление')
 
     partner = models.ForeignKey(
-        'PartnerProfile',
+        'partners.PartnerProfile',
         on_delete=models.CASCADE,
-        related_name='activities',
+        related_name='+',
         verbose_name=_('Партнёр')
     )
     activity_type = models.CharField(

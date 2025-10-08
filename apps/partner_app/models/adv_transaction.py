@@ -22,8 +22,8 @@ class AdvertiserTransaction(models.Model):
         REJECTED = 'Отменено'
 
     advertiser = models.ForeignKey(
-        'AdvertiserProfile',
-        related_name='transactions',
+        'advertisers.AdvertiserProfile',
+        related_name='+',
         verbose_name='Получатель',
         on_delete=models.CASCADE
     )

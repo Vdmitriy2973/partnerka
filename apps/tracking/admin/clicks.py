@@ -1,7 +1,5 @@
 from django.contrib import admin
-from partner_app.models import Conversion, ClickEvent
-
-admin.site.register(Conversion)
+from apps.tracking.models import ClickEvent
 
 @admin.register(ClickEvent)
 class ClickEventAdmin(admin.ModelAdmin):
