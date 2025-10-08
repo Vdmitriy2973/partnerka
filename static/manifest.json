@@ -1,30 +1,294 @@
 {
-  "_all-BbSXse21.js": {
-    "file": "all-BbSXse21.js",
+  "_advertiser-CQ478IxO.css": {
+    "file": "advertiser-CQ478IxO.css",
+    "src": "_advertiser-CQ478IxO.css"
+  },
+  "_all-9Wo4_OAV.js": {
+    "file": "all-9Wo4_OAV.js",
     "name": "all"
   },
-  "partner_app/assets/js/dashboard/partner.js": {
-    "file": "partner-BAkc7DXi.js",
-    "name": "partner",
-    "src": "partner_app/assets/js/dashboard/partner.js",
+  "_manager-U3MtS_G1.css": {
+    "file": "manager-U3MtS_G1.css",
+    "src": "_manager-U3MtS_G1.css"
+  },
+  "_partner-Cq2N6Wbs.css": {
+    "file": "partner-Cq2N6Wbs.css",
+    "src": "_partner-Cq2N6Wbs.css"
+  },
+  "apps/core/assets/js/main/index.js": {
+    "file": "home-tL3hW8yY.js",
+    "name": "home",
+    "src": "apps/core/assets/js/main/index.js",
     "isEntry": true,
     "imports": [
-      "_all-BbSXse21.js"
+      "_all-9Wo4_OAV.js"
     ],
     "css": [
-      "partner-Dm4ssN2K.css"
+      "home-Cc8VvjqM.css"
     ]
   },
-  "partner_app/assets/js/index.js": {
-    "file": "home-DIUwRUpx.js",
-    "name": "home",
-    "src": "partner_app/assets/js/index.js",
+  "apps/core/assets/js/static-pages/static_page.js": {
+    "file": "static_page_core_app-GBjXwnLU.js",
+    "name": "static_page_core_app",
+    "src": "apps/core/assets/js/static-pages/static_page.js",
     "isEntry": true,
     "imports": [
-      "_all-BbSXse21.js"
+      "_all-9Wo4_OAV.js"
     ],
     "css": [
-      "home-DV0B4CB5.css"
+      "home-Cc8VvjqM.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/advertiser/dashboard/dashboard.js": {
+    "file": "adv_dashboard-R0AnjXeD.js",
+    "name": "adv_dashboard",
+    "src": "apps/partner_app/assets/js/dashboard/advertiser/dashboard/dashboard.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "advertiser-CQ478IxO.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/advertiser/partners/partners.js": {
+    "file": "adv_partners-B6C2OqtR.js",
+    "name": "adv_partners",
+    "src": "apps/partner_app/assets/js/dashboard/advertiser/partners/partners.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "advertiser-CQ478IxO.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/advertiser/projects/projects.js": {
+    "file": "adv_projects-Bu004-om.js",
+    "name": "adv_projects",
+    "src": "apps/partner_app/assets/js/dashboard/advertiser/projects/projects.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "advertiser-CQ478IxO.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/advertiser/requisites/requisites.js": {
+    "file": "adv_requisites-DEYaaVLn.js",
+    "name": "adv_requisites",
+    "src": "apps/partner_app/assets/js/dashboard/advertiser/requisites/requisites.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "advertiser-CQ478IxO.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/advertiser/sales/sales.js": {
+    "file": "adv_sales-DEYaaVLn.js",
+    "name": "adv_sales",
+    "src": "apps/partner_app/assets/js/dashboard/advertiser/sales/sales.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "advertiser-CQ478IxO.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/advertiser/settings/settings.js": {
+    "file": "adv_settings-7UC0FgE3.js",
+    "name": "adv_settings",
+    "src": "apps/partner_app/assets/js/dashboard/advertiser/settings/settings.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "advertiser-CQ478IxO.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/manager/advertisers/advertisers.js": {
+    "file": "manager_advertisers-D40b9npZ.js",
+    "name": "manager_advertisers",
+    "src": "apps/partner_app/assets/js/dashboard/manager/advertisers/advertisers.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "manager-U3MtS_G1.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/manager/dashboard/dashboard.js": {
+    "file": "manager_dashboard-C3Qq0IIJ.js",
+    "name": "manager_dashboard",
+    "src": "apps/partner_app/assets/js/dashboard/manager/dashboard/dashboard.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "manager-U3MtS_G1.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/manager/partners/partners.js": {
+    "file": "manager_partners-CvCDRznM.js",
+    "name": "manager_partners",
+    "src": "apps/partner_app/assets/js/dashboard/manager/partners/partners.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "manager-U3MtS_G1.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/manager/platforms/platforms.js": {
+    "file": "manager_platforms---LNpxnI.js",
+    "name": "manager_platforms",
+    "src": "apps/partner_app/assets/js/dashboard/manager/platforms/platforms.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "manager-U3MtS_G1.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/manager/projects/projects.js": {
+    "file": "manager_projects-BRKPTKtf.js",
+    "name": "manager_projects",
+    "src": "apps/partner_app/assets/js/dashboard/manager/projects/projects.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "manager-U3MtS_G1.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/manager/users/users.js": {
+    "file": "manager_users-DJOZissY.js",
+    "name": "manager_users",
+    "src": "apps/partner_app/assets/js/dashboard/manager/users/users.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "manager-U3MtS_G1.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/connections/connections.js": {
+    "file": "partner_connections-D-tgCR18.js",
+    "name": "partner_connections",
+    "src": "apps/partner_app/assets/js/dashboard/partner/connections/connections.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/dashboard/dashboard.js": {
+    "file": "partner_dashboard-Btevzig5.js",
+    "name": "partner_dashboard",
+    "src": "apps/partner_app/assets/js/dashboard/partner/dashboard/dashboard.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/links/links.js": {
+    "file": "partner_links-C6geFwee.js",
+    "name": "partner_links",
+    "src": "apps/partner_app/assets/js/dashboard/partner/links/links.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/notifications/notifications.js": {
+    "file": "partner_notifications-C9QPiLms.js",
+    "name": "partner_notifications",
+    "src": "apps/partner_app/assets/js/dashboard/partner/notifications/notifications.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/offers/offers.js": {
+    "file": "partner_offers-D6dkacKh.js",
+    "name": "partner_offers",
+    "src": "apps/partner_app/assets/js/dashboard/partner/offers/offers.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/payments/payments.js": {
+    "file": "partner_payments-BEOzejYG.js",
+    "name": "partner_payments",
+    "src": "apps/partner_app/assets/js/dashboard/partner/payments/payments.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/platforms/platforms.js": {
+    "file": "partner_platforms-B1S3q8c3.js",
+    "name": "partner_platforms",
+    "src": "apps/partner_app/assets/js/dashboard/partner/platforms/platforms.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/dashboard/partner/settings/settings.js": {
+    "file": "partner_settings-CPoKbitS.js",
+    "name": "partner_settings",
+    "src": "apps/partner_app/assets/js/dashboard/partner/settings/settings.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "partner-Cq2N6Wbs.css"
+    ]
+  },
+  "apps/partner_app/assets/js/static-pages/static_page.js": {
+    "file": "static_page_partner_app-GBjXwnLU.js",
+    "name": "static_page_partner_app",
+    "src": "apps/partner_app/assets/js/static-pages/static_page.js",
+    "isEntry": true,
+    "imports": [
+      "_all-9Wo4_OAV.js"
+    ],
+    "css": [
+      "home-Cc8VvjqM.css"
     ]
   }
 }

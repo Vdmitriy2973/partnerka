@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig((mode) => {
   const env = loadEnv(mode, process.cwd(), "");
 
-  const PARTNER_APP_INPUT_DIR = "./partner_app/assets";
+  const PARTNER_APP_INPUT_DIR = "./apps/partner_app/assets";
   const CORE_APP_INPUT_DIR = "./apps/core/assets";
   const OUTPUT_DIR = "./static";
 
