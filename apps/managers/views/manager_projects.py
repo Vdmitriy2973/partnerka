@@ -1,0 +1,39 @@
+from django.shortcuts import render,redirect
+from django.db.models import Q
+
+from apps.advertisers.models import Project
+from utils import _paginate
+
+def manager_projects(request):  
+    """Модерация проектов"""
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/?show_modal=auth')
+    if not hasattr(request.user,"managerprofile"):
+        return redirect('index')
+    if user.is_authenticated and user.is_currently_blocked():
+        return render(request, 'account_blocked/block_info.html')
+    
+    projects_search_q = request.GET.get('projects_search','').strip()
+    
+    count = 10
+    
+    projects = Project.objects.filter(status='На модерации')
+    
+    if projects_search_q:
+        projects = projects.filter(
+            Q(name__icontains=projects_search_q) 
+        )
+    
+    projects = _paginate(request, projects, count, "projects_page")
+    
+    context = {
+        "user": request.user,  
+        "projects":projects,
+        
+        "projects_search_q":projects_search_q
+    }
+    
+    return render(request, 'partner_app/dashboard/manager/projects/projects.html',context=context)
+
+

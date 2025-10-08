@@ -1,0 +1,1 @@
+from .advertiser_legal_details import advertiser_legal_details

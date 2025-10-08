@@ -1,0 +1,139 @@
+{% extends 'core/base.html' %}
+{% load tz %}
+{% load static %}
+
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+{% vite_asset 'apps/core/assets/js/static-pages/static_page.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %} Рекламодатель {{ advertiser }} {% endblock %}
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+
+        <!-- Хлебные крошки -->
+        <div class="text-sm breadcrumbs mb-6">
+            <ul>
+                <li><a href="/">Главная</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Личный кабинет</a></li>
+                {% endif %}
+                <li class="font-semibold">Рекламодатель</li>
+            </ul>
+        </div>
+        <!-- Заголовок с анимацией -->
+        <h1
+            class="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary animate-slide-up">
+            Профиль рекламодателя
+        </h1>
+
+        <!-- Основная информация -->
+        <div class="card bg-base-100 shadow-xl mb-8">
+            <div class="card-body">
+                <div class="flex flex-col md:flex-row gap-6 items-center">
+
+                    <div class="flex-1">
+                        <h2 class="card-title text-2xl mb-2">
+                            <div class="badge badge-primary badge-lg ml-2 animate-pulse">Рекламодатель</div>
+                            {{ advertiser.username }}
+                        </h2>
+                        <p class="text-base-content/60">Присоединился {{ advertiser.date_joined|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Проекты -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <i class="fas fa-project-diagram text-secondary"></i>
+                <span>Рекламные проекты</span>
+                <span class="badge badge-secondary badge-lg">{{ projects|length }}</span>
+            </h2>
+
+            {% if projects %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                {% for project in projects %}
+                <div class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow">
+                    <div class="card-body">
+                        <div class="flex justify-between items-start">
+                            <h3 class="card-title"><a href="{% url 'project' project.id %}">{{ project.name }}</a></h3>
+                            <div
+                                class="badge badge-outline {% if project.is_active %}badge-success{% else %}badge-error{% endif %}">
+                                {% if project.is_active %}Активен{% else %}Неактивен{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">URL: <a class="text-blue-500"
+                                href="{{ project.url }}">ссылка</a></div>
+                        <div class="flex justify-between">Дата создания: <span>{{ project.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span></div>
+
+                        <h4 class="card-title">Описание</h4>
+                        <p
+                            class="text-base-content/80 mb-3 w-full break-words overflow-wrap-break-word whitespace-normal">
+                            {{ project.description }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info shadow-lg">
+                <div>
+                    <i class="fas fa-info-circle"></i>
+                    <span>Нет активных рекламных проектов</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Пагинация -->
+
+        <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+            {% if projects.has_previous %}
+            <a href="?projects_page=1"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?projects_page={{ projects.previous_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+            {% endif %}
+
+            <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ projects.paginator.num_pages }}" value="{{ projects.number }}"
+                    class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                    onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
+                <span>из {{ projects.paginator.num_pages }}</span>
+            </div>
+
+            {% if projects.has_next %}
+            <a href="?projects_page={{ projects.next_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?projects_page={{ projects.paginator.num_pages }}"
+                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Кнопка назад -->
+        <div class="flex flex-wrap gap-4 justify-end">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left mr-2"></i> Назад
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

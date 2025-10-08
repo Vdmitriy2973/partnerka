@@ -31,23 +31,32 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
-    # Third-party apps
-    'rest_framework',
+    'django.contrib.staticfiles'
+    ]
+
+# Third-party apps
+INSTALLED_APPS += ['rest_framework',
     'django_celery_results',
     'django.contrib.humanize',
     'corsheaders',
-    "django_vite",
+    "django_vite"
+    ]
     
-    # My apps
+# My apps
+INSTALLED_APPS += [
     'apps.core',
+    'apps.users',
+    'apps.partners',
+    'apps.advertisers',
+    'apps.managers',
+    'apps.partnerships',
+    'apps.tracking',
     'partner_app',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'partner_app.api_authentication.AdvertiserAPIKeyAuthentication',
+        'apps.core.api_authentication.AdvertiserAPIKeyAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -84,7 +93,7 @@ STATICFILES_DIRS = [
   BASE_DIR / "assets",
 ]
 
-AUTH_USER_MODEL  = 'partner_app.User'
+AUTH_USER_MODEL  = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]

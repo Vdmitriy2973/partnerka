@@ -5,3 +5,6 @@ psycopg2
 python-dotenv
 markdown
 django-filter
+django_celery_results
+django-cors-headers
+aiohttp

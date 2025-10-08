@@ -1,0 +1,75 @@
+from django.db import models
+from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
+
+class PartnerTransaction(models.Model):
+    # Варианты для способа выплаты
+    PAYMENT_METHOD_CHOICES = [
+        ('wallet', 'Электронный кошелёк'),
+        ('card', 'Банковская карта'),
+        ('bank_transfer', 'Банковский перевод'),
+        ('sbp', 'Система быстрых платежей (СБП)'),
+    ]
+    
+    class STATUS_CHOICES(models.TextChoices):
+        PENDING = 'В обработке'
+        COMPLETED = 'Выплачено'
+        REJECTED = 'Отменено'
+
+    partner = models.ForeignKey(
+        'users.User',
+        related_name='transactions',
+        verbose_name='Получатель',
+        limit_choices_to={'user_type': 'partner'},
+        on_delete=models.CASCADE
+    )
+    
+    # Основные поля
+    date = models.DateTimeField(
+        auto_now_add=True, 
+        verbose_name='Дата транзакции'
+    )
+    amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(300)],
+        verbose_name='Сумма'
+    )
+    payment_method = models.CharField(
+        max_length=20,
+        choices=PAYMENT_METHOD_CHOICES,
+        default='card',
+        verbose_name='Способ выплаты'
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='В обработке',
+        verbose_name='Статус транзакции'
+    )
+
+    rejection_reason = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Причина отклонения',
+        help_text='Укажите причину, если транзакция отклонена'
+    )
+
+    def clean(self):
+        """
+        Проверяет, что причина отклонения заполнена при статусе REJECTED.
+        """
+        if self.status == PartnerTransaction.STATUS_CHOICES.REJECTED and not self.rejection_reason:
+            raise ValidationError(
+                {'rejection_reason': 'Причина отклонения обязательна для статуса "Отменено".'}
+            )
+        if self.status != PartnerTransaction.STATUS_CHOICES.REJECTED and self.rejection_reason:
+            self.rejection_reason = None
+
+    class Meta:
+        verbose_name = 'Транзакция'
+        verbose_name_plural = 'Транзакции'
+        ordering = ['-date']  # Сортировка по дате (новые сверху)
+
+    def __str__(self):
+        return f'Транзакция #{self.id} - {self.amount} ({self.status})'

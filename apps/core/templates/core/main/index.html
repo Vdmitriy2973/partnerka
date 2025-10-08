@@ -22,6 +22,7 @@
 
 {% block content %}
 <div id="index_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
+
 <!-- Hero Section -->
 {% include "core/main/sections/hero_section.html" %}
 
@@ -36,5 +37,13 @@
 
 <!-- Contact Section -->
 {% include "core/main/sections/contact_section.html" %}
+
+<!-- Модальные окна -->
+
+<!-- Авторизация -->
+{% include "core/main/sections/modals/auth.html" %}
+
+<!-- Регистрация -->
+{% include "core/main/sections/modals/register.html" %}
 
 {% endblock content %}

@@ -1,4 +1,0 @@
-from .partner_detail import partner_detail
-from .advertiser_detail import advertiser_detail
-from .advertiser_legal_details import advertiser_legal_details
-from .project_detail import project_detail
