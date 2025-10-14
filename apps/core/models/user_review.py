@@ -10,7 +10,7 @@ class UserReview(models.Model):
         PUBLISHED = 'Опубликован'
         
     user = models.ForeignKey(
-        'partner_app.User',
+        'users.User',
         on_delete=models.SET_NULL,
         related_name='reviews',
         verbose_name='Отзывы пользователя',
