@@ -4,7 +4,7 @@ from .generate_partner_link import generate_link
 from .delete_partner_link import delete_partner_link
 from .update_partner_payout_settings import payout_settings_view
 from .read_notifications import read_partner_notifications
-from .partner_notifications_json import partner_notifications_json
+from .notifications_json import notifications_json
 from .create_payout_transaction import create_payout_request
 from .partnership import stop_partnership_with_project, suspend_partnership, resume_partnership
 from .mark_all_as_read import mark_all_notifications_read

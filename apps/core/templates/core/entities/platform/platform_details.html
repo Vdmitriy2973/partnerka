@@ -1,0 +1,251 @@
+{% extends 'core/base/base.html' %}
+{% load static %}
+{% load tz %}
+
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+{% vite_asset 'apps/core/assets/js/static-pages/static_page.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %} Платформа - {{ platform.name }} {% endblock %}
+{% block content %}
+<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 animate-fade-in">
+    <div class="max-w-6xl mx-auto">
+        <!-- Хлебные крошки -->
+        <div class="text-sm breadcrumbs mb-6">
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="{% url 'dashboard' %}">Личный кабинет</a></li>
+                {% if request.user.user_type == 'partner' %}
+                    <li><a href="{% url 'partner_platforms' %}">Мои площадки</a></li>
+                {% endif %}
+                <li class="font-semibold">Статистика площадки</li>
+            </ul>
+        </div>
+
+        <!-- Основная информация о площадке -->
+        <div class="card bg-base-100 shadow-lg mb-8">
+            <div class="card-body">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="avatar avatar-placeholder">
+                            <div class="bg-primary text-primary-content rounded-full w-16">
+                                {% if platform.platform_type == 'youtube' %}
+                                    <i class="fab fa-youtube text-2xl"></i>
+                                {% elif platform.platform_type == 'social_networks' %}
+                                    <i class="fa-solid fa-users text-2xl"></i>
+                                {% elif platform.platform_type == 'website' %}
+                                    <i class="fa-solid fa-globe text-2xl"></i>
+                                {% elif platform.platform_type == 'blog' %}
+                                    <i class="fa-solid fa-suitcase text-2xl"></i>
+                                {% elif platform.platform_type == 'other' %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div>
+                            <h1 class="card-title text-3xl font-bold">{{ platform.name }}</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Карточка с основной информацией -->
+                    <div class="bg-base-200 p-6 rounded-box stat-card">
+                        <h2 class="text-xl font-semibold mb-4">Основная информация</h2>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Статус:</span>
+                                <span class="badge {% if platform.status == 'Подтверждено' %}badge-success{% elif platform.status == 'Отклонено' %}badge-error{% else %}badge-warning{% endif %}">
+                                    {{ platform.status }}
+                                </span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Дата создания:</span>
+                                <span>{{ platform.created_at|timezone:"Europe/Moscow"|date:"j E Y H:i" }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Тип площадки:</span>
+                                <span class="font-bold">{{ platform.get_platform_type_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Карточка с URL площадки -->
+                    <div class="bg-base-200 p-6 rounded-box stat-card">
+                        <h2 class="text-xl font-semibold mb-4">URL площадки</h2>
+                        <div class="flex items-center justify-between bg-base-100 p-3 rounded-lg mb-4">
+                            <span id="platform-url" class="truncate">{{ platform.url_or_id }}</span>
+                            <a href="{{ platform.url_or_id }}" target="_blank" class="btn btn-sm btn-ghost">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        <div>
+                            <button id="copy-link" onclick="copyToClipboard()" class="btn btn-primary btn-sm w-full">
+                                <i class="fas fa-copy mr-2"></i> Копировать ссылку
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Детальная статистика -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Совокупный доход -->
+            <div class="stat-card card bg-gradient-to-br from-purple-500 to-purple-700 text-white shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold uppercase">Совокупный доход</p>
+                            <p class="text-4xl font-bold mt-2">₽<span id="totalRevenue">{{ revenue_info.total_revenue|default:0 }}</span></p>
+                            <!-- <p class="text-white/90 text-sm mt-2">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span class="font-semibold">+23.5%</span> за все время
+                            </p> -->
+                        </div>
+                        <div class="text-5xl opacity-20">
+                            <i class="fas fa-ruble-sign"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Доход за месяц -->
+            <div class="stat-card card bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold uppercase">Доход за месяц</p>
+                            <p class="text-4xl font-bold mt-2">₽<span id="monthlyRevenue">{{ total_revenue_last_month }}</span></p>
+                            <!-- <p class="text-white/90 text-sm mt-2">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span class="font-semibold">+12.3%</span> к прошлому месяцу
+                            </p> -->
+                        </div>
+                        <div class="text-5xl opacity-20">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Конверсия -->
+            <div class="stat-card card bg-gradient-to-br from-green-500 to-green-700 text-white shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold uppercase">Конверсия</p>
+                            <p class="text-4xl font-bold mt-2"><span id="conversionRate">{{ platform.conversions_percent }}</span>%</p>
+                            <p class="text-white/90 text-sm mt-2">
+                                <span class="font-semibold"><span id="conversionsCount">{{ platform.conversions_count }}</span> конверсий</span>
+                            </p>
+                        </div>
+                        <div class="text-5xl opacity-20">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Клики -->
+            <div class="stat-card card bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold uppercase">Всего кликов</p>
+                            <p class="text-4xl font-bold mt-2"><span id="totalClicks">{{ platform.clicks_count }}</span></p>
+                            <!-- <p class="text-white/90 text-sm mt-2">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span class="font-semibold">+8.7%</span> за неделю
+                            </p> -->
+                        </div>
+                        <div class="text-5xl opacity-20">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Средний чек -->
+            <div class="stat-card card bg-gradient-to-br from-pink-500 to-pink-700 text-white shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold uppercase">Средний чек</p>
+                            <p class="text-4xl font-bold mt-2">₽<span id="avgCheck">{{ revenue_info.avg_revenue|default:0 }}</span></p>
+                            <p class="text-white/90 text-sm mt-2">
+                                За одну конверсию
+                            </p>
+                        </div>
+                        <div class="text-5xl opacity-20">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Статус площадки -->
+            <div class="stat-card card {% if platform.is_active %}bg-gradient-to-br{% else %}bg-red-500{% endif %} from-teal-500 to-teal-700 text-white shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold uppercase">Статус площадки</p>
+                            <p class="text-3xl font-bold mt-2 flex items-center gap-2">
+                                <span class="pulse-dot">●</span> {% if platform.is_active %}Активна{% else %}Неактивна{% endif %}
+                            </p>
+                            <p class="text-white/90 text-sm mt-2">
+                                Последняя активность: сегодня
+                            </p>
+                        </div>
+                        <div class="text-5xl opacity-20">
+                            <i class="fas {% if platform.is_active %}fa-check-circle{% else %}fa-xmark{% endif %}"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Копирование в буфер обмена
+    function copyToClipboard() {
+        const url = document.getElementById('platform-url').textContent.trim();
+        const fullUrl = url;
+
+        navigator.clipboard.writeText(fullUrl)
+            .then(() => {
+                const btn = document.getElementById('copy-link');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check mr-2"></i> Скопировано!';
+                btn.classList.add('btn-success');
+                btn.classList.remove('btn-primary');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-primary');
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Ошибка копирования: ', err);
+                alert('Не удалось скопировать. Разрешите доступ к буферу обмена.');
+            });
+    }
+    
+
+    // Интерактивность для карточек
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.addEventListener('click', function () {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+    });
+</script>
+
+{% endblock %}

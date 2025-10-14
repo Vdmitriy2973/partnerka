@@ -14,18 +14,34 @@ class ClickAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        partner = User.objects.get(id=int(request.data["partner"]))
-        partnerprofile = PartnerProfile.objects.get(
-            user=int(partner.id)
-        )
-        
+        partner_id = request.data.get("partner")
+        if partner_id is None:
+            return Response(
+                {"detail": "Параметр 'partner' обязателен. Пожалуйста, укажите ID партнера."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        project_id = request.data.get("project")
+        if project_id is None:
+            return Response(
+                {"detail": "Параметр 'project' обязателен. Пожалуйста, укажите ID проекта."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            partner = User.objects.get(id=int(partner_id))
+            partnerprofile = PartnerProfile.objects.get(
+                user=int(partner.id)
+            )
+        except User.DoesNotExist:
+            return Response({
+                "error": "Партнёр с указанным ID не найден. Пожалуйста, проверьте правильность введенного ID."
+            }, status=status.HTTP_404_NOT_FOUND)
         try:
             partnership = ProjectPartner.objects.get(
-                partner=request.data["partner"],
-                project=request.data["project"]
+                partner=partner_id,
+                project=project_id
             )
             project = Project.objects.get(
-                id=request.data['project']
+                id=project_id
             )
         except ProjectPartner.DoesNotExist:
             return Response(
@@ -77,6 +93,8 @@ class ClickAPIView(APIView):
             ip = ip.split(',')[0]
         else:
             ip = request.META.get("REMOTE_ADDR")
+
+        print(partnership.partner_links.all()[0])
         data = {
             "project":request.data["project"],
             "partner":partnerprofile.id,
@@ -84,7 +102,7 @@ class ClickAPIView(APIView):
             "platform":platform_id,
             "partner_link":partnership.partner_links.all()[0].id,
             "partnership":partnership.id,
-            "referrer":referrer_id,
+            "referrer":str(partnership.partner_links.all()[0].url),
             "user_agent":request.META.get('HTTP_USER_AGENT', None),
             "ip_address":ip,
         }

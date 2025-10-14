@@ -7,4 +7,4 @@ def reviews(request):
     """Страница с отзывами"""
     
     reviews = UserReview.objects.all().order_by('-created_at')[:6]
-    return render(request,"partner_app/reviews/reviews.html",context={"reviews":reviews})
+    return render(request,"core/reviews/reviews.html",context={"reviews":reviews})

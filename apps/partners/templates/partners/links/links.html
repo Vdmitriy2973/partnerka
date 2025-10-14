@@ -1,0 +1,292 @@
+{% extends "lk/lk.html" %}
+{% load static %}
+{% load tz %}
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+{% vite_asset 'apps/partners/assets/js/links/links.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %}Партнёрские сссылки{% endblock title %}
+
+{% block header %}
+{% include "partners/header/header.html" %}
+{% endblock %}
+
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 max-w-7xl">
+    <div id="links">
+        <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-base-content mb-2">Партнерские ссылки</h1>
+            <p class="text-sm sm:text-base text-base-content/60">Управляйте своими партнерскими ссылками и отслеживайте
+                их эффективность</p>
+        </div>
+        <div id="links_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
+        <!-- Карточки статистики - теперь в 2 колонки на мобильных -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+            <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+                <div class="card-body p-3 sm:p-4 text-center">
+                    <i class="fas fa-link text-xl sm:text-3xl text-primary mb-1 sm:mb-2"></i>
+                    <div class="text-lg sm:text-2xl font-bold">{{ active_links }}</div>
+                    <p class="text-xs sm:text-sm text-base-content/60">Активных ссылок</p>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+                <div class="card-body p-3 sm:p-4 text-center">
+                    <i class="fas fa-mouse-pointer text-xl sm:text-3xl text-info mb-1 sm:mb-2"></i>
+                    <div class="text-lg sm:text-2xl font-bold">{{ clicks_count }}</div>
+                    <p class="text-xs sm:text-sm text-base-content/60">Всего переходов</p>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+                <div class="card-body p-3 sm:p-4 text-center">
+                    <i class="fas fa-chart-line text-xl sm:text-3xl text-success mb-1 sm:mb-2"></i>
+                    <div class="text-lg sm:text-2xl font-bold">{{ conversion }}%</div>
+                    <p class="text-xs sm:text-sm text-base-content/60">Средняя конверсия</p>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+                <div class="card-body p-3 sm:p-4 text-center">
+                    <i class="fas fa-fire text-xl sm:text-3xl text-warning mb-1 sm:mb-2"></i>
+                    <div class="text-lg sm:text-2xl font-bold truncate">{{ best_link|default:"Отсутствует" }}</div>
+                    <p class="text-xs sm:text-sm text-base-content/60">Лучшая ссылка</p>
+                </div>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="mt-4">
+            {% for message in messages %}
+            {% if "delete_link_success" in message.extra_tags %}
+            <div class="alert-message alert alert-success mb-4">
+                <i class="fas fa-check-circle mr-2"></i>
+                <b>{{ message }}</b>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Таблица с адаптивным поведением -->
+        <div class="card bg-base-100 shadow-sm sm:shadow-lg">
+            <div class="card-body p-3 sm:p-6">
+                <div
+                     class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-4">
+                    <h2 class="card-title text-lg sm:text-xl">
+                        <i class="fas fa-list text-primary mr-2"></i>
+                        Все ссылки
+                    </h2>
+
+                </div>
+
+                <div class="overflow-visible">
+                    <table class="table table-zebra">
+                        <thead>
+                            <tr class="hidden sm:table-row">
+                                <th>ID</th>
+                                <th>Ссылка</th>
+                                <th>Статус</th>
+                                <th>Клики</th>
+                                <th>Продажи</th>
+                                <th>Конверсия</th>
+                                <th>Доход</th>
+                                <th>Создана</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for link in partner_links %}
+                            <tr class="sm:table-row block sm:table-row mb-4 sm:mb-0">
+                                <td class="hidden sm:table-cell">{{ link.id }}</td>
+                                <td class="block sm:table-cell p-0 sm:p-3">
+                                    <div class="flex flex-col p-3 sm:p-0">
+                                        <a href="{% url 'project' link.project.id %}">
+                                            <div class="font-bold">{{ link.project.name }}</div>
+                                        </a>
+                                        <div class="text-xs text-primary break-all"><a href="{{ link.url }}">{{ link.url|truncatechars:30 }}</a></div>
+                                        <div class="flex sm:hidden justify-between mt-2">
+                                            <div>
+                                                <span
+                                                      class="badge badge-{%if link.is_active %}success{% else %}error{% endif %} mr-2">
+                                                    {% if link.is_active %}Активна{% else %} Неактивна {% endif %}
+                                                </span>
+                                                <span>Клики: {{ link.clicks.all|length }}</span>
+                                                <span>Конверсии: {{ link.conversions.all|length }}</span>
+                                            </div>
+                                            <div class="text-success font-bold">₽{{ link.conversions_total }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="hidden sm:table-cell"><span
+                                          class="badge badge-{%if link.is_active %}success{% else %}error{% endif %} mr-2">
+                                        {% if link.is_active %}Активна{% else %} Неактивна {% endif %} </span></td>
+                                <td class="hidden sm:table-cell">{{ link.clicks.all|length }}</td>
+                                <td class="hidden sm:table-cell">{{ link.conversions.all|length }}</td>
+                                <td class="hidden sm:table-cell"><span class="badge badge-warning">{{ link.conversion_percent|floatformat:2 }}%</span></td>
+                                <td class="hidden sm:table-cell font-bold text-success">₽{{ link.conversions_total }}
+                                </td>
+                                <td class="hidden sm:table-cell">{{ link.created_at|date:"d.m.Y" }}</td>
+                                <td class="block sm:table-cell p-0 sm:p-3">
+                                    <div class="flex justify-end sm:justify-center p-3 sm:p-0">
+                                        <div class="dropdown dropdown-end">
+                                            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </div>
+                                            <ul tabindex="0"
+                                                class="dropdown-content z-[9999] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li class="copy_generated_link" data-clipboard-text="{{ link.url }}">
+                                                    <a><i class="fas fa-copy mr-2"></i>Копировать</a>
+                                                </li>
+                                                <li class="delete_generated_link" data-link-id="{{ link.id }}"><a
+                                                       class="text-red-500"><i
+                                                           class="fas fa-trash-alt mr-2"></i>Удалить</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not partner_links %}
+                    <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                        <div class="text-gray-300 text-5xl mb-4">
+                            <i class="fas fa-sad-cry"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-500 mb-2">Нет партнёрских ссылок</h3>
+                        <p class="text-gray-400 text-sm mb-4">Подключитесь к партнерским программам и получите ссылки
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+                {% if partner_links.has_previous %}
+                <a href="?projects_page=1"
+                   class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                   aria-label="Первая страница">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                <a href="?partner_links_page={{ partner_links.previous_page_number }}"
+                   class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    <span class="hidden sm:inline">Предыдущая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+                </a>
+                {% endif %}
+
+                <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                    <span class="hidden sm:inline">Страница</span>
+                    <input type="number" min="1" max="{{ partner_links.paginator.num_pages }}" value="{{ partner_links.number }}"
+                           class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                           onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
+                    <span>из {{ partner_links.paginator.num_pages }}</span>
+                </div>
+
+                {% if partner_links.has_next %}
+                <a href="?partner_links_page={{ partner_links.next_page_number }}"
+                   class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    <span class="hidden sm:inline">Следующая</span>
+                    <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+                </a>
+                <a href="?partner_links_page={{ partner_links.paginator.num_pages }}"
+                   class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                   aria-label="Последняя страница">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        function showAlert(message, type = 'info') {
+            const alert = document.createElement('div');
+            const alertClass = `alert-${type}`;
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+
+            alert.className = `alert-message alert ${alertClass} text-white p-4 mr-6 mb-6 transition-all duration-300 ease-out shadow-lg animate-fade-in`;
+            alert.innerHTML = `<i class="fas ${iconClass} mr-2"></i>${message}`;
+            document.getElementById('links_messages__container').appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.add('animate-slide-out-left', 'transform-gpu', 'transition-all', 'duration-800', 'ease-in-out');
+                setTimeout(() => alert.remove(), 500);
+            }, 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Добавляем кастомные стили для анимации
+            const style = document.createElement('style');
+            style.textContent = `
+                    @keyframes slide-out-left {
+                        0% {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                        70% {
+                            opacity: 0;
+                            transform: translateX(100%);
+                        }
+                        100% {
+                            opacity: 0;
+                            transform: translateX(100%);
+                            max-height: 0;
+                            margin-bottom: 0;
+                            padding: 0;
+                            border: none;
+                        }
+                    }
+                    
+                    .animate-slide-out-left {
+                        animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                        pointer-events: none;
+                    }
+                `;
+            document.head.appendChild(style);
+
+            // Обрабатываем все сообщения
+            const alertMessages = document.querySelectorAll('.alert-message');
+
+            alertMessages.forEach((element, index) => {
+                // Добавляем небольшую задержку для каждого следующего сообщения
+                const delay = 5000 + (index * 200);
+
+                setTimeout(() => {
+                    // Добавляем классы для анимации ухода влево
+                    element.classList.add(
+                        'animate-slide-out-left',
+                        'transform-gpu', // Аппаратное ускорение
+                        'transition-all',
+                        'duration-800',
+                        'ease-in-out'
+                    );
+
+                    // Удаляем элемент после завершения анимации
+                    setTimeout(() => {
+                        if (element.parentNode) {
+                            element.remove();
+                        }
+                    }, 800); // Время анимации
+                }, delay);
+            });
+        });
+
+        document.querySelectorAll('.copy_generated_link').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const url = button.getAttribute('data-clipboard-text');
+
+                try {
+                    await navigator.clipboard.writeText(url);
+                    showAlert(`Партнёрская ссылка успешно скопирована!`, 'success');
+                } catch (err) {
+                    showAlert(`Ошибка копирования: ${err}`, 'error');
+                }
+            });
+        });
+    </script>
+</div>
+{% include "partners/links/modals/delete_link.html" %}
+{% endblock %}

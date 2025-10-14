@@ -17,15 +17,15 @@ urlpatterns = [
     path('read_notifications',views.read_partner_notifications,name='read_partner_notifications'),
     
     # ЛК
-    path('dashboard',views.partner_dashboard,name='partner_dashboard'),
-    path('offers',views.partner_offers,name='partner_offers'),
-    path('connections',views.partner_connections,name='partner_connections'),
-    path('platforms',views.partner_platforms,name='partner_platforms'),
-    path('links',views.partner_links,name='partner_links'),
-    path('payments',views.partner_payments,name='partner_payments'),
-    path('settings',views.partner_settings,name='partner_settings'),
-    path('notifications',views.partner_notifications,name='partner_notifications'),
-    path('notifications/json',views.partner_notifications_json,name='partner_notifications_json'),
+    path('dashboard',views.dashboard,name='partner_dashboard'),
+    path('offers',views.offers,name='partner_offers'),
+    path('connections',views.connections,name='partner_connections'),
+    path('platforms',views.platforms,name='partner_platforms'),
+    path('links',views.links,name='partner_links'),
+    path('payments',views.payments,name='partner_payments'),
+    path('settings',views.settings,name='partner_settings'),
+    path('notifications',views.notifications,name='partner_notifications'),
+    path('notifications/json',views.notifications_json,name='partner_notifications_json'),
     path('notifications/mark/<int:notification_id>', views.mark_notification_read, name='mark_notification_read'),
     path('notifications/mark-all', views.mark_all_notifications_read, name='mark_all_notifications_read')
 ]

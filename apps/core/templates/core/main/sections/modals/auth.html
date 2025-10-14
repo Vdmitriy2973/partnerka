@@ -1,6 +1,7 @@
 {% load static %}
 
 <dialog id="auth_modal" class="modal">
+    <div id="auth_messages__container" class="fixed top-4 right-4 space-y-2 z-[99999]"></div>
     <div class="modal-box max-w-md rounded-2xl">
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -13,7 +14,7 @@
             <p class="text-gray-600 mt-2">Войдите в свой аккаунт</p>
         </div>
         <div class="space-y-4">
-            <form id="auth_form" method="POST" action="{% url 'login' %}">
+            <form id="auth_form" method="POST">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 <input name="auth" class="hidden" />
@@ -42,16 +43,6 @@
             Нет аккаунта?
             <a href="#" id="registration-link" class="text-blue-600 font-medium">Регистрация</a>
         </div>
-        {% if messages %}
-        {% for message in messages %}
-        {% if "login_error" in message.extra_tags %}
-        <div class="alert alert-error">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            {{ message }}
-        </div>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
     </div>
     </div>
     

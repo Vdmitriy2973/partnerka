@@ -1,0 +1,303 @@
+{% extends 'lk/lk.html' %}
+{% load static %}
+{% load humanize %}
+{% load tz %}
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+{% vite_asset 'apps/partners/assets/js/notifications/notifications.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %}Уведомления{% endblock %}
+
+{% block header %}
+{% include "partners/header/header.html" %}
+{% endblock %}
+
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+{% block content %}
+<div class="container mx-auto px-4 py-6 max-w-6xl">
+    <!-- Заголовок страницы -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800 animate-fade-in">Уведомления</h1>
+            <p class="text-gray-500 animate-fade-in delay-100">Все важные события вашего аккаунта</p>
+        </div>
+
+        <div class="flex gap-2 mt-4 sm:mt-0">
+            <form method="POST" id="mark-all-as-read">
+                {% csrf_token %}
+                <button class="btn btn-outline btn-sm animate-fade-in delay-300">
+                    <i class="fas fa-check-double mr-2"></i>Прочитать все
+                </button>
+            </form>
+
+            <button class="btn btn-ghost btn-sm animate-fade-in delay-400" id="refresh-notifications">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Статистика уведомлений -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-8">
+        <div class="stats shadow bg-gradient-to-r from-blue-50 to-blue-100 animate-slide-up delay-100">
+            <div class="stat">
+                <div class="stat-figure text-blue-500">
+                    <i class="fas fa-bell text-2xl"></i>
+                </div>
+                <div class="stat-title">Всего уведомлений</div>
+                <div class="stat-value text-blue-600" id="total-count">{{ total_notifications_count }}</div>
+                <div class="stat-desc">За всё время</div>
+            </div>
+        </div>
+
+        <div class="stats shadow bg-gradient-to-r from-green-50 to-green-100 animate-slide-up delay-200">
+            <div class="stat">
+                <div class="stat-figure text-green-500">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </div>
+                <div class="stat-title">Непрочитанные</div>
+                <div class="stat-value text-green-600" id="unread-count">{{ notifications_count }}</div>
+                <div class="stat-desc">Требуют внимания</div>
+            </div>
+        </div>
+
+        <div class="stats shadow bg-gradient-to-r from-purple-50 to-purple-100 animate-slide-up delay-300">
+            <div class="stat">
+                <div class="stat-figure text-purple-500">
+                    <i class="fas fa-chart-line text-2xl"></i>
+                </div>
+                <div class="stat-title">Конверсии сегодня</div>
+                <div class="stat-value text-purple-600">{{ today_conversions_count }}</div>
+                <!-- <div class="stat-desc">+2 с вчерашнего дня</div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Список уведомлений -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden animate-fade-in delay-600">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-xl font-semibold">Уведомления</h2>
+            <span class="text-sm text-gray-500" id="last-updated">Обновлено: {% now "H:i" %}</span>
+        </div>
+
+        <div class="divide-y divide-gray-100" id="notifications-list">
+            {% for notification in notifications %}
+            <div class="notification-item group transition-all duration-200 hover:bg-blue-50 {% if not notification.is_read%}un{% endif%}read animate-notification-item"
+                 data-type="{{ notification.activity_type }}" data-id="{{ notification.id }}">
+                <div class="p-4 flex items-start">
+                    <div class="flex-shrink-0">
+                        {% if notification.activity_type == 'sale'%}
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shopping-cart text-sm"></i>
+                        </div>
+                        {% elif notification.activity_type == 'clicks' %}
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-eye text-sm"></i>
+                        </div>
+                        {% elif notification.activity_type == 'payout' %}
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-money-bill-wave text-blue-600 text-sm"></i>
+                        </div>
+                        {% elif notification.activity_type == 'system' %}
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fa fa-suitcase text-sm"></i>
+                        </div>
+                        {% elif notification.activity_type == 'approve' %}
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fa fa-check text-sm"></i>
+                        </div>
+                        {% elif notification.activity_type == 'reject' %}
+                        <div class="w-10 h-10 bg-error text-white  rounded-full flex items-center justify-center">
+                            <i class="fa fa-ban text-sm"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="ml-3 flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-900">
+                                    {{ notification.title }}
+                                </h3>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    {{ notification.details }}
+                                </p>
+                            </div>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                {{ notification.get_activity_type_display }}
+                            </span>
+                        </div>
+                        <div class="mt-2 flex items-center text-xs text-gray-400">
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>{{ notification.created_at|timesince }} назад</span>
+                        </div>
+                    </div>
+                    {% if not notification.is_read %}
+                    <form class="mark-as-read opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex-shrink-0"
+                          method="POST">
+                        {% csrf_token %}
+                        <input value="{{ notification.id }}" name="notification_id" class="hidden">
+                        <button type="submit" class="btn btn-ghost btn-xs mark-read">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Индикатор загрузки -->
+        <div id="loading-indicator" class="hidden p-8 text-center">
+            <div class="loading loading-spinner loading-lg text-primary"></div>
+            <p class="mt-2 text-gray-500">Загрузка уведомлений...</p>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="flex justify-end items-center p-4 border-t">
+            <div class="join">
+                <div class="join-item pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+                    <button id="previous_page_number"
+                            class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+
+                    </button>
+
+                    <div class="join-item flex items-center mx-1 md:mx-3 text-sm md:text-base">
+                        <button id="current_page_number" data-max="{{ notifications.paginator.num_pages }}" disabled
+                                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]"
+                                aria-label="Номер страницы">
+                        </button>
+                    </div>
+
+                    <button id="next_page_number"
+                            class="join-item btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast контейнер -->
+<div id="toast-container" class="toast toast-top toast-end z-50"></div>
+
+<style>
+    .notification-item {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .notification-item:hover {
+        transform: translateX(4px);
+    }
+
+    .notification-item.unread {
+        background-color: #f0f9ff;
+        border-left: 4px solid #3b82f6;
+    }
+
+    .notification-item.read {
+        opacity: 0.8;
+        background-color: #f9fafb;
+    }
+
+    /* Анимации */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes notificationSlide {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .animate-notification-item {
+        animation: notificationSlide 0.4s ease-out forwards;
+    }
+
+    .delay-100 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-200 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-300 {
+        animation-delay: 0.3s;
+    }
+
+    .delay-400 {
+        animation-delay: 0.4s;
+    }
+
+    .delay-500 {
+        animation-delay: 0.4s;
+    }
+
+    .delay-600 {
+        animation-delay: 0.6s;
+    }
+
+    @keyframes slide-out-left {
+        0% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        70% {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateX(100%);
+            max-height: 0;
+            margin-bottom: 0;
+            padding: 0;
+            border: none;
+        }
+    }
+
+    .animate-slide-out-left {
+        animation: slide-out-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+</style>
+{% endblock %}

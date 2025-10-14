@@ -22,7 +22,7 @@ urlpatterns = [
     path('entities/partner/<int:partner_id>', views.partner_detail, name='partner'),
     path('entities/advertiser/<int:advertiser_id>',views.advertiser_detail, name='advertiser'),
     path('entities/project/<int:project_id>',views.project_detail,name='project'),
-    # Добавить страницу с информацией о площадке
+    path('entities/platform/<int:platform_id>',views.platform_detail,name='platform'),
     
     # SEO
     path("robots.txt",views.robots_txt,name="robots.txt")   

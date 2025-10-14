@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base/base.html' %}
 {% load static %}
 {% load tz %}
 
@@ -66,7 +66,7 @@
                     class="card bg-base-100 shadow-md hover:shadow-xl transition-shadow transform hover:-translate-y-1">
                     <div class="card-body">
                         <div class="flex justify-between items-start">
-                            <h4 class="card-title text-lg">{{ platform.name }}</h4>
+                            <h4 class="card-title text-lg"><a href="{% url 'platform' platform.id %}">{{ platform.name }}</a></h4>
                             <div
                                 class="badge badge-outline {% if platform.is_active %}badge-success{% else %}badge-error{% endif %}">
                                 {% if platform.is_active %}Активна{% else %}Приостановлена{% endif %}

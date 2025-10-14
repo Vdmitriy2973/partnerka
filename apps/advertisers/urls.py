@@ -13,10 +13,14 @@ urlpatterns = [
     path('read_notifications',views.read_advertiser_notifications,name='read_advertiser_notifications'),
     
     # ЛК
-    path('dashboard',views.advertiser_dashboard,name='advertiser_dashboard'),
-    path('partners',views.advertiser_partners,name='advertiser_partners'),
-    path('sales',views.advertiser_sales,name='advertiser_sales'),
-    path('projects',views.advertiser_projects,name='advertiser_projects'),
-    path('settings',views.advertiser_settings,name='advertiser_settings'),
-    path('requisites',views.advertiser_requisites,name='advertiser_requisites')
+    path('dashboard',views.dashboard,name='advertiser_dashboard'),
+    path('partners',views.partners,name='advertiser_partners'),
+    path('sales',views.sales,name='advertiser_sales'),
+    path('projects',views.projects,name='advertiser_projects'),
+    path('settings',views.settings,name='advertiser_settings'),
+    path('requisites',views.requisites,name='advertiser_requisites'),
+    path('notifications',views.notifications,name='advertiser_notifications'),
+    path('notifications/json',views.notifications_json,name='partner_notifications_json'),
+    path('notifications/mark/<int:notification_id>', views.mark_notification_read, name='mark_notification_read'),
+    path('notifications/mark-all', views.mark_all_notifications_read, name='mark_all_notifications_read')
 ]

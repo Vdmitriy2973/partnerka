@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth import login
 from django.contrib import messages
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from apps.users.forms import LoginForm
@@ -18,7 +19,5 @@ def handle_login(request):
         else:
             request.session.set_expiry(0)
         login(request, user)
-        return redirect("dashboard")
-    else:
-        messages.error(request, message="Неверный email или пароль.",extra_tags="login_error")
-    return redirect('/?show_modal=auth')
+        return JsonResponse({"success":True})
+    return JsonResponse({"success":False})

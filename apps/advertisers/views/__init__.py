@@ -1,8 +1,9 @@
-from .advertiser_dashboard import advertiser_dashboard
-from .advertiser_partners import advertiser_partners
-from .advertiser_sales import advertiser_sales
-from .advertiser_projects import advertiser_projects
-from .advertiser_requisites import advertiser_requisites
-from .advertiser_settings import advertiser_settings
+from .dashboard import dashboard
+from .partners import partners
+from .sales import sales
+from .projects import projects
+from .requisites import requisites
+from .settings import settings
+from .notifications import notifications
 
 from .advertiser_operations import *

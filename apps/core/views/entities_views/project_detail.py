@@ -18,7 +18,6 @@ def project_detail(request, project_id):
     try:
         # Проект
         project = get_object_or_404(Project,id=project_id)
-
         # Получаем статистику по партнёрам проекта
         conversion_stats = Conversion.objects.filter(
             partnership=OuterRef('pk'),

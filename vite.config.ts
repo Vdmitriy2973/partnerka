@@ -5,8 +5,11 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig((mode) => {
   const env = loadEnv(mode, process.cwd(), "");
 
-  const PARTNER_APP_INPUT_DIR = "./apps/partner_app/assets";
-  const CORE_APP_INPUT_DIR = "./apps/core/assets";
+  const CORE_INPUT_DIR = "./apps/core/assets/js";
+  const ADVERTISERS_INPUT_DIR = "./apps/advertisers/assets/js";
+  const PARTNERS_INPUT_DIR = "./apps/partners/assets/js";
+  const MANAGERS_INPUT_DIR = "./apps/managers/assets/js"
+
   const OUTPUT_DIR = "./static";
 
   return {
@@ -20,37 +23,38 @@ export default defineConfig((mode) => {
         input: {
 
           // index.html
-          home: join(CORE_APP_INPUT_DIR, "/js/main/index.js"),
+          home: join(CORE_INPUT_DIR, "/main/index.js"),
+          auth: join(CORE_INPUT_DIR,'/auth/auth.js'),
 
           // Рекламодатель
-          adv_dashboard: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/advertiser/dashboard/dashboard.js"),
-          adv_partners: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/advertiser/partners/partners.js"),
-          adv_projects: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/advertiser/projects/projects.js"),
-          adv_requisites: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/advertiser/requisites/requisites.js"),
-          adv_sales: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/advertiser/sales/sales.js"),
-          adv_settings: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/advertiser/settings/settings.js"),
+          advertiser_dashboard: join(ADVERTISERS_INPUT_DIR, "/dashboard/dashboard.js"),
+          advertiser_partners: join(ADVERTISERS_INPUT_DIR, "/partners/partners.js"),
+          advertiser_projects: join(ADVERTISERS_INPUT_DIR, "/projects/projects.js"),
+          advertiser_requisites: join(ADVERTISERS_INPUT_DIR, "/requisites/requisites.js"),
+          advertiser_sales: join(ADVERTISERS_INPUT_DIR, "/sales/sales.js"),
+          advertiser_notifications: join(ADVERTISERS_INPUT_DIR, "/notifications/notifications.js"),
+          advertiser_settings: join(ADVERTISERS_INPUT_DIR, "/settings/settings.js"),
 
           // Партнёр
-          partner_dashboard: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/dashboard/dashboard.js"),
-          partner_offers: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/offers/offers.js"),
-          partner_connections: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/connections/connections.js"),
-          partner_notifications: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/notifications/notifications.js"),
-          partner_platforms: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/platforms/platforms.js"),
-          partner_links: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/links/links.js"),
-          partner_payments: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/payments/payments.js"),
-          partner_settings: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/partner/settings/settings.js"),
+          partner_dashboard: join(PARTNERS_INPUT_DIR, "/dashboard/dashboard.js"),
+          partner_offers: join(PARTNERS_INPUT_DIR, "/offers/offers.js"),
+          partner_connections: join(PARTNERS_INPUT_DIR, "/connections/connections.js"),
+          partner_notifications: join(PARTNERS_INPUT_DIR, "/notifications/notifications.js"),
+          partner_platforms: join(PARTNERS_INPUT_DIR, "/platforms/platforms.js"),
+          partner_links: join(PARTNERS_INPUT_DIR, "/links/links.js"),
+          partner_payments: join(PARTNERS_INPUT_DIR, "/payments/payments.js"),
+          partner_settings: join(PARTNERS_INPUT_DIR, "/settings/settings.js"),
 
           // Менеджер
-          manager_dashboard: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/dashboard/dashboard.js"),
-          manager_projects: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/projects/projects.js"),
-          manager_platforms: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/platforms/platforms.js"),
-          manager_users: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/users/users.js"),
-          manager_partners: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/partners/partners.js"),
-          manager_advertisers: join(PARTNER_APP_INPUT_DIR, "/js/dashboard/manager/advertisers/advertisers.js"),
+          manager_dashboard: join(MANAGERS_INPUT_DIR, "/dashboard/dashboard.js"),
+          manager_projects: join(MANAGERS_INPUT_DIR, "/projects/projects.js"),
+          manager_platforms: join(MANAGERS_INPUT_DIR, "/platforms/platforms.js"),
+          manager_users: join(MANAGERS_INPUT_DIR, "/users/users.js"),
+          manager_partners: join(MANAGERS_INPUT_DIR, "/partners/partners.js"),
+          manager_advertisers: join(MANAGERS_INPUT_DIR, "/advertisers/advertisers.js"),
 
           // Статические страницы
-          static_page_core_app: join(CORE_APP_INPUT_DIR, "/js/static-pages/static_page.js"),
-          static_page_partner_app: join(PARTNER_APP_INPUT_DIR, "/js/static-pages/static_page.js"),
+          static_page_core_app: join(CORE_INPUT_DIR, "/static-pages/static_page.js"),
         },
       },
     },
