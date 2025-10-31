@@ -30,14 +30,28 @@ export function setupConnectionModal() {
     // Единый обработчик для всех кнопок
     const handleModalOpen = function() {
         const { dataset } = this;
+        console.log(dataset)
         
         // Обновляем текстовые поля
         Object.entries(fieldElements).forEach(([field, element]) => {
+            if (field == "project-name" && dataset.projectName)
+            {
+                element.innerHTML = dataset.projectName;
+            }
             if (field === 'project-url' && dataset.projectUrl) {
                 element.href = dataset.projectUrl;
             } 
-            else if (field === 'description' && dataset.projectDescription) {
+            if (field === "costPerAction" && dataset.projectCost) {
+                element.innerHTML = `${dataset.projectCost} ₽`;
+            }
+            if (field === 'description' && dataset.projectDescription) {
                 element.innerHTML = dataset.projectDescription;
+            }
+            if (field === 'partners-count' && dataset.projectPartnersCount) {
+                element.innerHTML = dataset.projectPartnersCount;
+            }
+            if (field === "created-at" && dataset.projectCreatedAt) {
+                element.innerHTML = dataset.projectCreatedAt;
             }
             else if (dataset[`project${field.charAt(0).toUpperCase() + field.slice(1).replace(/-/g, '')}`]) {
                 const value = dataset[`project${field.charAt(0).toUpperCase() + field.slice(1).replace(/-/g, '')}`];

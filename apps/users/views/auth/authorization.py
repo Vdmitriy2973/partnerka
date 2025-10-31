@@ -1,6 +1,4 @@
-from django.shortcuts import redirect
 from django.contrib.auth import login
-from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 

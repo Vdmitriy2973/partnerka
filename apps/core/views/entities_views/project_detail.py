@@ -16,16 +16,21 @@ def project_detail(request, project_id):
     """Информация о проекте"""
     
     try:
-        # Проект
+        
         project = get_object_or_404(Project,id=project_id)
-        # Получаем статистику по партнёрам проекта
-        conversion_stats = Conversion.objects.filter(
-            partnership=OuterRef('pk'),
-            project_id=project.id
+        
+        conversion_amount_subquery = Conversion.objects.filter(
+            partnership=OuterRef('pk')
         ).values('partnership').annotate(
-            total_amount=Sum('amount'),
+            total=Sum('amount')
+        ).values('total')[:1]
+
+
+        conversion_count_subquery = Conversion.objects.filter(
+            partnership=OuterRef('pk')
+        ).values('partnership').annotate(
             count=Count('id')
-        ).values('total_amount', 'count')
+        ).values('count')[:1]
 
         partnership_stats = (
             ProjectPartner.objects
@@ -33,12 +38,12 @@ def project_detail(request, project_id):
             .select_related('partner')
             .annotate(
                 conversions_total=Coalesce(
-                    Subquery(conversion_stats.values('total_amount')[:1]),
+                    Subquery(conversion_amount_subquery),
                     Value(Decimal('0.00')),
                     output_field=DecimalField(max_digits=10, decimal_places=2)
                 ),
                 conversions_count=Coalesce(
-                    Subquery(conversion_stats.values('count')[:1]),
+                    Subquery(conversion_count_subquery),
                     Value(0),
                     output_field=IntegerField()
                 )

@@ -1,0 +1,167 @@
+{% extends "lk/lk.html" %}
+{% load static %}
+{% load tz %}
+{% load django_vite %}
+{% vite_hmr_client %}
+
+{% block head_js_scripts %}
+{% vite_asset 'apps/managers/assets/js/reviews/reviews.js' %}
+{% endblock head_js_scripts %}
+
+{% block title %}Отзывы{% endblock title %}
+
+{% block header %}
+{% include "managers/header/header.html" %}
+{% endblock %}
+
+{% block main_class %}bg-base-200 min-h-screen{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Заголовок и статистика -->
+    <div class="mb-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Управление отзывами</h1>
+                <p class="text-sm text-gray-600 mt-1">Панель модерации отзывов партнёрской программы</p>
+            </div>
+            <div class="stats shadow bg-base-100">
+                <div class="stat">
+                    <div class="stat-figure text-warning">
+                        <i class="fas fa-clock text-2xl"></i>
+                    </div>
+                    <div class="stat-title">Ожидают проверки</div>
+                    <div class="stat-value text-warning reviews_count">{{ reviews_count }}</div>
+                    <div class="stat-desc">Новых отзывов</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список отзывов -->
+    <div class="space-y-6">
+        <!-- Отзыв 1 -->
+        {% for review in reviews %}
+            <div class="card bg-base-100 shadow-lg border-l-4 border-l-warning">
+                <div class="card-body">
+                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                        <!-- Информация об авторе -->
+                        <div class="flex items-start gap-4 flex-1">
+                            <div class="avatar-placeholder">
+                                <div class="bg-neutral text-neutral-content rounded-full w-12">
+                                    <span class="text-lg">{{ review.name|first }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                                    <h3 class="font-bold text-lg">{{ review.name }}</h3>
+                                </div>
+                                <p class="text-gray-600 mb-1">{{ review.user.email }}</p>
+                                <div class="flex items-center gap-1 mb-3">
+                                    {% for star in "x"|ljust:review.rating %}
+                                        <i class="fa-solid fa-star text-yellow-300"></i>
+                                    {% endfor %}
+                                    <span class="text-sm text-gray-500">{{ review.rating }}/5</span>
+                                </div>
+                                <p class="text-sm text-gray-500">Отправлен: {{ review.created_at }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Действия -->
+                        <div class="flex gap-2">
+                            <button class="btn btn-success btn-sm publish-review" data-review-id="{{ review.id }}">
+                                <i class="fas fa-check"></i>
+                                Опубликовать
+                            </button>
+                            <button class="btn btn-error btn-sm remove-review" data-review-id="{{ review.id }}">
+                                <i class="fas fa-times"></i>
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="review-item">
+                        <!-- Текст отзыва -->
+                        <div class="mt-4">
+                            <label class="form-control">
+                                <div class="label">
+                                    <span class="label-text font-semibold">Текст отзыва</span>
+                                </div>
+                                <textarea class="textarea textarea-bordered h-24 review-textarea" placeholder="Текст отзыва...">{{ review.comment }}</textarea>
+                            </label>
+                        </div>
+
+                        <!-- Дополнительные действия -->
+                        <div class="card-actions justify-end mt-4">
+                            <form class="edit_review" method="POST">
+                                {% csrf_token %}
+                                <input class="review_comment"  name="review_comment" value="{{ review.comment }}" type="hidden">
+                                <button class="btn btn-primary btn-sm save-changes" data-review-id="{{ review.id }}">
+                                    <i class="fas fa-save"></i>
+                                    Сохранить изменения
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="flex flex-col justify-center items-center text-center py-10" id="empty-state">
+                <div class="text-gray-300 text-5xl mb-4">
+                    <i class="fas fa-sad-cry"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-500 mb-2">Отзывы не найдены</h3>
+                <p class="text-gray-400 text-sm mb-4">Здесь будут отображаться новые отзывы пользователей</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
+        {% if reviews.has_previous %}
+            <a href="?reviews_page=1"
+            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+                aria-label="Первая страница">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?reviews_page={{ reviews.previous_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Предыдущая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-left"></i></span>
+            </a>
+        {% endif %}
+
+        <div class="flex items-center mx-1 md:mx-3 text-sm md:text-base">
+            <span class="hidden sm:inline">Страница</span>
+                <input type="number" min="1" max="{{ reviews.paginator.num_pages }}"
+                   value="{{ reviews.number }}"
+                   class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
+                   onchange="window.location.href = '?reviews_page=' + this.value" aria-label="Номер страницы">
+            <span>из {{ reviews.paginator.num_pages }}</span>
+        </div>
+
+        {% if reviews.has_next %}
+            <a href="?reviews_page={{ reviews.next_page_number }}"
+                class="btn btn-sm md:btn-md btn-outline transition-all duration-200 hover:scale-[1.02]">
+                <span class="hidden sm:inline">Следующая</span>
+                <span class="sm:hidden"><i class="fas fa-chevron-right"></i></span>
+            </a>
+            <a href="?reviews_page={{ reviews.paginator.num_pages }}"
+            class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
+            aria-label="Последняя страница">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Пустое состояние -->
+    <div class="hidden flex-col justify-center items-center text-center py-16" id="empty-state">
+        <div class="text-gray-300 text-6xl mb-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="text-xl font-medium text-gray-500 mb-2">Все отзывы проверены!</h3>
+        <p class="text-gray-400 text-sm">Новых отзывов, ожидающих модерации, нет</p>
+    </div>
+</div>
+
+{% include "managers/reviews/modals/confirm.html" %}
+{% endblock %}

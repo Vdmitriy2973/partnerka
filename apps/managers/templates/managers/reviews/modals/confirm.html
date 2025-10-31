@@ -1,0 +1,14 @@
+{% load static %}
+<dialog id="confirm_modal" class="modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg" id="modal-title">Подтверждение действия</h3>
+        <p class="py-4" id="modal-message">Вы уверены, что хотите выполнить это действие?</p>
+        <div class="modal-action">
+            <form id="confirm_form" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-primary ml-2" id="confirm-button">Подтвердить</button>
+            </form>
+            <button class="btn btn-outline" onclick="document.getElementById('confirm_modal').close()">Отмена</button>
+        </div>
+    </div>
+</dialog>

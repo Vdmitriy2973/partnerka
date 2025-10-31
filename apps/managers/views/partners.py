@@ -8,7 +8,7 @@ def manager_partners(request):
     user = request.user
     if not user.is_authenticated:
         return redirect('/?show_modal=auth')
-    if not hasattr(request.user,"managerprofile"):
+    if not hasattr(user,"managerprofile"):
         return redirect('index')
     if user.is_authenticated and user.is_currently_blocked():
         return render(request, 'account_blocked/block_info.html')

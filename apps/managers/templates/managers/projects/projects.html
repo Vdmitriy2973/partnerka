@@ -168,7 +168,7 @@
         </div>
         <div class="pagination flex flex-wrap justify-center items-center gap-2 my-6 px-2">
             {% if projects.has_previous %}
-            <a href="?pending_items_page=1"
+            <a href="?projects_page=1"
                class="btn btn-sm btn-square md:btn-md btn-primary transition-all duration-200 hover:scale-105"
                aria-label="Первая страница">
                 <i class="fas fa-angle-double-left"></i>
@@ -185,7 +185,7 @@
                 <input type="number" min="1" max="{{ projects.paginator.num_pages }}"
                        value="{{ projects.number }}"
                        class="input input-bordered input-sm md:input-md w-12 md:w-16 mx-1 md:mx-2 text-center transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent"
-                       onchange="window.location.href = '?pending_items_page=' + this.value" aria-label="Номер страницы">
+                       onchange="window.location.href = '?projects_page=' + this.value" aria-label="Номер страницы">
                 <span>из {{ projects.paginator.num_pages }}</span>
             </div>
 

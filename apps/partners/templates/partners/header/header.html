@@ -24,6 +24,7 @@
                     <i class="fas fa-chart-line"></i>
                     </i>Дашборд</a>
                 </li>
+                <li><a href="{% url 'partner_stats' %}"><i class="fa-solid fa-chart-simple"></i></i>Статистика</a></li>
                 <li><a href="{% url 'partner_offers' %}" class="nav-item"><i class="fas fa-boxes"></i>Предложения</a></li>
                 <li><a href="{% url 'partner_connections' %}" class="nav-item"><i class="fas fa-laptop-code"></i>Проекты</a></li>
                 <li><a href="{% url 'partner_platforms' %}" class="nav-item"><i class="fas fa-globe"></i>Площадки</a></li>
@@ -52,6 +53,12 @@
                         </span>
                     {% endif %}
                 </a>
+            </li>
+            <li>
+            <a href="{% url 'partner_stats' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span class="hidden sm:inline">Статистика</span>
+            </a>
             </li>
             <li>
             <a href="{% url 'partner_offers' %}" class="nav-item btn-xs text-xs xl:text-sm flex items-center">

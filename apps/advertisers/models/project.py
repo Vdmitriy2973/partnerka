@@ -100,18 +100,16 @@ class Project(models.Model):
     is_active = models.BooleanField(default=True)
     
     @property
-    def clicks_count(self):
-        return self.clicks.count()
-    
-    @property
     def conversions_count(self):
         return self.conversions.count()
     
     @property 
     def conversions_percent(self):
-        if self.clicks.count() == 0:
+        clicks_count = self.clicks.count()
+        conversions_count = self.conversions.count()
+        if clicks_count == 0 or conversions_count == 0:
             return 0.0
-        return f"{(self.conversions.count() / self.clicks.count()) * 100:.2f}"
+        return f"{(conversions_count / clicks_count) * 100:.2f}"
     
     @property
     def clicks_count(self):
@@ -163,18 +161,18 @@ class Project(models.Model):
     
     
     def get_partner_conversion(self,partner):
-        return self.clicks.filter(partner=partner.partner_profile).count()
+        return self.conversions.filter(project=self,partner=partner.partner_profile).count()
     
     def get_partner_conversion_percent(self,partner):
-        if self.conversions.filter(partner=partner.partner_profile).count() == 0 or self.clicks.filter(partner=partner.partner_profile).count() == 0:
+        if self.conversions.filter(project=self,partner=partner.partner_profile).count() == 0 or self.clicks.filter(project=self,partner=partner.partner_profile).count() == 0:
             return 0.0
-        return f"{(self.conversions.filter(partner=partner.partner_profile).count() / self.clicks.filter(partner=partner.partner_profile).count()) * 100:.2f}"
+        return f"{(self.conversions.filter(project=self,partner=partner.partner_profile).count() / self.clicks.filter(project=self,partner=partner.partner_profile).count()) * 100:.2f}"
     
     def get_partner_clicks(self,partner):
-        return self.clicks.filter(partner=partner.partner_profile).count()
+        return self.clicks.filter(project=self,partner=partner.partner_profile).count()
     
     def has_partner_link(self, partner):
         """
         Проверяет, есть ли у партнёра сгенерированная ссылка для этого проекта
         """
-        return self.project_links.filter(partner=partner, is_active=True).exists()
+        return self.project_links.filter(project=self,partner=partner, is_active=True).exists()

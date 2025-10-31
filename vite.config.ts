@@ -37,6 +37,7 @@ export default defineConfig((mode) => {
 
           // Партнёр
           partner_dashboard: join(PARTNERS_INPUT_DIR, "/dashboard/dashboard.js"),
+          partner_stats:join(PARTNERS_INPUT_DIR,'/stats/stats.js'),
           partner_offers: join(PARTNERS_INPUT_DIR, "/offers/offers.js"),
           partner_connections: join(PARTNERS_INPUT_DIR, "/connections/connections.js"),
           partner_notifications: join(PARTNERS_INPUT_DIR, "/notifications/notifications.js"),
@@ -52,6 +53,7 @@ export default defineConfig((mode) => {
           manager_users: join(MANAGERS_INPUT_DIR, "/users/users.js"),
           manager_partners: join(MANAGERS_INPUT_DIR, "/partners/partners.js"),
           manager_advertisers: join(MANAGERS_INPUT_DIR, "/advertisers/advertisers.js"),
+          manager_reviews:join(MANAGERS_INPUT_DIR,"/reviews/reviews.js"),
 
           // Статические страницы
           static_page_core_app: join(CORE_INPUT_DIR, "/static-pages/static_page.js"),

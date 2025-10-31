@@ -70,10 +70,6 @@ class Platform(models.Model):
             return 0.0
         return f"{(self.conversions.count() / self.clicks.count()) * 100:.2f}"
     
-    # @property
-    # def average_revenue(self):
-    #     return self.conve
-    
     @property
     def clicks_count(self):
         return self.clicks.count()

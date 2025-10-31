@@ -203,13 +203,18 @@ const URLParamsHandler = {
 
     // Открытие модального окна авторизации
     openAuthModal: () => {
+        const state = { url: `/`, title: "LinkOffer - Партнёрская программа" };
+        window.history.pushState(state, state.title, state.url);
         window.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => DOMUtils.get("auth_modal")?.showModal(), 505);
+            
         });
     },
 
     // Открытие модального окна регистрации
     openRegistrationModal: (type) => {
+        const state = { url: `/`, title: "LinkOffer - Партнёрская программа" };
+        window.history.pushState(state, state.title, state.url);
         ModalManager.switchModalTab(type);
         setTimeout(() => DOMUtils.get('register_modal')?.showModal(), 505);
     }

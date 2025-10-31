@@ -32,8 +32,8 @@ def links(request):
     notifications_count = PartnerActivity.objects.filter(partner=request.user.partner_profile,is_read=False).count()
     
     best_link = PartnerLink.objects.filter(partner=request.user).annotate(
-        clicks_count=Count('clicks'),
-        conversions_count=Count('conversions'),
+        clicks_count=Count('clicks',distinct=True),
+        conversions_count=Count('conversions',distinct=True),
             score=ExpressionWrapper(
                 F('conversions_count') * 0.5 + F('clicks_count') * 0.3,
                 output_field=FloatField()

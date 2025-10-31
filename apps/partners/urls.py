@@ -18,6 +18,7 @@ urlpatterns = [
     
     # ЛК
     path('dashboard',views.dashboard,name='partner_dashboard'),
+    path('stats',views.stats,name='partner_stats'),
     path('offers',views.offers,name='partner_offers'),
     path('connections',views.connections,name='partner_connections'),
     path('platforms',views.platforms,name='partner_platforms'),

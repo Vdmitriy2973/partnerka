@@ -70,3 +70,9 @@ class ProjectPartner(models.Model):
 
     def __str__(self):
         return f"{self.partner} → {self.project} ({self.get_status_display()})"
+    
+
+    def conversion_rate(self,partner):
+        if self.conversions.filter(project=self.project,partner=partner.partner_profile).count() == 0 or self.clicks.filter(project=self.project,partner=partner.partner_profile).count() == 0:
+            return 0.0
+        return f"{(self.conversions.filter(project=self.project,partner=partner.partner_profile).count() / self.clicks.filter(project=self.project,partner=partner.partner_profile).count()) * 100:.2f}"

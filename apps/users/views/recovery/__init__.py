@@ -1,0 +1,4 @@
+from .password_reset import ProtectedPasswordResetView
+from .password_reset_done import ProtectedPasswordResetDoneView
+from .password_reset_complete import ProtectedPasswordResetCompleteView
+from .password_reset_confirm import ProtectedPasswordResetConfirmView

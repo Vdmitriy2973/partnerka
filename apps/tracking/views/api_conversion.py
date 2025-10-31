@@ -30,13 +30,13 @@ class ConversionAPIView(APIView):
             )
         try:
             partner = User.objects.get(id=int(partner_id))
-        except User.DoesNotExist:
+            partnerprofile = PartnerProfile.objects.get(
+                user=int(partner.id)
+            )
+        except (User.DoesNotExist,PartnerProfile.DoesNotExist):
             return Response({
                 "error": "Партнёр с указанным ID не найден. Пожалуйста, проверьте правильность введенного ID."
             }, status=status.HTTP_404_NOT_FOUND)
-        partnerprofile = PartnerProfile.objects.get(
-            user=int(partner.id)
-        )
         if partner.is_currently_blocked():
             return Response(
                 {"detail": "Сотрудничество с данным партнёром на данный момент приостановлено, т.к. аккаунт партнёра заблокирован!"},

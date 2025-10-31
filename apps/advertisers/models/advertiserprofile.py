@@ -14,6 +14,20 @@ class AdvertiserProfile(models.Model):
         ],
     )
     
+    @property 
+    def conversions_percent(self):
+        if self.clicks.count() == 0:
+            return 0.0
+        return f"{(self.conversions.count() / self.clicks.count()) * 100:.2f}"
+    
+    @property
+    def conversions_count(self):
+        return self.conversions.count()
+
+    @property
+    def clicks_count(self):
+        return self.clicks.count() 
+    
     class Meta:
         verbose_name = 'Рекламодатель'
         verbose_name_plural = 'Рекламодатели'

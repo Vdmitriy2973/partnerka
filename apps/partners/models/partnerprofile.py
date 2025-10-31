@@ -15,6 +15,20 @@ class PartnerProfile(models.Model):
         max_digits=10,
         validators=[MinValueValidator(0.00)],
     )
+
+    @property 
+    def conversions_percent(self):
+        if self.clicks.count() == 0:
+            return 0.0
+        return f"{(self.conversions.count() / self.clicks.count()) * 100:.2f}"
+    
+    @property
+    def conversions_count(self):
+        return self.conversions.count()
+
+    @property
+    def clicks_count(self):
+        return self.clicks.count() 
     
     class Meta:
         verbose_name = 'Партнёр'
